@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestCase;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
+use MatanYadaev\EloquentSpatial\Tests\TestModels\TestSridPlace;
 
 class PointCastTest extends TestCase
 {
@@ -25,7 +26,27 @@ class PointCastTest extends TestCase
         $this->assertTrue($testPlace->location instanceof Point);
         $this->assertEquals($testPlace->location->latitude, 123.1);
         $this->assertEquals($testPlace->location->longitude, 55.5);
+        $this->assertEquals($testPlace->location->srid, 0);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
+    }
+
+    /**
+     * @test
+     * @environment-setup useMysql
+     */
+    public function it_stores_srid_point_in_mysql()
+    {
+        $testSridPlace = TestSridPlace::factory()->create([
+            'location' => new Point(123.1, 55.5, 3857),
+        ]);
+        $testSridPlace = TestSridPlace::find($testSridPlace->id);
+
+        $this->assertTrue($testSridPlace->location instanceof Point);
+        $this->assertEquals($testSridPlace->location->latitude, 123.1);
+        $this->assertEquals($testSridPlace->location->longitude, 55.5);
+        $this->assertEquals($testSridPlace->location->srid, 3857);
+
+        $this->assertDatabaseCount($testSridPlace->getTable(), 1);
     }
 }

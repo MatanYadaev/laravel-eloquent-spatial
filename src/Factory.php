@@ -4,7 +4,7 @@ namespace MatanYadaev\EloquentSpatial;
 
 class Factory implements \GeoIO\Factory
 {
-    public function createPoint($dimension, array $coordinates, $srid = null)
+    public function createPoint($dimension, array $coordinates, $srid = null): Point
     {
         return new Point($coordinates['y'], $coordinates['x'], $srid);
     }

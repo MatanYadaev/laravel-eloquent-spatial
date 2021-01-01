@@ -5,9 +5,9 @@ namespace MatanYadaev\EloquentSpatial\Tests\TestModels;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use MatanYadaev\EloquentSpatial\Point;
-use MatanYadaev\EloquentSpatial\Tests\TestFactories\TestPlaceFactory;
+use MatanYadaev\EloquentSpatial\Tests\TestFactories\TestSridPlaceFactory;
 
-class TestPlace extends Model
+class TestSridPlace extends Model
 {
     use HasFactory;
 
@@ -20,8 +20,8 @@ class TestPlace extends Model
         'location' => Point::class,
     ];
 
-    protected static function newFactory(): TestPlaceFactory
+    protected static function newFactory(): TestSridPlaceFactory
     {
-        return new TestPlaceFactory;
+        return new TestSridPlaceFactory();
     }
 }
