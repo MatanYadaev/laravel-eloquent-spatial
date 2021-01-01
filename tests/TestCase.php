@@ -1,41 +1,54 @@
 <?php
 
-namespace Spatie\Skeleton\Tests;
+namespace MatanYadaev\EloquentSpatial\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use MatanYadaev\EloquentSpatial\EloquentSpatialServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Spatie\Skeleton\SkeletonServiceProvider;
 
 class TestCase extends Orchestra
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Spatie\\Skeleton\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
+        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
     }
 
-    protected function getPackageProviders($app)
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    }
+
+    protected function getPackageProviders($app): array
     {
         return [
-            SkeletonServiceProvider::class,
+            EloquentSpatialServiceProvider::class,
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    public function getEnvironmentSetUp($app): void
     {
-        $app['config']->set('database.default', 'sqlite');
-        $app['config']->set('database.connections.sqlite', [
+        $app->config->set('database.connections.sqlite', [
             'driver' => 'sqlite',
             'database' => ':memory:',
             'prefix' => '',
         ]);
 
-        /*
-        include_once __DIR__.'/../database/migrations/create_skeleton_table.php.stub';
-        (new \CreatePackageTable())->up();
-        */
+        $app->config->set('database.connections.mysql', [
+            'driver' => 'mysql',
+            'host' => '127.0.0.1',
+            'database' => 'laravel_eloquent_spatial_test',
+            'username' => 'root',
+        ]);
+    }
+
+    protected function useMysql($app)
+    {
+        $app->config->set('database.default', 'mysql');
+    }
+
+    protected function useSqlite($app)
+    {
+        $app->config->set('database.default', 'sqlite');
     }
 }
