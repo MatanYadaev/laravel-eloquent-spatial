@@ -53,6 +53,23 @@ class SpatialBuilderTest extends TestCase
      * @test
      * @environment-setup useMysql
      */
+    public function it_calculates_distance_with_defined_name()
+    {
+        TestPlace::factory()->create([
+            'location' => new Point(23.1, 55.5),
+        ]);
+
+        $testPlaceWithDistance = TestPlace::query()
+            ->withDistance('location', new Point(23.1, 55.6), 'distance_in_meters')
+            ->first();
+
+        $this->assertEquals(0.1, $testPlaceWithDistance->distance_in_meters);
+    }
+
+    /**
+     * @test
+     * @environment-setup useMysql
+     */
     public function it_calculates_distance_sphere_column_and_column()
     {
         TestPlace::factory()->create();
@@ -83,5 +100,24 @@ class SpatialBuilderTest extends TestCase
 
         $this->assertEquals(1022.7925914593363, $testPlaceWithDistance->distance);
         $this->assertEquals(1022.7925914593363, $testPlaceWithDistance2->distance);
+    }
+
+
+
+    /**
+     * @test
+     * @environment-setup useMysql
+     */
+    public function it_calculates_distance_sphere_with_defined_name()
+    {
+        TestPlace::factory()->create([
+            'location' => new Point(23.1, 55.5),
+        ]);
+
+        $testPlaceWithDistance = TestPlace::query()
+            ->withDistanceSphere('location', new Point(23.1, 55.51), 'distance_in_meters')
+            ->first();
+
+        $this->assertEquals(1022.7925914593363, $testPlaceWithDistance->distance_in_meters);
     }
 }
