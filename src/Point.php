@@ -5,7 +5,9 @@ namespace MatanYadaev\EloquentSpatial;
 use Exception;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\DB;
+use MatanYadaev\EloquentSpatial\Exceptions\InvalidTypeException;
 use MatanYadaev\EloquentSpatial\Exceptions\UnsupportedDatabaseDriverException;
 
 class Point extends Geometry implements Castable
@@ -21,10 +23,10 @@ class Point extends Geometry implements Castable
         $this->longitude = $longitude;
     }
 
-    public static function castUsing(array $arguments)
+    public static function castUsing(array $arguments): CastsAttributes
     {
         return new class implements CastsAttributes {
-            public function get($model, string $key, $value, array $attributes)
+            public function get($model, string $key, $value, array $attributes): ?Point
             {
                 if (! $value) {
                     return null;
@@ -39,22 +41,20 @@ class Point extends Geometry implements Castable
                 $point = Parser::parse($value);
 
                 if (! ($point instanceof Point)) {
-                    // @TODO use proper exception
-                    throw new Exception('Bad column');
+                    throw new InvalidTypeException(Point::class, $value);
                 }
 
                 return $point;
             }
 
-            public function set($model, string $key, $value, array $attributes)
+            public function set($model, string $key, $value, array $attributes): ?Expression
             {
                 if (! $value) {
                     return null;
                 }
 
                 if (! ($value instanceof Point)) {
-                    // @TODO use proper exception
-                    throw new Exception('Bad object type');
+                    throw new InvalidTypeException(Point::class, $value);
                 }
 
                 $dbDriver = $model->getConnection()->getDriverName();
