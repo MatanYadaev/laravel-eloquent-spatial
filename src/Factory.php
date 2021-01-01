@@ -2,6 +2,8 @@
 
 namespace MatanYadaev\EloquentSpatial;
 
+use MatanYadaev\EloquentSpatial\Objects\Point;
+
 class Factory implements \GeoIO\Factory
 {
     public function createPoint($dimension, array $coordinates, $srid = null): Point

@@ -3,6 +3,7 @@
 namespace MatanYadaev\EloquentSpatial;
 
 use GeoIO\WKB\Parser\Parser as GeoIOParser;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
 class Parser
 {

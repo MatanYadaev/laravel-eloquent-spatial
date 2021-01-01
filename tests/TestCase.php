@@ -28,12 +28,6 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app): void
     {
-        $app->config->set('database.connections.sqlite', [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-        ]);
-
         $app->config->set('database.connections.mysql', [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
@@ -45,10 +39,5 @@ class TestCase extends Orchestra
     protected function useMysql($app)
     {
         $app->config->set('database.default', 'mysql');
-    }
-
-    protected function useSqlite($app)
-    {
-        $app->config->set('database.default', 'sqlite');
     }
 }

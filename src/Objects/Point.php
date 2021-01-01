@@ -1,14 +1,14 @@
 <?php
 
-namespace MatanYadaev\EloquentSpatial;
+namespace MatanYadaev\EloquentSpatial\Objects;
 
-use Exception;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Exceptions\InvalidTypeException;
 use MatanYadaev\EloquentSpatial\Exceptions\UnsupportedDatabaseDriverException;
+use MatanYadaev\EloquentSpatial\Parser;
 
 class Point extends Geometry implements Castable
 {
@@ -21,6 +21,21 @@ class Point extends Geometry implements Castable
         parent::__construct($srid);
         $this->latitude = $latitude;
         $this->longitude = $longitude;
+    }
+
+    public function toWkt(string $dbDriver): Expression|string
+    {
+        if (! in_array($dbDriver, ['mysql'])) {
+            throw new UnsupportedDatabaseDriverException($dbDriver);
+        }
+
+        $expression = DB::raw("POINT({$this->longitude}, {$this->latitude})");
+
+        if ($this->srid) {
+            $expression = DB::raw("ST_SRID({$expression}, {$this->srid})");
+        }
+
+        return $expression;
     }
 
     public static function castUsing(array $arguments): CastsAttributes
@@ -47,7 +62,7 @@ class Point extends Geometry implements Castable
                 return $point;
             }
 
-            public function set($model, string $key, $value, array $attributes): ?Expression
+            public function set($model, string $key, $value, array $attributes): Expression|string|null
             {
                 if (! $value) {
                     return null;
@@ -59,19 +74,7 @@ class Point extends Geometry implements Castable
 
                 $dbDriver = $model->getConnection()->getDriverName();
 
-                if (! in_array($dbDriver, ['mysql'])) {
-                    throw new UnsupportedDatabaseDriverException($dbDriver);
-                }
-
-                if ($dbDriver === 'mysql') {
-                    $expression = DB::raw("POINT({$value->longitude}, {$value->latitude})");
-
-                    if ($value->srid) {
-                        $expression = DB::raw("ST_SRID({$expression}, {$value->srid})");
-                    }
-
-                    return $expression;
-                }
+                return $value->toWkt($dbDriver);
             }
         };
     }

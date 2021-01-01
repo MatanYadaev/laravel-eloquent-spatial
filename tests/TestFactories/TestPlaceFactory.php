@@ -3,7 +3,7 @@
 namespace MatanYadaev\EloquentSpatial\Tests\TestFactories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use MatanYadaev\EloquentSpatial\Point;
+use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 class TestPlaceFactory extends Factory
