@@ -65,6 +65,7 @@ class PointCast implements CastsAttributes
             if ($point->srid) {
                 return DB::raw("ST_SRID( POINT( {$point->longitude},{$point->latitude} ), {$point->srid} )");
             }
+
             return DB::raw("POINT( {$point->longitude},{$point->latitude} )");
         }
     }
