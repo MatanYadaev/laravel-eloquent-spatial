@@ -23,7 +23,7 @@ class Point extends Geometry implements Castable
         $this->longitude = $longitude;
     }
 
-    public function toWkt(string $dbDriver): Expression|string
+    public function toWkt(string $dbDriver): Expression | string
     {
         if (! in_array($dbDriver, ['mysql'])) {
             throw new UnsupportedDatabaseDriverException($dbDriver);
@@ -62,7 +62,7 @@ class Point extends Geometry implements Castable
                 return $point;
             }
 
-            public function set($model, string $key, $value, array $attributes): Expression|string|null
+            public function set($model, string $key, $value, array $attributes): Expression | string | null
             {
                 if (! $value) {
                     return null;

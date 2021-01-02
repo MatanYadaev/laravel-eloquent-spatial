@@ -13,5 +13,5 @@ abstract class Geometry
         $this->srid = (int) $srid;
     }
 
-    abstract public function toWkt(string $dbDriver): Expression|string;
+    abstract public function toWkt(string $dbDriver): Expression | string;
 }
