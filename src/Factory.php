@@ -2,7 +2,10 @@
 
 namespace MatanYadaev\EloquentSpatial;
 
+use MatanYadaev\EloquentSpatial\Objects\LineString;
+use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\Objects\Polygon;
 
 class Factory implements \GeoIO\Factory
 {
@@ -13,7 +16,7 @@ class Factory implements \GeoIO\Factory
 
     public function createLineString($dimension, array $points, $srid = null)
     {
-        // TODO: Implement createLineString() method.
+        return new LineString($points, $srid);
     }
 
     public function createLinearRing($dimension, array $points, $srid = null)
@@ -23,7 +26,8 @@ class Factory implements \GeoIO\Factory
 
     public function createPolygon($dimension, array $lineStrings, $srid = null)
     {
-        // TODO: Implement createPolygon() method.
+        dump($lineStrings);
+        return new Polygon($lineStrings, $srid);
     }
 
     public function createMultiPoint($dimension, array $points, $srid = null)
@@ -33,7 +37,7 @@ class Factory implements \GeoIO\Factory
 
     public function createMultiLineString($dimension, array $lineStrings, $srid = null)
     {
-        // TODO: Implement createMultiLineString() method.
+        return new MultiLineString($lineStrings, $srid);
     }
 
     public function createMultiPolygon($dimension, array $polygons, $srid = null)

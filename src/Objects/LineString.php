@@ -6,22 +6,14 @@ use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\DB;
 
-class Point extends Geometry
+class LineString extends PointCollection
 {
-    public float $latitude;
-
-    public float $longitude;
-
-    public function __construct(float $latitude, float $longitude, ?int $srid = 0)
-    {
-        parent::__construct($srid);
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
-    }
+    protected int $minimumGeometries = 2;
 
     public function toWkt(): Expression
     {
-        $expression = DB::raw("POINT({$this->longitude}, {$this->latitude})");
+        $collectionWkt = $this->toCollectionWkt();
+        $expression = DB::raw("LINESTRING({$collectionWkt})");
 
         if ($this->srid) {
             $expression = DB::raw("ST_SRID({$expression}, {$this->srid})");

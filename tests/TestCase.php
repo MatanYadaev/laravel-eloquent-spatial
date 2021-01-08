@@ -28,16 +28,12 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app): void
     {
+        $app->config->set('database.default', 'mysql');
         $app->config->set('database.connections.mysql', [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
             'database' => 'laravel_eloquent_spatial_test',
             'username' => 'root',
         ]);
-    }
-
-    protected function useMysql($app)
-    {
-        $app->config->set('database.default', 'mysql');
     }
 }

@@ -12,6 +12,7 @@ class Parser
         $srid = substr($wkb, 0, 4);
         $srid = unpack('L', $srid)[1];
 
+        // MySQL adds 4 NULL bytes at the start of the binary
         $wkb = substr($wkb, 4);
 
         $geometry = (new GeoIOParser(

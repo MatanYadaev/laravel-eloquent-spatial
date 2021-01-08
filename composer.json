@@ -31,7 +31,10 @@
         "psr-4": {
             "MatanYadaev\\EloquentSpatial\\": "src",
             "MatanYadaev\\EloquentSpatial\\Database\\Factories\\": "database/factories"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

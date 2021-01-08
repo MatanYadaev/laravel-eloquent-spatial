@@ -13,12 +13,15 @@ class CreateTestPlacesTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->string('address');
-            $table->point('location');
+            $table->point('point')->nullable();
+            $table->lineString('line_string')->nullable();
+            $table->multiLineString('multi_line_string')->nullable();
+            $table->polygon('polygon')->nullable();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('test_addresses');
+        Schema::dropIfExists('test_places');
     }
 }
