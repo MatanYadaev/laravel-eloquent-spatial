@@ -2,12 +2,16 @@
 
 namespace MatanYadaev\EloquentSpatial;
 
-use CrEOF\Geo\WKB\Parser;
+use Collection as geoPHPGeometryCollection;
+use Geometry as geoPHPGeometry;
+use geoPHP;
+use Illuminate\Support\Collection;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use Point as geoPHPPoint;
 
 class Factory
 {
@@ -15,22 +19,26 @@ class Factory
     {
         // MySQL adds 4 NULL bytes at the start of the binary
         $wkb = substr($wkb, 4);
-        $parsed = (new Parser($wkb))->parse();
 
-        if ($parsed['type'] === 'POINT') {
-            return self::createPoint($parsed['value'][1], $parsed['value'][0]);
+        /** @var geoPHPGeometry $geoPHPGeometry */
+        $geoPHPGeometry = geoPHP::load($wkb);
+
+        return self::create($geoPHPGeometry);
+    }
+
+    protected static function create(geoPHPGeometry $geometry): Geometry
+    {
+        if ($geometry instanceof geoPHPGeometryCollection) {
+            $components = collect($geometry->components)->map(function (geoPHPGeometry $geometryComponent): Geometry {
+                return self::create($geometryComponent);
+            })->all();
+            $className = get_class($geometry);
+            $methodName = "create{$className}";
+
+            return self::$methodName($components);
         }
-
-        if ($parsed['type'] === 'LINESTRING') {
-            return self::createLineString($parsed['value']);
-        }
-
-        if ($parsed['type'] === 'MULTILINESTRING') {
-            return self::createMultiLineString($parsed['value']);
-        }
-
-        if ($parsed['type'] === 'POLYGON') {
-            return self::createPolygon($parsed['value']);
+        if ($geometry instanceof geoPHPPoint) {
+            return self::createPoint($geometry->coords[1], $geometry->coords[0]);
         }
     }
 
@@ -39,36 +47,30 @@ class Factory
         return new Point($latitude, $longitude);
     }
 
-    protected static function createLineString(array $pointsArrays)
+    /**
+     * @param Collection<Point>|Point[] $points
+     * @return LineString
+     */
+    protected static function createLineString(Collection | array $points)
     {
-        $points = [];
-
-        foreach ($pointsArrays as $pointArray) {
-            $points[] = self::createPoint($pointArray[1], $pointArray[0]);
-        }
-
         return new LineString($points);
     }
 
-    protected static function createPolygon(array $lineStringsArrays)
+    /**
+     * @param Collection<LineString>|LineString[] $lineStrings
+     * @return Polygon
+     */
+    protected static function createPolygon(Collection | array $lineStrings)
     {
-        $lineStrings = [];
-
-        foreach ($lineStringsArrays as $lineStringArray) {
-            $lineStrings[] = self::createLineString($lineStringArray);
-        }
-
         return new Polygon($lineStrings);
     }
 
-    protected static function createMultiLineString(array $lineStringsArrays)
+    /**
+     * @param Collection<LineString>|LineString[] $lineStrings
+     * @return MultiLineString
+     */
+    protected static function createMultiLineString(Collection | array $lineStrings)
     {
-        $lineStrings = [];
-
-        foreach ($lineStringsArrays as $lineStringArray) {
-            $lineStrings[] = self::createLineString($lineStringArray);
-        }
-
         return new MultiLineString($lineStrings);
     }
 }
