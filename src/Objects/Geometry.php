@@ -2,38 +2,71 @@
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
+use geoPHP;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Query\Expression;
 use JsonSerializable;
 use MatanYadaev\EloquentSpatial\Exceptions\InvalidTypeException;
 use MatanYadaev\EloquentSpatial\Factory;
 
-abstract class Geometry implements Castable//, Jsonable, JsonSerializable, Arrayable
+abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable
 {
     abstract public function toWkt(): Expression;
 
+    /**
+     * @param string $wkt
+     * @return static
+     * @throws InvalidTypeException
+     */
     public static function fromWkt(string $wkt): static
     {
         $geometry = Factory::parse($wkt);
 
-        if (! ($geometry instanceof static)) {
+        if (!($geometry instanceof static)) {
             throw new InvalidTypeException(static::class, $geometry);
         }
 
         return $geometry;
     }
 
-//    abstract public function toJson($options = 0): string;
-//
-//    abstract public static function fromJson(): static;
-//
-//    abstract public function jsonSerialize(): string;
-//
-//    abstract public function toArray(): array;
+    public function toJson($options = 0): string
+    {
+        return json_encode($this, $options);
+    }
+
+    /**
+     * @param string $geoJson
+     * @return static
+     * @throws InvalidTypeException
+     */
+    public static function fromJson(string $geoJson): static
+    {
+        $geometry = Factory::parse($geoJson);
+
+        if (!($geometry instanceof static)) {
+            throw new InvalidTypeException(static::class, $geometry);
+        }
+
+        return $geometry;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'type' => class_basename(static::class),
+            'coordinates' => $this->getCoordinates(),
+        ];
+    }
+
+    abstract public function getCoordinates(): array;
 
     public static function castUsing(array $arguments): CastsAttributes
     {

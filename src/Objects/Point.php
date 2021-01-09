@@ -21,4 +21,12 @@ class Point extends Geometry
     {
         return DB::raw("POINT({$this->longitude}, {$this->latitude})");
     }
+
+    public function getCoordinates(): array
+    {
+        return [
+            $this->longitude,
+            $this->latitude,
+        ];
+    }
 }

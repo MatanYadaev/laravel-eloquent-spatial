@@ -65,12 +65,21 @@ abstract class GeometryCollection extends Geometry
     protected function toCollectionWkt(): Expression
     {
         $wkb = $this->geometries
-            ->map(static function (Geometry $geometry):string {
+            ->map(static function (Geometry $geometry): string {
                 return $geometry->toWkt();
             })
             ->join(',');
 
         return DB::raw($wkb);
+    }
+
+    public function getCoordinates(): array
+    {
+        return $this->geometries
+            ->map(static function (Geometry $geometry): array {
+                return $geometry->getCoordinates();
+            })
+            ->all();
     }
 
     /**

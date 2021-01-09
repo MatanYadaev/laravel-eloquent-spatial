@@ -15,13 +15,18 @@ use Point as geoPHPPoint;
 
 class Factory
 {
-    public static function parse(string $wkb): Geometry
+    public static function parse(string $value): Geometry
     {
-        // MySQL adds 4 NULL bytes at the start of the binary
-        $wkb = substr($wkb, 4);
+        if (is_json($value)) {
+            /** @var geoPHPGeometry $geoPHPGeometry */
+            $geoPHPGeometry = geoPHP::load($value);
+        } else {
+            // MySQL adds 4 NULL bytes at the start of the WKB
+            $value = substr($value, 4);
 
-        /** @var geoPHPGeometry $geoPHPGeometry */
-        $geoPHPGeometry = geoPHP::load($wkb);
+            /** @var geoPHPGeometry $geoPHPGeometry */
+            $geoPHPGeometry = geoPHP::load($value);
+        }
 
         return self::create($geoPHPGeometry);
     }
