@@ -26,12 +26,6 @@ class PolygonTest extends TestCase
                     new Point(23.3, 55.7),
                     new Point(23.1, 55.5),
                 ]),
-                new LineString([
-                    new Point(23.1, 55.5),
-                    new Point(23.2, 55.6),
-                    new Point(23.3, 55.7),
-                    new Point(23.1, 55.5),
-                ]),
             ]),
         ])->fresh();
 

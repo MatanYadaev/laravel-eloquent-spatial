@@ -17,8 +17,6 @@ class Polygon extends MultiLineString
             $expression = DB::raw("ST_SRID({$expression}, {$this->srid})");
         }
 
-        dump($expression->getValue());
-
         return $expression;
     }
 }

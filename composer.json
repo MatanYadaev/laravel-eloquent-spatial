@@ -17,8 +17,8 @@
     ],
     "require": {
         "php": "^8.0",
-        "geo-io/wkb-parser": "^1.0",
-        "illuminate/contracts": "^8.0"
+        "creof/wkb-parser": "^2.3",
+        "laravel/framework": "^8.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.17",

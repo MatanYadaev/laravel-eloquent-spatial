@@ -5,6 +5,7 @@ namespace MatanYadaev\EloquentSpatial\Objects;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Query\Expression;
+use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\Parser;
 
 abstract class Geometry implements Castable
@@ -36,7 +37,7 @@ abstract class Geometry implements Castable
                     return null;
                 }
 
-                $geometry = Parser::parse($value);
+                $geometry = Factory::parse($value);
 
                 throw_invalid_type_exception_if_not_instanceof($geometry, $this->className);
 
