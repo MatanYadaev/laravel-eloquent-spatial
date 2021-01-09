@@ -2,7 +2,6 @@
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
-use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +19,7 @@ class MultiLineString extends GeometryCollection
      * @param Collection<LineString>|LineString[] $geometries
      * @param int|null $srid
      */
-    public function __construct(Collection|array $geometries, ?int $srid = 0)
+    public function __construct(Collection | array $geometries, ?int $srid = 0)
     {
         parent::__construct($geometries, $srid);
     }

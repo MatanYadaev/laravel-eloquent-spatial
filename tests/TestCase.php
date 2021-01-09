@@ -2,7 +2,6 @@
 
 namespace MatanYadaev\EloquentSpatial\Tests;
 
-use MatanYadaev\EloquentSpatial\EloquentSpatialServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra

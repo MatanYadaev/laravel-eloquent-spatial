@@ -6,7 +6,6 @@ use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Query\Expression;
 use MatanYadaev\EloquentSpatial\Factory;
-use MatanYadaev\EloquentSpatial\Parser;
 
 abstract class Geometry implements Castable
 {

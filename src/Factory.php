@@ -2,12 +2,12 @@
 
 namespace MatanYadaev\EloquentSpatial;
 
+use CrEOF\Geo\WKB\Parser;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
-use CrEOF\Geo\WKB\Parser;
 
 class Factory
 {

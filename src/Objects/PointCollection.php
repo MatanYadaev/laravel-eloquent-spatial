@@ -2,10 +2,7 @@
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
-use Illuminate\Contracts\Database\Eloquent\Castable;
-use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 /**
