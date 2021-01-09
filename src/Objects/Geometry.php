@@ -2,7 +2,6 @@
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
-use geoPHP;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Support\Arrayable;
@@ -25,7 +24,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     {
         $geometry = Factory::parse($wkt);
 
-        if (!($geometry instanceof static)) {
+        if (! ($geometry instanceof static)) {
             throw new InvalidTypeException(static::class, $geometry);
         }
 
@@ -46,7 +45,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     {
         $geometry = Factory::parse($geoJson);
 
-        if (!($geometry instanceof static)) {
+        if (! ($geometry instanceof static)) {
             throw new InvalidTypeException(static::class, $geometry);
         }
 

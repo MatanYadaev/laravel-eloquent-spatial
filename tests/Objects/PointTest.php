@@ -2,8 +2,6 @@
 
 namespace MatanYadaev\EloquentSpatial\Tests\Objects;
 
-use CrEOF\Geo\WKB\Parser;
-use geoPHP;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestCase;
