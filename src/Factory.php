@@ -13,39 +13,33 @@ class Factory
 {
     public static function parse(string $wkb): Geometry
     {
-        $srid = substr($wkb, 0, 4);
-        $srid = unpack('L', $srid)[1];
-
         // MySQL adds 4 NULL bytes at the start of the binary
         $wkb = substr($wkb, 4);
         $parsed = (new Parser($wkb))->parse();
 
-        // @TODO check if this line is relevant
-        $parsed['srid'] = $srid;
-
         if ($parsed['type'] === 'POINT') {
-            return self::createPoint($parsed['value'][1], $parsed['value'][0], $parsed['srid']);
+            return self::createPoint($parsed['value'][1], $parsed['value'][0]);
         }
 
         if ($parsed['type'] === 'LINESTRING') {
-            return self::createLineString($parsed['value'], $parsed['srid']);
+            return self::createLineString($parsed['value']);
         }
 
         if ($parsed['type'] === 'MULTILINESTRING') {
-            return self::createMultiLineString($parsed['value'], $parsed['srid']);
+            return self::createMultiLineString($parsed['value']);
         }
 
         if ($parsed['type'] === 'POLYGON') {
-            return self::createPolygon($parsed['value'], $parsed['srid']);
+            return self::createPolygon($parsed['value']);
         }
     }
 
-    protected static function createPoint(float $latitude, float $longitude, ?int $srid = 0): Point
+    protected static function createPoint(float $latitude, float $longitude): Point
     {
-        return new Point($latitude, $longitude, $srid);
+        return new Point($latitude, $longitude);
     }
 
-    protected static function createLineString(array $pointsArrays, ?int $srid = null)
+    protected static function createLineString(array $pointsArrays)
     {
         $points = [];
 
@@ -53,15 +47,10 @@ class Factory
             $points[] = self::createPoint($pointArray[1], $pointArray[0]);
         }
 
-        return new LineString($points, $srid);
+        return new LineString($points);
     }
 
-    public function createLinearRing($dimension, array $points, $srid = null)
-    {
-        // TODO: Implement createLinearRing() method.
-    }
-
-    protected static function createPolygon(array $lineStringsArrays, $srid = null)
+    protected static function createPolygon(array $lineStringsArrays)
     {
         $lineStrings = [];
 
@@ -69,15 +58,10 @@ class Factory
             $lineStrings[] = self::createLineString($lineStringArray);
         }
 
-        return new Polygon($lineStrings, $srid);
+        return new Polygon($lineStrings);
     }
 
-    public function createMultiPoint($dimension, array $points, $srid = null)
-    {
-        // TODO: Implement createMultiPoint() method.
-    }
-
-    protected static function createMultiLineString(array $lineStringsArrays, $srid = null)
+    protected static function createMultiLineString(array $lineStringsArrays)
     {
         $lineStrings = [];
 
@@ -85,16 +69,6 @@ class Factory
             $lineStrings[] = self::createLineString($lineStringArray);
         }
 
-        return new MultiLineString($lineStrings, $srid);
-    }
-
-    public function createMultiPolygon($dimension, array $polygons, $srid = null)
-    {
-        // TODO: Implement createMultiPolygon() method.
-    }
-
-    public function createGeometryCollection($dimension, array $geometries, $srid = null)
-    {
-        // TODO: Implement createGeometryCollection() method.
+        return new MultiLineString($lineStrings);
     }
 }

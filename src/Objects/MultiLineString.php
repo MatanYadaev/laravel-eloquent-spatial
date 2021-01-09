@@ -17,22 +17,14 @@ class MultiLineString extends GeometryCollection
 
     /**
      * @param Collection<LineString>|LineString[] $geometries
-     * @param int|null $srid
      */
-    public function __construct(Collection | array $geometries, ?int $srid = 0)
+    public function __construct(Collection | array $geometries)
     {
-        parent::__construct($geometries, $srid);
+        parent::__construct($geometries);
     }
 
     public function toWkt(): Expression
     {
-        $collectionWkt = $this->toCollectionWkt();
-        $expression = DB::raw("MULTILINESTRING({$collectionWkt})");
-
-        if ($this->srid) {
-            $expression = DB::raw("ST_SRID({$expression}, {$this->srid})");
-        }
-
-        return $expression;
+        return DB::raw("MULTILINESTRING({$this->toCollectionWkt()})");
     }
 }

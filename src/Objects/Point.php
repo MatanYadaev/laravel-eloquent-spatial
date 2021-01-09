@@ -11,21 +11,14 @@ class Point extends Geometry
 
     public float $longitude;
 
-    public function __construct(float $latitude, float $longitude, ?int $srid = 0)
+    public function __construct(float $latitude, float $longitude)
     {
-        parent::__construct($srid);
         $this->latitude = $latitude;
         $this->longitude = $longitude;
     }
 
     public function toWkt(): Expression
     {
-        $expression = DB::raw("POINT({$this->longitude}, {$this->latitude})");
-
-        if ($this->srid) {
-            $expression = DB::raw("ST_SRID({$expression}, {$this->srid})");
-        }
-
-        return $expression;
+        return DB::raw("POINT({$this->longitude}, {$this->latitude})");
     }
 }

@@ -11,13 +11,6 @@ class LineString extends PointCollection
 
     public function toWkt(): Expression
     {
-        $collectionWkt = $this->toCollectionWkt();
-        $expression = DB::raw("LINESTRING({$collectionWkt})");
-
-        if ($this->srid) {
-            $expression = DB::raw("ST_SRID({$expression}, {$this->srid})");
-        }
-
-        return $expression;
+        return DB::raw("LINESTRING({$this->toCollectionWkt()})");
     }
 }

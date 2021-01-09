@@ -17,11 +17,10 @@ abstract class PointCollection extends GeometryCollection
 
     /**
      * @param Collection<Point>|Point[] $geometries
-     * @param int|null $srid
      * @throws InvalidArgumentException
      */
-    public function __construct(Collection | array $geometries, ?int $srid = 0)
+    public function __construct(Collection | array $geometries)
     {
-        parent::__construct($geometries, $srid);
+        parent::__construct($geometries);
     }
 }

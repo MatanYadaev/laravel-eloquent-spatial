@@ -9,13 +9,6 @@ class Polygon extends MultiLineString
 {
     public function toWkt(): Expression
     {
-        $collectionWkt = $this->toCollectionWkt();
-        $expression = DB::raw("POLYGON({$collectionWkt})");
-
-        if ($this->srid) {
-            $expression = DB::raw("ST_SRID({$expression}, {$this->srid})");
-        }
-
-        return $expression;
+        return DB::raw("POLYGON({$this->toCollectionWkt()})");
     }
 }

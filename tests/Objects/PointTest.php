@@ -22,7 +22,6 @@ class PointTest extends TestCase
         $this->assertTrue($testPlace->point instanceof Point);
         $this->assertEquals(23.1, $testPlace->point->latitude);
         $this->assertEquals(55.5, $testPlace->point->longitude);
-        $this->assertEquals(0, $testPlace->point->srid);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }

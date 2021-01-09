@@ -9,13 +9,6 @@ use MatanYadaev\EloquentSpatial\Factory;
 
 abstract class Geometry implements Castable
 {
-    public int $srid;
-
-    public function __construct(?int $srid = 0)
-    {
-        $this->srid = (int) $srid;
-    }
-
     abstract public function toWkt(): Expression;
 
     public static function castUsing(array $arguments): CastsAttributes

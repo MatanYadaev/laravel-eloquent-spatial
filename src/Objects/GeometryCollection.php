@@ -13,21 +13,16 @@ abstract class GeometryCollection extends Geometry
     /** @var Collection<Geometry> */
     protected Collection $geometries;
 
-    public int $srid;
-
     protected string $collectionOf = Geometry::class;
 
     protected int $minimumGeometries = 0;
 
     /**
      * @param Collection<Geometry>|Geometry[] $geometries
-     * @param int|null $srid
      * @throws InvalidArgumentException
      */
-    public function __construct(Collection | array $geometries, ?int $srid = 0)
+    public function __construct(Collection | array $geometries)
     {
-        parent::__construct($srid);
-
         if (is_array($geometries)) {
             $geometries = collect($geometries);
         }

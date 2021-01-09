@@ -33,7 +33,6 @@ class MultiLineStringTest extends TestCase
 
         $this->assertEquals(23.1, $points[0]->latitude);
         $this->assertEquals(55.5, $points[0]->longitude);
-        $this->assertEquals(0, $points[0]->srid);
         $this->assertEquals(23.2, $points[1]->latitude);
         $this->assertEquals(55.6, $points[1]->longitude);
 
