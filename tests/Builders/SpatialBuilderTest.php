@@ -3,6 +3,7 @@
 namespace MatanYadaev\EloquentSpatial\Tests\Builders;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use MatanYadaev\EloquentSpatial\Objects\MultiPolygon;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestCase;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
@@ -12,9 +13,11 @@ class SpatialBuilderTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function it_calculates_distance_between_column_and_column()
+    public function it_calculates_distance_between_column_and_column(): void
     {
-        TestPlace::factory()->create();
+        TestPlace::factory()->create([
+            'point' => new Point(23.1, 55.5),
+        ]);
 
         $testPlaceWithDistance = TestPlace::query()
             ->withDistance('point', 'point')
@@ -25,7 +28,7 @@ class SpatialBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_calculates_distance_between_column_and_geometry()
+    public function it_calculates_distance_between_column_and_geometry(): void
     {
         TestPlace::factory()->create([
             'point' => new Point(23.1, 55.5),
@@ -39,7 +42,7 @@ class SpatialBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_calculates_distance_with_defined_name()
+    public function it_calculates_distance_with_defined_name(): void
     {
         TestPlace::factory()->create([
             'point' => new Point(23.1, 55.5),
@@ -53,7 +56,7 @@ class SpatialBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_by_distance()
+    public function it_filters_by_distance(): void
     {
         TestPlace::factory()->create([
             'point' => new Point(23.1, 55.5),
@@ -67,7 +70,7 @@ class SpatialBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_orders_by_distance()
+    public function it_orders_by_distance(): void
     {
         $point = new Point(23.1, 55.51);
         $testPlace1 = TestPlace::factory()->create([
@@ -90,7 +93,7 @@ class SpatialBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_calculates_distance_sphere_column_and_column()
+    public function it_calculates_distance_sphere_column_and_column(): void
     {
         TestPlace::factory()->create();
 
@@ -102,7 +105,7 @@ class SpatialBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_calculates_distance_sphere_column_and_geometry()
+    public function it_calculates_distance_sphere_column_and_geometry(): void
     {
         TestPlace::factory()->create([
             'point' => new Point(23.1, 55.5),
@@ -116,7 +119,7 @@ class SpatialBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_calculates_distance_sphere_with_defined_name()
+    public function it_calculates_distance_sphere_with_defined_name(): void
     {
         TestPlace::factory()->create([
             'point' => new Point(23.1, 55.5),
@@ -130,7 +133,7 @@ class SpatialBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_distance_sphere()
+    public function it_filters_distance_sphere(): void
     {
         TestPlace::factory()->create([
             'point' => new Point(23.1, 55.5),
@@ -144,7 +147,7 @@ class SpatialBuilderTest extends TestCase
     }
 
     /** @test */
-    public function it_orders_by_distance_sphere()
+    public function it_orders_by_distance_sphere(): void
     {
         $point = new Point(23.1, 55.51);
         $testPlace1 = TestPlace::factory()->create([
@@ -164,5 +167,19 @@ class SpatialBuilderTest extends TestCase
 
         $this->assertEquals($testPlace1->id, $closestTestPlace->id);
         $this->assertEquals($testPlace2->id, $farthestTestPlace->id);
+    }
+
+    /** @test */
+    public function it_filters_by_within(): void
+    {
+        TestPlace::factory()->create([
+            'multi_polygon' => MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[55.5,23.1],[55.6,23.2],[55.7,23.3],[55.5,23.1]]]]}'),
+        ]);
+
+        $testPlace = TestPlace::query()
+            ->whereWithin('multi_polygon', new Point(23.1, 55.51))
+            ->first();
+
+        $this->assertNotNull($testPlace);
     }
 }

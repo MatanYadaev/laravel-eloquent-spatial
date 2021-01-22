@@ -17,9 +17,7 @@ class SpatialBuilder extends Builder
             $this->select('*');
         }
 
-        $this->selectRaw("ST_DISTANCE(`{$column}`, {$geometryOrColumn}) AS {$as}");
-
-        return $this;
+        return $this->selectRaw("ST_DISTANCE(`{$column}`, {$geometryOrColumn}) AS {$as}");
     }
 
     public function whereDistance(string $column, Geometry | string $geometryOrColumn, string $operator, int|float $distance): self
@@ -57,18 +55,21 @@ class SpatialBuilder extends Builder
     {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
-        $this->whereRaw("ST_DISTANCE_SPHERE(`{$column}`, {$geometryOrColumn}) {$operator} {$distance}");
-
-        return $this;
+        return $this->whereRaw("ST_DISTANCE_SPHERE(`{$column}`, {$geometryOrColumn}) {$operator} {$distance}");
     }
 
     public function orderByDistanceSphere(string $column, Geometry | string $geometryOrColumn, string $direction = 'asc'): self
     {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
-        $this->orderByRaw("ST_DISTANCE_SPHERE(`{$column}`, {$geometryOrColumn}) {$direction}");
+        return $this->orderByRaw("ST_DISTANCE_SPHERE(`{$column}`, {$geometryOrColumn}) {$direction}");
+    }
 
-        return $this;
+    public function whereWithin(string $column, Geometry | string $geometryOrColumn): self
+    {
+        $geometryOrColumn = $this->toExpression($geometryOrColumn);
+
+        return $this->orderByRaw("ST_WITHIN(`{$column}`, {$geometryOrColumn})");
     }
 
     protected function toExpression(Geometry | string $geometryOrColumn): Expression
