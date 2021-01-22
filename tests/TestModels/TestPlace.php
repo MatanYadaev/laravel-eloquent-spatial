@@ -5,6 +5,7 @@ namespace MatanYadaev\EloquentSpatial\Tests\TestModels;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use MatanYadaev\EloquentSpatial\Builders\SpatialBuilder;
+use MatanYadaev\EloquentSpatial\Objects\GeometryCollection;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
@@ -20,6 +21,7 @@ use MatanYadaev\EloquentSpatial\Tests\TestFactories\TestPlaceFactory;
  * @property MultiLineString $multi_line_string
  * @property Polygon $polygon
  * @property MultiPolygon $multi_polygon
+ * @property GeometryCollection $geometry_collection
  */
 class TestPlace extends Model
 {
@@ -33,6 +35,7 @@ class TestPlace extends Model
         'multi_line_string',
         'polygon',
         'multi_polygon',
+        'geometry_collection',
     ];
 
     protected $casts = [
@@ -42,6 +45,7 @@ class TestPlace extends Model
         'multi_line_string' => MultiLineString::class,
         'polygon' => Polygon::class,
         'multi_polygon' => MultiPolygon::class,
+        'geometry_collection' => GeometryCollection::class,
     ];
 
     public static function query(): SpatialBuilder

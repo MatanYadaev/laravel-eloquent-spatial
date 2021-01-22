@@ -19,6 +19,7 @@ class CreateTestPlacesTable extends Migration
             $table->multiLineString('multi_line_string')->nullable();
             $table->polygon('polygon')->nullable();
             $table->multiPolygon('multi_polygon')->nullable();
+            $table->geometryCollection('geometry_collection')->nullable();
         });
     }
 

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
-abstract class GeometryCollection extends Geometry
+class GeometryCollection extends Geometry
 {
     /** @var Collection<Geometry> */
     protected Collection $geometries;
@@ -60,7 +60,10 @@ abstract class GeometryCollection extends Geometry
         });
     }
 
-    abstract public function toWkt(): Expression;
+    public function toWkt(): Expression
+    {
+        return new Expression("GEOMETRYCOLLECTION({$this->toCollectionWkt()})");
+    }
 
     protected function toCollectionWkt(): Expression
     {
@@ -80,6 +83,20 @@ abstract class GeometryCollection extends Geometry
                 return $geometry->getCoordinates();
             })
             ->all();
+    }
+
+    public function toArray(): array
+    {
+        if (static::class === GeometryCollection::class) {
+            return [
+                'type' => class_basename(static::class),
+                'geometries' => $this->geometries->map(static function (Geometry $geometry): array {
+                    return $geometry->toArray();
+                }),
+            ];
+        }
+
+        return parent::toArray();
     }
 
     /**

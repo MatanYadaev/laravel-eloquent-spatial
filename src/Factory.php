@@ -8,6 +8,7 @@ use geoPHP;
 use Illuminate\Support\Collection;
 use LineString as geoPHPLineString;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
+use MatanYadaev\EloquentSpatial\Objects\GeometryCollection;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
@@ -62,6 +63,7 @@ class Factory
             if ($className === geoPHPMultiPolygon::class) {
                 return self::createMultiPolygon($components);
             }
+            return self::createGeometryCollection($components);
         }
         if ($geometry instanceof geoPHPPoint) {
             return self::createPoint($geometry->coords[1], $geometry->coords[0]);
@@ -110,11 +112,20 @@ class Factory
     }
 
     /**
-     * @param Polygon[] $lineStrings
+     * @param Polygon[] $polygons
      * @return MultiPolygon
      */
-    protected static function createMultiPolygon(array $lineStrings): MultiPolygon
+    protected static function createMultiPolygon(array $polygons): MultiPolygon
     {
-        return new MultiPolygon($lineStrings);
+        return new MultiPolygon($polygons);
+    }
+
+    /**
+     * @param Geometry[] $geometries
+     * @return GeometryCollection
+     */
+    protected static function createGeometryCollection(array $geometries): GeometryCollection
+    {
+        return new GeometryCollection($geometries);
     }
 }
