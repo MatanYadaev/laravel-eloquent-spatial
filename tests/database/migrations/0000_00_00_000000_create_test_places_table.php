@@ -14,6 +14,7 @@ class CreateTestPlacesTable extends Migration
             $table->string('name');
             $table->string('address');
             $table->point('point')->nullable();
+            $table->multiPoint('multi_point')->nullable();
             $table->lineString('line_string')->nullable();
             $table->multiLineString('multi_line_string')->nullable();
             $table->polygon('polygon')->nullable();

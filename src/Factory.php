@@ -6,12 +6,17 @@ use Collection as geoPHPGeometryCollection;
 use Geometry as geoPHPGeometry;
 use geoPHP;
 use Illuminate\Support\Collection;
+use LineString as geoPHPLineString;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
+use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use MultiLineString as geoPHPMultiLineString;
+use MultiPoint as geoPHPMultiPoint;
 use Point as geoPHPPoint;
+use Polygon as geoPHPPolygon;
 
 class Factory
 {
@@ -37,10 +42,21 @@ class Factory
             $components = collect($geometry->components)->map(function (geoPHPGeometry $geometryComponent): Geometry {
                 return self::create($geometryComponent);
             })->all();
-            $className = get_class($geometry);
-            $methodName = "create{$className}";
 
-            return self::$methodName($components);
+            $className = get_class($geometry);
+
+            if ($className === geoPHPMultiPoint::class) {
+                return self::createMultiPoint($components);
+            }
+            if ($className === geoPHPLineString::class) {
+                return self::createLineString($components);
+            }
+            if ($className === geoPHPPolygon::class) {
+                return self::createPolygon($components);
+            }
+            if ($className === geoPHPMultiLineString::class) {
+                return self::createMultiLineString($components);
+            }
         }
         if ($geometry instanceof geoPHPPoint) {
             return self::createPoint($geometry->coords[1], $geometry->coords[0]);
@@ -53,28 +69,37 @@ class Factory
     }
 
     /**
-     * @param Collection<Point>|Point[] $points
+     * @param Point[] $points
+     * @return MultiPoint
+     */
+    protected static function createMultiPoint(array $points): MultiPoint
+    {
+        return new MultiPoint($points);
+    }
+
+    /**
+     * @param Point[] $points
      * @return LineString
      */
-    protected static function createLineString(Collection | array $points)
+    protected static function createLineString(array $points): LineString
     {
         return new LineString($points);
     }
 
     /**
-     * @param Collection<LineString>|LineString[] $lineStrings
+     * @param LineString[] $lineStrings
      * @return Polygon
      */
-    protected static function createPolygon(Collection | array $lineStrings)
+    protected static function createPolygon(array $lineStrings)
     {
         return new Polygon($lineStrings);
     }
 
     /**
-     * @param Collection<LineString>|LineString[] $lineStrings
+     * @param LineString[] $lineStrings
      * @return MultiLineString
      */
-    protected static function createMultiLineString(Collection | array $lineStrings)
+    protected static function createMultiLineString(array $lineStrings)
     {
         return new MultiLineString($lineStrings);
     }
