@@ -11,10 +11,12 @@ use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
+use MatanYadaev\EloquentSpatial\Objects\MultiPolygon;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MultiLineString as geoPHPMultiLineString;
 use MultiPoint as geoPHPMultiPoint;
+use MultiPolygon as geoPHPMultiPolygon;
 use Point as geoPHPPoint;
 use Polygon as geoPHPPolygon;
 
@@ -57,6 +59,9 @@ class Factory
             if ($className === geoPHPMultiLineString::class) {
                 return self::createMultiLineString($components);
             }
+            if ($className === geoPHPMultiPolygon::class) {
+                return self::createMultiPolygon($components);
+            }
         }
         if ($geometry instanceof geoPHPPoint) {
             return self::createPoint($geometry->coords[1], $geometry->coords[0]);
@@ -90,7 +95,7 @@ class Factory
      * @param LineString[] $lineStrings
      * @return Polygon
      */
-    protected static function createPolygon(array $lineStrings)
+    protected static function createPolygon(array $lineStrings): Polygon
     {
         return new Polygon($lineStrings);
     }
@@ -99,8 +104,17 @@ class Factory
      * @param LineString[] $lineStrings
      * @return MultiLineString
      */
-    protected static function createMultiLineString(array $lineStrings)
+    protected static function createMultiLineString(array $lineStrings):MultiLineString
     {
         return new MultiLineString($lineStrings);
+    }
+
+    /**
+     * @param Polygon[] $lineStrings
+     * @return MultiPolygon
+     */
+    protected static function createMultiPolygon(array $lineStrings): MultiPolygon
+    {
+        return new MultiPolygon($lineStrings);
     }
 }
