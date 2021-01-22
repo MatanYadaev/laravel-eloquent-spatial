@@ -182,4 +182,18 @@ class SpatialBuilderTest extends TestCase
 
         $this->assertNotNull($testPlace);
     }
+
+    /** @test */
+    public function it_filters_by_contains(): void
+    {
+        TestPlace::factory()->create([
+            'point' => new Point(23.1, 55.51),
+        ]);
+
+        $testPlace = TestPlace::query()
+            ->whereContains('point', MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[55.5,23.1],[55.6,23.2],[55.7,23.3],[55.5,23.1]]]]}'))
+            ->first();
+
+        $this->assertNotNull($testPlace);
+    }
 }
