@@ -53,6 +53,20 @@ class SpatialBuilderTest extends TestCase
     }
 
     /** @test */
+    public function it_filters_by_distance()
+    {
+        TestPlace::factory()->create([
+            'point' => new Point(23.1, 55.5),
+        ]);
+
+        $testPlaceWithinDistance = TestPlace::query()
+            ->whereDistance('point', new Point(23.1, 55.6), '<', 1)
+            ->first();
+
+        $this->assertNotNull($testPlaceWithinDistance);
+    }
+
+    /** @test */
     public function it_calculates_distance_sphere_column_and_column()
     {
         TestPlace::factory()->create();
@@ -90,5 +104,19 @@ class SpatialBuilderTest extends TestCase
             ->first();
 
         $this->assertEquals(1022.7925914593363, $testPlaceWithDistance->distance_in_meters);
+    }
+
+    /** @test */
+    public function it_filters_distance_sphere()
+    {
+        TestPlace::factory()->create([
+            'point' => new Point(23.1, 55.5),
+        ]);
+
+        $testPlaceWithinDistanceSphere = TestPlace::query()
+            ->whereDistanceSphere('point', new Point(23.1, 55.51), '<', 2000)
+            ->first();
+
+        $this->assertNotNull($testPlaceWithinDistanceSphere);
     }
 }
