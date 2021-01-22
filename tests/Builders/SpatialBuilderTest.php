@@ -67,6 +67,29 @@ class SpatialBuilderTest extends TestCase
     }
 
     /** @test */
+    public function it_orders_by_distance()
+    {
+        $point = new Point(23.1, 55.51);
+        $testPlace1 = TestPlace::factory()->create([
+            'point' => new Point(23.1, 55.5),
+        ]);
+        $testPlace2 = TestPlace::factory()->create([
+            'point' => new Point(0, 0),
+        ]);
+
+        $closestTestPlace = TestPlace::query()
+            ->orderByDistance('point', $point)
+            ->first();
+
+        $farthestTestPlace = TestPlace::query()
+            ->orderByDistance('point', $point, 'desc')
+            ->first();
+
+        $this->assertEquals($testPlace1->id, $closestTestPlace->id);
+        $this->assertEquals($testPlace2->id, $farthestTestPlace->id);
+    }
+
+    /** @test */
     public function it_calculates_distance_sphere_column_and_column()
     {
         TestPlace::factory()->create();
@@ -118,5 +141,28 @@ class SpatialBuilderTest extends TestCase
             ->first();
 
         $this->assertNotNull($testPlaceWithinDistanceSphere);
+    }
+
+    /** @test */
+    public function it_orders_by_distance_sphere()
+    {
+        $point = new Point(23.1, 55.51);
+        $testPlace1 = TestPlace::factory()->create([
+            'point' => new Point(23.1, 55.5),
+        ]);
+        $testPlace2 = TestPlace::factory()->create([
+            'point' => new Point(0, 0),
+        ]);
+
+        $closestTestPlace = TestPlace::query()
+            ->orderByDistanceSphere('point', $point)
+            ->first();
+
+        $farthestTestPlace = TestPlace::query()
+            ->orderByDistanceSphere('point', $point, 'desc')
+            ->first();
+
+        $this->assertEquals($testPlace1->id, $closestTestPlace->id);
+        $this->assertEquals($testPlace2->id, $farthestTestPlace->id);
     }
 }
