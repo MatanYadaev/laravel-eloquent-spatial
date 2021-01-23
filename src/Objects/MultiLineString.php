@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\DB;
  */
 class MultiLineString extends GeometryCollection
 {
+    /** @var Collection<LineString> */
+    protected Collection $geometries;
+
     protected string $collectionOf = LineString::class;
 
     protected int $minimumGeometries = 1;

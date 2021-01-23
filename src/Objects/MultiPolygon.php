@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 /**
- * @method MultiPolygon[] getGeometries()
+ * @method Polygon[] getGeometries()
  */
 class MultiPolygon extends GeometryCollection
 {
-    /** @var Collection<MultiPolygon> */
+    /** @var Collection<Polygon> */
     protected Collection $geometries;
 
     protected string $collectionOf = Polygon::class;

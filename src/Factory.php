@@ -5,6 +5,7 @@ namespace MatanYadaev\EloquentSpatial;
 use Collection as geoPHPGeometryCollection;
 use Geometry as geoPHPGeometry;
 use geoPHP;
+use Illuminate\Support\Collection;
 use LineString as geoPHPLineString;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\GeometryCollection;
@@ -40,7 +41,7 @@ class Factory
         if ($geometry instanceof geoPHPGeometryCollection) {
             $components = collect($geometry->components)->map(function (geoPHPGeometry $geometryComponent): Geometry {
                 return self::create($geometryComponent);
-            })->all();
+            });
 
             $className = get_class($geometry);
 
@@ -73,55 +74,55 @@ class Factory
     }
 
     /**
-     * @param Point[] $points
+     * @param Collection<Point> $points
      * @return MultiPoint
      */
-    protected static function createMultiPoint(array $points): MultiPoint
+    protected static function createMultiPoint(Collection $points): MultiPoint
     {
         return new MultiPoint($points);
     }
 
     /**
-     * @param Point[] $points
+     * @param Collection<Point> $points
      * @return LineString
      */
-    protected static function createLineString(array $points): LineString
+    protected static function createLineString(Collection $points): LineString
     {
         return new LineString($points);
     }
 
     /**
-     * @param LineString[] $lineStrings
+     * @param Collection<LineString> $lineStrings
      * @return Polygon
      */
-    protected static function createPolygon(array $lineStrings): Polygon
+    protected static function createPolygon(Collection $lineStrings): Polygon
     {
         return new Polygon($lineStrings);
     }
 
     /**
-     * @param LineString[] $lineStrings
+     * @param Collection<LineString> $lineStrings
      * @return MultiLineString
      */
-    protected static function createMultiLineString(array $lineStrings):MultiLineString
+    protected static function createMultiLineString(Collection $lineStrings):MultiLineString
     {
         return new MultiLineString($lineStrings);
     }
 
     /**
-     * @param Polygon[] $polygons
+     * @param Collection<Polygon> $polygons
      * @return MultiPolygon
      */
-    protected static function createMultiPolygon(array $polygons): MultiPolygon
+    protected static function createMultiPolygon(Collection $polygons): MultiPolygon
     {
         return new MultiPolygon($polygons);
     }
 
     /**
-     * @param Geometry[] $geometries
+     * @param Collection<Geometry> $geometries
      * @return GeometryCollection
      */
-    protected static function createGeometryCollection(array $geometries): GeometryCollection
+    protected static function createGeometryCollection(Collection $geometries): GeometryCollection
     {
         return new GeometryCollection($geometries);
     }
