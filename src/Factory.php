@@ -5,7 +5,6 @@ namespace MatanYadaev\EloquentSpatial;
 use Collection as geoPHPGeometryCollection;
 use Geometry as geoPHPGeometry;
 use geoPHP;
-use Illuminate\Support\Collection;
 use LineString as geoPHPLineString;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\GeometryCollection;
@@ -25,16 +24,13 @@ class Factory
 {
     public static function parse(string $value): Geometry
     {
-        if (is_json($value)) {
-            /** @var geoPHPGeometry $geoPHPGeometry */
-            $geoPHPGeometry = geoPHP::load($value);
-        } else {
+        if (! is_json($value)) {
             // MySQL adds 4 NULL bytes at the start of the WKB
             $value = substr($value, 4);
-
-            /** @var geoPHPGeometry $geoPHPGeometry */
-            $geoPHPGeometry = geoPHP::load($value);
         }
+
+        /** @var geoPHPGeometry $geoPHPGeometry */
+        $geoPHPGeometry = geoPHP::load($value);
 
         return self::create($geoPHPGeometry);
     }
@@ -63,6 +59,7 @@ class Factory
             if ($className === geoPHPMultiPolygon::class) {
                 return self::createMultiPolygon($components);
             }
+
             return self::createGeometryCollection($components);
         }
         if ($geometry instanceof geoPHPPoint) {

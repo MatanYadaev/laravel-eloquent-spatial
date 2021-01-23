@@ -2,7 +2,6 @@
 
 namespace MatanYadaev\EloquentSpatial\Builders;
 
-use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
@@ -20,7 +19,7 @@ class SpatialBuilder extends Builder
         return $this->selectRaw("ST_DISTANCE(`{$column}`, {$geometryOrColumn}) AS {$as}");
     }
 
-    public function whereDistance(string $column, Geometry | string $geometryOrColumn, string $operator, int|float $distance): self
+    public function whereDistance(string $column, Geometry | string $geometryOrColumn, string $operator, int | float $distance): self
     {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
@@ -51,7 +50,7 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    public function whereDistanceSphere(string $column, Geometry | string $geometryOrColumn, string $operator, int|float $distance): self
+    public function whereDistanceSphere(string $column, Geometry | string $geometryOrColumn, string $operator, int | float $distance): self
     {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 

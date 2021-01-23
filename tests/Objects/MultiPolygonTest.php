@@ -27,7 +27,7 @@ class MultiPolygonTest extends TestCase
                         new Point(23.3, 55.7),
                         new Point(23.1, 55.5),
                     ]),
-                ])
+                ]),
             ]),
         ])->fresh();
 
@@ -86,7 +86,7 @@ class MultiPolygonTest extends TestCase
                     new Point(23.3, 55.7),
                     new Point(23.1, 55.5),
                 ]),
-            ])
+            ]),
         ]);
 
         $this->assertEquals('{"type":"MultiPolygon","coordinates":[[[[55.5,23.1],[55.6,23.2],[55.7,23.3],[55.5,23.1]]]]}', $multiPolygon->toJson());
