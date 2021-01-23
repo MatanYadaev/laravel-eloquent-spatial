@@ -5,6 +5,7 @@ namespace MatanYadaev\EloquentSpatial\Tests\Builders;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\MultiPolygon;
 use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\Tests\TestCase;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
@@ -173,11 +174,11 @@ class SpatialBuilderTest extends TestCase
     public function it_filters_by_within(): void
     {
         TestPlace::factory()->create([
-            'multi_polygon' => MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[55.5,23.1],[55.6,23.2],[55.7,23.3],[55.5,23.1]]]]}'),
+            'point' => new Point(23.1, 55.5),
         ]);
 
         $testPlace = TestPlace::query()
-            ->whereWithin('multi_polygon', new Point(23.1, 55.51))
+            ->whereWithin('point', MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[55.5,23.0],[55.4,23.2],[55.8,23.3],[55.5,23.0]]]]}'))
             ->first();
 
         $this->assertNotNull($testPlace);
@@ -187,11 +188,25 @@ class SpatialBuilderTest extends TestCase
     public function it_filters_by_contains(): void
     {
         TestPlace::factory()->create([
-            'point' => new Point(23.1, 55.51),
+            'multi_polygon' => MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[55.5,23.0],[55.4,23.2],[55.8,23.3],[55.5,23.0]]]]}'),
         ]);
 
         $testPlace = TestPlace::query()
-            ->whereContains('point', MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[55.5,23.1],[55.6,23.2],[55.7,23.3],[55.5,23.1]]]]}'))
+            ->whereContains('multi_polygon', new Point(23.1, 55.5))
+            ->first();
+
+        $this->assertNotNull($testPlace);
+    }
+
+    /** @test */
+    public function it_filters_by_touches(): void
+    {
+        TestPlace::factory()->create([
+            'point' => new Point(23.1, 55.5),
+        ]);
+
+        $testPlace = TestPlace::query()
+            ->whereTouches('point', MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[55.5,23.1],[55.6,23.2],[55.7,23.3],[55.5,23.1]]]]}'))
             ->first();
 
         $this->assertNotNull($testPlace);

@@ -69,14 +69,21 @@ class SpatialBuilder extends Builder
     {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
-        return $this->orderByRaw("ST_WITHIN(`{$column}`, {$geometryOrColumn})");
+        return $this->whereRaw("ST_WITHIN(`{$column}`, {$geometryOrColumn})");
     }
 
     public function whereContains(string $column, Geometry | string $geometryOrColumn): self
     {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
-        return $this->orderByRaw("ST_CONTAINS(`{$column}`, {$geometryOrColumn})");
+        return $this->whereRaw("ST_CONTAINS(`{$column}`, {$geometryOrColumn})");
+    }
+
+    public function whereTouches(string $column, Geometry | string $geometryOrColumn): self
+    {
+        $geometryOrColumn = $this->toExpression($geometryOrColumn);
+
+        return $this->whereRaw("ST_TOUCHES(`{$column}`, {$geometryOrColumn})");
     }
 
     protected function toExpression(Geometry | string $geometryOrColumn): Expression
