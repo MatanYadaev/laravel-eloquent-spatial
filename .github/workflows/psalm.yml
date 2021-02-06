@@ -1,4 +1,4 @@
-name: Psalm
+name: Static code analysis
 
 on:
   push:
