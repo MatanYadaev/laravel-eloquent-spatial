@@ -41,7 +41,7 @@ jobs:
           mysql version: ${{ matrix.mysql }}
           mysql database: 'laravel_eloquent_spatial_test'
           mysql user: 'root'
-          mysql password: ""
+          mysql password: "root"
 
       - name: Execute tests
         run: vendor/bin/phpunit
