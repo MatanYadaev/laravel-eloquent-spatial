@@ -28,11 +28,6 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
             throw new InvalidTypeException(static::class, $geometry);
         }
 
-
-
-
-
-
         return $geometry;
     }
 
