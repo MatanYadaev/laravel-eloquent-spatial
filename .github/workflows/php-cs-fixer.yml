@@ -21,4 +21,4 @@ jobs:
         run: composer install
 
       - name: Run PHP CS Fixer
-        run: ./vendor/bin/php-cs-fixer fix --allow-risky=yes --diff --dry-run --format=checkstyle
+        run: ./vendor/bin/php-cs-fixer fix --allow-risky=yes --diff --dry-run
