@@ -34,6 +34,9 @@ jobs:
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
+      - name: Shutdown Ubuntu MySQL
+        run: sudo service mysql stop
+
       - name: Setup MySQL
         uses: mirromutth/mysql-action@v1.1
         with:
