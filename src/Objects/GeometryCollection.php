@@ -87,7 +87,7 @@ class GeometryCollection extends Geometry
 
     public function toArray(): array
     {
-        if (static::class === GeometryCollection::class) {
+        if (static::class === self::class) {
             return [
                 'type' => class_basename(static::class),
                 'geometries' => $this->geometries->map(static function (Geometry $geometry): array {

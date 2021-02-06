@@ -89,7 +89,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
             public function get($model, string $key, $wkt, array $attributes)
             {
                 if (! $wkt) {
-                    return null;
+                    return;
                 }
 
                 return $this->className::fromWkt($wkt);
