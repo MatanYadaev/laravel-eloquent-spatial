@@ -9,10 +9,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          ref: ${{ github.head_ref }}
+          php-version: 8
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install
 
       - name: Run PHP CS Fixer
-        uses: docker://oskarstark/php-cs-fixer-ga
-        with:
-          args: --config=.php_cs.dist --allow-risky=yes --diff --dry-run --format=checkstyle
+        run: ./vendor/bin/php-cs-fixer fix --allow-risky=yes --diff --dry-run --format=checkstyle
