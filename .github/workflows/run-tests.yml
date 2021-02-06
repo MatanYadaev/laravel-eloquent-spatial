@@ -4,11 +4,9 @@ on: [push]
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        php: [8.0]
         laravel: [8.*]
         mysql: [8.0, 5.7]
         stability: [prefer-lowest, prefer-stable]
@@ -16,7 +14,7 @@ jobs:
           - laravel: 8.*
             testbench: 6.*
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - M${{ matrix.mysql }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: Laravel ${{ matrix.laravel }} - MySQL ${{ matrix.mysql }} - ${{ matrix.stability }}
 
     services:
       mysql:
@@ -26,6 +24,7 @@ jobs:
           MYSQL_DATABASE: laravel_eloquent_spatial_test
         ports:
           - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
     steps:
       - name: Checkout code
