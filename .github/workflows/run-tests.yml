@@ -8,14 +8,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        laravel: [8.*]
         mysql: [8.0, 5.7]
-        stability: [prefer-lowest, prefer-stable]
-        include:
-          - laravel: 8.*
-            testbench: 6.*
 
-    name: Laravel ${{ matrix.laravel }} - MySQL ${{ matrix.mysql }} - ${{ matrix.stability }}
+    name: MySQL ${{ matrix.mysql }}
 
     services:
       mysql:
@@ -23,6 +18,8 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: laravel_eloquent_spatial_test
+          MYSQL_USER: root
+          MYSQL_PASSWORD: ''
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
@@ -39,21 +36,7 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
-
-#      - name: Shutdown Ubuntu MySQL
-#        if: ${{ matrix.os == 'ubuntu-latest'}}
-#        run: sudo service mysql stop
-#
-#      - name: Setup MySQL
-#        uses: mirromutth/mysql-action@v1.1
-#        with:
-#          mysql version: ${{ matrix.mysql }}
-#          mysql database: 'laravel_eloquent_spatial_test'
-#          mysql user: 'root'
-#          mysql password: "root"
+        run: composer install --prefer-dist --no-interaction
 
       - name: Execute tests
         run: vendor/bin/phpunit
