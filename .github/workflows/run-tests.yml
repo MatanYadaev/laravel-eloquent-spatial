@@ -18,6 +18,15 @@ jobs:
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - M${{ matrix.mysql }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
+    services:
+      mysql:
+        image: mysql:${{ matrix.mysql }}
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: laravel_eloquent_spatial_test
+        ports:
+          - 3306
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -34,16 +43,17 @@ jobs:
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
-      - name: Shutdown Ubuntu MySQL
-        run: sudo service mysql stop
-
-      - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql version: ${{ matrix.mysql }}
-          mysql database: 'laravel_eloquent_spatial_test'
-          mysql user: 'root'
-          mysql password: "root"
+#      - name: Shutdown Ubuntu MySQL
+#        if: ${{ matrix.os == 'ubuntu-latest'}}
+#        run: sudo service mysql stop
+#
+#      - name: Setup MySQL
+#        uses: mirromutth/mysql-action@v1.1
+#        with:
+#          mysql version: ${{ matrix.mysql }}
+#          mysql database: 'laravel_eloquent_spatial_test'
+#          mysql user: 'root'
+#          mysql password: "root"
 
       - name: Execute tests
         run: vendor/bin/phpunit

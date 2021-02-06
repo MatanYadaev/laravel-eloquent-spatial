@@ -33,7 +33,6 @@ class TestCase extends Orchestra
             'host' => '127.0.0.1',
             'database' => 'laravel_eloquent_spatial_test',
             'username' => 'root',
-            'password' => 'root',
         ]);
     }
 }
