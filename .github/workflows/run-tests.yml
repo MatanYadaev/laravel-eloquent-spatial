@@ -17,11 +17,10 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-#          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_ROOT_PASSWORD: password
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: laravel_eloquent_spatial_test
         ports:
-          - 32574:3306
+          - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 #      mysql:
 #        image: mysql:8.0
@@ -44,7 +43,7 @@ jobs:
         run: |
           mysql --version
           sudo apt-get install -y mysql-client
-          mysql -h 127.0.0.1 --port 32574 -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS laravel_eloquent_spatial_test;'
+          mysql -h 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS laravel_eloquent_spatial_test;'
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -57,4 +56,6 @@ jobs:
         run: composer install --prefer-dist --no-interaction
 
       - name: Execute tests
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
         run: vendor/bin/phpunit
