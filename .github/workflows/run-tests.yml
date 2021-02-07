@@ -18,6 +18,8 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_PASSWORD: ''
+          MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: laravel_eloquent_spatial_test
         ports:
           - 3306
