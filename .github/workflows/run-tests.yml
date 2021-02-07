@@ -17,9 +17,10 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_DATABASE: laravel_eloquent_spatial_test
+          MYSQL_HOST: 127.0.0.1
           MYSQL_USER: root
-          MYSQL_PASSWORD: ''
-          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_PASSWORD:
+          MYSQL_ROOT_PASSWORD:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
         ports:
           - 3306
