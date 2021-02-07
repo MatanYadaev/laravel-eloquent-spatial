@@ -11,11 +11,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mysql: [8.0, 5.7]
+#        mysql: [8.0, 5.7]
+        mysql: [8.0]
 
     services:
       mysql:
-        image: mysql:${{ matrix.mysql }}
+        image: mariadb:latest
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: laravel_eloquent_spatial_test
@@ -26,12 +27,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Verify MySQL connection
-        run: |
-          mysql --version
-          sudo apt-get install -y mysql-client
-          mysql -h 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -u root -e 'CREATE DATABASE IF NOT EXISTS laravel_eloquent_spatial_test;'
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2

@@ -13,18 +13,6 @@ class TestCase extends Orchestra
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
-    protected function getPackageProviders($app): array
-    {
-        return [
-            //
-        ];
-    }
-
     public function getEnvironmentSetUp($app): void
     {
         $app->config->set('database.default', 'mysql');
