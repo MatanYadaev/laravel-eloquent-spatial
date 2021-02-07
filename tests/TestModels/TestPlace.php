@@ -22,6 +22,9 @@ use MatanYadaev\EloquentSpatial\Tests\TestFactories\TestPlaceFactory;
  * @property Polygon $polygon
  * @property MultiPolygon $multi_polygon
  * @property GeometryCollection $geometry_collection
+ * @property float|null $distance
+ * @property float|null $distance_in_meters
+ * @method static SpatialBuilder query()
  */
 class TestPlace extends Model
 {
@@ -38,6 +41,9 @@ class TestPlace extends Model
         'geometry_collection',
     ];
 
+    /**
+     * @var array<string, mixed>
+     */
     protected $casts = [
         'point' => Point::class,
         'multi_point' => MultiPoint::class,
@@ -47,11 +53,6 @@ class TestPlace extends Model
         'multi_polygon' => MultiPolygon::class,
         'geometry_collection' => GeometryCollection::class,
     ];
-
-    public static function query(): SpatialBuilder
-    {
-        return parent::query();
-    }
 
     public function newEloquentBuilder($query): SpatialBuilder
     {

@@ -13,7 +13,7 @@ class LineStringTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function it_stores_line_string()
+    public function it_stores_line_string(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -36,7 +36,7 @@ class LineStringTest extends TestCase
     }
 
     /** @test */
-    public function it_stores_line_string_from_json()
+    public function it_stores_line_string_from_json(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -56,7 +56,7 @@ class LineStringTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_line_string_geo_json()
+    public function it_generates_line_string_geo_json(): void
     {
         $lineString = new LineString([
             new Point(23.1, 55.5),

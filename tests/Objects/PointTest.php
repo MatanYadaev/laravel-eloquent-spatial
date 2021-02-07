@@ -12,7 +12,7 @@ class PointTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function it_stores_point()
+    public function it_stores_point(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -27,7 +27,7 @@ class PointTest extends TestCase
     }
 
     /** @test */
-    public function it_stores_point_from_json()
+    public function it_stores_point_from_json(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -42,7 +42,7 @@ class PointTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_point_geo_json()
+    public function it_generates_point_geo_json(): void
     {
         $point = new Point(23.1, 55.5);
 

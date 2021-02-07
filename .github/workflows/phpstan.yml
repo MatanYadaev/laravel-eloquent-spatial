@@ -1,20 +1,14 @@
-name: Tests
+name: Static code analysis
 
-on: [push]
+on:
+  push:
+    paths:
+      - '**.php'
+      - 'phpstan.neon'
 
 jobs:
-  test:
+  phpstan:
     runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: laravel_eloquent_spatial_test
-        ports:
-          - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout code
@@ -30,7 +24,5 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction
 
-      - name: Execute tests
-        env:
-          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
-        run: vendor/bin/phpunit
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyse --memory-limit=2G --error-format=github

@@ -14,7 +14,7 @@ class MultiLineStringTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function it_stores_multi_line_string()
+    public function it_stores_multi_line_string(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -40,7 +40,7 @@ class MultiLineStringTest extends TestCase
     }
 
     /** @test */
-    public function it_stores_multi_line_string_from_geo_json()
+    public function it_stores_multi_line_string_from_geo_json(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -61,7 +61,7 @@ class MultiLineStringTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_multi_line_string_geo_json()
+    public function it_generates_multi_line_string_geo_json(): void
     {
         $multiLineString = new MultiLineString([
             new LineString([

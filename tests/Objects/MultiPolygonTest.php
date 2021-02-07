@@ -15,7 +15,7 @@ class MultiPolygonTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function it_stores_multi_polygon()
+    public function it_stores_multi_polygon(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -50,7 +50,7 @@ class MultiPolygonTest extends TestCase
     }
 
     /** @test */
-    public function it_stores_multi_polygon_from_geo_json()
+    public function it_stores_multi_polygon_from_geo_json(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -76,7 +76,7 @@ class MultiPolygonTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_multi_polygon_geo_json()
+    public function it_generates_multi_polygon_geo_json(): void
     {
         $multiPolygon = new MultiPolygon([
             new Polygon([

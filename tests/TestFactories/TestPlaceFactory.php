@@ -9,6 +9,9 @@ class TestPlaceFactory extends Factory
 {
     protected $model = TestPlace::class;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function definition(): array
     {
         return [

@@ -19,10 +19,10 @@ class SpatialBuilderTest extends TestCase
             'point' => new Point(23.1, 55.5),
         ]);
 
+        /** @var TestPlace $testPlaceWithDistance */
         $testPlaceWithDistance = TestPlace::query()
             ->withDistance('point', 'point')
-            ->first();
-        // @TODO add different column
+            ->firstOrFail();
 
         $this->assertEquals(0, $testPlaceWithDistance->distance);
     }
@@ -34,9 +34,10 @@ class SpatialBuilderTest extends TestCase
             'point' => new Point(23.1, 55.5),
         ]);
 
+        /** @var TestPlace $testPlaceWithDistance */
         $testPlaceWithDistance = TestPlace::query()
             ->withDistance('point', new Point(23.1, 55.6))
-            ->first();
+            ->firstOrFail();
 
         $this->assertEquals(0.1, $testPlaceWithDistance->distance);
     }
@@ -48,9 +49,10 @@ class SpatialBuilderTest extends TestCase
             'point' => new Point(23.1, 55.5),
         ]);
 
+        /** @var TestPlace $testPlaceWithDistance */
         $testPlaceWithDistance = TestPlace::query()
             ->withDistance('point', new Point(23.1, 55.6), 'distance_in_meters')
-            ->first();
+            ->firstOrFail();
 
         $this->assertEquals(0.1, $testPlaceWithDistance->distance_in_meters);
     }
@@ -62,9 +64,10 @@ class SpatialBuilderTest extends TestCase
             'point' => new Point(23.1, 55.5),
         ]);
 
+        /** @var TestPlace $testPlaceWithinDistance */
         $testPlaceWithinDistance = TestPlace::query()
             ->whereDistance('point', new Point(23.1, 55.6), '<', 1)
-            ->first();
+            ->firstOrFail();
 
         $this->assertNotNull($testPlaceWithinDistance);
     }
@@ -80,13 +83,15 @@ class SpatialBuilderTest extends TestCase
             'point' => new Point(0, 0),
         ]);
 
+        /** @var TestPlace $closestTestPlace */
         $closestTestPlace = TestPlace::query()
             ->orderByDistance('point', $point)
-            ->first();
+            ->firstOrFail();
 
+        /** @var TestPlace $farthestTestPlace */
         $farthestTestPlace = TestPlace::query()
             ->orderByDistance('point', $point, 'desc')
-            ->first();
+            ->firstOrFail();
 
         $this->assertEquals($testPlace1->id, $closestTestPlace->id);
         $this->assertEquals($testPlace2->id, $farthestTestPlace->id);
@@ -97,9 +102,10 @@ class SpatialBuilderTest extends TestCase
     {
         TestPlace::factory()->create();
 
+        /** @var TestPlace $testPlaceWithDistance */
         $testPlaceWithDistance = TestPlace::query()
             ->withDistanceSphere('point', 'point')
-            ->first();
+            ->firstOrFail();
 
         $this->assertEquals(0, $testPlaceWithDistance->distance);
     }
@@ -111,9 +117,10 @@ class SpatialBuilderTest extends TestCase
             'point' => new Point(23.1, 55.5),
         ]);
 
+        /** @var TestPlace $testPlaceWithDistance */
         $testPlaceWithDistance = TestPlace::query()
             ->withDistanceSphere('point', new Point(23.1, 55.51))
-            ->first();
+            ->firstOrFail();
 
         $this->assertEquals(1022.7925914593363, $testPlaceWithDistance->distance);
     }
@@ -125,9 +132,10 @@ class SpatialBuilderTest extends TestCase
             'point' => new Point(23.1, 55.5),
         ]);
 
+        /** @var TestPlace $testPlaceWithDistance */
         $testPlaceWithDistance = TestPlace::query()
             ->withDistanceSphere('point', new Point(23.1, 55.51), 'distance_in_meters')
-            ->first();
+            ->firstOrFail();
 
         $this->assertEquals(1022.7925914593363, $testPlaceWithDistance->distance_in_meters);
     }
@@ -139,9 +147,10 @@ class SpatialBuilderTest extends TestCase
             'point' => new Point(23.1, 55.5),
         ]);
 
+        /** @var TestPlace $testPlaceWithinDistanceSphere */
         $testPlaceWithinDistanceSphere = TestPlace::query()
             ->whereDistanceSphere('point', new Point(23.1, 55.51), '<', 2000)
-            ->first();
+            ->firstOrFail();
 
         $this->assertNotNull($testPlaceWithinDistanceSphere);
     }
@@ -157,13 +166,15 @@ class SpatialBuilderTest extends TestCase
             'point' => new Point(0, 0),
         ]);
 
+        /** @var TestPlace $closestTestPlace */
         $closestTestPlace = TestPlace::query()
             ->orderByDistanceSphere('point', $point)
-            ->first();
+            ->firstOrFail();
 
+        /** @var TestPlace $farthestTestPlace */
         $farthestTestPlace = TestPlace::query()
             ->orderByDistanceSphere('point', $point, 'desc')
-            ->first();
+            ->firstOrFail();
 
         $this->assertEquals($testPlace1->id, $closestTestPlace->id);
         $this->assertEquals($testPlace2->id, $farthestTestPlace->id);
@@ -176,9 +187,10 @@ class SpatialBuilderTest extends TestCase
             'point' => new Point(23.1, 55.5),
         ]);
 
+        /** @var TestPlace $testPlace */
         $testPlace = TestPlace::query()
             ->whereWithin('point', MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[55.5,23.0],[55.4,23.2],[55.8,23.3],[55.5,23.0]]]]}'))
-            ->first();
+            ->firstOrFail();
 
         $this->assertNotNull($testPlace);
     }
@@ -190,9 +202,10 @@ class SpatialBuilderTest extends TestCase
             'multi_polygon' => MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[55.5,23.0],[55.4,23.2],[55.8,23.3],[55.5,23.0]]]]}'),
         ]);
 
+        /** @var TestPlace $testPlace */
         $testPlace = TestPlace::query()
             ->whereContains('multi_polygon', new Point(23.1, 55.5))
-            ->first();
+            ->firstOrFail();
 
         $this->assertNotNull($testPlace);
     }
@@ -204,9 +217,10 @@ class SpatialBuilderTest extends TestCase
             'point' => new Point(23.1, 55.5),
         ]);
 
+        /** @var TestPlace $testPlace */
         $testPlace = TestPlace::query()
             ->whereTouches('point', MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[55.5,23.1],[55.6,23.2],[55.7,23.3],[55.5,23.1]]]]}'))
-            ->first();
+            ->firstOrFail();
 
         $this->assertNotNull($testPlace);
     }
