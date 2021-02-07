@@ -18,7 +18,7 @@ jobs:
         env:
           MYSQL_DATABASE: laravel_eloquent_spatial_test
           MYSQL_HOST: 127.0.0.1
-          MYSQL_USER: root
+          MYSQL_USER: user
           MYSQL_PASSWORD:
           MYSQL_ROOT_PASSWORD:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
@@ -34,7 +34,7 @@ jobs:
         run: |
           mysql --version
           sudo apt-get install -y mysql-client
-          mysql --host 127.0.0.1 --port 3306 -uroot -e "SHOW DATABASES"
+          mysql --host 127.0.0.1 --port 3306 -uuser -e "SHOW DATABASES"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2

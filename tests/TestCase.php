@@ -32,7 +32,7 @@ class TestCase extends Orchestra
             'driver' => 'mysql',
             'host' => '127.0.0.1',
             'database' => 'laravel_eloquent_spatial_test',
-            'username' => 'root',
+            'username' => 'user',
         ]);
     }
 }
