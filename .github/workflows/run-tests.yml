@@ -15,27 +15,13 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:${{ matrix.mysql }}
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_PASSWORD: ''
-          MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: laravel_eloquent_spatial_test
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-#      mysql:
-#        image: mysql:8.0
-#        env:
-#          MYSQL_DATABASE: laravel_eloquent_spatial_test
-#          MYSQL_HOST: 127.0.0.1
-#          MYSQL_USER: user
-#          MYSQL_PASSWORD:
-#          MYSQL_ROOT_PASSWORD:
-#          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-#        ports:
-#          - 3306
-#        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout code
@@ -45,7 +31,7 @@ jobs:
         run: |
           mysql --version
           sudo apt-get install -y mysql-client
-          mysql -h 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS laravel_eloquent_spatial_test;'
+          mysql -h 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -u root -e 'CREATE DATABASE IF NOT EXISTS laravel_eloquent_spatial_test;'
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
