@@ -11,12 +11,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-#        mysql: [8.0, 5.7]
         mysql: [8.0]
 
     services:
       mysql:
-        image: mariadb:latest
+        image: mysql:${{ matrix.mysql }}
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: laravel_eloquent_spatial_test
