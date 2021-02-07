@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   test:
+    name: PHP 8.0 - MySQL 8.0
     runs-on: ubuntu-latest
 
     services:
