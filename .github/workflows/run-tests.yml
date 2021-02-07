@@ -17,8 +17,8 @@ jobs:
         image: mysql:${{ matrix.mysql }}
         env:
           MYSQL_DATABASE: laravel_eloquent_spatial_test
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: password
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
