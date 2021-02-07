@@ -1,0 +1,10 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+parameters:
+    paths:
+        - src
+        - tests
+    level: max
+    excludePaths:
+        - ./src/Factory.php
+    checkMissingIterableValueType: true

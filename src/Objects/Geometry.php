@@ -6,6 +6,7 @@ use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Expression;
 use JsonSerializable;
 use MatanYadaev\EloquentSpatial\Exceptions\InvalidTypeException;
@@ -33,6 +34,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     public function toJson($options = 0): string
     {
+        /* @phpstan-ignore-next-line */
         return json_encode($this, $options);
     }
 
@@ -52,11 +54,17 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
         return $geometry;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function jsonSerialize(): array
     {
         return $this->toArray();
     }
 
+    /**
+     * @return array{type: string, coordinates: mixed[]}
+     */
     public function toArray(): array
     {
         return [
@@ -65,8 +73,15 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
         ];
     }
 
+    /**
+     * @return mixed[]
+     */
     abstract public function getCoordinates(): array;
 
+    /**
+     * @param string[] $arguments
+     * @return CastsAttributes
+     */
     public static function castUsing(array $arguments): CastsAttributes
     {
         $className = static::class;
@@ -80,26 +95,26 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
             }
 
             /**
-             * @param $model
+             * @param Model $model
              * @param string $key
              * @param string|null $wkt
-             * @param array $attributes
-             * @return null
+             * @param array<string, mixed> $attributes
+             * @return Geometry|null
              */
-            public function get($model, string $key, $wkt, array $attributes)
+            public function get($model, string $key, $wkt, array $attributes): ?Geometry
             {
                 if (! $wkt) {
                     return null;
                 }
 
-                return $this->className::fromWkt($wkt);
+                return ($this->className)::fromWkt($wkt);
             }
 
             /**
-             * @param $model
+             * @param Model $model
              * @param string $key
-             * @param static $geometry
-             * @param array $attributes
+             * @param Geometry|null $geometry
+             * @param array<string, mixed> $attributes
              * @return Expression|string|null
              */
             public function set($model, string $key, $geometry, array $attributes): Expression | string | null

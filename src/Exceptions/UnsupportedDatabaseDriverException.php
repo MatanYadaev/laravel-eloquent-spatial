@@ -1,6 +1,5 @@
 <?php
 
-
 namespace MatanYadaev\EloquentSpatial\Exceptions;
 
 use Exception;

@@ -15,7 +15,7 @@ class GeometryCollectionTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function it_stores_geometry_collection()
+    public function it_stores_geometry_collection(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -59,7 +59,7 @@ class GeometryCollectionTest extends TestCase
     }
 
     /** @test */
-    public function it_stores_geometry_collection_from_geo_json()
+    public function it_stores_geometry_collection_from_geo_json(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -93,7 +93,7 @@ class GeometryCollectionTest extends TestCase
     }
 
     /** @test */
-    public function it_stores_geometry_collection_from_feature_collection_geo_json()
+    public function it_stores_geometry_collection_from_feature_collection_geo_json(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -127,7 +127,7 @@ class GeometryCollectionTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_multi_polygon_geo_json()
+    public function it_generates_multi_polygon_geo_json(): void
     {
         $geometryCollection = new GeometryCollection([
             new Polygon([

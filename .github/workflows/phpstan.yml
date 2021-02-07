@@ -1,10 +1,10 @@
-name: Lint
+name: Static code analysis
 
 on: [push]
 
 jobs:
-  php-cs-fixer:
-    name: PHP CS Fixer
+  phpstan:
+    name: PHPStan
 
     runs-on: ubuntu-latest
 
@@ -20,7 +20,7 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer install
+        run: composer install --prefer-dist --no-interaction
 
-      - name: Run PHP CS Fixer
-        run: ./vendor/bin/php-cs-fixer fix --allow-risky=yes --diff --dry-run
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyse --memory-limit=2G --error-format=github

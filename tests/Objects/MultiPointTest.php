@@ -13,7 +13,7 @@ class MultiPointTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function it_stores_multi_point()
+    public function it_stores_multi_point(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -33,7 +33,7 @@ class MultiPointTest extends TestCase
     }
 
     /** @test */
-    public function it_stores_multi_point_from_json()
+    public function it_stores_multi_point_from_json(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -51,7 +51,7 @@ class MultiPointTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_multi_point_geo_json()
+    public function it_generates_multi_point_geo_json(): void
     {
         $multiPoint = new MultiPoint([
             new Point(23.1, 55.5),

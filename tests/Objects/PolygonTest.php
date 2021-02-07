@@ -14,7 +14,7 @@ class PolygonTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function it_stores_polygon()
+    public function it_stores_polygon(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -46,7 +46,7 @@ class PolygonTest extends TestCase
     }
 
     /** @test */
-    public function it_stores_polygon_from_geo_json()
+    public function it_stores_polygon_from_geo_json(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
@@ -71,7 +71,7 @@ class PolygonTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_polygon_geo_json()
+    public function it_generates_polygon_geo_json(): void
     {
         $polygon = new Polygon([
             new LineString([

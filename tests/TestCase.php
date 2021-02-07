@@ -2,6 +2,7 @@
 
 namespace MatanYadaev\EloquentSpatial\Tests;
 
+use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -10,27 +11,16 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
-    protected function getPackageProviders($app): array
-    {
-        return [
-            //
-        ];
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
     }
 
     public function getEnvironmentSetUp($app): void
     {
-        $app->config->set('database.default', 'mysql');
-        $app->config->set('database.connections.mysql', [
+        Config::set('database.default', 'mysql');
+        Config::set('database.connections.mysql', [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
+            'port' => env('DB_PORT', 3306),
             'database' => 'laravel_eloquent_spatial_test',
             'username' => 'root',
         ]);

@@ -76,6 +76,9 @@ class GeometryCollection extends Geometry
         return DB::raw($wkb);
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getCoordinates(): array
     {
         return $this->geometries
@@ -85,9 +88,12 @@ class GeometryCollection extends Geometry
             ->all();
     }
 
+    /**
+     * @return mixed[]
+     */
     public function toArray(): array
     {
-        if (static::class === GeometryCollection::class) {
+        if (static::class === self::class) {
             return [
                 'type' => class_basename(static::class),
                 'geometries' => $this->geometries->map(static function (Geometry $geometry): array {
