@@ -7,6 +7,7 @@ jobs:
     name: MySQL ${{ matrix.mysql }}
 
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
       matrix:
@@ -20,7 +21,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: laravel_eloquent_spatial_test
         ports:
-          - 3306
+          - 32574:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 #      mysql:
 #        image: mysql:8.0
@@ -43,7 +44,7 @@ jobs:
         run: |
           mysql --version
           sudo apt-get install -y mysql-client
-          mysql -h 127.0.0.1 --port 3306 -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS laravel_eloquent_spatial_test;'
+          mysql -h 127.0.0.1 --port 32574 -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS laravel_eloquent_spatial_test;'
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2

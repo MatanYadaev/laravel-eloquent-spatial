@@ -31,6 +31,7 @@ class TestCase extends Orchestra
         $app->config->set('database.connections.mysql', [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
+            'port' => '32574',
             'database' => 'laravel_eloquent_spatial_test',
             'username' => 'root',
             'password' => 'password',
