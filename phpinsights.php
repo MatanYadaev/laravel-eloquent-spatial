@@ -6,8 +6,8 @@ use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses;
 use ObjectCalisthenics\Sniffs\Metrics\MaxNestingLevelSniff;
 use ObjectCalisthenics\Sniffs\Metrics\MethodPerClassLimitSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UselessOverridingMethodSniff;
-use SlevomatCodingStandard\Sniffs\Classes\SuperfluousExceptionNamingSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
+use SlevomatCodingStandard\Sniffs\Classes\SuperfluousExceptionNamingSniff;
 use SlevomatCodingStandard\Sniffs\Functions\UnusedParameterSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
@@ -84,24 +84,24 @@ return [
         MaxNestingLevelSniff::class => [
             'exclude' => [
                 'src/Objects/Geometry.php',
-            ]
+            ],
         ],
         UnusedParameterSniff::class => [
             'exclude' => [
                 'src/Objects/Geometry.php',
-            ]
+            ],
         ],
         MethodPerClassLimitSniff::class => [
             'exclude' => [
                 'src/Builders/SpatialBuilder.php',
                 'src/Objects/Geometry.php',
-            ]
+            ],
         ],
         LineLengthSniff::class => [
             'lineLimit' => 110,
             'absoluteLineLimit' => 150,
             'ignoreComments' => false,
-        ]
+        ],
     ],
 
     /*
