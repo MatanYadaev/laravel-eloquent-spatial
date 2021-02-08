@@ -8,7 +8,7 @@ use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
 class SpatialBuilder extends Builder
 {
-    public function withDistance(string $column, Geometry | string $geometryOrColumn, string $as = 'distance'): self
+    public function withDistance(string $column, Geometry | string $geometryOrColumn, string $alias = 'distance'): self
     {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
@@ -16,14 +16,14 @@ class SpatialBuilder extends Builder
             $this->select('*');
         }
 
-        return $this->selectRaw("ST_DISTANCE(`{$column}`, {$geometryOrColumn}) AS {$as}");
+        return $this->selectRaw("ST_DISTANCE(`{$column}`, {$geometryOrColumn}) AS {$alias}");
     }
 
     public function whereDistance(string $column, Geometry | string $geometryOrColumn, string $operator, int | float $distance): self
     {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
-        $this->whereRaw("ST_DISTANCE(`{$column}`, {$geometryOrColumn}) {$operator} $distance");
+        $this->whereRaw("ST_DISTANCE(`{$column}`, {$geometryOrColumn}) {$operator} {$distance}");
 
         return $this;
     }
@@ -37,7 +37,7 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    public function withDistanceSphere(string $column, Geometry | string $geometryOrColumn, string $as = 'distance'): self
+    public function withDistanceSphere(string $column, Geometry | string $geometryOrColumn, string $alias = 'distance'): self
     {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
@@ -45,7 +45,7 @@ class SpatialBuilder extends Builder
             $this->select('*');
         }
 
-        $this->selectRaw("ST_DISTANCE_SPHERE(`{$column}`, {$geometryOrColumn}) AS {$as}");
+        $this->selectRaw("ST_DISTANCE_SPHERE(`{$column}`, {$geometryOrColumn}) AS {$alias}");
 
         return $this;
     }

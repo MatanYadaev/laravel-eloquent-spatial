@@ -40,7 +40,7 @@ class GeometryCollection extends Geometry
     {
         $geometriesCount = $this->geometries->count();
         if ($geometriesCount < $this->minimumGeometries) {
-            $className = get_class($this);
+            $className = self::class;
 
             throw new InvalidArgumentException("{$className} must contain at least {$this->minimumGeometries} ".Str::plural('entries', $geometriesCount));
         }
@@ -53,7 +53,7 @@ class GeometryCollection extends Geometry
     {
         $this->geometries->each(function (Geometry $geometry): void {
             if (! ($geometry instanceof $this->collectionOf)) {
-                $className = get_class($this);
+                $className = self::class;
 
                 throw new InvalidArgumentException("{$className} must be a collection of {$this->collectionOf}");
             }
