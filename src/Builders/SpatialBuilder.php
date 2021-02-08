@@ -10,8 +10,11 @@ use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
 class SpatialBuilder extends Builder
 {
-    public function withDistance(string $column, Geometry | string $geometryOrColumn, string $alias = 'distance'): self
-    {
+    public function withDistance(
+        string $column,
+        Geometry | string $geometryOrColumn,
+        string $alias = 'distance'
+    ): self {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
         if (! $this->getQuery()->columns) {
@@ -28,8 +31,12 @@ class SpatialBuilder extends Builder
         );
     }
 
-    public function whereDistance(string $column, Geometry | string $geometryOrColumn, string $operator, int | float $distance): self
-    {
+    public function whereDistance(
+        string $column,
+        Geometry | string $geometryOrColumn,
+        string $operator,
+        int | float $distance
+    ): self {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
         return $this->whereRaw(
@@ -43,8 +50,11 @@ class SpatialBuilder extends Builder
         );
     }
 
-    public function orderByDistance(string $column, Geometry | string $geometryOrColumn, string $direction = 'asc'): self
-    {
+    public function orderByDistance(
+        string $column,
+        Geometry | string $geometryOrColumn,
+        string $direction = 'asc'
+    ): self {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
         return $this->orderByRaw(
