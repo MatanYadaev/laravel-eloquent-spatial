@@ -27,7 +27,9 @@ class Factory
 {
     public static function parse(string $value): Geometry
     {
-        if (! is_json($value)) {
+        $isJson = (bool) is_object(json_decode($value));
+
+        if (! $isJson) {
             // MySQL adds 4 NULL bytes at the start of the WKB
             $value = substr($value, 4);
         }
@@ -41,11 +43,12 @@ class Factory
     protected static function create(geoPHPGeometry $geometry): Geometry
     {
         if ($geometry instanceof geoPHPGeometryCollection) {
-            $components = collect($geometry->components)->map(static function (geoPHPGeometry $geometryComponent): Geometry {
-                return self::create($geometryComponent);
-            });
+            $components = collect($geometry->components)
+                ->map(static function (geoPHPGeometry $geometryComponent): Geometry {
+                    return self::create($geometryComponent);
+                });
 
-            $className = get_class($geometry);
+            $className = $geometry::class;
 
             if ($className === geoPHPMultiPoint::class) {
                 return self::createMultiPoint($components);

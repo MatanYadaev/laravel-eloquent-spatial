@@ -87,7 +87,10 @@ class GeometryCollection extends Geometry
         if ($geometriesCount < $this->minimumGeometries) {
             $className = self::class;
 
-            throw new InvalidArgumentException("{$className} must contain at least {$this->minimumGeometries} ".Str::plural('entries', $geometriesCount));
+            throw new InvalidArgumentException(
+                "{$className} must contain at least {$this->minimumGeometries} "
+                .Str::plural('entries', $geometriesCount)
+            );
         }
     }
 
@@ -100,7 +103,9 @@ class GeometryCollection extends Geometry
             if (! ($geometry instanceof $this->collectionOf)) {
                 $className = self::class;
 
-                throw new InvalidArgumentException("{$className} must be a collection of {$this->collectionOf}");
+                throw new InvalidArgumentException(
+                    "{$className} must be a collection of {$this->collectionOf}"
+                );
             }
         });
     }
@@ -109,7 +114,7 @@ class GeometryCollection extends Geometry
     {
         $wkb = $this->geometries
             ->map(static function (Geometry $geometry): string {
-                return $geometry->toWkt();
+                return (string) $geometry->toWkt();
             })
             ->join(',');
 

@@ -59,8 +59,11 @@ class SpatialBuilder extends Builder
         return $this->whereRaw("ST_DISTANCE_SPHERE(`{$column}`, {$geometryOrColumn}) {$operator} {$distance}");
     }
 
-    public function orderByDistanceSphere(string $column, Geometry | string $geometryOrColumn, string $direction = 'asc'): self
-    {
+    public function orderByDistanceSphere(
+        string $column,
+        Geometry | string $geometryOrColumn,
+        string $direction = 'asc'
+    ): self {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
         return $this->orderByRaw("ST_DISTANCE_SPHERE(`{$column}`, {$geometryOrColumn}) {$direction}");
