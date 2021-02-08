@@ -12,6 +12,7 @@ use Illuminate\Database\Query\Expression;
 use JsonSerializable;
 use MatanYadaev\EloquentSpatial\Exceptions\InvalidTypeException;
 use MatanYadaev\EloquentSpatial\Factory;
+use MatanYadaev\EloquentSpatial\GeometryCast;
 
 abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable
 {

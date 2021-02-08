@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace MatanYadaev\EloquentSpatial\Objects;
+namespace MatanYadaev\EloquentSpatial;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Expression;
 use MatanYadaev\EloquentSpatial\Exceptions\InvalidTypeException;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
 class GeometryCast implements CastsAttributes
 {

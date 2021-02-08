@@ -1,12 +1,11 @@
 <?php
 
-namespace MatanYadaev\EloquentSpatial\Tests\Builders;
+namespace MatanYadaev\EloquentSpatial\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
-use MatanYadaev\EloquentSpatial\Tests\TestCase;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 class SpatialBuilderTest extends TestCase

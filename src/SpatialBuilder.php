@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MatanYadaev\EloquentSpatial\Builders;
+namespace MatanYadaev\EloquentSpatial;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;

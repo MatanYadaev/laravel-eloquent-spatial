@@ -97,18 +97,18 @@ return [
         UnusedParameterSniff::class => [
             'exclude' => [
                 'src/Objects/Geometry.php',
-                'src/Objects/GeometryCast.php',
+                'src/GeometryCast.php',
             ],
         ],
         MethodPerClassLimitSniff::class => [
             'exclude' => [
-                'src/Builders/SpatialBuilder.php',
+                'src/SpatialBuilder.php',
                 'src/Objects/Geometry.php',
             ],
         ],
         ClassTraitAndInterfaceLengthSniff::class => [
             'exclude' => [
-                'src/Builders/SpatialBuilder.php',
+                'src/SpatialBuilder.php',
             ],
         ],
         FunctionLengthSniff::class => [
