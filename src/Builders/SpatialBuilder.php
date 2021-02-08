@@ -85,6 +85,41 @@ class SpatialBuilder extends Builder
         return $this->whereRaw("ST_TOUCHES(`{$column}`, {$geometryOrColumn})");
     }
 
+    public function whereIntersects(string $column, Geometry | string $geometryOrColumn): self
+    {
+        $geometryOrColumn = $this->toExpression($geometryOrColumn);
+
+        return $this->whereRaw("ST_INTERSECTS(`{$column}`, {$geometryOrColumn})");
+    }
+
+    public function whereCrosses(string $column, Geometry | string $geometryOrColumn): self
+    {
+        $geometryOrColumn = $this->toExpression($geometryOrColumn);
+
+        return $this->whereRaw("ST_CROSSES(`{$column}`, {$geometryOrColumn})");
+    }
+
+    public function whereDisjoint(string $column, Geometry | string $geometryOrColumn): self
+    {
+        $geometryOrColumn = $this->toExpression($geometryOrColumn);
+
+        return $this->whereRaw("ST_DISJOINT(`{$column}`, {$geometryOrColumn})");
+    }
+
+    public function whereOverlaps(string $column, Geometry | string $geometryOrColumn): self
+    {
+        $geometryOrColumn = $this->toExpression($geometryOrColumn);
+
+        return $this->whereRaw("ST_OVERLAPS(`{$column}`, {$geometryOrColumn})");
+    }
+
+    public function whereEquals(string $column, Geometry | string $geometryOrColumn): self
+    {
+        $geometryOrColumn = $this->toExpression($geometryOrColumn);
+
+        return $this->whereRaw("ST_EQUALS(`{$column}`, {$geometryOrColumn})");
+    }
+
     protected function toExpression(Geometry | string $geometryOrColumn): Expression
     {
         return $geometryOrColumn instanceof Geometry
