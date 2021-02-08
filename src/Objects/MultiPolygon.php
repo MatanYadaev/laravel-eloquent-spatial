@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MatanYadaev\EloquentSpatial\Objects;
 
 use Illuminate\Database\Query\Expression;
@@ -8,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
 /**
- * @method Polygon[] getGeometries()
+ * @method array<Polygon> getGeometries()
  */
 class MultiPolygon extends GeometryCollection
 {
@@ -20,7 +22,8 @@ class MultiPolygon extends GeometryCollection
     protected int $minimumGeometries = 1;
 
     /**
-     * @param Collection<Polygon>|Polygon[] $geometries
+     * @param Collection<Polygon>|array<Polygon> $geometries
+     *
      * @throws InvalidArgumentException
      */
     public function __construct(Collection | array $geometries)

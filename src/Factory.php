@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MatanYadaev\EloquentSpatial;
 
 use Collection as geoPHPGeometryCollection;
@@ -25,7 +27,9 @@ class Factory
 {
     public static function parse(string $value): Geometry
     {
-        if (! is_json($value)) {
+        $isJson = (bool) is_object(json_decode($value));
+
+        if (! $isJson) {
             // MySQL adds 4 NULL bytes at the start of the WKB
             $value = substr($value, 4);
         }
@@ -33,17 +37,18 @@ class Factory
         /** @var geoPHPGeometry $geoPHPGeometry */
         $geoPHPGeometry = geoPHP::load($value);
 
-        return self::create($geoPHPGeometry);
+        return self::createFromGeometry($geoPHPGeometry);
     }
 
-    protected static function create(geoPHPGeometry $geometry): Geometry
+    protected static function createFromGeometry(geoPHPGeometry $geometry): Geometry
     {
         if ($geometry instanceof geoPHPGeometryCollection) {
-            $components = collect($geometry->components)->map(function (geoPHPGeometry $geometryComponent): Geometry {
-                return self::create($geometryComponent);
-            });
+            $components = collect($geometry->components)
+                ->map(static function (geoPHPGeometry $geometryComponent): Geometry {
+                    return self::createFromGeometry($geometryComponent);
+                });
 
-            $className = get_class($geometry);
+            $className = $geometry::class;
 
             if ($className === geoPHPMultiPoint::class) {
                 return self::createMultiPoint($components);
@@ -75,6 +80,7 @@ class Factory
 
     /**
      * @param Collection<Point> $points
+     *
      * @return MultiPoint
      */
     protected static function createMultiPoint(Collection $points): MultiPoint
@@ -84,6 +90,7 @@ class Factory
 
     /**
      * @param Collection<Point> $points
+     *
      * @return LineString
      */
     protected static function createLineString(Collection $points): LineString
@@ -93,6 +100,7 @@ class Factory
 
     /**
      * @param Collection<LineString> $lineStrings
+     *
      * @return Polygon
      */
     protected static function createPolygon(Collection $lineStrings): Polygon
@@ -102,15 +110,17 @@ class Factory
 
     /**
      * @param Collection<LineString> $lineStrings
+     *
      * @return MultiLineString
      */
-    protected static function createMultiLineString(Collection $lineStrings):MultiLineString
+    protected static function createMultiLineString(Collection $lineStrings): MultiLineString
     {
         return new MultiLineString($lineStrings);
     }
 
     /**
      * @param Collection<Polygon> $polygons
+     *
      * @return MultiPolygon
      */
     protected static function createMultiPolygon(Collection $polygons): MultiPolygon
@@ -120,6 +130,7 @@ class Factory
 
     /**
      * @param Collection<Geometry> $geometries
+     *
      * @return GeometryCollection
      */
     protected static function createGeometryCollection(Collection $geometries): GeometryCollection

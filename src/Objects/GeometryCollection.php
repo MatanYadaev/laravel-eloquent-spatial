@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MatanYadaev\EloquentSpatial\Objects;
 
 use Illuminate\Database\Query\Expression;
@@ -18,7 +20,8 @@ class GeometryCollection extends Geometry
     protected int $minimumGeometries = 0;
 
     /**
-     * @param Collection<Geometry>|Geometry[] $geometries
+     * @param Collection<Geometry>|array<Geometry> $geometries
+     *
      * @throws InvalidArgumentException
      */
     public function __construct(Collection | array $geometries)
@@ -33,51 +36,13 @@ class GeometryCollection extends Geometry
         $this->validateGeometriesType();
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
-    protected function validateGeometriesCount(): void
-    {
-        $geometriesCount = $this->geometries->count();
-        if ($geometriesCount < $this->minimumGeometries) {
-            $className = get_class($this);
-
-            throw new InvalidArgumentException("{$className} must contain at least {$this->minimumGeometries} ".Str::plural('entries', $geometriesCount));
-        }
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    protected function validateGeometriesType(): void
-    {
-        $this->geometries->each(function (Geometry $geometry): void {
-            if (! ($geometry instanceof $this->collectionOf)) {
-                $className = get_class($this);
-
-                throw new InvalidArgumentException("{$className} must be a collection of {$this->collectionOf}");
-            }
-        });
-    }
-
     public function toWkt(): Expression
     {
         return new Expression("GEOMETRYCOLLECTION({$this->toCollectionWkt()})");
     }
 
-    protected function toCollectionWkt(): Expression
-    {
-        $wkb = $this->geometries
-            ->map(static function (Geometry $geometry): string {
-                return $geometry->toWkt();
-            })
-            ->join(',');
-
-        return DB::raw($wkb);
-    }
-
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
     public function getCoordinates(): array
     {
@@ -89,7 +54,7 @@ class GeometryCollection extends Geometry
     }
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      */
     public function toArray(): array
     {
@@ -106,10 +71,53 @@ class GeometryCollection extends Geometry
     }
 
     /**
-     * @return Geometry[]
+     * @return array<Geometry>
      */
     public function getGeometries(): array
     {
         return $this->geometries->all();
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    protected function validateGeometriesCount(): void
+    {
+        $geometriesCount = $this->geometries->count();
+        if ($geometriesCount < $this->minimumGeometries) {
+            $className = self::class;
+
+            throw new InvalidArgumentException(
+                "{$className} must contain at least {$this->minimumGeometries} "
+                .Str::plural('entries', $geometriesCount)
+            );
+        }
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    protected function validateGeometriesType(): void
+    {
+        $this->geometries->each(function (Geometry $geometry): void {
+            if (! ($geometry instanceof $this->collectionOf)) {
+                $className = self::class;
+
+                throw new InvalidArgumentException(
+                    "{$className} must be a collection of {$this->collectionOf}"
+                );
+            }
+        });
+    }
+
+    protected function toCollectionWkt(): Expression
+    {
+        $wkb = $this->geometries
+            ->map(static function (Geometry $geometry): string {
+                return (string) $geometry->toWkt();
+            })
+            ->join(',');
+
+        return DB::raw($wkb);
     }
 }

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MatanYadaev\EloquentSpatial\Objects;
 
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
 /**
- * @method Point[] getGeometries()
+ * @method array<Point> getGeometries()
  */
 abstract class PointCollection extends GeometryCollection
 {
@@ -16,7 +18,8 @@ abstract class PointCollection extends GeometryCollection
     protected string $collectionOf = Point::class;
 
     /**
-     * @param Collection<Point>|Point[] $geometries
+     * @param Collection<Point>|array<Point> $geometries
+     *
      * @throws InvalidArgumentException
      */
     public function __construct(Collection | array $geometries)

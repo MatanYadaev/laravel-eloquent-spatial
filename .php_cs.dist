@@ -3,8 +3,7 @@
 return (new MattAllan\LaravelCodeStyle\Config())
     ->setFinder(
         PhpCsFixer\Finder::create()
-            ->in('src')
-            ->in('tests')
+            ->in(__DIR__)
     )
     ->setRules([
         '@Laravel' => true,
