@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial;
 
-use Collection as geoPHPGeometryCollection;
 use Geometry as geoPHPGeometry;
 use geoPHP;
 use Illuminate\Support\Collection;
@@ -42,35 +41,34 @@ class Factory
 
     protected static function createFromGeometry(geoPHPGeometry $geometry): Geometry
     {
-        if ($geometry instanceof geoPHPGeometryCollection) {
-            $components = collect($geometry->components)
-                ->map(static function (geoPHPGeometry $geometryComponent): Geometry {
-                    return self::createFromGeometry($geometryComponent);
-                });
-
-            $className = $geometry::class;
-
-            if ($className === geoPHPMultiPoint::class) {
-                return self::createMultiPoint($components);
-            }
-            if ($className === geoPHPLineString::class) {
-                return self::createLineString($components);
-            }
-            if ($className === geoPHPPolygon::class) {
-                return self::createPolygon($components);
-            }
-            if ($className === geoPHPMultiLineString::class) {
-                return self::createMultiLineString($components);
-            }
-            if ($className === geoPHPMultiPolygon::class) {
-                return self::createMultiPolygon($components);
-            }
-
-            return self::createGeometryCollection($components);
-        }
         if ($geometry instanceof geoPHPPoint) {
             return self::createPoint($geometry->coords[1], $geometry->coords[0]);
         }
+
+        $components = collect($geometry->components)
+            ->map(static function (geoPHPGeometry $geometryComponent): Geometry {
+                return self::createFromGeometry($geometryComponent);
+            });
+
+        $className = $geometry::class;
+
+        if ($className === geoPHPMultiPoint::class) {
+            return self::createMultiPoint($components);
+        }
+        if ($className === geoPHPLineString::class) {
+            return self::createLineString($components);
+        }
+        if ($className === geoPHPPolygon::class) {
+            return self::createPolygon($components);
+        }
+        if ($className === geoPHPMultiLineString::class) {
+            return self::createMultiLineString($components);
+        }
+        if ($className === geoPHPMultiPolygon::class) {
+            return self::createMultiPolygon($components);
+        }
+
+        return self::createGeometryCollection($components);
     }
 
     protected static function createPoint(float $latitude, float $longitude): Point
