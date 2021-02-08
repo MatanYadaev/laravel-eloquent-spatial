@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses;
 use ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff;
+use ObjectCalisthenics\Sniffs\Files\FunctionLengthSniff;
 use ObjectCalisthenics\Sniffs\Metrics\MaxNestingLevelSniff;
 use ObjectCalisthenics\Sniffs\Metrics\MethodPerClassLimitSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UselessOverridingMethodSniff;
@@ -94,6 +96,7 @@ return [
         ],
         UnusedParameterSniff::class => [
             'exclude' => [
+                'src/Objects/Geometry.php',
                 'src/Objects/GeometryCast.php',
             ],
         ],
@@ -106,6 +109,16 @@ return [
         ClassTraitAndInterfaceLengthSniff::class => [
             'exclude' => [
                 'src/Builders/SpatialBuilder.php',
+            ],
+        ],
+        FunctionLengthSniff::class => [
+            'exclude' => [
+                'src/Factory.php',
+            ],
+        ],
+        CyclomaticComplexityIsHigh::class => [
+            'exclude' => [
+                'src/Factory.php',
             ],
         ],
     ],
@@ -122,11 +135,11 @@ return [
     */
 
     'requirements' => [
-//        'min-quality' => 0,
-//        'min-complexity' => 0,
-//        'min-architecture' => 0,
-//        'min-style' => 0,
-//        'disable-security-check' => false,
+        'min-quality' => 90,
+        'min-complexity' => 90,
+        'min-architecture' => 90,
+        'min-style' => 90,
+        'disable-security-check' => false,
     ],
 
     /*

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MatanYadaev\EloquentSpatial\Objects;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
@@ -40,6 +42,7 @@ class GeometryCast implements CastsAttributes
      * @param array<string, mixed> $attributes
      *
      * @return Expression|string|null
+     *
      * @throws InvalidTypeException
      */
     public function set($model, string $key, $geometry, array $attributes): Expression | string | null

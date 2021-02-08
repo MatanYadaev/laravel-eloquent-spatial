@@ -37,15 +37,15 @@ class Factory
         /** @var geoPHPGeometry $geoPHPGeometry */
         $geoPHPGeometry = geoPHP::load($value);
 
-        return self::create($geoPHPGeometry);
+        return self::createFromGeometry($geoPHPGeometry);
     }
 
-    protected static function create(geoPHPGeometry $geometry): Geometry
+    protected static function createFromGeometry(geoPHPGeometry $geometry): Geometry
     {
         if ($geometry instanceof geoPHPGeometryCollection) {
             $components = collect($geometry->components)
                 ->map(static function (geoPHPGeometry $geometryComponent): Geometry {
-                    return self::create($geometryComponent);
+                    return self::createFromGeometry($geometryComponent);
                 });
 
             $className = $geometry::class;
