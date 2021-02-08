@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
+
 return [
 
     /*
@@ -61,7 +64,8 @@ return [
     ],
 
     'remove' => [
-        //  ExampleInsight::class,
+        ParameterTypeHintSniff::class,
+        ReturnTypeHintSniff::class,
     ],
 
     'config' => [

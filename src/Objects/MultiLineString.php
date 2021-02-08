@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MatanYadaev\EloquentSpatial\Objects;
 
 use Illuminate\Database\Query\Expression;
@@ -7,7 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
- * @method LineString[] getGeometries()
+ * @method array<LineString> getGeometries()
  */
 class MultiLineString extends GeometryCollection
 {
@@ -19,7 +21,7 @@ class MultiLineString extends GeometryCollection
     protected int $minimumGeometries = 1;
 
     /**
-     * @param Collection<LineString>|LineString[] $geometries
+     * @param Collection<LineString>|array<LineString> $geometries
      */
     public function __construct(Collection | array $geometries)
     {
