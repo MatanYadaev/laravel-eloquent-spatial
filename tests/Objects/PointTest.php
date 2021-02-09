@@ -16,12 +16,12 @@ class PointTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => new Point(23.1, 55.5),
+            'point' => new Point(0, 0),
         ])->fresh();
 
         $this->assertTrue($testPlace->point instanceof Point);
-        $this->assertEquals(23.1, $testPlace->point->latitude);
-        $this->assertEquals(55.5, $testPlace->point->longitude);
+        $this->assertEquals(0, $testPlace->point->latitude);
+        $this->assertEquals(0, $testPlace->point->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }
@@ -31,12 +31,12 @@ class PointTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => Point::fromJson('{"type":"Point","coordinates":[55.5,23.1]}'),
+            'point' => Point::fromJson('{"type":"Point","coordinates":[0,0]}'),
         ])->fresh();
 
         $this->assertTrue($testPlace->point instanceof Point);
-        $this->assertEquals(23.1, $testPlace->point->latitude);
-        $this->assertEquals(55.5, $testPlace->point->longitude);
+        $this->assertEquals(0, $testPlace->point->latitude);
+        $this->assertEquals(0, $testPlace->point->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }
@@ -44,8 +44,8 @@ class PointTest extends TestCase
     /** @test */
     public function it_generates_point_geo_json(): void
     {
-        $point = new Point(23.1, 55.5);
+        $point = new Point(0, 0);
 
-        $this->assertEquals('{"type":"Point","coordinates":[55.5,23.1]}', $point->toJson());
+        $this->assertEquals('{"type":"Point","coordinates":[0,0]}', $point->toJson());
     }
 }

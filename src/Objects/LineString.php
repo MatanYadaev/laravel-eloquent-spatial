@@ -15,4 +15,12 @@ class LineString extends PointCollection
     {
         return DB::raw("LINESTRING({$this->toCollectionWkt()})");
     }
+
+    /**
+     * @return array<Point>
+     */
+    public function getGeometries(): array
+    {
+        return parent::getGeometries();
+    }
 }

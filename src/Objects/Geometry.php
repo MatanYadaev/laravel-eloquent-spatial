@@ -38,7 +38,6 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     public function toJson($options = 0): string
     {
-        /* @phpstan-ignore-next-line */
         return json_encode($this, $options);
     }
 
@@ -76,6 +75,15 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
         return [
             'type' => class_basename(static::class),
             'coordinates' => $this->getCoordinates(),
+        ];
+    }
+
+    public function toFeature(): array
+    {
+        return [
+            'type' => 'Feature',
+            'properties' => [],
+            'geometry' => $this->toArray(),
         ];
     }
 

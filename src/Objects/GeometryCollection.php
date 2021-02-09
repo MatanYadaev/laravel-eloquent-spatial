@@ -78,6 +78,23 @@ class GeometryCollection extends Geometry
         return $this->geometries->all();
     }
 
+    public function toFeatureCollectionJson(): string
+    {
+        /** @var Collection<Geometry> $geometries */
+        $geometries = static::class === self::class
+            ? $this->geometries
+            : collect([$this]);
+
+        $features = $geometries->map(static function (Geometry $geometry): array {
+            return $geometry->toFeature();
+        });
+
+        return json_encode([
+            'type' => 'FeatureCollection',
+            'features' => $features,
+        ]);
+    }
+
     /**
      * @throws InvalidArgumentException
      */

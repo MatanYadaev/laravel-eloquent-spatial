@@ -8,9 +8,6 @@ use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-/**
- * @method array<LineString> getGeometries()
- */
 class MultiLineString extends GeometryCollection
 {
     /** @var Collection<LineString> */
@@ -31,5 +28,13 @@ class MultiLineString extends GeometryCollection
     public function toWkt(): Expression
     {
         return DB::raw("MULTILINESTRING({$this->toCollectionWkt()})");
+    }
+
+    /**
+     * @return array<LineString>
+     */
+    public function getGeometries(): array
+    {
+        return parent::getGeometries();
     }
 }
