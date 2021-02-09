@@ -7,9 +7,6 @@ namespace MatanYadaev\EloquentSpatial\Objects;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
-/**
- * @method array<Point> getGeometries()
- */
 abstract class PointCollection extends GeometryCollection
 {
     /** @var Collection<Point> */

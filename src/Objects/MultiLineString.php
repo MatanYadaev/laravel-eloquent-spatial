@@ -8,9 +8,6 @@ use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-/**
- * @method array<LineString> getGeometries()
- */
 class MultiLineString extends GeometryCollection
 {
     /** @var Collection<LineString> */

@@ -38,7 +38,6 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     public function toJson($options = 0): string
     {
-        /* @phpstan-ignore-next-line */
         return json_encode($this, $options);
     }
 

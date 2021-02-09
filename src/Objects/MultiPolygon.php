@@ -9,9 +9,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
-/**
- * @method array<Polygon> getGeometries()
- */
 class MultiPolygon extends GeometryCollection
 {
     /** @var Collection<Polygon> */
