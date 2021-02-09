@@ -32,4 +32,12 @@ class MultiLineString extends GeometryCollection
     {
         return DB::raw("MULTILINESTRING({$this->toCollectionWkt()})");
     }
+
+    /**
+     * @return array<LineString>
+     */
+    public function getGeometries(): array
+    {
+        return parent::getGeometries();
+    }
 }

@@ -18,7 +18,7 @@ class MultiPointTest extends TestCase
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
             'multi_point' => new MultiPoint([
-                new Point(23.1, 55.5),
+                new Point(0, 0),
             ]),
         ])->fresh();
 
@@ -26,8 +26,8 @@ class MultiPointTest extends TestCase
 
         $points = $testPlace->multi_point->getGeometries();
 
-        $this->assertEquals(23.1, $points[0]->latitude);
-        $this->assertEquals(55.5, $points[0]->longitude);
+        $this->assertEquals(0, $points[0]->latitude);
+        $this->assertEquals(0, $points[0]->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }
@@ -37,15 +37,15 @@ class MultiPointTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'multi_point' => MultiPoint::fromJson('{"type":"MultiPoint","coordinates":[[55.5,23.1]]}'),
+            'multi_point' => MultiPoint::fromJson('{"type":"MultiPoint","coordinates":[[0,0]]}'),
         ])->fresh();
 
         $this->assertTrue($testPlace->multi_point instanceof MultiPoint);
 
         $points = $testPlace->multi_point->getGeometries();
 
-        $this->assertEquals(23.1, $points[0]->latitude);
-        $this->assertEquals(55.5, $points[0]->longitude);
+        $this->assertEquals(0, $points[0]->latitude);
+        $this->assertEquals(0, $points[0]->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }
@@ -54,9 +54,19 @@ class MultiPointTest extends TestCase
     public function it_generates_multi_point_geo_json(): void
     {
         $multiPoint = new MultiPoint([
-            new Point(23.1, 55.5),
+            new Point(0, 0),
         ]);
 
-        $this->assertEquals('{"type":"MultiPoint","coordinates":[[55.5,23.1]]}', $multiPoint->toJson());
+        $this->assertEquals('{"type":"MultiPoint","coordinates":[[0,0]]}', $multiPoint->toJson());
+    }
+
+    /** @test */
+    public function it_generates_multi_point_feature_collection_json(): void
+    {
+        $multiPoint = new MultiPoint([
+            new Point(0, 0),
+        ]);
+
+        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"MultiPoint","coordinates":[[0,0]]}]}', $multiPoint->toFeatureCollectionJson());
     }
 }

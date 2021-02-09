@@ -22,13 +22,14 @@ class GeometryCollectionTest extends TestCase
             'geometry_collection' => new GeometryCollection([
                 new Polygon([
                     new LineString([
-                        new Point(23.1, 55.5),
-                        new Point(23.2, 55.6),
-                        new Point(23.3, 55.7),
-                        new Point(23.1, 55.5),
+                        new Point(0, 0),
+                        new Point(1, 1),
+                        new Point(2, 2),
+                        new Point(3, 3),
+                        new Point(0, 0),
                     ]),
                 ]),
-                new Point(23.1, 55.5),
+                new Point(0, 0),
             ]),
         ])->fresh();
 
@@ -40,20 +41,22 @@ class GeometryCollectionTest extends TestCase
         $lineStrings = $polygon->getGeometries();
         $points = $lineStrings[0]->getGeometries();
 
-        $this->assertEquals(23.1, $points[0]->latitude);
-        $this->assertEquals(55.5, $points[0]->longitude);
-        $this->assertEquals(23.2, $points[1]->latitude);
-        $this->assertEquals(55.6, $points[1]->longitude);
-        $this->assertEquals(23.3, $points[2]->latitude);
-        $this->assertEquals(55.7, $points[2]->longitude);
-        $this->assertEquals(23.1, $points[3]->latitude);
-        $this->assertEquals(55.5, $points[3]->longitude);
+        $this->assertEquals(0, $points[0]->latitude);
+        $this->assertEquals(0, $points[0]->longitude);
+        $this->assertEquals(1, $points[1]->latitude);
+        $this->assertEquals(1, $points[1]->longitude);
+        $this->assertEquals(2, $points[2]->latitude);
+        $this->assertEquals(2, $points[2]->longitude);
+        $this->assertEquals(3, $points[3]->latitude);
+        $this->assertEquals(3, $points[3]->longitude);
+        $this->assertEquals(0, $points[4]->latitude);
+        $this->assertEquals(0, $points[4]->longitude);
 
         /** @var Point $point */
         $point = $geometries[1];
 
-        $this->assertEquals(23.1, $point->latitude);
-        $this->assertEquals(55.5, $point->longitude);
+        $this->assertEquals(0, $point->latitude);
+        $this->assertEquals(0, $point->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }
@@ -63,7 +66,7 @@ class GeometryCollectionTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'geometry_collection' => GeometryCollection::fromJson('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[55.5,23.1],[55.6,23.2],[55.7,23.3],[55.5,23.1]]]},{"type":"Point","coordinates":[55.5,23.1]}]}'),
+            'geometry_collection' => GeometryCollection::fromJson('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[0,0],[1,1],[2,2],[3,3],[0,0]]]},{"type":"Point","coordinates":[0,0]}]}'),
         ])->fresh();
 
         $this->assertTrue($testPlace->geometry_collection instanceof GeometryCollection);
@@ -74,20 +77,22 @@ class GeometryCollectionTest extends TestCase
         $lineStrings = $polygon->getGeometries();
         $points = $lineStrings[0]->getGeometries();
 
-        $this->assertEquals(23.1, $points[0]->latitude);
-        $this->assertEquals(55.5, $points[0]->longitude);
-        $this->assertEquals(23.2, $points[1]->latitude);
-        $this->assertEquals(55.6, $points[1]->longitude);
-        $this->assertEquals(23.3, $points[2]->latitude);
-        $this->assertEquals(55.7, $points[2]->longitude);
-        $this->assertEquals(23.1, $points[3]->latitude);
-        $this->assertEquals(55.5, $points[3]->longitude);
+        $this->assertEquals(0, $points[0]->latitude);
+        $this->assertEquals(0, $points[0]->longitude);
+        $this->assertEquals(1, $points[1]->latitude);
+        $this->assertEquals(1, $points[1]->longitude);
+        $this->assertEquals(2, $points[2]->latitude);
+        $this->assertEquals(2, $points[2]->longitude);
+        $this->assertEquals(3, $points[3]->latitude);
+        $this->assertEquals(3, $points[3]->longitude);
+        $this->assertEquals(0, $points[4]->latitude);
+        $this->assertEquals(0, $points[4]->longitude);
 
         /** @var Point $point */
         $point = $geometries[1];
 
-        $this->assertEquals(23.1, $point->latitude);
-        $this->assertEquals(55.5, $point->longitude);
+        $this->assertEquals(0, $point->latitude);
+        $this->assertEquals(0, $point->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }
@@ -97,7 +102,7 @@ class GeometryCollectionTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'geometry_collection' => GeometryCollection::fromJson('{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[55.5,23.1],[55.6,23.2],[55.7,23.3],[55.5,23.1]]]}},{"type":"Feature","geometry":{"type":"Point","coordinates":[55.5,23.1]}}]}'),
+            'geometry_collection' => GeometryCollection::fromJson('{"type":"FeatureCollection","features":[{"type":"Polygon","coordinates":[[[0,0],[1,1],[2,2],[3,3],[0,0]]]},{"type":"Point","coordinates":[0,0]}]}'),
         ])->fresh();
 
         $this->assertTrue($testPlace->geometry_collection instanceof GeometryCollection);
@@ -108,39 +113,67 @@ class GeometryCollectionTest extends TestCase
         $lineStrings = $polygon->getGeometries();
         $points = $lineStrings[0]->getGeometries();
 
-        $this->assertEquals(23.1, $points[0]->latitude);
-        $this->assertEquals(55.5, $points[0]->longitude);
-        $this->assertEquals(23.2, $points[1]->latitude);
-        $this->assertEquals(55.6, $points[1]->longitude);
-        $this->assertEquals(23.3, $points[2]->latitude);
-        $this->assertEquals(55.7, $points[2]->longitude);
-        $this->assertEquals(23.1, $points[3]->latitude);
-        $this->assertEquals(55.5, $points[3]->longitude);
+        $this->assertEquals(0, $points[0]->latitude);
+        $this->assertEquals(0, $points[0]->longitude);
+        $this->assertEquals(1, $points[1]->latitude);
+        $this->assertEquals(1, $points[1]->longitude);
+        $this->assertEquals(2, $points[2]->latitude);
+        $this->assertEquals(2, $points[2]->longitude);
+        $this->assertEquals(3, $points[3]->latitude);
+        $this->assertEquals(3, $points[3]->longitude);
+        $this->assertEquals(0, $points[4]->latitude);
+        $this->assertEquals(0, $points[4]->longitude);
 
         /** @var Point $point */
         $point = $geometries[1];
 
-        $this->assertEquals(23.1, $point->latitude);
-        $this->assertEquals(55.5, $point->longitude);
+        $this->assertEquals(0, $point->latitude);
+        $this->assertEquals(0, $point->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }
 
     /** @test */
-    public function it_generates_multi_polygon_geo_json(): void
+    public function it_generates_geometry_collection_geo_json(): void
     {
         $geometryCollection = new GeometryCollection([
             new Polygon([
                 new LineString([
-                    new Point(23.1, 55.5),
-                    new Point(23.2, 55.6),
-                    new Point(23.3, 55.7),
-                    new Point(23.1, 55.5),
+                    new Point(0, 0),
+                    new Point(1, 1),
+                    new Point(2, 2),
+                    new Point(3, 3),
+                    new Point(0, 0),
                 ]),
             ]),
-            new Point(23.1, 55.5),
+            new Point(0, 0),
         ]);
 
-        $this->assertEquals('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[55.5,23.1],[55.6,23.2],[55.7,23.3],[55.5,23.1]]]},{"type":"Point","coordinates":[55.5,23.1]}]}', $geometryCollection->toJson());
+        $this->assertEquals(
+            '{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[0,0],[1,1],[2,2],[3,3],[0,0]]]},{"type":"Point","coordinates":[0,0]}]}',
+            $geometryCollection->toJson()
+        );
+    }
+
+    /** @test */
+    public function it_generates_geometry_collection_feature_collection_json(): void
+    {
+        $geometryCollection = new GeometryCollection([
+            new Polygon([
+                new LineString([
+                    new Point(0, 0),
+                    new Point(1, 1),
+                    new Point(2, 2),
+                    new Point(3, 3),
+                    new Point(0, 0),
+                ]),
+            ]),
+            new Point(0, 0),
+        ]);
+
+        $this->assertEquals(
+            '{"type":"FeatureCollection","features":[{"type":"Polygon","coordinates":[[[0,0],[1,1],[2,2],[3,3],[0,0]]]},{"type":"Point","coordinates":[0,0]}]}',
+            $geometryCollection->toFeatureCollectionJson()
+        );
     }
 }

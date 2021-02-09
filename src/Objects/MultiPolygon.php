@@ -35,4 +35,12 @@ class MultiPolygon extends GeometryCollection
     {
         return DB::raw("MULTIPOLYGON({$this->toCollectionWkt()})");
     }
+
+    /**
+     * @return array<Polygon>
+     */
+    public function getGeometries(): array
+    {
+        return parent::getGeometries();
+    }
 }

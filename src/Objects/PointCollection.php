@@ -26,4 +26,12 @@ abstract class PointCollection extends GeometryCollection
     {
         parent::__construct($geometries);
     }
+
+    /**
+     * @return array<Point>
+     */
+    public function getGeometries(): array
+    {
+        return parent::getGeometries();
+    }
 }
