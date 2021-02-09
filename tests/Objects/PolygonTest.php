@@ -104,6 +104,6 @@ class PolygonTest extends TestCase
             ]),
         ]);
 
-        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Polygon","coordinates":[[[0,0],[1,1],[2,2],[3,3],[0,0]]]}]}', $polygon->toFeatureCollectionJson());
+        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"Polygon","coordinates":[[[0,0],[1,1],[2,2],[3,3],[0,0]]]}}]}', $polygon->toFeatureCollectionJson());
     }
 }

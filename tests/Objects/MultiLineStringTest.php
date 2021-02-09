@@ -83,6 +83,6 @@ class MultiLineStringTest extends TestCase
             ]),
         ]);
 
-        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"MultiLineString","coordinates":[[[0,0],[1,1]]]}]}', $multiLineString->toFeatureCollectionJson());
+        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiLineString","coordinates":[[[0,0],[1,1]]]}}]}', $multiLineString->toFeatureCollectionJson());
     }
 }

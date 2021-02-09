@@ -102,7 +102,7 @@ class GeometryCollectionTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'geometry_collection' => GeometryCollection::fromJson('{"type":"FeatureCollection","features":[{"type":"Polygon","coordinates":[[[0,0],[1,1],[2,2],[3,3],[0,0]]]},{"type":"Point","coordinates":[0,0]}]}'),
+            'geometry_collection' => GeometryCollection::fromJson('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"Polygon","coordinates":[[[0,0],[1,1],[2,2],[3,3],[0,0]]]}},{"type":"Feature","properties":[],"geometry":{"type":"Point","coordinates":[0,0]}}]}'),
         ])->fresh();
 
         $this->assertTrue($testPlace->geometry_collection instanceof GeometryCollection);
@@ -172,7 +172,7 @@ class GeometryCollectionTest extends TestCase
         ]);
 
         $this->assertEquals(
-            '{"type":"FeatureCollection","features":[{"type":"Polygon","coordinates":[[[0,0],[1,1],[2,2],[3,3],[0,0]]]},{"type":"Point","coordinates":[0,0]}]}',
+            '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"Polygon","coordinates":[[[0,0],[1,1],[2,2],[3,3],[0,0]]]}},{"type":"Feature","properties":[],"geometry":{"type":"Point","coordinates":[0,0]}}]}',
             $geometryCollection->toFeatureCollectionJson()
         );
     }

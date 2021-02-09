@@ -113,6 +113,6 @@ class MultiPolygonTest extends TestCase
             ]),
         ]);
 
-        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"MultiPolygon","coordinates":[[[[0,0],[1,1],[2,2],[3,3],[0,0]]]]}]}', $multiPolygon->toFeatureCollectionJson());
+        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiPolygon","coordinates":[[[[0,0],[1,1],[2,2],[3,3],[0,0]]]]}}]}', $multiPolygon->toFeatureCollectionJson());
     }
 }

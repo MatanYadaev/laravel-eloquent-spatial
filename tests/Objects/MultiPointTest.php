@@ -67,6 +67,6 @@ class MultiPointTest extends TestCase
             new Point(0, 0),
         ]);
 
-        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"MultiPoint","coordinates":[[0,0]]}]}', $multiPoint->toFeatureCollectionJson());
+        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiPoint","coordinates":[[0,0]]}}]}', $multiPoint->toFeatureCollectionJson());
     }
 }

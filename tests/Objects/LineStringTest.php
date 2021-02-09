@@ -74,6 +74,6 @@ class LineStringTest extends TestCase
             new Point(1, 1),
         ]);
 
-        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"LineString","coordinates":[[0,0],[1,1]]}]}', $lineString->toFeatureCollectionJson());
+        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"LineString","coordinates":[[0,0],[1,1]]}}]}', $lineString->toFeatureCollectionJson());
     }
 }

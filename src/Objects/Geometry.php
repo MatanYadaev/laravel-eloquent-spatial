@@ -78,6 +78,15 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
         ];
     }
 
+    public function toFeature(): array
+    {
+        return [
+            'type' => 'Feature',
+            'properties' => [],
+            'geometry' => $this->toArray()
+        ];
+    }
+
     /**
      * @return array<mixed>
      */
