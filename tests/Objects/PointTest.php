@@ -3,6 +3,7 @@
 namespace MatanYadaev\EloquentSpatial\Tests\Objects;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestCase;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
@@ -47,5 +48,13 @@ class PointTest extends TestCase
         $point = new Point(180, 0);
 
         $this->assertEquals('{"type":"Point","coordinates":[0,180]}', $point->toJson());
+    }
+
+    /** @test */
+    public function it_throws_exception_when_generating_point_from_geo_json_without_coordinates(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        Point::fromJson('{"type":"Point","coordinates":[]}');
     }
 }

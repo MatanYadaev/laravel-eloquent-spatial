@@ -11,6 +11,7 @@ use ObjectCalisthenics\Sniffs\Metrics\MethodPerClassLimitSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UselessOverridingMethodSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use SlevomatCodingStandard\Sniffs\Classes\SuperfluousExceptionNamingSniff;
+use SlevomatCodingStandard\Sniffs\Commenting\InlineDocCommentDeclarationSniff;
 use SlevomatCodingStandard\Sniffs\Functions\UnusedParameterSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
@@ -90,8 +91,11 @@ return [
             'ignoreComments' => false,
         ],
         MaxNestingLevelSniff::class => [
+            'maxNestingLevel' => 3,
+        ],
+        InlineDocCommentDeclarationSniff::class => [
             'exclude' => [
-                'src/Objects/Geometry.php',
+                'src/Factory.php',
             ],
         ],
         UnusedParameterSniff::class => [
@@ -119,6 +123,7 @@ return [
         CyclomaticComplexityIsHigh::class => [
             'exclude' => [
                 'src/Factory.php',
+                'src/Objects/GeometryCollection.php',
             ],
         ],
     ],
@@ -136,7 +141,7 @@ return [
 
     'requirements' => [
         'min-quality' => 90,
-        'min-complexity' => 90,
+        'min-complexity' => 80,
         'min-architecture' => 90,
         'min-style' => 90,
         'disable-security-check' => true,

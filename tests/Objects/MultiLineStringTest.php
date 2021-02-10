@@ -3,6 +3,7 @@
 namespace MatanYadaev\EloquentSpatial\Tests\Objects;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
@@ -84,5 +85,24 @@ class MultiLineStringTest extends TestCase
         ]);
 
         $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiLineString","coordinates":[[[0,180],[1,179]]]}}]}', $multiLineString->toFeatureCollectionJson());
+    }
+
+    /** @test */
+    public function it_throws_exception_when_multi_line_string_has_0_line_strings(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new MultiLineString([]);
+    }
+
+    /** @test */
+    public function it_throws_exception_when_multi_line_string_has_composed_by_point(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        // @phpstan-ignore-next-line
+        new MultiLineString([
+            new Point(0, 0),
+        ]);
     }
 }

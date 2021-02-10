@@ -3,6 +3,7 @@
 namespace MatanYadaev\EloquentSpatial\Tests\Objects;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\GeometryCollection;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
@@ -175,5 +176,24 @@ class GeometryCollectionTest extends TestCase
             '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"Polygon","coordinates":[[[0,180],[1,179],[2,178],[3,177],[0,180]]]}},{"type":"Feature","properties":[],"geometry":{"type":"Point","coordinates":[0,180]}}]}',
             $geometryCollection->toFeatureCollectionJson()
         );
+    }
+
+    /** @test */
+    public function it_does_not_throw_exception_when_geometry_collection_has_0_geometries(): void
+    {
+        $geometryCollection = new GeometryCollection([]);
+
+        $this->assertCount(0, $geometryCollection->getGeometries());
+    }
+
+    /** @test */
+    public function it_throws_exception_when_geometry_collection_has_composed_by_invalid_value(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        // @phpstan-ignore-next-line
+        new GeometryCollection([
+            'invalid-value',
+        ]);
     }
 }
