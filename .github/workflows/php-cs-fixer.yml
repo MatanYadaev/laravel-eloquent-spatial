@@ -20,7 +20,7 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer install
+        run: composer install --prefer-dist --no-interaction
 
       - name: Run PHP CS Fixer
         run: ./vendor/bin/php-cs-fixer fix --allow-risky=yes --diff --dry-run
