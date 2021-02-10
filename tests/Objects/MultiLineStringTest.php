@@ -20,20 +20,20 @@ class MultiLineStringTest extends TestCase
         $testPlace = TestPlace::factory()->create([
             'multi_line_string' => new MultiLineString([
                 new LineString([
-                    new Point(0, 0),
-                    new Point(1, 1),
+                    new Point(180, 0),
+                    new Point(179, 1),
                 ]),
             ]),
-        ])->fresh();
+        ]);
 
         $this->assertTrue($testPlace->multi_line_string instanceof MultiLineString);
 
         $lineStrings = $testPlace->multi_line_string->getGeometries();
         $points = $lineStrings[0]->getGeometries();
 
-        $this->assertEquals(0, $points[0]->latitude);
+        $this->assertEquals(180, $points[0]->latitude);
         $this->assertEquals(0, $points[0]->longitude);
-        $this->assertEquals(1, $points[1]->latitude);
+        $this->assertEquals(179, $points[1]->latitude);
         $this->assertEquals(1, $points[1]->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
@@ -44,17 +44,17 @@ class MultiLineStringTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'multi_line_string' => MultiLineString::fromJson('{"type":"MultiLineString","coordinates":[[[0,0],[1,1]]]}'),
-        ])->fresh();
+            'multi_line_string' => MultiLineString::fromJson('{"type":"MultiLineString","coordinates":[[[0,180],[1,179]]]}'),
+        ]);
 
         $this->assertTrue($testPlace->multi_line_string instanceof MultiLineString);
 
         $lineStrings = $testPlace->multi_line_string->getGeometries();
         $points = $lineStrings[0]->getGeometries();
 
-        $this->assertEquals(0, $points[0]->latitude);
+        $this->assertEquals(180, $points[0]->latitude);
         $this->assertEquals(0, $points[0]->longitude);
-        $this->assertEquals(1, $points[1]->latitude);
+        $this->assertEquals(179, $points[1]->latitude);
         $this->assertEquals(1, $points[1]->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
@@ -65,12 +65,12 @@ class MultiLineStringTest extends TestCase
     {
         $multiLineString = new MultiLineString([
             new LineString([
-                new Point(0, 0),
-                new Point(1, 1),
+                new Point(180, 0),
+                new Point(179, 1),
             ]),
         ]);
 
-        $this->assertEquals('{"type":"MultiLineString","coordinates":[[[0,0],[1,1]]]}', $multiLineString->toJson());
+        $this->assertEquals('{"type":"MultiLineString","coordinates":[[[0,180],[1,179]]]}', $multiLineString->toJson());
     }
 
     /** @test */
@@ -78,11 +78,11 @@ class MultiLineStringTest extends TestCase
     {
         $multiLineString = new MultiLineString([
             new LineString([
-                new Point(0, 0),
-                new Point(1, 1),
+                new Point(180, 0),
+                new Point(179, 1),
             ]),
         ]);
 
-        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiLineString","coordinates":[[[0,0],[1,1]]]}}]}', $multiLineString->toFeatureCollectionJson());
+        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiLineString","coordinates":[[[0,180],[1,179]]]}}]}', $multiLineString->toFeatureCollectionJson());
     }
 }

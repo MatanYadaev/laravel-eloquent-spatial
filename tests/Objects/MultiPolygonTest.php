@@ -22,15 +22,15 @@ class MultiPolygonTest extends TestCase
             'multi_polygon' => new MultiPolygon([
                 new Polygon([
                     new LineString([
-                        new Point(0, 0),
-                        new Point(1, 1),
-                        new Point(2, 2),
-                        new Point(3, 3),
-                        new Point(0, 0),
+                        new Point(180, 0),
+                        new Point(179, 1),
+                        new Point(178, 2),
+                        new Point(177, 3),
+                        new Point(180, 0),
                     ]),
                 ]),
             ]),
-        ])->fresh();
+        ]);
 
         $this->assertTrue($testPlace->multi_polygon instanceof MultiPolygon);
 
@@ -38,15 +38,15 @@ class MultiPolygonTest extends TestCase
         $lineStrings = $polygons[0]->getGeometries();
         $points = $lineStrings[0]->getGeometries();
 
-        $this->assertEquals(0, $points[0]->latitude);
+        $this->assertEquals(180, $points[0]->latitude);
         $this->assertEquals(0, $points[0]->longitude);
-        $this->assertEquals(1, $points[1]->latitude);
+        $this->assertEquals(179, $points[1]->latitude);
         $this->assertEquals(1, $points[1]->longitude);
-        $this->assertEquals(2, $points[2]->latitude);
+        $this->assertEquals(178, $points[2]->latitude);
         $this->assertEquals(2, $points[2]->longitude);
-        $this->assertEquals(3, $points[3]->latitude);
+        $this->assertEquals(177, $points[3]->latitude);
         $this->assertEquals(3, $points[3]->longitude);
-        $this->assertEquals(0, $points[4]->latitude);
+        $this->assertEquals(180, $points[4]->latitude);
         $this->assertEquals(0, $points[4]->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
@@ -57,8 +57,8 @@ class MultiPolygonTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'multi_polygon' => MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[0,0],[1,1],[2,2],[3,3],[0,0]]]]}'),
-        ])->fresh();
+            'multi_polygon' => MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[0,180],[1,179],[2,178],[3,177],[0,180]]]]}'),
+        ]);
 
         $this->assertTrue($testPlace->multi_polygon instanceof MultiPolygon);
 
@@ -66,15 +66,15 @@ class MultiPolygonTest extends TestCase
         $lineStrings = $polygons[0]->getGeometries();
         $points = $lineStrings[0]->getGeometries();
 
-        $this->assertEquals(0, $points[0]->latitude);
+        $this->assertEquals(180, $points[0]->latitude);
         $this->assertEquals(0, $points[0]->longitude);
-        $this->assertEquals(1, $points[1]->latitude);
+        $this->assertEquals(179, $points[1]->latitude);
         $this->assertEquals(1, $points[1]->longitude);
-        $this->assertEquals(2, $points[2]->latitude);
+        $this->assertEquals(178, $points[2]->latitude);
         $this->assertEquals(2, $points[2]->longitude);
-        $this->assertEquals(3, $points[3]->latitude);
+        $this->assertEquals(177, $points[3]->latitude);
         $this->assertEquals(3, $points[3]->longitude);
-        $this->assertEquals(0, $points[4]->latitude);
+        $this->assertEquals(180, $points[4]->latitude);
         $this->assertEquals(0, $points[4]->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
@@ -86,16 +86,16 @@ class MultiPolygonTest extends TestCase
         $multiPolygon = new MultiPolygon([
             new Polygon([
                 new LineString([
-                    new Point(0, 0),
-                    new Point(1, 1),
-                    new Point(2, 2),
-                    new Point(3, 3),
-                    new Point(0, 0),
+                    new Point(180, 0),
+                    new Point(179, 1),
+                    new Point(178, 2),
+                    new Point(177, 3),
+                    new Point(180, 0),
                 ]),
             ]),
         ]);
 
-        $this->assertEquals('{"type":"MultiPolygon","coordinates":[[[[0,0],[1,1],[2,2],[3,3],[0,0]]]]}', $multiPolygon->toJson());
+        $this->assertEquals('{"type":"MultiPolygon","coordinates":[[[[0,180],[1,179],[2,178],[3,177],[0,180]]]]}', $multiPolygon->toJson());
     }
 
     /** @test */
@@ -104,15 +104,15 @@ class MultiPolygonTest extends TestCase
         $multiPolygon = new MultiPolygon([
             new Polygon([
                 new LineString([
-                    new Point(0, 0),
-                    new Point(1, 1),
-                    new Point(2, 2),
-                    new Point(3, 3),
-                    new Point(0, 0),
+                    new Point(180, 0),
+                    new Point(179, 1),
+                    new Point(178, 2),
+                    new Point(177, 3),
+                    new Point(180, 0),
                 ]),
             ]),
         ]);
 
-        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiPolygon","coordinates":[[[[0,0],[1,1],[2,2],[3,3],[0,0]]]]}}]}', $multiPolygon->toFeatureCollectionJson());
+        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiPolygon","coordinates":[[[[0,180],[1,179],[2,178],[3,177],[0,180]]]]}}]}', $multiPolygon->toFeatureCollectionJson());
     }
 }
