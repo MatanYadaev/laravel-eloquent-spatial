@@ -9,8 +9,8 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Query\Expression;
+use InvalidArgumentException;
 use JsonSerializable;
-use MatanYadaev\EloquentSpatial\Exceptions\InvalidTypeException;
 use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\GeometryCast;
 
@@ -18,27 +18,29 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 {
     abstract public function toWkt(): Expression;
 
-    /**
-     * @param string $wkt
-     *
-     * @return static
-     *
-     * @throws InvalidTypeException
-     */
-    public static function fromWkt(string $wkt): static
-    {
-        $geometry = Factory::parse($wkt);
-
-        if (! ($geometry instanceof static)) {
-            throw new InvalidTypeException(static::class, $geometry);
-        }
-
-        return $geometry;
-    }
-
     public function toJson($options = 0): string
     {
         return json_encode($this, $options);
+    }
+
+    /**
+     * @param string $wkb
+     *
+     * @return static
+     *
+     * @throws InvalidArgumentException
+     */
+    public static function fromWkb(string $wkb): static
+    {
+        $geometry = Factory::parse($wkb);
+
+        if (! ($geometry instanceof static)) {
+            throw new InvalidArgumentException(
+                sprintf('Expected %s, %s given.', static::class, $geometry::class)
+            );
+        }
+
+        return $geometry;
     }
 
     /**
@@ -46,14 +48,16 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
      *
      * @return static
      *
-     * @throws InvalidTypeException
+     * @throws InvalidArgumentException
      */
     public static function fromJson(string $geoJson): static
     {
         $geometry = Factory::parse($geoJson);
 
         if (! ($geometry instanceof static)) {
-            throw new InvalidTypeException(static::class, $geometry);
+            throw new InvalidArgumentException(
+                sprintf('Expected %s, %s given.', static::class, $geometry::class)
+            );
         }
 
         return $geometry;
@@ -78,6 +82,11 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
         ];
     }
 
+    /**
+     * @return array{
+     *   type: string, properties: array<mixed>, geometry: array{type: string, coordinates: array<mixed>}
+     * }
+     */
     public function toFeature(): array
     {
         return [

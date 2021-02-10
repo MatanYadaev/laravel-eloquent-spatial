@@ -3,6 +3,7 @@
 namespace MatanYadaev\EloquentSpatial\Tests\Objects;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
@@ -105,5 +106,24 @@ class PolygonTest extends TestCase
         ]);
 
         $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"Polygon","coordinates":[[[0,180],[1,179],[2,178],[3,177],[0,180]]]}}]}', $polygon->toFeatureCollectionJson());
+    }
+
+    /** @test */
+    public function it_throws_exception_when_polygon_has_0_line_strings(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new Polygon([]);
+    }
+
+    /** @test */
+    public function it_throws_exception_when_polygon_has_composed_by_point(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        // @phpstan-ignore-next-line
+        new Polygon([
+            new Point(0, 0),
+        ]);
     }
 }

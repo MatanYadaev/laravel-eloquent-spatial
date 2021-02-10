@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace MatanYadaev\EloquentSpatial;
 
 use Geometry as geoPHPGeometry;
+use GeometryCollection as geoPHPGeometryCollection;
 use geoPHP;
-use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use LineString as geoPHPLineString;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\GeometryCollection;
@@ -33,8 +34,14 @@ class Factory
             $value = substr($value, 4);
         }
 
-        /** @var geoPHPGeometry $geoPHPGeometry */
-        $geoPHPGeometry = geoPHP::load($value);
+        try {
+            /** @var geoPHPGeometry|false $geoPHPGeometry */
+            $geoPHPGeometry = geoPHP::load($value);
+        } finally {
+            if (! isset($geoPHPGeometry) || ! $geoPHPGeometry) {
+                throw new InvalidArgumentException('Invalid spatial value');
+            }
+        }
 
         return self::createFromGeometry($geoPHPGeometry);
     }
@@ -42,97 +49,41 @@ class Factory
     protected static function createFromGeometry(geoPHPGeometry $geometry): Geometry
     {
         if ($geometry instanceof geoPHPPoint) {
-            return self::createPoint($geometry->coords[1], $geometry->coords[0]);
+            if ($geometry->coords[0] === null || $geometry->coords[1] === null) {
+                if (! isset($geoPHPGeometry) || ! $geoPHPGeometry) {
+                    throw new InvalidArgumentException('Invalid spatial value');
+                }
+            }
+
+            return new Point($geometry->coords[1], $geometry->coords[0]);
         }
 
+        /** @var geoPHPGeometryCollection $geometry */
         $components = collect($geometry->components)
             ->map(static function (geoPHPGeometry $geometryComponent): Geometry {
                 return self::createFromGeometry($geometryComponent);
             });
 
-        $className = $geometry::class;
-
-        if ($className === geoPHPMultiPoint::class) {
-            return self::createMultiPoint($components);
-        }
-        if ($className === geoPHPLineString::class) {
-            return self::createLineString($components);
-        }
-        if ($className === geoPHPPolygon::class) {
-            return self::createPolygon($components);
-        }
-        if ($className === geoPHPMultiLineString::class) {
-            return self::createMultiLineString($components);
-        }
-        if ($className === geoPHPMultiPolygon::class) {
-            return self::createMultiPolygon($components);
+        if ($geometry::class === geoPHPMultiPoint::class) {
+            return new MultiPoint($components);
         }
 
-        return self::createGeometryCollection($components);
-    }
+        if ($geometry::class === geoPHPLineString::class) {
+            return new LineString($components);
+        }
 
-    protected static function createPoint(float $latitude, float $longitude): Point
-    {
-        return new Point($latitude, $longitude);
-    }
+        if ($geometry::class === geoPHPPolygon::class) {
+            return new Polygon($components);
+        }
 
-    /**
-     * @param Collection<Point> $points
-     *
-     * @return MultiPoint
-     */
-    protected static function createMultiPoint(Collection $points): MultiPoint
-    {
-        return new MultiPoint($points);
-    }
+        if ($geometry::class === geoPHPMultiLineString::class) {
+            return new MultiLineString($components);
+        }
 
-    /**
-     * @param Collection<Point> $points
-     *
-     * @return LineString
-     */
-    protected static function createLineString(Collection $points): LineString
-    {
-        return new LineString($points);
-    }
+        if ($geometry::class === geoPHPMultiPolygon::class) {
+            return new MultiPolygon($components);
+        }
 
-    /**
-     * @param Collection<LineString> $lineStrings
-     *
-     * @return Polygon
-     */
-    protected static function createPolygon(Collection $lineStrings): Polygon
-    {
-        return new Polygon($lineStrings);
-    }
-
-    /**
-     * @param Collection<LineString> $lineStrings
-     *
-     * @return MultiLineString
-     */
-    protected static function createMultiLineString(Collection $lineStrings): MultiLineString
-    {
-        return new MultiLineString($lineStrings);
-    }
-
-    /**
-     * @param Collection<Polygon> $polygons
-     *
-     * @return MultiPolygon
-     */
-    protected static function createMultiPolygon(Collection $polygons): MultiPolygon
-    {
-        return new MultiPolygon($polygons);
-    }
-
-    /**
-     * @param Collection<Geometry> $geometries
-     *
-     * @return GeometryCollection
-     */
-    protected static function createGeometryCollection(Collection $geometries): GeometryCollection
-    {
-        return new GeometryCollection($geometries);
+        return new GeometryCollection($components);
     }
 }

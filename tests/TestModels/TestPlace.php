@@ -39,6 +39,7 @@ class TestPlace extends Model
         'polygon',
         'multi_polygon',
         'geometry_collection',
+        'point_with_line_string_cast',
     ];
 
     /**
@@ -52,6 +53,7 @@ class TestPlace extends Model
         'polygon' => Polygon::class,
         'multi_polygon' => MultiPolygon::class,
         'geometry_collection' => GeometryCollection::class,
+        'point_with_line_string_cast' => LineString::class,
     ];
 
     public function newEloquentBuilder($query): SpatialBuilder

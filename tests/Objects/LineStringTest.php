@@ -3,8 +3,10 @@
 namespace MatanYadaev\EloquentSpatial\Tests\Objects;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\Tests\TestCase;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
@@ -75,5 +77,26 @@ class LineStringTest extends TestCase
         ]);
 
         $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"LineString","coordinates":[[0,180],[1,179]]}}]}', $lineString->toFeatureCollectionJson());
+    }
+
+    /** @test */
+    public function it_throws_exception_when_line_string_has_less_than_2_points(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new LineString([
+            new Point(180, 0),
+        ]);
+    }
+
+    /** @test */
+    public function it_throws_exception_when_line_string_has_composed_by_polygon(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        // @phpstan-ignore-next-line
+        new LineString([
+            Polygon::fromJson('{"type":"Polygon","coordinates":[[[0,180],[1,179],[2,178],[3,177],[0,180]]]}'),
+        ]);
     }
 }

@@ -3,8 +3,11 @@
 namespace MatanYadaev\EloquentSpatial\Tests\Objects;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use InvalidArgumentException;
+use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
 use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\Tests\TestCase;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
@@ -68,5 +71,24 @@ class MultiPointTest extends TestCase
         ]);
 
         $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiPoint","coordinates":[[0,180]]}}]}', $multiPoint->toFeatureCollectionJson());
+    }
+
+    /** @test */
+    public function it_throws_exception_when_multi_point_has_0_points(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new MultiPoint([]);
+    }
+
+    /** @test */
+    public function it_throws_exception_when_multi_point_has_composed_by_polygon(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        // @phpstan-ignore-next-line
+        new MultiLineString([
+            Polygon::fromJson('{"type":"Polygon","coordinates":[[[0,180],[1,179],[2,178],[3,177],[0,180]]]}'),
+        ]);
     }
 }

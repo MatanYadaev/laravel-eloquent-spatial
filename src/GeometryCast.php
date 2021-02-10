@@ -7,13 +7,17 @@ namespace MatanYadaev\EloquentSpatial;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Expression;
-use MatanYadaev\EloquentSpatial\Exceptions\InvalidTypeException;
+use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
 class GeometryCast implements CastsAttributes
 {
+    /** @var class-string<Geometry> */
     private string $className;
 
+    /**
+     * @param class-string<Geometry> $className
+     */
     public function __construct(string $className)
     {
         $this->className = $className;
@@ -33,18 +37,18 @@ class GeometryCast implements CastsAttributes
             return null;
         }
 
-        return $this->className::fromWkt($wkt, false);
+        return $this->className::fromWkb($wkt);
     }
 
     /**
      * @param Model $model
      * @param string $key
-     * @param Geometry|null $geometry
+     * @param Geometry|mixed|null $geometry
      * @param array<string, mixed> $attributes
      *
      * @return Expression|string|null
      *
-     * @throws InvalidTypeException
+     * @throws InvalidArgumentException
      */
     public function set($model, string $key, $geometry, array $attributes): Expression | string | null
     {
@@ -53,7 +57,10 @@ class GeometryCast implements CastsAttributes
         }
 
         if (! ($geometry instanceof $this->className)) {
-            throw new InvalidTypeException($this->className, $geometry);
+            $geometryType = is_object($geometry) ? $geometry::class : gettype($geometry);
+            throw new InvalidArgumentException(
+                sprintf('Expected %s, %s given.', static::class, $geometryType)
+            );
         }
 
         return $geometry->toWkt();
