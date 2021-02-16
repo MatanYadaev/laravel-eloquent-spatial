@@ -96,6 +96,7 @@ return [
         InlineDocCommentDeclarationSniff::class => [
             'exclude' => [
                 'src/Factory.php',
+                'src/Objects/Geometry.php',
             ],
         ],
         UnusedParameterSniff::class => [
