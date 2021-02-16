@@ -27,10 +27,8 @@ class MultiPointTest extends TestCase
 
         $this->assertTrue($testPlace->multi_point instanceof MultiPoint);
 
-        $points = $testPlace->multi_point->getGeometries();
-
-        $this->assertEquals(180, $points[0]->latitude);
-        $this->assertEquals(0, $points[0]->longitude);
+        $this->assertEquals(180, $testPlace->multi_point[0]->latitude);
+        $this->assertEquals(0, $testPlace->multi_point[0]->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }
@@ -45,10 +43,8 @@ class MultiPointTest extends TestCase
 
         $this->assertTrue($testPlace->multi_point instanceof MultiPoint);
 
-        $points = $testPlace->multi_point->getGeometries();
-
-        $this->assertEquals(180, $points[0]->latitude);
-        $this->assertEquals(0, $points[0]->longitude);
+        $this->assertEquals(180, $testPlace->multi_point[0]->latitude);
+        $this->assertEquals(0, $testPlace->multi_point[0]->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }

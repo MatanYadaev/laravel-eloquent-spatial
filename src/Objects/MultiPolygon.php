@@ -9,6 +9,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
+/**
+ * @method array<Polygon> getGeometries()
+ * @method Polygon offsetGet(mixed $offset)
+ */
 class MultiPolygon extends GeometryCollection
 {
     /** @var Collection<Polygon> */
@@ -31,13 +35,5 @@ class MultiPolygon extends GeometryCollection
     public function toWkt(): Expression
     {
         return DB::raw("MULTIPOLYGON({$this->toCollectionWkt()})");
-    }
-
-    /**
-     * @return array<Polygon>
-     */
-    public function getGeometries(): array
-    {
-        return parent::getGeometries();
     }
 }

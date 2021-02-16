@@ -27,12 +27,10 @@ class LineStringTest extends TestCase
 
         $this->assertTrue($testPlace->line_string instanceof LineString);
 
-        $points = $testPlace->line_string->getGeometries();
-
-        $this->assertEquals(180, $points[0]->latitude);
-        $this->assertEquals(0, $points[0]->longitude);
-        $this->assertEquals(179, $points[1]->latitude);
-        $this->assertEquals(1, $points[1]->longitude);
+        $this->assertEquals(180, $testPlace->line_string[0]->latitude);
+        $this->assertEquals(0, $testPlace->line_string[0]->longitude);
+        $this->assertEquals(179, $testPlace->line_string[1]->latitude);
+        $this->assertEquals(1, $testPlace->line_string[1]->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }
@@ -47,12 +45,10 @@ class LineStringTest extends TestCase
 
         $this->assertTrue($testPlace->line_string instanceof LineString);
 
-        $points = $testPlace->line_string->getGeometries();
-
-        $this->assertEquals(180, $points[0]->latitude);
-        $this->assertEquals(0, $points[0]->longitude);
-        $this->assertEquals(179, $points[1]->latitude);
-        $this->assertEquals(1, $points[1]->longitude);
+        $this->assertEquals(180, $testPlace->line_string[0]->latitude);
+        $this->assertEquals(0, $testPlace->line_string[0]->longitude);
+        $this->assertEquals(179, $testPlace->line_string[1]->latitude);
+        $this->assertEquals(1, $testPlace->line_string[1]->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }

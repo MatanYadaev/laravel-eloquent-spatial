@@ -36,25 +36,23 @@ class GeometryCollectionTest extends TestCase
 
         $this->assertTrue($testPlace->geometry_collection instanceof GeometryCollection);
 
-        $geometries = $testPlace->geometry_collection->getGeometries();
         /** @var Polygon $polygon */
-        $polygon = $geometries[0];
-        $lineStrings = $polygon->getGeometries();
-        $points = $lineStrings[0]->getGeometries();
+        $polygon = $testPlace->geometry_collection[0];
+        $lineString = $polygon[0];
 
-        $this->assertEquals(180, $points[0]->latitude);
-        $this->assertEquals(0, $points[0]->longitude);
-        $this->assertEquals(179, $points[1]->latitude);
-        $this->assertEquals(1, $points[1]->longitude);
-        $this->assertEquals(178, $points[2]->latitude);
-        $this->assertEquals(2, $points[2]->longitude);
-        $this->assertEquals(177, $points[3]->latitude);
-        $this->assertEquals(3, $points[3]->longitude);
-        $this->assertEquals(180, $points[4]->latitude);
-        $this->assertEquals(0, $points[4]->longitude);
+        $this->assertEquals(180, $lineString[0]->latitude);
+        $this->assertEquals(0, $lineString[0]->longitude);
+        $this->assertEquals(179, $lineString[1]->latitude);
+        $this->assertEquals(1, $lineString[1]->longitude);
+        $this->assertEquals(178, $lineString[2]->latitude);
+        $this->assertEquals(2, $lineString[2]->longitude);
+        $this->assertEquals(177, $lineString[3]->latitude);
+        $this->assertEquals(3, $lineString[3]->longitude);
+        $this->assertEquals(180, $lineString[4]->latitude);
+        $this->assertEquals(0, $lineString[4]->longitude);
 
         /** @var Point $point */
-        $point = $geometries[1];
+        $point = $testPlace->geometry_collection[1];
 
         $this->assertEquals(180, $point->latitude);
         $this->assertEquals(0, $point->longitude);
@@ -72,25 +70,23 @@ class GeometryCollectionTest extends TestCase
 
         $this->assertTrue($testPlace->geometry_collection instanceof GeometryCollection);
 
-        $geometries = $testPlace->geometry_collection->getGeometries();
         /** @var Polygon $polygon */
-        $polygon = $geometries[0];
-        $lineStrings = $polygon->getGeometries();
-        $points = $lineStrings[0]->getGeometries();
+        $polygon = $testPlace->geometry_collection[0];
+        $lineString = $polygon[0];
 
-        $this->assertEquals(180, $points[0]->latitude);
-        $this->assertEquals(0, $points[0]->longitude);
-        $this->assertEquals(179, $points[1]->latitude);
-        $this->assertEquals(1, $points[1]->longitude);
-        $this->assertEquals(178, $points[2]->latitude);
-        $this->assertEquals(2, $points[2]->longitude);
-        $this->assertEquals(177, $points[3]->latitude);
-        $this->assertEquals(3, $points[3]->longitude);
-        $this->assertEquals(180, $points[4]->latitude);
-        $this->assertEquals(0, $points[4]->longitude);
+        $this->assertEquals(180, $lineString[0]->latitude);
+        $this->assertEquals(0, $lineString[0]->longitude);
+        $this->assertEquals(179, $lineString[1]->latitude);
+        $this->assertEquals(1, $lineString[1]->longitude);
+        $this->assertEquals(178, $lineString[2]->latitude);
+        $this->assertEquals(2, $lineString[2]->longitude);
+        $this->assertEquals(177, $lineString[3]->latitude);
+        $this->assertEquals(3, $lineString[3]->longitude);
+        $this->assertEquals(180, $lineString[4]->latitude);
+        $this->assertEquals(0, $lineString[4]->longitude);
 
         /** @var Point $point */
-        $point = $geometries[1];
+        $point = $testPlace->geometry_collection[1];
 
         $this->assertEquals(180, $point->latitude);
         $this->assertEquals(0, $point->longitude);
@@ -108,25 +104,23 @@ class GeometryCollectionTest extends TestCase
 
         $this->assertTrue($testPlace->geometry_collection instanceof GeometryCollection);
 
-        $geometries = $testPlace->geometry_collection->getGeometries();
         /** @var Polygon $polygon */
-        $polygon = $geometries[0];
-        $lineStrings = $polygon->getGeometries();
-        $points = $lineStrings[0]->getGeometries();
+        $polygon = $testPlace->geometry_collection[0];
+        $lineString = $polygon[0];
 
-        $this->assertEquals(180, $points[0]->latitude);
-        $this->assertEquals(0, $points[0]->longitude);
-        $this->assertEquals(179, $points[1]->latitude);
-        $this->assertEquals(1, $points[1]->longitude);
-        $this->assertEquals(178, $points[2]->latitude);
-        $this->assertEquals(2, $points[2]->longitude);
-        $this->assertEquals(177, $points[3]->latitude);
-        $this->assertEquals(3, $points[3]->longitude);
-        $this->assertEquals(180, $points[4]->latitude);
-        $this->assertEquals(0, $points[4]->longitude);
+        $this->assertEquals(180, $lineString[0]->latitude);
+        $this->assertEquals(0, $lineString[0]->longitude);
+        $this->assertEquals(179, $lineString[1]->latitude);
+        $this->assertEquals(1, $lineString[1]->longitude);
+        $this->assertEquals(178, $lineString[2]->latitude);
+        $this->assertEquals(2, $lineString[2]->longitude);
+        $this->assertEquals(177, $lineString[3]->latitude);
+        $this->assertEquals(3, $lineString[3]->longitude);
+        $this->assertEquals(180, $lineString[4]->latitude);
+        $this->assertEquals(0, $lineString[4]->longitude);
 
         /** @var Point $point */
-        $point = $geometries[1];
+        $point = $testPlace->geometry_collection[1];
 
         $this->assertEquals(180, $point->latitude);
         $this->assertEquals(0, $point->longitude);
@@ -195,5 +189,115 @@ class GeometryCollectionTest extends TestCase
         new GeometryCollection([
             'invalid-value',
         ]);
+    }
+
+    /** @test */
+    public function it_unsets_geometry_collection_item(): void
+    {
+        $geometryCollection = new GeometryCollection([
+            new Polygon([
+                new LineString([
+                    new Point(180, 0),
+                    new Point(179, 1),
+                    new Point(178, 2),
+                    new Point(177, 3),
+                    new Point(180, 0),
+                ]),
+            ]),
+            new Point(180, 0),
+        ]);
+
+        unset($geometryCollection[0]);
+
+        $this->assertInstanceOf(Point::class, $geometryCollection[0]);
+        $this->assertCount(1, $geometryCollection->getGeometries());
+    }
+
+    /** @test */
+    public function it_unsets_geometry_collection_item_below_minimum(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $polygon = new Polygon([
+            new LineString([
+                new Point(180, 0),
+                new Point(179, 1),
+                new Point(178, 2),
+                new Point(177, 3),
+                new Point(180, 0),
+            ]),
+        ]);
+
+        unset($polygon[0]);
+    }
+
+    /** @test */
+    public function it_checks_if_geometry_collection_item_is_exists(): void
+    {
+        $geometryCollection = new GeometryCollection([
+            new Polygon([
+                new LineString([
+                    new Point(180, 0),
+                    new Point(179, 1),
+                    new Point(178, 2),
+                    new Point(177, 3),
+                    new Point(180, 0),
+                ]),
+            ]),
+            new Point(180, 0),
+        ]);
+
+        $this->assertTrue(isset($geometryCollection[0]));
+        $this->assertTrue(isset($geometryCollection[1]));
+        $this->assertFalse(isset($geometryCollection[2]));
+    }
+
+    /** @test */
+    public function it_sets_valid_item_to_geometry_collection(): void
+    {
+        /** @var TestPlace $testPlace */
+        $testPlace = TestPlace::factory()->create([
+            'polygon' => new Polygon([
+                new LineString([
+                    new Point(180, 0),
+                    new Point(179, 1),
+                    new Point(178, 2),
+                    new Point(177, 3),
+                    new Point(180, 0),
+                ]),
+            ]),
+        ]);
+
+        $testPlace->polygon[1] = new LineString([
+            new Point(180, 0),
+            new Point(179, 1),
+            new Point(178, 2),
+            new Point(177, 3),
+            new Point(180, 0),
+        ]);
+
+        $testPlace->save();
+
+        $testPlace->refresh();
+
+        $this->assertInstanceOf(LineString::class, $testPlace->polygon[1]);
+    }
+
+    /** @test */
+    public function it_sets_invalid_item_to_geometry_collection(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $polygon = new Polygon([
+            new LineString([
+                new Point(180, 0),
+                new Point(179, 1),
+                new Point(178, 2),
+                new Point(177, 3),
+                new Point(180, 0),
+            ]),
+        ]);
+
+        $polygon[1] = new Point(180, 0);
     }
 }
