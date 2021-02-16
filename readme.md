@@ -131,26 +131,59 @@ echo $londonEye->location->longitude; // -0.1195537
 echo $vacationCity->area->toJson(); // {"type":"Polygon","coordinates":[[[41.90746728266806,12.455363273620605],[41.906636872349075,12.450309991836548],[41.90197359839437,12.445632219314575],[41.90027269624499,12.447413206100464],[41.90000118654431,12.457906007766724],[41.90281205461268,12.458517551422117],[41.903107507989986,12.457584142684937],[41.905918239316286,12.457734346389769],[41.90637337450963,12.45572805404663],[41.90746728266806,12.455363273620605]]]}
 ```
 
-## Geometry classes
+## API
 
-| MatanYadaev\LaravelEloquentSpatial\Objects                   | OpenGIS Class   |
-| ------------------------------------------------------------ | --------------- |
-| `Point(float $latitude, float $longitude)`                   | [Point](https://dev.mysql.com/doc/refman/8.0/en/gis-class-point.html) |
-| `MultiPoint(Point[] \| Collection<Point>)`                   | [MultiPoint](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipoint.html) |
-| `LineString(Point[] \| Collection<Point>)`                   | [LineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-linestring.html) |
-| `MultiLineString(LineString[] \| Collection<LineString>)`    | [MultiLineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multilinestring.html) |
-| `Polygon(LineString[] \| Collection<LineString>)`            | [Polygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-polygon.html) |
-| `MultiPolygon(Polygon[] \| Collection<Polygon>)`             | [MultiPolygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipolygon.html) |
-| `GeometryCollection(Geometry[] \| Collection<Geometry>)`     | [GeometryCollection](https://dev.mysql.com/doc/refman/8.0/en/gis-class-geometrycollection.html) |
+### Available spatial classes
 
-## Available functions
+* `Point(float $latitude, float $longitude)` - [MySQL Point](https://dev.mysql.com/doc/refman/8.0/en/gis-class-point.html)
+* `MultiPoint(Point[] | Collection<Point>)` - [MySQL MultiPoint](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipoint.html)
+* `LineString(Point[] | Collection<Point>)` - [MySQL LineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-linestring.html)
+* `MultiLineString(LineString[] | Collection<LineString>)` - [MySQL MultiLineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multilinestring.html)
+* `Polygon(LineString[] | Collection<LineString>)` - [MySQL Polygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-polygon.html)
+* `MultiPolygon(Polygon[] | Collection<Polygon>)` - [MySQL MultiPolygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipolygon.html)
+* `GeometryCollection(Geometry[] | Collection<Geometry>)` - [MySQL GeometryCollection](https://dev.mysql.com/doc/refman/8.0/en/gis-class-geometrycollection.html)
+  
+### Available spatial functions
+
+* `toWkt` - Mostly used internally
+* `toArray`
+* `toJson`
+* `fromWkb` - Mostly used internally
+* `fromJson`
+* `toFeatureCollectionJson`
+* `getCoordinates`
+
+Geometry collection functions:
+
+* `toCollectionWkt` - Mostly used internally
+* `getGeometries` - (explanation...) Can be used with `ArrayAccess` as well
+
+### Available spatial scopes
+
+* `withDistance(string $column, Geometry | string $geometryOrColumn, string $alias = 'distance')`
+* `whereDistance(string $column, Geometry | string $geometryOrColumn, string $operator, int | float $distance)`
+* `orderByDistance(string $column, Geometry | string $geometryOrColumn, string $direction = 'asc')`
+* `withDistanceSphere(string $column, Geometry | string $geometryOrColumn, string $alias = 'distance')`
+* `whereDistanceSphere(string $column, Geometry | string $geometryOrColumn, string $operator, int | float $distance)`
+* `orderByDistanceSphere(string $column, Geometry | string $geometryOrColumn, string $direction = 'asc')`
+* `whereWithin(string $column, Geometry | string $geometryOrColumn)`
+* `whereContains(string $column, Geometry | string $geometryOrColumn)`
+* `whereTouches(string $column, Geometry | string $geometryOrColumn)`
+* `whereIntersects(string $column, Geometry | string $geometryOrColumn)`
+* `whereCrosses(string $column, Geometry | string $geometryOrColumn)`
+* `whereDisjoint(string $column, Geometry | string $geometryOrColumn)`
+* `whereOverlaps(string $column, Geometry | string $geometryOrColumn)`
+* `whereEquals(string $column, Geometry | string $geometryOrColumn)`
+
+## Tip for better IDE support
+
 
 ## Tests
 
 ``` bash
 composer phpunit
 # or with coverage
-composer phpunit-cover
+composer phpunit-coverage
 ```
 
 ## Changelog

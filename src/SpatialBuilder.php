@@ -92,8 +92,8 @@ class SpatialBuilder extends Builder
         string $column,
         Geometry | string $geometryOrColumn,
         string $operator,
-        int | float $distance): self
-    {
+        int | float $distance
+    ): self {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
         return $this->whereRaw(
