@@ -27,7 +27,63 @@ Geometry collection functions:
 
 ## Available spatial scopes
 
-* `withDistance(string $column, Geometry | string $geometryOrColumn, string $alias = 'distance')`
+###  withDistance
+
+Retrieves the distance between 2 geometry objects.
+
+| parameter name      | type                 | default |
+| ------------------  | -------------------- | ------- |
+| `$column`           | `string`             |
+| `$geometryOrColumn` | `Geometry \| string` |
+| `$alias`            | `string`             | `'distance'`
+
+<details><summary>Example</summary>
+
+```php
+Place::create(['point' => new Point(0, 0)]);
+
+$placeWithDistance = Place::query()
+    ->withDistance('point', new Point(1, 1))
+    ->first();
+
+echo $placeWithDistance->distance; // 1.4142135623731
+
+// when using alias:
+$placeWithDistance = Place::query()
+    ->withDistance('point', new Point(1, 1), 'distance_in_meters')
+    ->first();
+
+echo $placeWithDistance->distance_in_meters; // 1.4142135623731
+```
+</details>
+
+###  whereDistance
+
+Description
+
+| parameter name      | type                 
+| ------------------  | -------------------- 
+| `$column`           | `string`             
+| `$geometryOrColumn` | `Geometry \| string` 
+| `$operator`         | `string`
+| `$value`            | `int \| float`
+
+<details><summary>Example</summary>
+
+```php
+Place::create([
+    'name' => 'My place',
+    'point' => new Point(0, 0),
+]);
+
+$place = Place::query()
+    ->whereDistance('point', new Point(1, 1), '<', 10)
+    ->first();
+
+echo $place->name; // My place
+```
+</details>
+
 * `whereDistance(string $column, Geometry | string $geometryOrColumn, string $operator, int | float $distance)`
 * `orderByDistance(string $column, Geometry | string $geometryOrColumn, string $direction = 'asc')`
 * `withDistanceSphere(string $column, Geometry | string $geometryOrColumn, string $alias = 'distance')`

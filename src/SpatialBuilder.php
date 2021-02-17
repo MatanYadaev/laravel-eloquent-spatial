@@ -35,7 +35,7 @@ class SpatialBuilder extends Builder
         string $column,
         Geometry | string $geometryOrColumn,
         string $operator,
-        int | float $distance
+        int | float $value
     ): self {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
@@ -45,7 +45,7 @@ class SpatialBuilder extends Builder
                 "`{$column}`",
                 $geometryOrColumn,
                 $operator,
-                $distance,
+                $value,
             )
         );
     }
@@ -92,7 +92,7 @@ class SpatialBuilder extends Builder
         string $column,
         Geometry | string $geometryOrColumn,
         string $operator,
-        int | float $distance
+        int | float $value
     ): self {
         $geometryOrColumn = $this->toExpression($geometryOrColumn);
 
@@ -102,7 +102,7 @@ class SpatialBuilder extends Builder
                 "`{$column}`",
                 $geometryOrColumn,
                 $operator,
-                $distance
+                $value
             )
         );
     }
