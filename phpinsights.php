@@ -109,6 +109,7 @@ return [
             'exclude' => [
                 'src/SpatialBuilder.php',
                 'src/Objects/Geometry.php',
+                'src/Objects/GeometryCollection.php',
             ],
         ],
         ClassTraitAndInterfaceLengthSniff::class => [

@@ -80,6 +80,45 @@ class GeometryCollection extends Geometry implements ArrayAccess
     }
 
     /**
+     * @param mixed $offset
+     *
+     * @return bool
+     */
+    public function offsetExists($offset): bool
+    {
+        return isset($this->geometries[$offset]);
+    }
+
+    /**
+     * @param mixed $offset
+     *
+     * @return Geometry
+     */
+    public function offsetGet($offset): Geometry
+    {
+        return $this->geometries[$offset];
+    }
+
+    /**
+     * @param mixed $offset
+     * @param Geometry $geometry
+     */
+    public function offsetSet($offset, $geometry): void
+    {
+        $this->geometries[$offset] = $geometry;
+        $this->validateGeometriesType();
+    }
+
+    /**
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset): void
+    {
+        $this->geometries->splice($offset, 1);
+        $this->validateGeometriesCount();
+    }
+
+    /**
      * @throws InvalidArgumentException
      */
     protected function validateGeometriesCount(): void
@@ -120,42 +159,5 @@ class GeometryCollection extends Geometry implements ArrayAccess
             ->join(',');
 
         return DB::raw($wkb);
-    }
-
-    /**
-     * @param mixed $offset
-     * @return bool
-     */
-    public function offsetExists($offset): bool
-    {
-        return isset($this->geometries[$offset]);
-    }
-
-    /**
-     * @param mixed $offset
-     * @return Geometry
-     */
-    public function offsetGet($offset): Geometry
-    {
-        return $this->geometries[$offset];
-    }
-
-    /**
-     * @param mixed $offset
-     * @param Geometry $geometry
-     */
-    public function offsetSet($offset, $geometry): void
-    {
-        $this->geometries[$offset] = $geometry;
-        $this->validateGeometriesType();
-    }
-
-    /**
-     * @param mixed $offset
-     */
-    public function offsetUnset($offset): void
-    {
-        $this->geometries->splice($offset, 1);
-        $this->validateGeometriesCount();
     }
 }

@@ -25,11 +25,9 @@ use Polygon as geoPHPPolygon;
 
 class Factory
 {
-    public static function parse(string $value): Geometry
+    public static function parse(string $value, bool $isWkb): Geometry
     {
-        $isJson = (bool) is_object(json_decode($value));
-
-        if (! $isJson) {
+        if ($isWkb) {
             // MySQL adds 4 NULL bytes at the start of the WKB
             $value = substr($value, 4);
         }

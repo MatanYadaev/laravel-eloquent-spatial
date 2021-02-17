@@ -32,7 +32,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
      */
     public static function fromWkb(string $wkb): static
     {
-        $geometry = Factory::parse($wkb);
+        $geometry = Factory::parse($wkb, true);
 
         if (! ($geometry instanceof static)) {
             throw new InvalidArgumentException(
@@ -52,7 +52,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
      */
     public static function fromJson(string $geoJson): static
     {
-        $geometry = Factory::parse($geoJson);
+        $geometry = Factory::parse($geoJson, false);
 
         if (! ($geometry instanceof static)) {
             throw new InvalidArgumentException(
