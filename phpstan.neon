@@ -6,7 +6,6 @@ parameters:
         - tests
     level: max
     ignoreErrors:
-        - '#Method MatanYadaev\\EloquentSpatial\\Objects\\.+::getGeometries\(\) should return array<.+> but returns array<MatanYadaev\\EloquentSpatial\\Objects\\Geometry>\.#'
         - '#Method MatanYadaev\\EloquentSpatial\\Objects\\(Geometry|GeometryCollection)::(toJson|toFeatureCollectionJson)\(\) should return string but returns string\|false\.#'
     excludePaths:
         - ./src/Factory.php

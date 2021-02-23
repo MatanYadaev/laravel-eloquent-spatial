@@ -35,20 +35,18 @@ class MultiPolygonTest extends TestCase
 
         $this->assertTrue($testPlace->multi_polygon instanceof MultiPolygon);
 
-        $polygons = $testPlace->multi_polygon->getGeometries();
-        $lineStrings = $polygons[0]->getGeometries();
-        $points = $lineStrings[0]->getGeometries();
+        $lineString = $testPlace->multi_polygon[0][0];
 
-        $this->assertEquals(180, $points[0]->latitude);
-        $this->assertEquals(0, $points[0]->longitude);
-        $this->assertEquals(179, $points[1]->latitude);
-        $this->assertEquals(1, $points[1]->longitude);
-        $this->assertEquals(178, $points[2]->latitude);
-        $this->assertEquals(2, $points[2]->longitude);
-        $this->assertEquals(177, $points[3]->latitude);
-        $this->assertEquals(3, $points[3]->longitude);
-        $this->assertEquals(180, $points[4]->latitude);
-        $this->assertEquals(0, $points[4]->longitude);
+        $this->assertEquals(180, $lineString[0]->latitude);
+        $this->assertEquals(0, $lineString[0]->longitude);
+        $this->assertEquals(179, $lineString[1]->latitude);
+        $this->assertEquals(1, $lineString[1]->longitude);
+        $this->assertEquals(178, $lineString[2]->latitude);
+        $this->assertEquals(2, $lineString[2]->longitude);
+        $this->assertEquals(177, $lineString[3]->latitude);
+        $this->assertEquals(3, $lineString[3]->longitude);
+        $this->assertEquals(180, $lineString[4]->latitude);
+        $this->assertEquals(0, $lineString[4]->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }
@@ -63,20 +61,18 @@ class MultiPolygonTest extends TestCase
 
         $this->assertTrue($testPlace->multi_polygon instanceof MultiPolygon);
 
-        $polygons = $testPlace->multi_polygon->getGeometries();
-        $lineStrings = $polygons[0]->getGeometries();
-        $points = $lineStrings[0]->getGeometries();
+        $lineString = $testPlace->multi_polygon[0][0];
 
-        $this->assertEquals(180, $points[0]->latitude);
-        $this->assertEquals(0, $points[0]->longitude);
-        $this->assertEquals(179, $points[1]->latitude);
-        $this->assertEquals(1, $points[1]->longitude);
-        $this->assertEquals(178, $points[2]->latitude);
-        $this->assertEquals(2, $points[2]->longitude);
-        $this->assertEquals(177, $points[3]->latitude);
-        $this->assertEquals(3, $points[3]->longitude);
-        $this->assertEquals(180, $points[4]->latitude);
-        $this->assertEquals(0, $points[4]->longitude);
+        $this->assertEquals(180, $lineString[0]->latitude);
+        $this->assertEquals(0, $lineString[0]->longitude);
+        $this->assertEquals(179, $lineString[1]->latitude);
+        $this->assertEquals(1, $lineString[1]->longitude);
+        $this->assertEquals(178, $lineString[2]->latitude);
+        $this->assertEquals(2, $lineString[2]->longitude);
+        $this->assertEquals(177, $lineString[3]->latitude);
+        $this->assertEquals(3, $lineString[3]->longitude);
+        $this->assertEquals(180, $lineString[4]->latitude);
+        $this->assertEquals(0, $lineString[4]->longitude);
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }

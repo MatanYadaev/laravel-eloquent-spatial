@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
+use ArrayAccess;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
-class GeometryCollection extends Geometry
+class GeometryCollection extends Geometry implements ArrayAccess
 {
     /** @var Collection<Geometry> */
     protected Collection $geometries;
@@ -71,28 +72,50 @@ class GeometryCollection extends Geometry
     }
 
     /**
-     * @return array<Geometry>
+     * @return Collection<Geometry>
      */
-    public function getGeometries(): array
+    public function getGeometries(): Collection
     {
-        return $this->geometries->all();
+        return $this->geometries->collect();
     }
 
-    public function toFeatureCollectionJson(): string
+    /**
+     * @param mixed $offset
+     *
+     * @return bool
+     */
+    public function offsetExists($offset): bool
     {
-        /** @var Collection<Geometry> $geometries */
-        $geometries = static::class === self::class
-            ? $this->geometries
-            : collect([$this]);
+        return isset($this->geometries[$offset]);
+    }
 
-        $features = $geometries->map(static function (Geometry $geometry): array {
-            return $geometry->toFeature();
-        });
+    /**
+     * @param mixed $offset
+     *
+     * @return Geometry
+     */
+    public function offsetGet($offset): Geometry
+    {
+        return $this->geometries[$offset];
+    }
 
-        return json_encode([
-            'type' => 'FeatureCollection',
-            'features' => $features,
-        ]);
+    /**
+     * @param mixed $offset
+     * @param Geometry $geometry
+     */
+    public function offsetSet($offset, $geometry): void
+    {
+        $this->geometries[$offset] = $geometry;
+        $this->validateGeometriesType();
+    }
+
+    /**
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset): void
+    {
+        $this->geometries->splice($offset, 1);
+        $this->validateGeometriesCount();
     }
 
     /**
