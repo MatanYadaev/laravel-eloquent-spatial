@@ -14,15 +14,16 @@
 
 Every geometry class has these functions:
 
-* `toArray()` - Serializes the geometry object into a GeoJSON array.
+* `toArray()` - Serializes the geometry object into a GeoJSON associative array.
 * `toJson()` - Serializes the geometry object into an GeoJSON string.
-* `fromJson(string $json)` - Deserializes a geometry object from a GeoJSON string. (static method) 
-* `toFeatureCollectionJson()` - Serializes the geometry object into an GeoJSON string wrapped by a FeatureCollection.
+* `fromJson(string $geoJson)` - Deserializes a geometry object from a GeoJSON string. (static method) 
+* `toFeatureCollectionJson()` - Serializes the geometry object into an GeoJSON's FeatureCollection string.
 * `getCoordinates()` - Returns the coordinates of the geometry object.
 
 In addition, `GeometryCollection` also has these functions:
 
 * `getGeometries()` - Returns a geometry array. Can be used with `ArrayAccess` as well.
+
 ```php
 $geometryCollection = new GeometryCollection([
         new Polygon([

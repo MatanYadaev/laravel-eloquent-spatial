@@ -1,18 +1,12 @@
 {
     "name": "matanyadaev/laravel-eloquent-spatial",
-    "description": "Laravel Eloquent spatial extension",
-    "keywords": [
-        "matanyadaev",
-        "laravel-eloquent-spatial"
-    ],
+    "description": "Spatial library for Laravel",
     "homepage": "https://github.com/matanyadaev/laravel-eloquent-spatial",
     "license": "MIT",
     "authors": [
         {
             "name": "Matan Yadaev",
             "email": "matan.yed@gmail.com",
-            "homepage": "https://spatie.be",
-            "role": "Developer"
         }
     ],
     "require": {
@@ -62,15 +56,5 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "funding": [
-        {
-            "type": "github",
-            "url": "https://github.com/sponsors/spatie"
-        },
-        {
-            "type": "other",
-            "url": "https://spatie.be/open-source/support-us"
-        }
-    ]
+    "prefer-stable": true
 }
