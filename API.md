@@ -27,9 +27,16 @@ Geometry collection functions:
 
 ## Available spatial scopes
 
+* [withDistance](#withDistance)
+* [whereDistance](#whereDistance)
+* [orderByDistance](#orderByDistance)
+* [withDistanceSphere](#withDistanceSphere)
+* [whereDistanceSphere](#whereDistanceSphere)
+* [orderByDistanceSphere](#orderByDistanceSphere)
+
 ###  withDistance
 
-Retrieves the distance between 2 geometry objects.
+Retrieves the distance between 2 geometry objects. Uses [ST_Distance](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-distance)
 
 | parameter name      | type                 | default |
 | ------------------  | -------------------- | ------- |
@@ -40,17 +47,17 @@ Retrieves the distance between 2 geometry objects.
 <details><summary>Example</summary>
 
 ```php
-Place::create(['point' => new Point(0, 0)]);
+Place::create(['location' => new Point(0, 0)]);
 
 $placeWithDistance = Place::query()
-    ->withDistance('point', new Point(1, 1))
+    ->withDistance('location', new Point(1, 1))
     ->first();
 
 echo $placeWithDistance->distance; // 1.4142135623731
 
 // when using alias:
 $placeWithDistance = Place::query()
-    ->withDistance('point', new Point(1, 1), 'distance_in_meters')
+    ->withDistance('location', new Point(1, 1), 'distance_in_meters')
     ->first();
 
 echo $placeWithDistance->distance_in_meters; // 1.4142135623731
@@ -59,11 +66,11 @@ echo $placeWithDistance->distance_in_meters; // 1.4142135623731
 
 ###  whereDistance
 
-Description
+Filters records by distance. Uses [ST_Distance](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-distance)
 
-| parameter name      | type                 
+| parameter name      | type
 | ------------------  | -------------------- 
-| `$column`           | `string`             
+| `$column`           | `string`
 | `$geometryOrColumn` | `Geometry \| string` 
 | `$operator`         | `string`
 | `$value`            | `int \| float`
@@ -71,24 +78,134 @@ Description
 <details><summary>Example</summary>
 
 ```php
-Place::create([
-    'name' => 'My place',
-    'point' => new Point(0, 0),
-]);
+Place::create(['location' => new Point(0, 0)]);
+Place::create(['location' => new Point(100, 100)]);
 
-$place = Place::query()
-    ->whereDistance('point', new Point(1, 1), '<', 10)
-    ->first();
+$placesCountWithinDistance = Place::query()
+    ->whereDistance('location', new Point(1, 1), '<', 1.5)
+    ->count();
 
-echo $place->name; // My place
+echo $placesCountWithinDistance; // 1
 ```
 </details>
 
-* `whereDistance(string $column, Geometry | string $geometryOrColumn, string $operator, int | float $distance)`
-* `orderByDistance(string $column, Geometry | string $geometryOrColumn, string $direction = 'asc')`
-* `withDistanceSphere(string $column, Geometry | string $geometryOrColumn, string $alias = 'distance')`
-* `whereDistanceSphere(string $column, Geometry | string $geometryOrColumn, string $operator, int | float $distance)`
-* `orderByDistanceSphere(string $column, Geometry | string $geometryOrColumn, string $direction = 'asc')`
+###  orderByDistance
+
+Orders records by distance. Uses [ST_Distance](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-distance)
+
+| parameter name      | type                 | default |
+| ------------------  | -------------------- | ------- |
+| `$column`           | `string`             |
+| `$geometryOrColumn` | `Geometry \| string` |
+| `$direction`         | `string`            | `'asc'`
+
+<details><summary>Example</summary>
+
+```php
+Place::create([
+    'name' => 'first',
+    'location' => new Point(0, 0),
+]);
+Place::create([
+    'name' => 'second',
+    'location' => new Point(100, 100),
+]);
+
+$places = Place::query()
+    ->orderByDistance('location', new Point(1, 1), 'desc')
+    ->get();
+
+echo $places[0]->name; // second
+echo $places[1]->name; // first
+```
+</details>
+
+###  withDistanceSphere
+
+Retrieves the spherical distance between 2 geometry objects. Uses [ST_Distance_Sphere](https://dev.mysql.com/doc/refman/8.0/en/spatial-convenience-functions.html#function_st-distance-sphere)
+
+| parameter name      | type                 | default |
+| ------------------  | -------------------- | ------- |
+| `$column`           | `string`             |
+| `$geometryOrColumn` | `Geometry \| string` |
+| `$alias`            | `string`             | `'distance'`
+
+<details><summary>Example</summary>
+
+```php
+Place::create(['location' => new Point(0, 0)]);
+
+$placeWithDistance = Place::query()
+    ->withDistanceSphere('location', new Point(1, 1))
+    ->first();
+
+echo $placeWithDistance->distance; // 157249.0357231545
+
+// when using alias:
+$placeWithDistance = Place::query()
+    ->withDistanceSphere('location', new Point(1, 1), 'distance_in_meters')
+    ->first();
+
+echo $placeWithDistance->distance_in_meters; // 157249.0357231545
+```
+</details>
+
+###  whereDistance
+
+Filters records by spherical distance. Uses [ST_Distance_Sphere](https://dev.mysql.com/doc/refman/8.0/en/spatial-convenience-functions.html#function_st-distance-sphere)
+
+| parameter name      | type
+| ------------------  | -------------------- 
+| `$column`           | `string`
+| `$geometryOrColumn` | `Geometry \| string` 
+| `$operator`         | `string`
+| `$value`            | `int \| float`
+
+<details><summary>Example</summary>
+
+```php
+Place::create(['location' => new Point(0, 0)]);
+Place::create(['location' => new Point(100, 100)]);
+
+$placesCountWithinDistance = Place::query()
+    ->whereDistance('location', new Point(1, 1), '<', 160000)
+    ->count();
+
+echo $placesCountWithinDistance; // 1
+```
+</details>
+
+###  orderByDistance
+
+Orders records by spherical distance. Uses [ST_Distance_Sphere](https://dev.mysql.com/doc/refman/8.0/en/spatial-convenience-functions.html#function_st-distance-sphere)
+
+| parameter name      | type                 | default |
+| ------------------  | -------------------- | ------- |
+| `$column`           | `string`             |
+| `$geometryOrColumn` | `Geometry \| string` |
+| `$direction`         | `string`            | `'asc'`
+
+<details><summary>Example</summary>
+
+```php
+Place::create([
+    'name' => 'first',
+    'location' => new Point(0, 0),
+]);
+Place::create([
+    'name' => 'second',
+    'location' => new Point(100, 100),
+]);
+
+$places = Place::query()
+    ->orderByDistance('location', new Point(1, 1), 'desc')
+    ->get();
+
+echo $places[0]->name; // second
+echo $places[1]->name; // first
+```
+</details>
+
 * `whereWithin(string $column, Geometry | string $geometryOrColumn)`
 * `whereContains(string $column, Geometry | string $geometryOrColumn)`
 * `whereTouches(string $column, Geometry | string $geometryOrColumn)`
