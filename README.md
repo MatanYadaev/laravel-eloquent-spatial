@@ -137,7 +137,7 @@ Please see [API](API.md) for more informative API documentation.
 
 ## Tip for better IDE support
 
-For better IDE support, you should add a `query` method phpDoc annotation to your model:
+In order to get better IDE support, you should add a `query` method phpDoc annotation to your model:
 
 ```php
 /**
@@ -161,7 +161,7 @@ class Place extends Model
 }
 ```
 
-In order to get IDE auto-complete you should create queries only with the `query()` static method:
+Create queries only with the `query()` static method:
 
 ```php
 Place::query()->whereDistance(...); // This is IDE-friendly
