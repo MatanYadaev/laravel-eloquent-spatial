@@ -137,6 +137,36 @@ Please see [API](API.md) for more informative API documentation.
 
 ## Tip for better IDE support
 
+For better IDE support, you should add a `query` method phpDoc annotation to your model:
+
+```php
+/**
+ * @method static SpatialBuilder query()
+ */
+class Place extends Model
+{
+    // ...
+}
+```
+
+Or alternatively override the method:
+
+```php
+class Place extends Model
+{
+    public static function query(): SpatialBuilder
+    {
+        return parent::query();
+    }
+}
+```
+
+In order to get IDE auto-complete you should create queries only with the `query()` static method:
+
+```php
+Place::query()->whereDistance(...); // This is IDE-friendly
+Place::whereDistance(...); // This is not
+```
 
 ## Tests
 
