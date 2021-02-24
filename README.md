@@ -80,7 +80,7 @@ class Place extends Model
         'area',
     ];
 
-    protected $spatialFields = [
+    protected $casts = [
         'location' => Point::class,
         'area' => Polygon::class,
     ];
