@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
-## 1.0.0 - 202X-XX-XX
+## 1.0.1 - 2021-02-23
 
-- initial release
+- Upgrade to PHP-CS-Fixer v3 and clear PHPStan issues  
+
+## 1.0.0 - 2021-02-23
+
+- Initial release
