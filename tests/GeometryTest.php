@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\Tests\TestFactories\TestPlaceFactory;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 class GeometryTest extends TestCase
@@ -25,12 +26,11 @@ class GeometryTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        TestPlace::insert([
+        TestPlace::insert(array_merge(TestPlace::factory()->definition(), [
             'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
-        ]);
+        ]));
 
         TestPlace::firstOrFail()->getAttribute('point_with_line_string_cast');
-
     }
 
     /** @test */
