@@ -9,7 +9,7 @@
 
 Laravel package to work with spatial data types and functions.
 
-This package supports MySQL 5.7 & 8.0 and it works on PHP 8 & Laravel 8 only.
+This package supports MySQL 5.7 & 8.0 and works on PHP 8 & Laravel 8.
 
 ## Installation
 
