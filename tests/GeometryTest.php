@@ -6,7 +6,6 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\Point;
-use MatanYadaev\EloquentSpatial\Tests\TestFactories\TestPlaceFactory;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 class GeometryTest extends TestCase
