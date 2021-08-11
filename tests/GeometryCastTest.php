@@ -54,10 +54,8 @@ class GeometryCastTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        TestPlace::insert([
-            array_merge(TestPlace::factory()->definition(), [
-                'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
-            ]),
+        TestPlace::factory()->create([
+            'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
         ]);
 
         /** @var TestPlace $testPlace */

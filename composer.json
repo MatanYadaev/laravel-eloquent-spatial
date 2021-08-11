@@ -16,8 +16,8 @@
         "phayes/geophp": "^1.2"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.17",
-        "matt-allan/laravel-code-style": "^0.6.0",
+        "friendsofphp/php-cs-fixer": "^3.0.0",
+        "matt-allan/laravel-code-style": "dev-main",
         "nunomaduro/larastan": "^0.7.0",
         "nunomaduro/phpinsights": "dev-master",
         "orchestra/testbench": "^6.0",

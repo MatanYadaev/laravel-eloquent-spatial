@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 use NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses;
-use ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff;
-use ObjectCalisthenics\Sniffs\Files\FunctionLengthSniff;
-use ObjectCalisthenics\Sniffs\Metrics\MaxNestingLevelSniff;
-use ObjectCalisthenics\Sniffs\Metrics\MethodPerClassLimitSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UselessOverridingMethodSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
+use SlevomatCodingStandard\Sniffs\Classes\ForbiddenPublicPropertySniff;
 use SlevomatCodingStandard\Sniffs\Classes\SuperfluousExceptionNamingSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\InlineDocCommentDeclarationSniff;
+use SlevomatCodingStandard\Sniffs\Functions\FunctionLengthSniff;
 use SlevomatCodingStandard\Sniffs\Functions\UnusedParameterSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
@@ -90,9 +88,9 @@ return [
             'absoluteLineLimit' => 150,
             'ignoreComments' => false,
         ],
-        MaxNestingLevelSniff::class => [
-            'maxNestingLevel' => 3,
-        ],
+        //        MaxNestingLevelSniff::class => [
+        //            'maxNestingLevel' => 3,
+        //        ],
         InlineDocCommentDeclarationSniff::class => [
             'exclude' => [
                 'src/Factory.php',
@@ -105,21 +103,14 @@ return [
                 'src/GeometryCast.php',
             ],
         ],
-        MethodPerClassLimitSniff::class => [
-            'exclude' => [
-                'src/SpatialBuilder.php',
-                'src/Objects/Geometry.php',
-                'src/Objects/GeometryCollection.php',
-            ],
-        ],
-        ClassTraitAndInterfaceLengthSniff::class => [
-            'exclude' => [
-                'src/SpatialBuilder.php',
-            ],
-        ],
         FunctionLengthSniff::class => [
             'exclude' => [
                 'src/Factory.php',
+            ],
+        ],
+        ForbiddenPublicPropertySniff::class => [
+            'exclude' => [
+                'src/Objects/Point.php',
             ],
         ],
         CyclomaticComplexityIsHigh::class => [

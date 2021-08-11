@@ -7,6 +7,9 @@ parameters:
     level: max
     ignoreErrors:
         - '#Method MatanYadaev\\EloquentSpatial\\Objects\\(Geometry|GeometryCollection)::(toJson|toFeatureCollectionJson)\(\) should return string but returns string\|false\.#'
+        -
+            message: '#Call to private method .+\(\) of parent class Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>.#'
+            path: ./src/SpatialBuilder.php
     excludePaths:
         - ./src/Factory.php
     checkMissingIterableValueType: true
