@@ -152,12 +152,12 @@ class GeometryCollection extends Geometry implements ArrayAccess
 
     protected function toCollectionWkt(): Expression
     {
-        $wkb = $this->geometries
+        $wkt = $this->geometries
             ->map(static function (Geometry $geometry): string {
                 return (string) $geometry->toWkt();
             })
             ->join(',');
 
-        return DB::raw($wkb);
+        return DB::raw($wkt);
     }
 }

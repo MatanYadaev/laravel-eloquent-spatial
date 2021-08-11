@@ -26,18 +26,18 @@ class GeometryCast implements CastsAttributes
     /**
      * @param Model $model
      * @param string $key
-     * @param string|null $wkt
+     * @param string|null $wkb
      * @param array<string, mixed> $attributes
      *
      * @return Geometry|null
      */
-    public function get($model, string $key, $wkt, array $attributes): ?Geometry
+    public function get($model, string $key, $wkb, array $attributes): ?Geometry
     {
-        if (! $wkt) {
+        if (! $wkb) {
             return null;
         }
 
-        return $this->className::fromWkb($wkt);
+        return $this->className::fromWkb($wkb);
     }
 
     /**
