@@ -45,16 +45,6 @@
     "config": {
         "sort-packages": true
     },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "MatanYadaev\\LaravelEloquentSpatial\\LaravelEloquentSpatialServiceProvider"
-            ],
-            "aliases": {
-                "LaravelEloquentSpatial": "MatanYadaev\\LaravelEloquentSpatial\\LaravelEloquentSpatialFacade"
-            }
-        }
-    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }
