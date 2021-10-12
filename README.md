@@ -75,7 +75,7 @@ use MatanYadaev\EloquentSpatial\Objects\Polygon;
 class Place extends Model
 {
     protected $fillable = [
-        'name'
+        'name',
         'location',
         'area',
     ];
