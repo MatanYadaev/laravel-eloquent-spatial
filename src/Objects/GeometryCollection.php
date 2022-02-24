@@ -12,20 +12,20 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 /**
- * @template T of Geometry
+ * @template TGeometry of Geometry
  */
 class GeometryCollection extends Geometry implements ArrayAccess
 {
-    /** @var Collection<int, T> */
+    /** @var Collection<int, TGeometry> */
     protected Collection $geometries;
 
-    /** @var class-string<T> */
+    /** @var class-string<TGeometry> */
     protected string $collectionOf = Geometry::class;
 
     protected int $minimumGeometries = 0;
 
     /**
-     * @param  Collection<int, T>|array<int, T>  $geometries
+     * @param  Collection<int, TGeometry>|array<int, TGeometry>  $geometries
      *
      * @throws InvalidArgumentException
      */
@@ -77,7 +77,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
     }
 
     /**
-     * @return Collection<int, T>
+     * @return Collection<int, TGeometry>
      */
     public function getGeometries(): Collection
     {
@@ -95,7 +95,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
 
     /**
      * @param  int  $offset
-     * @return T|null
+     * @return TGeometry|null
      */
     public function offsetGet($offset): ?Geometry
     {
@@ -104,7 +104,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
 
     /**
      * @param  int  $offset
-     * @param  T  $geometry
+     * @param  TGeometry  $geometry
      */
     public function offsetSet($offset, $geometry): void
     {
@@ -144,7 +144,8 @@ class GeometryCollection extends Geometry implements ArrayAccess
      */
     protected function validateGeometriesType(): void
     {
-        $this->geometries->each(function (mixed $geometry): void {
+        $this->geometries->each(function (mixed $geometry, $a): void {
+            /** @var mixed $geometry */
             if (! is_object($geometry) || ! ($geometry instanceof $this->collectionOf)) {
                 throw new InvalidArgumentException(
                     sprintf('%s must be a collection of %s', static::class, $this->collectionOf)

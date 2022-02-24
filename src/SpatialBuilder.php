@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
+/**
+ * @template TModel of \Illuminate\Database\Eloquent\Model
+ * @extends Builder<TModel>
+ */
 class SpatialBuilder extends Builder
 {
     public function withDistance(
