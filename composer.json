@@ -12,15 +12,15 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
-        "laravel/framework": "^8.0",
+        "laravel/framework": "^8.0|^9.0",
         "phayes/geophp": "^1.2"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.0.0",
-        "matt-allan/laravel-code-style": "dev-main",
-        "nunomaduro/larastan": "^0.7.0",
-        "nunomaduro/phpinsights": "dev-master",
-        "orchestra/testbench": "^6.0",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "jubeki/laravel-code-style": "^1.0",
+        "nunomaduro/phpinsights": "^1.0|^2.0",
+        "nunomaduro/larastan": "^1.0|^2.0",
+        "orchestra/testbench": "^6.23|^7.0",
         "phpunit/phpunit": "^9.3"
     },
     "autoload": {
@@ -43,7 +43,10 @@
         "phpinsights-fix": "./vendor/bin/phpinsights fix"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": false
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

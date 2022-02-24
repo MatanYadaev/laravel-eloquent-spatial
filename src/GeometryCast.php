@@ -16,7 +16,7 @@ class GeometryCast implements CastsAttributes
     private string $className;
 
     /**
-     * @param class-string<Geometry> $className
+     * @param  class-string<Geometry>  $className
      */
     public function __construct(string $className)
     {
@@ -24,11 +24,10 @@ class GeometryCast implements CastsAttributes
     }
 
     /**
-     * @param Model $model
-     * @param string $key
-     * @param string|null $wkb
-     * @param array<string, mixed> $attributes
-     *
+     * @param  Model  $model
+     * @param  string  $key
+     * @param  string|null  $wkb
+     * @param  array<string, mixed>  $attributes
      * @return Geometry|null
      */
     public function get($model, string $key, $wkb, array $attributes): ?Geometry
@@ -41,16 +40,15 @@ class GeometryCast implements CastsAttributes
     }
 
     /**
-     * @param Model $model
-     * @param string $key
-     * @param Geometry|mixed|null $geometry
-     * @param array<string, mixed> $attributes
-     *
+     * @param  Model  $model
+     * @param  string  $key
+     * @param  Geometry|mixed|null  $geometry
+     * @param  array<string, mixed>  $attributes
      * @return Expression|string|null
      *
      * @throws InvalidArgumentException
      */
-    public function set($model, string $key, $geometry, array $attributes): Expression | string | null
+    public function set($model, string $key, $geometry, array $attributes): Expression|string|null
     {
         if (! $geometry) {
             return null;

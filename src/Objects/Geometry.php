@@ -24,8 +24,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     }
 
     /**
-     * @param string $wkb
-     *
+     * @param  string  $wkb
      * @return static
      *
      * @throws InvalidArgumentException
@@ -44,8 +43,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     }
 
     /**
-     * @param string $geoJson
-     *
+     * @param  string  $geoJson
      * @return static
      *
      * @throws InvalidArgumentException
@@ -111,8 +109,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     abstract public function getCoordinates(): array;
 
     /**
-     * @param array<string> $arguments
-     *
+     * @param  array<string>  $arguments
      * @return CastsAttributes
      */
     public static function castUsing(array $arguments): CastsAttributes

@@ -11,21 +11,25 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
+/**
+ * @template TGeometry of Geometry
+ */
 class GeometryCollection extends Geometry implements ArrayAccess
 {
-    /** @var Collection<Geometry> */
+    /** @var Collection<int, TGeometry> */
     protected Collection $geometries;
 
+    /** @var class-string<TGeometry> */
     protected string $collectionOf = Geometry::class;
 
     protected int $minimumGeometries = 0;
 
     /**
-     * @param Collection<Geometry>|array<Geometry> $geometries
+     * @param  Collection<int, TGeometry>|array<int, TGeometry>  $geometries
      *
      * @throws InvalidArgumentException
      */
-    public function __construct(Collection | array $geometries)
+    public function __construct(Collection|array $geometries)
     {
         if (is_array($geometries)) {
             $geometries = collect($geometries);
@@ -59,6 +63,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
      */
     public function toArray(): array
     {
+        // @phpstan-ignore-next-line
         if (static::class === self::class) {
             return [
                 'type' => class_basename(static::class),
@@ -72,16 +77,15 @@ class GeometryCollection extends Geometry implements ArrayAccess
     }
 
     /**
-     * @return Collection<Geometry>
+     * @return Collection<int, TGeometry>
      */
     public function getGeometries(): Collection
     {
-        return $this->geometries->collect();
+        return new Collection($this->geometries->all());
     }
 
     /**
-     * @param mixed $offset
-     *
+     * @param  int  $offset
      * @return bool
      */
     public function offsetExists($offset): bool
@@ -90,18 +94,17 @@ class GeometryCollection extends Geometry implements ArrayAccess
     }
 
     /**
-     * @param mixed $offset
-     *
-     * @return Geometry
+     * @param  int  $offset
+     * @return TGeometry|null
      */
-    public function offsetGet($offset): Geometry
+    public function offsetGet($offset): ?Geometry
     {
         return $this->geometries[$offset];
     }
 
     /**
-     * @param mixed $offset
-     * @param Geometry $geometry
+     * @param  int  $offset
+     * @param  TGeometry  $geometry
      */
     public function offsetSet($offset, $geometry): void
     {
@@ -110,7 +113,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
     }
 
     /**
-     * @param mixed $offset
+     * @param  int  $offset
      */
     public function offsetUnset($offset): void
     {
@@ -141,7 +144,8 @@ class GeometryCollection extends Geometry implements ArrayAccess
      */
     protected function validateGeometriesType(): void
     {
-        $this->geometries->each(function (mixed $geometry): void {
+        $this->geometries->each(function (mixed $geometry, $a): void {
+            /** @var mixed $geometry */
             if (! is_object($geometry) || ! ($geometry instanceof $this->collectionOf)) {
                 throw new InvalidArgumentException(
                     sprintf('%s must be a collection of %s', static::class, $this->collectionOf)

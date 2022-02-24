@@ -4,9 +4,21 @@ on: [push]
 
 jobs:
   test:
-    name: PHPUnit
+    name: PHPUnit - PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.1, 8.0]
+        laravel: [9.*, 8.*]
+        dependency-version: [prefer-lowest, prefer-stable]
+        include:
+          - laravel: 8.*
+            testbench: ^6.23
+          - laravel: 9.*
+            testbench: 7.*
 
     services:
       mysql:
@@ -25,12 +37,13 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          php-version: ${{ matrix.php }}
           coverage: none
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-interaction
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
       - name: Execute tests
         env:

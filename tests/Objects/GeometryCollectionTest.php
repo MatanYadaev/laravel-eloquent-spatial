@@ -298,6 +298,7 @@ class GeometryCollectionTest extends TestCase
             ]),
         ]);
 
+        // @phpstan-ignore-next-line
         $polygon[1] = new Point(180, 0);
     }
 }

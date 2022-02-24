@@ -15,12 +15,12 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          php-version: 8.1
           coverage: none
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction
 
-      - name: Run PHPInsights
-        run: ./vendor/bin/phpinsights --no-interaction --ansi --format=github-action
+      # Package is broken
+      # - name: Run PHPInsights
+      #   run: ./vendor/bin/phpinsights --no-interaction --ansi --format=github-action
