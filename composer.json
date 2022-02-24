@@ -18,8 +18,8 @@
         "phayes/geophp": "^1.2"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.0.0",
-        "jubeki/laravel-code-style": "^1.0.0",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "jubeki/laravel-code-style": "^1.0",
         "nunomaduro/larastan": "^2.0",
         "nunomaduro/phpinsights": "^2.1",
         "orchestra/testbench": "^6.23|^7.0",

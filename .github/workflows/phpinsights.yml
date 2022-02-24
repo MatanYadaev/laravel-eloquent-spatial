@@ -21,5 +21,6 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction
 
-      - name: Run PHPInsights
-        run: ./vendor/bin/phpinsights --no-interaction --ansi --format=github-action
+      # Package is broken
+      # - name: Run PHPInsights
+      #   run: ./vendor/bin/phpinsights --no-interaction --ansi --format=github-action

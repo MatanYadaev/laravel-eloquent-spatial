@@ -14,3 +14,4 @@ parameters:
         - ./src/Factory.php
     checkMissingIterableValueType: true
     checkGenericClassInNonGenericObjectType: false
+    
