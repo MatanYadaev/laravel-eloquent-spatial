@@ -1,6 +1,6 @@
 <?php
 
-return (new MattAllan\LaravelCodeStyle\Config())
+return (new Jubeki\LaravelCodeStyle\Config())
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->in(__DIR__)

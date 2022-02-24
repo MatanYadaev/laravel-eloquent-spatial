@@ -1,6 +1,6 @@
 name: Code quality analysis
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   phpstan:

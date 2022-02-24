@@ -12,7 +12,7 @@ class SpatialBuilder extends Builder
 {
     public function withDistance(
         string $column,
-        Geometry | string $geometryOrColumn,
+        Geometry|string $geometryOrColumn,
         string $alias = 'distance'
     ): self {
         if (! $this->getQuery()->columns) {
@@ -31,9 +31,9 @@ class SpatialBuilder extends Builder
 
     public function whereDistance(
         string $column,
-        Geometry | string $geometryOrColumn,
+        Geometry|string $geometryOrColumn,
         string $operator,
-        int | float $value
+        int|float $value
     ): self {
         return $this->whereRaw(
             sprintf(
@@ -48,7 +48,7 @@ class SpatialBuilder extends Builder
 
     public function orderByDistance(
         string $column,
-        Geometry | string $geometryOrColumn,
+        Geometry|string $geometryOrColumn,
         string $direction = 'asc'
     ): self {
         return $this->orderByRaw(
@@ -63,7 +63,7 @@ class SpatialBuilder extends Builder
 
     public function withDistanceSphere(
         string $column,
-        Geometry | string $geometryOrColumn,
+        Geometry|string $geometryOrColumn,
         string $alias = 'distance'
     ): self {
         if (! $this->getQuery()->columns) {
@@ -82,9 +82,9 @@ class SpatialBuilder extends Builder
 
     public function whereDistanceSphere(
         string $column,
-        Geometry | string $geometryOrColumn,
+        Geometry|string $geometryOrColumn,
         string $operator,
-        int | float $value
+        int|float $value
     ): self {
         return $this->whereRaw(
             sprintf(
@@ -99,7 +99,7 @@ class SpatialBuilder extends Builder
 
     public function orderByDistanceSphere(
         string $column,
-        Geometry | string $geometryOrColumn,
+        Geometry|string $geometryOrColumn,
         string $direction = 'asc'
     ): self {
         return $this->orderByRaw(
@@ -112,7 +112,7 @@ class SpatialBuilder extends Builder
         );
     }
 
-    public function whereWithin(string $column, Geometry | string $geometryOrColumn): self
+    public function whereWithin(string $column, Geometry|string $geometryOrColumn): self
     {
         return $this->whereRaw(
             sprintf(
@@ -123,7 +123,7 @@ class SpatialBuilder extends Builder
         );
     }
 
-    public function whereContains(string $column, Geometry | string $geometryOrColumn): self
+    public function whereContains(string $column, Geometry|string $geometryOrColumn): self
     {
         return $this->whereRaw(
             sprintf(
@@ -134,7 +134,7 @@ class SpatialBuilder extends Builder
         );
     }
 
-    public function whereTouches(string $column, Geometry | string $geometryOrColumn): self
+    public function whereTouches(string $column, Geometry|string $geometryOrColumn): self
     {
         return $this->whereRaw(
             sprintf(
@@ -145,7 +145,7 @@ class SpatialBuilder extends Builder
         );
     }
 
-    public function whereIntersects(string $column, Geometry | string $geometryOrColumn): self
+    public function whereIntersects(string $column, Geometry|string $geometryOrColumn): self
     {
         return $this->whereRaw(
             sprintf(
@@ -156,7 +156,7 @@ class SpatialBuilder extends Builder
         );
     }
 
-    public function whereCrosses(string $column, Geometry | string $geometryOrColumn): self
+    public function whereCrosses(string $column, Geometry|string $geometryOrColumn): self
     {
         return $this->whereRaw(
             sprintf(
@@ -167,7 +167,7 @@ class SpatialBuilder extends Builder
         );
     }
 
-    public function whereDisjoint(string $column, Geometry | string $geometryOrColumn): self
+    public function whereDisjoint(string $column, Geometry|string $geometryOrColumn): self
     {
         return $this->whereRaw(
             sprintf(
@@ -178,7 +178,7 @@ class SpatialBuilder extends Builder
         );
     }
 
-    public function whereOverlaps(string $column, Geometry | string $geometryOrColumn): self
+    public function whereOverlaps(string $column, Geometry|string $geometryOrColumn): self
     {
         return $this->whereRaw(
             sprintf(
@@ -189,7 +189,7 @@ class SpatialBuilder extends Builder
         );
     }
 
-    public function whereEquals(string $column, Geometry | string $geometryOrColumn): self
+    public function whereEquals(string $column, Geometry|string $geometryOrColumn): self
     {
         return $this->whereRaw(
             sprintf(
@@ -200,7 +200,7 @@ class SpatialBuilder extends Builder
         );
     }
 
-    protected function toExpression(Geometry | string $geometryOrColumn): Expression
+    protected function toExpression(Geometry|string $geometryOrColumn): Expression
     {
         return $geometryOrColumn instanceof Geometry
             ? $geometryOrColumn->toWkt()
