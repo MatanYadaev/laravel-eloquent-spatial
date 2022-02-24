@@ -45,10 +45,7 @@
         "phpinsights-fix": "./vendor/bin/phpinsights fix"
     },
     "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": false
-        }
+        "sort-packages": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true
