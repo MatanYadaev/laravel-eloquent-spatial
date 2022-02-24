@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   test:
-    name: PHPUnit - PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}- ${{ matrix.dependency-version }}
+    name: PHPUnit - PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
     runs-on: ubuntu-latest
 
