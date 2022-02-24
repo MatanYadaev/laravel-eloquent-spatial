@@ -76,6 +76,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
      */
     public function getGeometries(): Collection
     {
+        /** @var Collection<Geometry> */
         return $this->geometries->collect();
     }
 
@@ -110,7 +111,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
     }
 
     /**
-     * @param mixed $offset
+     * @param int $offset
      */
     public function offsetUnset($offset): void
     {
