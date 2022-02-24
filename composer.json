@@ -12,9 +12,7 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
-        "illuminate/contracts": "^8.0|^9.0",
-        "illuminate/database": "^8.0|^9.0",
-        "illuminate/support": "^8.0|^9.0",
+        "laravel/framework": "^8.0|^9.0",
         "phayes/geophp": "^1.2"
     },
     "require-dev": {
