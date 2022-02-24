@@ -11,8 +11,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.0, 8.1]
-        dependency-version: [prefer-lowest, prefer-stable]
+        php: [8.1, 8.0]
 
     steps:
       - name: Checkout code
@@ -25,7 +24,7 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer install --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+        run: composer install --prefer-dist --no-interaction
 
       - name: Run PHPStan
         run: ./vendor/bin/phpstan analyse --memory-limit=2G --error-format=github
