@@ -1,6 +1,6 @@
 name: Static code analysis
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   phpstan:
