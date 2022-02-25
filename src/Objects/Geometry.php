@@ -15,9 +15,6 @@ use JsonSerializable;
 use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\GeometryCast;
 
-/**
- * @implements Arrayable<string, string|array>
- */
 abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable
 {
     abstract public function toWkt(): Expression;
@@ -105,10 +102,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     public function toFeatureCollectionJson(): string
     {
         if (static::class === GeometryCollection::class) {
-            /**
-             * @template TGeometry of Geometry
-             * @var GeometryCollection<TGeometry> $this 
-             * */
+            /** @var GeometryCollection<Geometry> $this */
             $geometries = $this->geometries;
         } else {
             $geometries = collect([$this]);

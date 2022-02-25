@@ -15,9 +15,6 @@ use MatanYadaev\EloquentSpatial\Objects\Geometry;
  */
 class SpatialBuilder extends Builder
 {
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function withDistance(
         string $column,
         Geometry|string $geometryOrColumn,
@@ -39,9 +36,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function whereDistance(
         string $column,
         Geometry|string $geometryOrColumn,
@@ -61,9 +55,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function orderByDistance(
         string $column,
         Geometry|string $geometryOrColumn,
@@ -81,9 +72,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function withDistanceSphere(
         string $column,
         Geometry|string $geometryOrColumn,
@@ -105,9 +93,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function whereDistanceSphere(
         string $column,
         Geometry|string $geometryOrColumn,
@@ -127,9 +112,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function orderByDistanceSphere(
         string $column,
         Geometry|string $geometryOrColumn,
@@ -147,9 +129,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function whereWithin(string $column, Geometry|string $geometryOrColumn): self
     {
         $this->whereRaw(
@@ -163,9 +142,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function whereContains(string $column, Geometry|string $geometryOrColumn): self
     {
         $this->whereRaw(
@@ -179,9 +155,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function whereTouches(string $column, Geometry|string $geometryOrColumn): self
     {
         $this->whereRaw(
@@ -195,9 +168,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function whereIntersects(string $column, Geometry|string $geometryOrColumn): self
     {
         $this->whereRaw(
@@ -211,9 +181,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function whereCrosses(string $column, Geometry|string $geometryOrColumn): self
     {
         $this->whereRaw(
@@ -227,9 +194,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function whereDisjoint(string $column, Geometry|string $geometryOrColumn): self
     {
         $this->whereRaw(
@@ -243,9 +207,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function whereOverlaps(string $column, Geometry|string $geometryOrColumn): self
     {
         $this->whereRaw(
@@ -259,9 +220,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return SpatialBuilder<TModel>
-     */
     public function whereEquals(string $column, Geometry|string $geometryOrColumn): self
     {
         $this->whereRaw(
@@ -275,9 +233,6 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
-    /**
-     * @return Expression
-     */
     protected function toExpression(Geometry|string $geometryOrColumn): Expression
     {
         return $geometryOrColumn instanceof Geometry

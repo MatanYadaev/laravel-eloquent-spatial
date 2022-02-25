@@ -9,5 +9,5 @@ parameters:
     excludePaths:
         - ./src/Factory.php
     checkMissingIterableValueType: true
-    checkGenericClassInNonGenericObjectType: true
+    checkGenericClassInNonGenericObjectType: false
     
