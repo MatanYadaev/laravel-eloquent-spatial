@@ -26,7 +26,7 @@ use MatanYadaev\EloquentSpatial\Tests\TestFactories\TestPlaceFactory;
  * @property float|null $distance_in_meters
  * @mixin Model
  *
- * @method static SpatialBuilder query()
+ * @method static SpatialBuilder<TestPlace> query()
  */
 class TestPlace extends Model
 {
@@ -58,8 +58,12 @@ class TestPlace extends Model
         'point_with_line_string_cast' => LineString::class,
     ];
 
+    /**
+     * @return SpatialBuilder<TestPlace>
+     */
     public function newEloquentBuilder($query): SpatialBuilder
     {
+        // @phpstan-ignore-next-line
         return new SpatialBuilder($query);
     }
 
