@@ -20,11 +20,10 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     abstract public function toWkt(): Expression;
 
     /**
-     * @param int $options
-     * 
+     * @param  int  $options
      * @return string
-     * 
-     * @throws JsonException 
+     *
+     * @throws JsonException
      */
     public function toJson($options = 0): string
     {
@@ -90,7 +89,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @return string
-     * 
+     *
      * @throws JsonException
      */
     public function toFeatureCollectionJson(): string
@@ -112,8 +111,8 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
         return json_encode(
             [
-            'type' => 'FeatureCollection',
-            'features' => $features,
+                'type' => 'FeatureCollection',
+                'features' => $features,
             ],
             JSON_THROW_ON_ERROR
         );
