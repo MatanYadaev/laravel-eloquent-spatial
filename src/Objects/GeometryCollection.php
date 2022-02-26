@@ -13,6 +13,7 @@ use InvalidArgumentException;
 
 /**
  * @template TGeometry of Geometry
+ * @implements ArrayAccess<int, TGeometry>
  */
 class GeometryCollection extends Geometry implements ArrayAccess
 {

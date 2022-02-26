@@ -6,10 +6,6 @@ parameters:
         - tests
     level: max
     ignoreErrors:
-        - '#Method MatanYadaev\\EloquentSpatial\\Objects\\(Geometry|GeometryCollection)::(toJson|toFeatureCollectionJson)\(\) should return string but returns string\|false\.#'
-        -
-            message: '#Call to an undefined method .+#'
-            path: ./src/SpatialBuilder.php
     excludePaths:
         - ./src/Factory.php
     checkMissingIterableValueType: true

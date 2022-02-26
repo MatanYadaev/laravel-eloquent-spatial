@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Query\Expression;
 use InvalidArgumentException;
+use JsonException;
 use JsonSerializable;
 use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\GeometryCast;
@@ -18,9 +19,16 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 {
     abstract public function toWkt(): Expression;
 
+    /**
+     * @param int $options
+     * 
+     * @return string
+     * 
+     * @throws JsonException 
+     */
     public function toJson($options = 0): string
     {
-        return json_encode($this, $options);
+        return json_encode($this, $options | JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -80,10 +88,15 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
         ];
     }
 
+    /**
+     * @return string
+     * 
+     * @throws JsonException
+     */
     public function toFeatureCollectionJson(): string
     {
         if (static::class === GeometryCollection::class) {
-            /** @var GeometryCollection $this */
+            /** @var GeometryCollection<Geometry> $this */
             $geometries = $this->geometries;
         } else {
             $geometries = collect([$this]);
@@ -97,10 +110,13 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
             ];
         });
 
-        return json_encode([
+        return json_encode(
+            [
             'type' => 'FeatureCollection',
             'features' => $features,
-        ]);
+            ],
+            JSON_THROW_ON_ERROR
+        );
     }
 
     /**

@@ -11,6 +11,7 @@ use MatanYadaev\EloquentSpatial\Objects\Geometry;
 /**
  * @template TModel of \Illuminate\Database\Eloquent\Model
  * @extends Builder<TModel>
+ * @mixin \Illuminate\Database\Query\Builder
  */
 class SpatialBuilder extends Builder
 {
@@ -23,7 +24,7 @@ class SpatialBuilder extends Builder
             $this->select('*');
         }
 
-        return $this->selectRaw(
+        $this->selectRaw(
             sprintf(
                 'ST_DISTANCE(%s, %s) AS %s',
                 "`{$column}`",
@@ -31,6 +32,8 @@ class SpatialBuilder extends Builder
                 $alias,
             )
         );
+
+        return $this;
     }
 
     public function whereDistance(
@@ -39,7 +42,7 @@ class SpatialBuilder extends Builder
         string $operator,
         int|float $value
     ): self {
-        return $this->whereRaw(
+        $this->whereRaw(
             sprintf(
                 'ST_DISTANCE(%s, %s) %s %s',
                 "`{$column}`",
@@ -48,6 +51,8 @@ class SpatialBuilder extends Builder
                 $value,
             )
         );
+
+        return $this;
     }
 
     public function orderByDistance(
@@ -55,7 +60,7 @@ class SpatialBuilder extends Builder
         Geometry|string $geometryOrColumn,
         string $direction = 'asc'
     ): self {
-        return $this->orderByRaw(
+        $this->orderByRaw(
             sprintf(
                 'ST_DISTANCE(%s, %s) %s',
                 "`{$column}`",
@@ -63,6 +68,8 @@ class SpatialBuilder extends Builder
                 $direction,
             )
         );
+
+        return $this;
     }
 
     public function withDistanceSphere(
@@ -74,7 +81,7 @@ class SpatialBuilder extends Builder
             $this->select('*');
         }
 
-        return $this->selectRaw(
+        $this->selectRaw(
             sprintf(
                 'ST_DISTANCE_SPHERE(%s, %s) AS %s',
                 "`{$column}`",
@@ -82,6 +89,8 @@ class SpatialBuilder extends Builder
                 $alias,
             )
         );
+
+        return $this;
     }
 
     public function whereDistanceSphere(
@@ -90,7 +99,7 @@ class SpatialBuilder extends Builder
         string $operator,
         int|float $value
     ): self {
-        return $this->whereRaw(
+        $this->whereRaw(
             sprintf(
                 'ST_DISTANCE_SPHERE(%s, %s) %s %s',
                 "`{$column}`",
@@ -99,6 +108,8 @@ class SpatialBuilder extends Builder
                 $value
             )
         );
+
+        return $this;
     }
 
     public function orderByDistanceSphere(
@@ -106,7 +117,7 @@ class SpatialBuilder extends Builder
         Geometry|string $geometryOrColumn,
         string $direction = 'asc'
     ): self {
-        return $this->orderByRaw(
+        $this->orderByRaw(
             sprintf(
                 'ST_DISTANCE_SPHERE(%s, %s) %s',
                 "`{$column}`",
@@ -114,94 +125,112 @@ class SpatialBuilder extends Builder
                 $direction
             )
         );
+
+        return $this;
     }
 
     public function whereWithin(string $column, Geometry|string $geometryOrColumn): self
     {
-        return $this->whereRaw(
+        $this->whereRaw(
             sprintf(
                 'ST_WITHIN(%s, %s)',
                 "`{$column}`",
                 $this->toExpression($geometryOrColumn),
             )
         );
+
+        return $this;
     }
 
     public function whereContains(string $column, Geometry|string $geometryOrColumn): self
     {
-        return $this->whereRaw(
+        $this->whereRaw(
             sprintf(
                 'ST_CONTAINS(%s, %s)',
                 "`{$column}`",
                 $this->toExpression($geometryOrColumn),
             )
         );
+
+        return $this;
     }
 
     public function whereTouches(string $column, Geometry|string $geometryOrColumn): self
     {
-        return $this->whereRaw(
+        $this->whereRaw(
             sprintf(
                 'ST_TOUCHES(%s, %s)',
                 "`{$column}`",
                 $this->toExpression($geometryOrColumn),
             )
         );
+
+        return $this;
     }
 
     public function whereIntersects(string $column, Geometry|string $geometryOrColumn): self
     {
-        return $this->whereRaw(
+        $this->whereRaw(
             sprintf(
                 'ST_INTERSECTS(%s, %s)',
                 "`{$column}`",
                 $this->toExpression($geometryOrColumn),
             )
         );
+
+        return $this;
     }
 
     public function whereCrosses(string $column, Geometry|string $geometryOrColumn): self
     {
-        return $this->whereRaw(
+        $this->whereRaw(
             sprintf(
                 'ST_CROSSES(%s, %s)',
                 "`{$column}`",
                 $this->toExpression($geometryOrColumn),
             )
         );
+
+        return $this;
     }
 
     public function whereDisjoint(string $column, Geometry|string $geometryOrColumn): self
     {
-        return $this->whereRaw(
+        $this->whereRaw(
             sprintf(
                 'ST_DISJOINT(%s, %s)',
                 "`{$column}`",
                 $this->toExpression($geometryOrColumn),
             )
         );
+
+        return $this;
     }
 
     public function whereOverlaps(string $column, Geometry|string $geometryOrColumn): self
     {
-        return $this->whereRaw(
+        $this->whereRaw(
             sprintf(
                 'ST_OVERLAPS(%s, %s)',
                 "`{$column}`",
                 $this->toExpression($geometryOrColumn),
             )
         );
+
+        return $this;
     }
 
     public function whereEquals(string $column, Geometry|string $geometryOrColumn): self
     {
-        return $this->whereRaw(
+        $this->whereRaw(
             sprintf(
                 'ST_EQUALS(%s, %s)',
                 "`{$column}`",
                 $this->toExpression($geometryOrColumn),
             )
         );
+
+        return $this;
     }
 
     protected function toExpression(Geometry|string $geometryOrColumn): Expression
