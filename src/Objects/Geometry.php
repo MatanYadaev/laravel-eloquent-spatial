@@ -28,13 +28,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
      */
     public function toJson($options = 0): string
     {
-        $json = json_encode($this, $options);
-
-        if(false === $json) {
-            throw new JsonException('json_encode failed');
-        }
-
-        return $json;
+        return json_encode($this, $options | JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -116,16 +110,13 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
             ];
         });
 
-        $json = json_encode([
+        return json_encode(
+            [
             'type' => 'FeatureCollection',
             'features' => $features,
-        ]);
-
-        if(false === $json) {
-            throw new JsonException('json encode failed');
-        }
-
-        return $json;
+            ],
+            JSON_THROW_ON_ERROR
+        );
     }
 
     /**
