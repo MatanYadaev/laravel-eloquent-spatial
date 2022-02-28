@@ -22,7 +22,7 @@ composer require matanyadaev/laravel-eloquent-spatial
 ## Quickstart
 Generate a new model with a migration file:
 ```bash
-php artisan make:model --migration
+php artisan make:model {modelName} --migration
 ```
 
 Add some spatial columns to the migration file:
