@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## 1.0.4 - 2022-03-07
+
+- Fix PHPStan issues
+
 ## 1.0.3 - 2022-02-24
 
 - Support Laravel 9
