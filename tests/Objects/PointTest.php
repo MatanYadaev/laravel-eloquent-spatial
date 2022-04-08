@@ -36,6 +36,7 @@ class PointTest extends TestCase
         ]);
         $testPlace2 = TestPlace::find($testPlace->id);
         $this->assertEquals($testPlace->point, $testPlace2->point);
+        $this->assertEquals($testPlace, $testPlace2);
         dump($testPlace);
         dump($testPlace2);
     }
