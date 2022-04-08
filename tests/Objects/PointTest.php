@@ -28,6 +28,19 @@ class PointTest extends TestCase
     }
 
     /** @test */
+    public function it_casts_when_retrieved_from_database(): void
+    {
+        /** @var TestPlace $testPlace */
+        $testPlace = TestPlace::factory()->create([
+            'point' => new Point(180, 0),
+        ]);
+        $testPlace2 = TestPlace::find($testPlace->id);
+        $this->assertEquals($testPlace->point, $testPlace2->point);
+        dump($testPlace);
+        dump($testPlace2);
+    }
+
+    /** @test */
     public function it_stores_point_from_json(): void
     {
         /** @var TestPlace $testPlace */
