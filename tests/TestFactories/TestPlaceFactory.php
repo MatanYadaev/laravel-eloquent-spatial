@@ -18,8 +18,15 @@ class TestPlaceFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->streetName,
-            'address' => $this->faker->address,
+            'name'                        => $this->faker->streetName,
+            'address'                     => $this->faker->address,
+            'multi_point'                 => null,
+            'line_string'                 => null,
+            'multi_line_string'           => null,
+            'polygon'                     => null,
+            'multi_polygon'               => null,
+            'geometry_collection'         => null,
+            'point_with_line_string_cast' => null,
         ];
     }
 }
