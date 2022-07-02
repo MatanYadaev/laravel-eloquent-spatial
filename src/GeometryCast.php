@@ -83,12 +83,14 @@ class GeometryCast implements CastsAttributes
             return false;
         }
 
-        if ($value and is_a($value, Expression::class)) {
+        if ($value and $value instanceof Expression) {
             if ($originalValue === null) {
                 return false;
             }
 
             if (Helpers::isJson($originalValue)) {
+                // note: If a value is json, so it is a string too
+                // @phpstan-ignore-next-line
                 $originalValue = $this->className::fromJson($originalValue)->toWkt();
 
                 return $originalValue->getValue() === $value->getValue();

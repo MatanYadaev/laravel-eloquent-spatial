@@ -46,7 +46,7 @@ class TestPlace extends Model
     ];
 
     /**
-     * @var array<string, mixed>
+     * @var array<string, string>
      */
     protected $casts = [
         'point' => Point::class,

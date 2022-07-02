@@ -10,10 +10,10 @@ class Helpers
      * Determine if a given string is valid JSON.
      * Credit: Laravel - Illuminate/Support.
      *
-     * @param  string  $value
+     * @param  mixed  $value
      * @return bool
      */
-    public static function isJson($value)
+    public static function isJson(mixed $value): bool
     {
         if (! is_string($value)) {
             return false;

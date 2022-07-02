@@ -18,6 +18,7 @@ use MatanYadaev\EloquentSpatial\Utils\Helpers;
  */
 trait HasSpatialColumns
 {
+    /** @var array|string[] */
     private array $spatialTypes = [
         Point::class,
         MultiPoint::class,
@@ -38,6 +39,8 @@ trait HasSpatialColumns
 
     /**
      * @inheritDoc
+     *
+     * @param  array<string, mixed>  $attributes
      */
     public function setRawAttributes(array $attributes, $sync = false): self
     {
@@ -46,6 +49,8 @@ trait HasSpatialColumns
                 $value = $attributes[$column];
 
                 if (! $value or ! Helpers::isJson($value)) {
+                    // note: type is a spatial object, and it has fromWkb method.
+                    // @phpstan-ignore-next-line
                     $attributes[$column] = $value ? $type::fromWkb($value)->toJson() : null;
                 }
             }
@@ -67,6 +72,8 @@ trait HasSpatialColumns
             $attribute = Arr::get($this->attributes, $key);
             $original = Arr::get($this->original, $key);
 
+            // note: resolveCasterClass returns GeometryCast class, and it has compare method.
+            // @phpstan-ignore-next-line
             return $this->resolveCasterClass($key)->compare($attribute, $original);
         }
 
@@ -74,7 +81,7 @@ trait HasSpatialColumns
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     private function getSpatialColumns(): array
     {
