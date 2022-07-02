@@ -7,7 +7,6 @@ namespace MatanYadaev\EloquentSpatial;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Expression;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
@@ -63,38 +62,5 @@ class GeometryCast implements CastsAttributes
         }
 
         return $geometry->toWkt();
-    }
-
-    /**
-     * Compare current and original attribute values.
-     * Returns true if values are equal and false otherwise.
-     *
-     * @param  mixed  $value
-     * @param  mixed  $originalValue
-     * @return bool
-     */
-    public function compare(mixed $value, mixed $originalValue): bool
-    {
-        if ($value === $originalValue) {
-            return true;
-        }
-
-        if ($value === null and $originalValue) {
-            return false;
-        }
-
-        if ($value and is_a($value, Expression::class)) {
-            if ($originalValue === null) {
-                return false;
-            }
-
-            if (Str::isJson($originalValue)) {
-                $originalValue = $this->className::fromJson($originalValue)->toWkt();
-
-                return $originalValue->getValue() === $value->getValue();
-            }
-        }
-
-        return false;
     }
 }
