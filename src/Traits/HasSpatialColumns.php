@@ -3,7 +3,6 @@
 namespace MatanYadaev\EloquentSpatial\Traits;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use MatanYadaev\EloquentSpatial\Objects\GeometryCollection;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
@@ -12,6 +11,7 @@ use MatanYadaev\EloquentSpatial\Objects\MultiPolygon;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\SpatialBuilder;
+use MatanYadaev\EloquentSpatial\Utils\Helpers;
 
 /**
  * @mixin \Illuminate\Database\Eloquent\Model
@@ -45,7 +45,7 @@ trait HasSpatialColumns
             if (isset($attributes[$column])) {
                 $value = $attributes[$column];
 
-                if (! $value or ! Str::isJson($value)) {
+                if (! $value or ! Helpers::isJson($value)) {
                     $attributes[$column] = $value ? $type::fromWkb($value)->toJson() : null;
                 }
             }

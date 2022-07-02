@@ -7,9 +7,9 @@ namespace MatanYadaev\EloquentSpatial;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Expression;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
+use MatanYadaev\EloquentSpatial\Utils\Helpers;
 
 class GeometryCast implements CastsAttributes
 {
@@ -88,7 +88,7 @@ class GeometryCast implements CastsAttributes
                 return false;
             }
 
-            if (Str::isJson($originalValue)) {
+            if (Helpers::isJson($originalValue)) {
                 $originalValue = $this->className::fromJson($originalValue)->toWkt();
 
                 return $originalValue->getValue() === $value->getValue();
