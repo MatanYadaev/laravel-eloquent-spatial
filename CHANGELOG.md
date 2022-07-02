@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## 1.0.5 - 2022-07-03
+
+- Convert raw values from binary to json
+- Add Compatibility with `getDirty` and `getChanges` methods
+- Add Compatibility with Laravel Nova
+
 ## 1.0.4 - 2022-03-07
 
 - Fix PHPStan issues
