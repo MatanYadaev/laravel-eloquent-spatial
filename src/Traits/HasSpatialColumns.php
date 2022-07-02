@@ -2,6 +2,7 @@
 
 namespace MatanYadaev\EloquentSpatial\Traits;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use MatanYadaev\EloquentSpatial\Objects\GeometryCollection;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
@@ -54,6 +55,25 @@ trait HasSpatialColumns
     }
 
     /**
+     * @inheritDoc
+     */
+    public function originalIsEquivalent($key): bool
+    {
+        if (! array_key_exists($key, $this->original)) {
+            return false;
+        }
+
+        if ($this->isClassComparable($key)) {
+            $attribute = Arr::get($this->attributes, $key);
+            $original = Arr::get($this->original, $key);
+
+            return $this->resolveCasterClass($key)->compare($attribute, $original);
+        }
+
+        return parent::originalIsEquivalent($key);
+    }
+
+    /**
      * @return array
      */
     private function getSpatialColumns(): array
@@ -67,5 +87,34 @@ trait HasSpatialColumns
         }
 
         return $columns;
+    }
+
+    /**
+     * Determine if an attribute can be checked for being dirty using a custom class.
+     *
+     * @param  string  $key
+     * @return bool
+     *
+     * @throws \Illuminate\Database\Eloquent\InvalidCastException
+     */
+    private function isClassComparable(string $key): bool
+    {
+        if ($this->isClassCastable($key)) {
+            $castClass = $this->parseCasterClass($this->getCasts()[$key]);
+
+            if (method_exists($castClass, 'compare')) {
+                return true;
+            }
+
+            if (method_exists($castClass, 'castUsing')) {
+                $castClass = $castClass::castUsing([]);
+
+                if (method_exists($castClass, 'compare')) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
