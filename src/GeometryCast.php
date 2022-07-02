@@ -36,7 +36,7 @@ class GeometryCast implements CastsAttributes
             return null;
         }
 
-        return $this->className::fromWkb($wkb);
+        return $this->className::fromJson($wkb);
     }
 
     /**

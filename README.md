@@ -57,15 +57,15 @@ Run the migration:
 php artisan migrate
 ```
 
-Fill the `$fillable` and `$casts` arrays and add custom eloquent builder to your new model:
+Fill the `$fillable` and `$casts` arrays and add `HasSpatialColumns` trait to your new model:
 
 ```php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use MatanYadaev\EloquentSpatial\SpatialBuilder;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use MatanYadaev\EloquentSpatial\Traits\HasSpatialColumns;
 
 /**
  * @property Point $location
@@ -74,6 +74,8 @@ use MatanYadaev\EloquentSpatial\Objects\Polygon;
  */
 class Place extends Model
 {
+    use HasSpatialColumns
+
     protected $fillable = [
         'name',
         'location',
@@ -84,11 +86,6 @@ class Place extends Model
         'location' => Point::class,
         'area' => Polygon::class,
     ];
-    
-    public function newEloquentBuilder($query): SpatialBuilder
-    {
-        return new SpatialBuilder($query);
-    }
 }
 ```
 
