@@ -44,9 +44,6 @@ class TestPlace extends Model
         'point_with_line_string_cast',
     ];
 
-    /**
-     * @var array<string, mixed>
-     */
     protected $casts = [
         'point' => Point::class,
         'multi_point' => MultiPoint::class,
