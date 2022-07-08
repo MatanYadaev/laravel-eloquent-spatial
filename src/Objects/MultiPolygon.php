@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
-use Illuminate\Database\Query\Expression;
-use Illuminate\Support\Facades\DB;
-
 /**
  * @method array<Polygon> getGeometries()
  * @method Polygon offsetGet(mixed $offset)
+ *
  * @extends GeometryCollection<Polygon>
  */
 class MultiPolygon extends GeometryCollection
@@ -18,8 +16,16 @@ class MultiPolygon extends GeometryCollection
 
     protected int $minimumGeometries = 1;
 
-    public function toWkt(): Expression
+    /**
+     * @param  bool  $withFunction
+     * @return string
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+     */
+    public function toWkt(bool $withFunction): string
     {
-        return DB::raw("MULTIPOLYGON({$this->toCollectionWkt()})");
+        $wkt = $this->toCollectionWkt(withFunction: false);
+
+        return "MULTIPOLYGON({$wkt})";
     }
 }

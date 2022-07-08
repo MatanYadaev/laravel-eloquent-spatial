@@ -7,6 +7,7 @@ namespace MatanYadaev\EloquentSpatial;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Expression;
+use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
@@ -26,17 +27,23 @@ class GeometryCast implements CastsAttributes
     /**
      * @param  Model  $model
      * @param  string  $key
-     * @param  string|null  $wkb
+     * @param  string|Expression|null  $wkbOrWKt
      * @param  array<string, mixed>  $attributes
      * @return Geometry|null
      */
-    public function get($model, string $key, $wkb, array $attributes): ?Geometry
+    public function get($model, string $key, $wkbOrWKt, array $attributes): ?Geometry
     {
-        if (! $wkb) {
+        if (! $wkbOrWKt) {
             return null;
         }
 
-        return $this->className::fromWkb($wkb);
+        if ($wkbOrWKt instanceof Expression) {
+            $wkt = $this->extractWktFromExpression($wkbOrWKt);
+
+            return $this->className::fromWkt($wkt);
+        }
+
+        return $this->className::fromWkb($wkbOrWKt);
     }
 
     /**
@@ -44,11 +51,11 @@ class GeometryCast implements CastsAttributes
      * @param  string  $key
      * @param  Geometry|mixed|null  $geometry
      * @param  array<string, mixed>  $attributes
-     * @return Expression|string|null
+     * @return Expression|null
      *
      * @throws InvalidArgumentException
      */
-    public function set($model, string $key, $geometry, array $attributes): Expression|string|null
+    public function set($model, string $key, $geometry, array $attributes): Expression|null
     {
         if (! $geometry) {
             return null;
@@ -61,6 +68,15 @@ class GeometryCast implements CastsAttributes
             );
         }
 
-        return $geometry->toWkt();
+        $wkt = $geometry->toWkt(withFunction: true);
+
+        return DB::raw("ST_GeomFromText('{$wkt}')");
+    }
+
+    private function extractWktFromExpression(Expression $expression): string
+    {
+        preg_match('/ST_GeomFromText\(\'(.+)\'\)/', (string) $expression, $match);
+
+        return $match[1];
     }
 }

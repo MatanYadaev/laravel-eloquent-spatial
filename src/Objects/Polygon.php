@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
-use Illuminate\Database\Query\Expression;
-use Illuminate\Support\Facades\DB;
-
 class Polygon extends MultiLineString
 {
-    public function toWkt(): Expression
+    public function toWkt(bool $withFunction): string
     {
-        return DB::raw("POLYGON({$this->toCollectionWkt()})");
+        $wkt = $this->toCollectionWkt(withFunction: false);
+
+        if ($withFunction) {
+            return "POLYGON({$wkt})";
+        }
+
+        return "(${wkt})";
     }
 }

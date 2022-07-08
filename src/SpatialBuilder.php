@@ -6,11 +6,14 @@ namespace MatanYadaev\EloquentSpatial;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
+use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
 /**
  * @template TModel of \Illuminate\Database\Eloquent\Model
+ *
  * @extends Builder<TModel>
+ *
  * @mixin \Illuminate\Database\Query\Builder
  */
 class SpatialBuilder extends Builder
@@ -235,8 +238,12 @@ class SpatialBuilder extends Builder
 
     protected function toExpression(Geometry|string $geometryOrColumn): Expression
     {
-        return $geometryOrColumn instanceof Geometry
-            ? $geometryOrColumn->toWkt()
-            : new Expression("`{$geometryOrColumn}`");
+        if ($geometryOrColumn instanceof Geometry) {
+            $wkt = $geometryOrColumn->toWkt(withFunction: true);
+
+            return DB::raw("ST_GeomFromText('{$wkt}')");
+        }
+
+        return DB::raw("`{$geometryOrColumn}`");
     }
 }
