@@ -27,6 +27,81 @@ class GeometryCastTest extends TestCase
     }
 
     /** @test */
+    public function it_gets_original_geometry_field(): void
+    {
+        $point = new Point(180, 0);
+        $point2 = new Point(180, 0);
+
+        /** @var TestPlace $testPlace */
+        $testPlace = TestPlace::factory()->create([
+            'point' => $point,
+        ])->fresh();
+        $testPlace->point = $point2;
+        $testPlace->save();
+
+        $this->assertEquals($point, $testPlace->getOriginal('point'));
+    }
+
+    /** @test */
+    public function it_gets_dirty_when_geometry_is_changed(): void
+    {
+        $point = new Point(180, 0);
+        $point2 = new Point(0, 0);
+
+        /** @var TestPlace $testPlace */
+        $testPlace = TestPlace::factory()->create([
+            'point' => $point,
+        ]);
+        $testPlace->point = $point2;
+
+        $this->assertTrue($testPlace->isDirty('point'));
+    }
+
+    /** @test */
+    public function it_does_not_get_dirty_when_geometry_is_not_changed(): void
+    {
+        $point = new Point(180, 0);
+        $point2 = new Point(180, 0);
+
+        /** @var TestPlace $testPlace */
+        $testPlace = TestPlace::factory()->create([
+            'point' => $point,
+        ])->fresh();
+
+        $this->assertFalse($testPlace->isDirty('point'));
+    }
+
+    /** @test */
+    public function it_serializes_model_with_geoetry_to_array(): void
+    {
+        $point = new Point(180, 0);
+
+        /** @var TestPlace $testPlace */
+        $testPlace = TestPlace::factory()->create([
+            'point' => $point,
+        ])->fresh();
+
+        $this->assertEquals($point->toArray(), $testPlace->toArray()['point']);
+    }
+
+    /** @test */
+    public function it_serializes_model_with_geoetry_to_json(): void
+    {
+        $point = new Point(180, 0);
+
+        /** @var TestPlace $testPlace */
+        $testPlace = TestPlace::factory()->create([
+            'point' => $point,
+        ])->fresh();
+
+        $json = $testPlace->toJson();
+        // @phpstan-ignore-next-line
+        $jsonOfPoint = json_encode(json_decode($json, true)['point']);
+
+        $this->assertEquals($point->toJson(), $jsonOfPoint);
+    }
+
+    /** @test */
     public function it_throws_exception_when_serializing_invalid_geometry_object(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -54,9 +129,9 @@ class GeometryCastTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        TestPlace::factory()->create([
+        TestPlace::insert(array_merge(TestPlace::factory()->definition(), [
             'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
-        ]);
+        ]));
 
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::firstOrFail();
