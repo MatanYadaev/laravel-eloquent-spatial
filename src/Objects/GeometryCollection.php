@@ -53,7 +53,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
 
         return "GEOMETRYCOLLECTION({$wkt})";
     }
-    
+
     /**
      * @return array<mixed>
      */
