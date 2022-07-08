@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
-use Illuminate\Database\Query\Expression;
-use Illuminate\Support\Facades\DB;
-
 class MultiPoint extends PointCollection
 {
     protected int $minimumGeometries = 1;
 
-    public function toWkt(): Expression
+    /**
+     * @param  bool  $withFunction
+     * @return string
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+     */
+    public function toWkt(bool $withFunction): string
     {
-        return DB::raw("MULTIPOINT({$this->toCollectionWkt()})");
+        $wkt = $this->toCollectionWkt(withFunction: false);
+
+        return "MULTIPOINT({$wkt})";
     }
 }

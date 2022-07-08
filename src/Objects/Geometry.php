@@ -8,7 +8,6 @@ use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Database\Query\Expression;
 use InvalidArgumentException;
 use JsonException;
 use JsonSerializable;
@@ -17,7 +16,7 @@ use MatanYadaev\EloquentSpatial\GeometryCast;
 
 abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable
 {
-    abstract public function toWkt(): Expression;
+    abstract public function toWkt(bool $withFunction): string;
 
     /**
      * @param  int  $options
@@ -39,6 +38,25 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     public static function fromWkb(string $wkb): static
     {
         $geometry = Factory::parse($wkb, true);
+
+        if (! ($geometry instanceof static)) {
+            throw new InvalidArgumentException(
+                sprintf('Expected %s, %s given.', static::class, $geometry::class)
+            );
+        }
+
+        return $geometry;
+    }
+
+    /**
+     * @param  string  $wkt
+     * @return static
+     *
+     * @throws InvalidArgumentException
+     */
+    public static function fromWkt(string $wkt): static
+    {
+        $geometry = Factory::parse($wkt, false);
 
         if (! ($geometry instanceof static)) {
             throw new InvalidArgumentException(

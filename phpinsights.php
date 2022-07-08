@@ -117,6 +117,7 @@ return [
             'exclude' => [
                 'src/Factory.php',
                 'src/Objects/GeometryCollection.php',
+                'src/GeometryCast.php',
             ],
         ],
     ],

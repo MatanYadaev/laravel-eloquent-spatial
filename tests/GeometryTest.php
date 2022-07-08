@@ -5,6 +5,7 @@ namespace MatanYadaev\EloquentSpatial\Tests;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
+use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
@@ -30,6 +31,14 @@ class GeometryTest extends TestCase
         ]));
 
         TestPlace::firstOrFail()->getAttribute('point_with_line_string_cast');
+    }
+
+    /** @test */
+    public function it_throws_exception_when_generating_geometry_from_other_geometry_wkt(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        LineString::fromWkt('POINT(0 180)');
     }
 
     /** @test */

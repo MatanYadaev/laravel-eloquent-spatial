@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace MatanYadaev\EloquentSpatial\Objects;
 
 use ArrayAccess;
-use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 /**
  * @template TGeometry of Geometry
+ *
  * @implements ArrayAccess<int, TGeometry>
  */
 class GeometryCollection extends Geometry implements ArrayAccess
@@ -42,9 +41,17 @@ class GeometryCollection extends Geometry implements ArrayAccess
         $this->validateGeometriesCount();
     }
 
-    public function toWkt(): Expression
+    /**
+     * @param  bool  $withFunction
+     * @return string
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+     */
+    public function toWkt(bool $withFunction): string
     {
-        return new Expression("GEOMETRYCOLLECTION({$this->toCollectionWkt()})");
+        $wkt = $this->toCollectionWkt(withFunction: true);
+
+        return "GEOMETRYCOLLECTION({$wkt})";
     }
 
     /**
@@ -145,7 +152,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
      */
     protected function validateGeometriesType(): void
     {
-        $this->geometries->each(function (mixed $geometry, $a): void {
+        $this->geometries->each(function (mixed $geometry): void {
             /** @var mixed $geometry */
             if (! is_object($geometry) || ! ($geometry instanceof $this->collectionOf)) {
                 throw new InvalidArgumentException(
@@ -155,14 +162,12 @@ class GeometryCollection extends Geometry implements ArrayAccess
         });
     }
 
-    protected function toCollectionWkt(): Expression
+    protected function toCollectionWkt(bool $withFunction): string
     {
-        $wkt = $this->geometries
-            ->map(static function (Geometry $geometry): string {
-                return (string) $geometry->toWkt();
+        return $this->geometries
+            ->map(static function (Geometry $geometry) use ($withFunction): string {
+                return (string) $geometry->toWkt($withFunction);
             })
             ->join(',');
-
-        return DB::raw($wkt);
     }
 }

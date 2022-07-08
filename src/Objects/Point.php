@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
-use Illuminate\Database\Query\Expression;
-use Illuminate\Support\Facades\DB;
-
 class Point extends Geometry
 {
     public float $latitude;
@@ -19,9 +16,15 @@ class Point extends Geometry
         $this->longitude = $longitude;
     }
 
-    public function toWkt(): Expression
+    public function toWkt(bool $withFunction): string
     {
-        return DB::raw("POINT({$this->longitude}, {$this->latitude})");
+        $wkt = "{$this->longitude} {$this->latitude}";
+
+        if ($withFunction) {
+            return "POINT({$wkt})";
+        }
+
+        return $wkt;
     }
 
     /**
