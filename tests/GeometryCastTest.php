@@ -72,7 +72,7 @@ class GeometryCastTest extends TestCase
     }
 
     /** @test */
-    public function it_serializes_model_with_geoetry_to_array(): void
+    public function it_serializes_model_to_array_with_geometry(): void
     {
         $point = new Point(180, 0);
 
@@ -85,7 +85,7 @@ class GeometryCastTest extends TestCase
     }
 
     /** @test */
-    public function it_serializes_model_with_geoetry_to_json(): void
+    public function it_serializes_model_to_json_with_geometry(): void
     {
         $point = new Point(180, 0);
 
