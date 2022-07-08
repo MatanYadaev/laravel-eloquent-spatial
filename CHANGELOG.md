@@ -2,6 +2,13 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v2.0.0 - 2022-07-08
+
+Improve casting:
+
+- Fix `getOriginal`
+- Use a more standard WKT format
+
 ## 1.0.4 - 2022-03-07
 
 - Fix PHPStan issues
@@ -17,7 +24,7 @@ All notable changes to `laravel-eloquent-spatial` will be documented in this fil
 
 ## 1.0.1 - 2021-08-11
 
-- Upgrade to PHP-CS-Fixer v3 and clear PHPStan issues  
+- Upgrade to PHP-CS-Fixer v3 and clear PHPStan issues
 
 ## 1.0.0 - 2021-02-23
 
