@@ -66,7 +66,7 @@ class GeometryCastTest extends TestCase
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
             'point' => $point,
-        ]);
+        ])->fresh();
 
         $this->assertFalse($testPlace->isDirty('point'));
     }
