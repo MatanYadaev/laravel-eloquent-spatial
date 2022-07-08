@@ -21,7 +21,7 @@ class GeometryCastTest extends TestCase
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
             'point' => $point,
-        ])->fresh();
+        ]);
 
         $this->assertEquals($point, $testPlace->point);
     }
@@ -35,7 +35,7 @@ class GeometryCastTest extends TestCase
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
             'point' => $point,
-        ])->fresh();
+        ]);
         $testPlace->point = $point2;
         $testPlace->save();
 
@@ -66,7 +66,7 @@ class GeometryCastTest extends TestCase
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
             'point' => $point,
-        ])->fresh();
+        ]);
 
         $this->assertFalse($testPlace->isDirty('point'));
     }
@@ -79,7 +79,7 @@ class GeometryCastTest extends TestCase
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
             'point' => $point,
-        ])->fresh();
+        ]);
 
         $this->assertEquals($point->toArray(), $testPlace->toArray()['point']);
     }
@@ -92,7 +92,7 @@ class GeometryCastTest extends TestCase
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
             'point' => $point,
-        ])->fresh();
+        ]);
 
         $json = $testPlace->toJson();
         // @phpstan-ignore-next-line
@@ -145,7 +145,7 @@ class GeometryCastTest extends TestCase
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
             'point' => null,
-        ])->fresh();
+        ]);
 
         $this->assertEquals(null, $testPlace->point);
     }
