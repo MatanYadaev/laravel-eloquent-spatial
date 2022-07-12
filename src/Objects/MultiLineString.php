@@ -18,7 +18,6 @@ class MultiLineString extends GeometryCollection
 
     /**
      * @param  bool  $withFunction
-     *
      * @return string
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter

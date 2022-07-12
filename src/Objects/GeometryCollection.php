@@ -43,7 +43,6 @@ class GeometryCollection extends Geometry implements ArrayAccess
 
     /**
      * @param  bool  $withFunction
-     *
      * @return string
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
@@ -95,7 +94,6 @@ class GeometryCollection extends Geometry implements ArrayAccess
 
     /**
      * @param  int  $offset
-     *
      * @return bool
      */
     public function offsetExists($offset): bool
@@ -105,7 +103,6 @@ class GeometryCollection extends Geometry implements ArrayAccess
 
     /**
      * @param  int  $offset
-     *
      * @return TGeometry|null
      */
     public function offsetGet($offset): ?Geometry
