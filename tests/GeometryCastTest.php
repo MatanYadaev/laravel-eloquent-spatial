@@ -14,7 +14,7 @@ class GeometryCastTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function it_serializes_and_deserializes_geometry_object(): void
+    public function it_creates_model_record(): void
     {
         $point = new Point(180, 0);
 
@@ -24,6 +24,52 @@ class GeometryCastTest extends TestCase
         ]);
 
         $this->assertEquals($point, $testPlace->point);
+    }
+
+    /** @test */
+    public function it_creates_model_record_with_geometry_null(): void
+    {
+        /** @var TestPlace $testPlace */
+        $testPlace = TestPlace::factory()->create([
+            'point' => null,
+        ]);
+
+        $this->assertEquals(null, $testPlace->point);
+    }
+
+    /** @test */
+    public function it_updates_model_record(): void
+    {
+        $point = new Point(180, 0);
+        $point2 = new Point(0, 0);
+
+        /** @var TestPlace $testPlace */
+        $testPlace = TestPlace::factory()->create([
+            'point' => $point,
+        ]);
+
+        $testPlace->update([
+            'point' => $point2,
+        ]);
+
+        $this->assertEquals($point2, $testPlace->point);
+    }
+
+    /** @test */
+    public function it_updates_model_record_with_geometry_null(): void
+    {
+        $point = new Point(180, 0);
+
+        /** @var TestPlace $testPlace */
+        $testPlace = TestPlace::factory()->create([
+            'point' => $point,
+        ]);
+
+        $testPlace->update([
+            'point' => null,
+        ]);
+
+        $this->assertEquals(null, $testPlace->point);
     }
 
     /** @test */
@@ -61,12 +107,11 @@ class GeometryCastTest extends TestCase
     public function it_does_not_get_dirty_when_geometry_is_not_changed(): void
     {
         $point = new Point(180, 0);
-        $point2 = new Point(180, 0);
 
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
             'point' => $point,
-        ])->fresh();
+        ]);
 
         $this->assertFalse($testPlace->isDirty('point'));
     }
@@ -137,16 +182,5 @@ class GeometryCastTest extends TestCase
         $testPlace = TestPlace::firstOrFail();
 
         $testPlace->getAttribute('point_with_line_string_cast');
-    }
-
-    /** @test */
-    public function it_serializes_and_deserializes_null(): void
-    {
-        /** @var TestPlace $testPlace */
-        $testPlace = TestPlace::factory()->create([
-            'point' => null,
-        ]);
-
-        $this->assertEquals(null, $testPlace->point);
     }
 }

@@ -278,8 +278,6 @@ class GeometryCollectionTest extends TestCase
 
         $testPlace->save();
 
-        $testPlace->refresh();
-
         $this->assertInstanceOf(LineString::class, $testPlace->polygon[1]);
     }
 
