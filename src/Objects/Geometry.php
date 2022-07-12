@@ -16,10 +16,11 @@ use MatanYadaev\EloquentSpatial\GeometryCast;
 
 abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable
 {
-    abstract public function toWkt(bool $withFunction): string;
+    abstract public function toWkt(bool $withFunction = true): string;
 
     /**
      * @param  int  $options
+     *
      * @return string
      *
      * @throws JsonException
@@ -31,6 +32,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  string  $wkb
+     *
      * @return static
      *
      * @throws InvalidArgumentException
@@ -50,6 +52,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  string  $wkt
+     *
      * @return static
      *
      * @throws InvalidArgumentException
@@ -69,6 +72,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  string  $geoJson
+     *
      * @return static
      *
      * @throws InvalidArgumentException
@@ -143,6 +147,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  array<string>  $arguments
+     *
      * @return CastsAttributes
      */
     public static function castUsing(array $arguments): CastsAttributes

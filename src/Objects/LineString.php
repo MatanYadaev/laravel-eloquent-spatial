@@ -8,7 +8,7 @@ class LineString extends PointCollection
 {
     protected int $minimumGeometries = 2;
 
-    public function toWkt(bool $withFunction): string
+    public function toWkt(bool $withFunction = true): string
     {
         $wkt = $this->toCollectionWkt(withFunction: false);
 

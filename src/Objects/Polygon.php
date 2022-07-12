@@ -6,7 +6,7 @@ namespace MatanYadaev\EloquentSpatial\Objects;
 
 class Polygon extends MultiLineString
 {
-    public function toWkt(bool $withFunction): string
+    public function toWkt(bool $withFunction = true): string
     {
         $wkt = $this->toCollectionWkt(withFunction: false);
 
