@@ -388,7 +388,7 @@ Filters records by the [ST_SRID](https://dev.mysql.com/doc/refman/8.0/en/gis-gen
 <details><summary>Example</summary>
 
 ```php
-Place::create(['coordinates' => new Point(0, 0, 4326)]);
+Place::create(['coordinates' => new Point(12.455363273620605, 41.90746728266806, 4326)]);
 
 Place::query()
     ->whereSrid('coordinates', '=', 4326)
