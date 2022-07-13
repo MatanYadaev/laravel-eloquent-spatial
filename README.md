@@ -7,7 +7,7 @@
 ![Lint](https://github.com/matanyadaev/laravel-eloquent-spatial/workflows/Lint/badge.svg)
 [![Total Downloads](https://img.shields.io/packagist/dt/matanyadaev/laravel-eloquent-spatial.svg?style=flat-square)](https://packagist.org/packages/matanyadaev/laravel-eloquent-spatial)
 
-Laravel package to work with spatial data types and functions.
+Laravel package to work with spatial data types, functions and SRID support including (4326 WGS84).
 
 This package supports MySQL 5.7 & 8.0 and works on PHP 8 & Laravel 8.
 
@@ -40,6 +40,7 @@ class CreatePlacesTable extends Migration
             $table->string('name')->unique();
             $table->point('location')->nullable();
             $table->polygon('area')->nullable();
+            $table->point('coordinates')->nullable()->srid(4326);
             $table->timestamps();
         });
     }
@@ -122,6 +123,30 @@ $vaticanCity = Place::create([
         ])
     ])
 ])
+
+
+
+```
+
+Create with SRID
+
+```php
+$coordinates = Place::create([
+    'name' => 'London Eye',
+    'coordinates' => new Point(12.455363273620605, 41.90746728266806, 4326)
+]);
+```
+
+Set default SRID from `database.php` config file
+
+```php
+    
+  'connections' => [
+        'mysql' => [
+            'driver' => 'mysql',
+            'default_srid' => env('DEFAULT_SRID',0),
+        ],
+    ]
 ```
 
 Retrieve a record with spatial data:

@@ -19,6 +19,7 @@ Every geometry class has these functions:
 * `fromJson(string $geoJson)` - Deserializes a geometry object from a GeoJSON string. (static method) 
 * `toFeatureCollectionJson()` - Serializes the geometry object into an GeoJSON's FeatureCollection string.
 * `getCoordinates()` - Returns the coordinates of the geometry object.
+* `getSrid()` - Returns the srid of the geometry object.
 
 In addition, `GeometryCollection` also has these functions:
 
@@ -59,6 +60,7 @@ echo $geometryCollection[1]->latitude; // 180
 * [whereCrosses](#whereCrosses)
 * [whereDisjoint](#whereDisjoint)
 * [whereEquals](#whereEquals)
+* [whereSrid](#whereSrid)
 
 ###  withDistance
 
@@ -368,6 +370,28 @@ Place::create(['location' => new Point(0, 0)]);
 
 Place::query()
     ->whereEquals('location', new Point(0, 0))
+    ->exists(); // true
+```
+</details>
+
+
+###  whereSrid
+
+Filters records by the [ST_SRID](https://dev.mysql.com/doc/refman/8.0/en/gis-general-property-functions.html#function_st-srid) function.
+
+| parameter name      | type
+| ------------------  | -------------------- 
+| `$column`           | `string`
+| `$operator`         | `string`
+| `$value`            | `int`
+
+<details><summary>Example</summary>
+
+```php
+Place::create(['coordinates' => new Point(0, 0, 4326)]);
+
+Place::query()
+    ->whereSrid('coordinates', '=', 4326)
     ->exists(); // true
 ```
 </details>

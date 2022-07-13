@@ -70,12 +70,12 @@ class GeometryCast implements CastsAttributes
 
         $wkt = $geometry->toWkt(withFunction: true);
 
-        return DB::raw("ST_GeomFromText('{$wkt}')");
+        return DB::raw("ST_GeomFromText('{$wkt}', {$geometry->getSrid()}, 'axis-order=long-lat')");
     }
 
     private function extractWktFromExpression(Expression $expression): string
     {
-        preg_match('/ST_GeomFromText\(\'(.+)\'\)/', (string) $expression, $match);
+        preg_match("/'([^']+)'/", (string) $expression, $match);
 
         return $match[1];
     }

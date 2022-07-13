@@ -29,14 +29,14 @@ class GeometryCollection extends Geometry implements ArrayAccess
      *
      * @throws InvalidArgumentException
      */
-    public function __construct(Collection|array $geometries)
+    public function __construct(Collection|array $geometries, int $srid = null)
     {
         if (is_array($geometries)) {
             $geometries = collect($geometries);
         }
 
         $this->geometries = $geometries;
-
+        $this->setDefaultSrid($srid);
         $this->validateGeometriesType();
         $this->validateGeometriesCount();
     }

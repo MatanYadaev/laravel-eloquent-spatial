@@ -58,6 +58,23 @@ class SpatialBuilder extends Builder
         return $this;
     }
 
+    public function whereSrid(
+        string $column,
+        string $operator,
+        int|float $value
+    ): self {
+        $this->whereRaw(
+            sprintf(
+                'ST_SRID(%s) %s %s',
+                "`{$column}`",
+                $operator,
+                $value,
+            )
+        );
+
+        return $this;
+    }
+
     public function orderByDistance(
         string $column,
         Geometry|string $geometryOrColumn,
@@ -241,7 +258,7 @@ class SpatialBuilder extends Builder
         if ($geometryOrColumn instanceof Geometry) {
             $wkt = $geometryOrColumn->toWkt(withFunction: true);
 
-            return DB::raw("ST_GeomFromText('{$wkt}')");
+            return DB::raw("ST_GeomFromText('{$wkt}', {$geometryOrColumn->getSrid()}, 'axis-order=long-lat')");
         }
 
         return DB::raw("`{$geometryOrColumn}`");

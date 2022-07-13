@@ -4,7 +4,8 @@ All notable changes to `laravel-eloquent-spatial` will be documented in this fil
 
 ## v2.0.1 - 2022-07-12
 
-Make `Geometry::toWkt` parameters optional
+- Make `Geometry::toWkt` parameters optional
+- Add mysql 8 SRID support  
 
 ## v2.0.0 - 2022-07-08
 

@@ -113,7 +113,7 @@ class GeometryCastTest extends TestCase
             'point' => $point,
         ]);
 
-        $this->assertFalse($testPlace->isDirty('point'));
+        $this->assertFalse($testPlace->wasChanged('point'));
     }
 
     /** @test */

@@ -16,6 +16,13 @@ use MatanYadaev\EloquentSpatial\GeometryCast;
 
 abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable
 {
+
+    /**
+     * @var int
+     */
+   protected int $srid = 0;
+
+
     abstract public function toWkt(bool $withFunction = true): string;
 
     /**
@@ -37,14 +44,17 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
      */
     public static function fromWkb(string $wkb): static
     {
-        $geometry = Factory::parse($wkb, true);
+       $srid = substr($wkb, 0, 4);
 
+       $srid = unpack('L', $srid)[1];
+
+        $geometry = Factory::parse($wkb, true);
         if (! ($geometry instanceof static)) {
             throw new InvalidArgumentException(
                 sprintf('Expected %s, %s given.', static::class, $geometry::class)
             );
         }
-
+        $geometry->setSrid($srid);
         return $geometry;
     }
 
@@ -54,7 +64,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
      *
      * @throws InvalidArgumentException
      */
-    public static function fromWkt(string $wkt): static
+    public static function fromWkt(string $wkt, int $srid = null): static
     {
         $geometry = Factory::parse($wkt, false);
 
@@ -63,17 +73,20 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
                 sprintf('Expected %s, %s given.', static::class, $geometry::class)
             );
         }
-
+       if ($srid) {
+           $geometry->setSrid($srid);
+       }
         return $geometry;
     }
 
     /**
      * @param  string  $geoJson
+     * @param  int     $srid
      * @return static
      *
      * @throws InvalidArgumentException
      */
-    public static function fromJson(string $geoJson): static
+    public static function fromJson(string $geoJson, int $srid = null ): static
     {
         $geometry = Factory::parse($geoJson, false);
 
@@ -82,7 +95,9 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
                 sprintf('Expected %s, %s given.', static::class, $geometry::class)
             );
         }
-
+        if ($srid) {
+            $geometry->setSrid($srid);
+        }
         return $geometry;
     }
 
@@ -149,4 +164,37 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     {
         return new GeometryCast(static::class);
     }
+
+    /**
+     * @param int|null $srid
+     * @return void
+     * setDefaultSrid for get default SRID if exists in mysql config
+     */
+    protected function setDefaultSrid(int $srid = null): void
+    {
+        if ($srid) {
+            $this->srid = $srid;
+            return;
+        }
+        $this->srid =  config('database.connections.mysql.default_srid') ?? $this->srid;
+    }
+
+    /**
+     * @param int $srid
+     * @return $this
+     */
+    public function setSrid(int $srid): self
+    {
+        $this->srid = $srid;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSrid(): int
+    {
+        return $this->srid;
+    }
+
 }
