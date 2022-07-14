@@ -29,7 +29,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
      *
      * @throws InvalidArgumentException
      */
-    public function __construct(Collection|array $geometries, int $srid = null)
+    public function __construct(Collection|array $geometries, ?int $srid = null)
     {
         if (is_array($geometries)) {
             $geometries = collect($geometries);
@@ -43,6 +43,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
 
     /**
      * @param  bool  $withFunction
+     *
      * @return string
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
@@ -71,7 +72,6 @@ class GeometryCollection extends Geometry implements ArrayAccess
      */
     public function toArray(): array
     {
-        // @phpstan-ignore-next-line
         if (static::class === self::class) {
             return [
                 'type' => class_basename(static::class),
@@ -94,6 +94,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
 
     /**
      * @param  int  $offset
+     *
      * @return bool
      */
     public function offsetExists($offset): bool
@@ -103,6 +104,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
 
     /**
      * @param  int  $offset
+     *
      * @return TGeometry|null
      */
     public function offsetGet($offset): ?Geometry

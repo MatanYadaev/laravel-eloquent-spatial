@@ -26,12 +26,13 @@ class PointTest extends TestCase
 
         $this->assertDatabaseCount($testPlace->getTable(), 1);
     }
+
     /** @test */
     public function it_stores_point_srid(): void
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => new Point(30.0526012,31.2772677,4326),
+            'point' => new Point(30.0526012, 31.2772677, 4326),
         ]);
 
         $this->assertTrue($testPlace->point instanceof Point);
@@ -63,7 +64,7 @@ class PointTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => Point::fromJson('{"type":"Point","coordinates":[31.2772677,30.0526012]}',4326),
+            'point' => Point::fromJson('{"type":"Point","coordinates":[31.2772677,30.0526012]}', 4326),
         ]);
 
         $this->assertTrue($testPlace->point instanceof Point);
@@ -75,6 +76,7 @@ class PointTest extends TestCase
         $this->assertEquals(1, TestPlace::whereRaw('ST_SRID(point) = 4326')->count());
 
     }
+
     /** @test */
     public function it_generates_point_geo_json(): void
     {

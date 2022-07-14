@@ -29,6 +29,7 @@ class GeometryCast implements CastsAttributes
      * @param  string  $key
      * @param  string|Expression|null  $wkbOrWKt
      * @param  array<string, mixed>  $attributes
+     *
      * @return Geometry|null
      */
     public function get($model, string $key, $wkbOrWKt, array $attributes): ?Geometry
@@ -51,6 +52,7 @@ class GeometryCast implements CastsAttributes
      * @param  string  $key
      * @param  Geometry|mixed|null  $geometry
      * @param  array<string, mixed>  $attributes
+     *
      * @return Expression|null
      *
      * @throws InvalidArgumentException

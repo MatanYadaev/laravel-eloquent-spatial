@@ -291,16 +291,16 @@ class SpatialBuilderTest extends TestCase
 
         $this->assertNotNull($testPlace);
     }
-    
+
     /** @test */
     public function it_filters_by_srid(): void
     {
         TestPlace::factory()->create([
-            'point' => new Point(30.0526012,31.2772677,4326),
+            'point' => new Point(30.0526012, 31.2772677, 4326),
         ]);
 
         $testPlace = TestPlace::query()
-            ->whereSrid('point', '=',4326)
+            ->whereSrid('point', '=', 4326)
             ->first();
 
         $this->assertNotNull($testPlace);

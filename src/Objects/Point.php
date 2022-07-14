@@ -10,11 +10,11 @@ class Point extends Geometry
 
     public float $longitude;
 
-    public function __construct(float $latitude, float $longitude, int $srid = null)
+    public function __construct(float $latitude, float $longitude, ?int $srid = null)
     {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
-       $this->setDefaultSrid($srid);
+        $this->setDefaultSrid($srid);
     }
 
     public function toWkt(bool $withFunction = true): string

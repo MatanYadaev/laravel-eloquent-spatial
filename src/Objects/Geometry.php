@@ -16,17 +16,13 @@ use MatanYadaev\EloquentSpatial\GeometryCast;
 
 abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable
 {
-
-    /**
-     * @var int
-     */
-   protected int $srid = 0;
-
+    protected int $srid = 0;
 
     abstract public function toWkt(bool $withFunction = true): string;
 
     /**
      * @param  int  $options
+     *
      * @return string
      *
      * @throws JsonException
@@ -38,15 +34,18 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  string  $wkb
+     *
      * @return static
      *
      * @throws InvalidArgumentException
      */
     public static function fromWkb(string $wkb): static
     {
-       $srid = substr($wkb, 0, 4);
-
-       $srid = unpack('L', $srid)[1];
+        $string = substr($wkb, 0, 4);
+        $string = unpack('L', $string);
+        $srid = is_array($string) ? (int) $string[1] : 0;
+        // if($srid && count($srid) > 1){
+        // }
 
         $geometry = Factory::parse($wkb, true);
         if (! ($geometry instanceof static)) {
@@ -54,17 +53,21 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
                 sprintf('Expected %s, %s given.', static::class, $geometry::class)
             );
         }
-        $geometry->setSrid($srid);
+        if ($srid) {
+            $geometry->setSrid($srid);
+        }
+
         return $geometry;
     }
 
     /**
      * @param  string  $wkt
+     *
      * @return static
      *
      * @throws InvalidArgumentException
      */
-    public static function fromWkt(string $wkt, int $srid = null): static
+    public static function fromWkt(string $wkt, ?int $srid = null): static
     {
         $geometry = Factory::parse($wkt, false);
 
@@ -73,20 +76,22 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
                 sprintf('Expected %s, %s given.', static::class, $geometry::class)
             );
         }
-       if ($srid) {
-           $geometry->setSrid($srid);
-       }
+        if ($srid) {
+            $geometry->setSrid($srid);
+        }
+
         return $geometry;
     }
 
     /**
      * @param  string  $geoJson
-     * @param  int     $srid
+     * @param  int  $srid
+     *
      * @return static
      *
      * @throws InvalidArgumentException
      */
-    public static function fromJson(string $geoJson, int $srid = null ): static
+    public static function fromJson(string $geoJson, ?int $srid = null): static
     {
         $geometry = Factory::parse($geoJson, false);
 
@@ -98,6 +103,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
         if ($srid) {
             $geometry->setSrid($srid);
         }
+
         return $geometry;
     }
 
@@ -158,6 +164,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  array<string>  $arguments
+     *
      * @return CastsAttributes
      */
     public static function castUsing(array $arguments): CastsAttributes
@@ -166,35 +173,37 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     }
 
     /**
-     * @param int|null $srid
-     * @return void
-     * setDefaultSrid for get default SRID if exists in mysql config
-     */
-    protected function setDefaultSrid(int $srid = null): void
-    {
-        if ($srid) {
-            $this->srid = $srid;
-            return;
-        }
-        $this->srid =  config('database.connections.mysql.default_srid') ?? $this->srid;
-    }
-
-    /**
-     * @param int $srid
+     * @param  int  $srid
+     *
      * @return $this
      */
     public function setSrid(int $srid): self
     {
         $this->srid = $srid;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getSrid(): int
     {
         return $this->srid;
     }
 
+    /**
+     * @param  int|null  $srid
+     *
+     * @return void
+     * setDefaultSrid for get default SRID if exists in mysql config
+     */
+    protected function setDefaultSrid(?int $srid = null): void
+    {
+        if ($srid) {
+            $this->srid = $srid;
+
+            return;
+        }
+        if (config('database.connections.mysql.default_srid')) {
+            $this->srid = intval(config('database.connections.mysql.default_srid'));
+        }
+    }
 }
