@@ -71,17 +71,16 @@ class GeometryCollection extends Geometry implements ArrayAccess
    */
   public function toArray(): array
   {
-    // @phpstan-ignore-next-line
-    if (static::class === self::class) {
-      return [
-        'type' => class_basename(static::class),
-        'geometries' => $this->geometries->map(static function (Geometry $geometry): array {
-          return $geometry->toArray();
-        }),
-      ];
+    if ($this->isExtended()) {
+      return parent::toArray();
     }
 
-    return parent::toArray();
+    return [
+      'type' => class_basename(static::class),
+      'geometries' => $this->geometries->map(static function (Geometry $geometry): array {
+        return $geometry->toArray();
+      }),
+    ];
   }
 
   /**
@@ -169,5 +168,15 @@ class GeometryCollection extends Geometry implements ArrayAccess
         return (string) $geometry->toWkt($withFunction);
       })
       ->join(',');
+  }
+
+  /**
+   * Checks whether the class is used directly or via a sub-class.
+   *
+   * @return bool
+   */
+  private function isExtended(): bool
+  {
+    return is_subclass_of(static::class, self::class);
   }
 }
