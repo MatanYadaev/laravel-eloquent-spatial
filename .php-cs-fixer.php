@@ -5,6 +5,7 @@ return (new Jubeki\LaravelCodeStyle\Config())
         PhpCsFixer\Finder::create()
             ->in(__DIR__)
     )
+    ->setIndent('  ')
     ->setRules([
         '@Laravel' => true,
         '@Laravel:risky' => true,
