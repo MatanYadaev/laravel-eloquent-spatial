@@ -1,294 +1,285 @@
 <?php
 
-namespace MatanYadaev\EloquentSpatial\Tests;
-
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
-class SpatialBuilderTest extends TestCase
-{
-  use DatabaseMigrations;
+uses(DatabaseMigrations::class);
 
-  /** @test */
-  public function it_calculates_distance_between_column_and_column(): void
-  {
-    TestPlace::factory()->create([
-      'point' => new Point(0, 0),
-    ]);
+it('calculates distance between column and column', function (): void {
+  TestPlace::factory()->create(['point' => new Point(0, 0)]);
 
-    /** @var TestPlace $testPlaceWithDistance */
-    $testPlaceWithDistance = TestPlace::query()
-      ->withDistance('point', 'point')
-      ->firstOrFail();
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->withDistance('point', 'point')
+    ->firstOrFail();
 
-    $this->assertEquals(0, $testPlaceWithDistance->distance);
-  }
+  $this->assertEquals(0, $testPlaceWithDistance->distance);
+});
 
-  /** @test */
-  public function it_calculates_distance_between_column_and_geometry(): void
-  {
-    TestPlace::factory()->create([
-      'point' => new Point(0, 0),
-    ]);
+it('calculates distance between column and geometry', function (): void {
+  TestPlace::factory()->create(['point' => new Point(0, 0)]);
 
-    /** @var TestPlace $testPlaceWithDistance */
-    $testPlaceWithDistance = TestPlace::query()
-      ->withDistance('point', new Point(1, 1))
-      ->firstOrFail();
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->withDistance('point', new Point(1, 1))
+    ->firstOrFail();
 
-    $this->assertEquals(1.4142135623731, $testPlaceWithDistance->distance);
-  }
+  $this->assertEquals(1.4142135623731, $testPlaceWithDistance->distance);
+});
 
-  /** @test */
-  public function it_calculates_distance_with_defined_name(): void
-  {
-    TestPlace::factory()->create([
-      'point' => new Point(0, 0),
-    ]);
+it('calculates distance with alias', function (): void {
+  TestPlace::factory()->create(['point' => new Point(0, 0)]);
 
-    /** @var TestPlace $testPlaceWithDistance */
-    $testPlaceWithDistance = TestPlace::query()
-      ->withDistance('point', new Point(1, 1), 'distance_in_meters')
-      ->firstOrFail();
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->withDistance('point', new Point(1, 1), 'distance_in_meters')
+    ->firstOrFail();
 
-    $this->assertEquals(1.4142135623731, $testPlaceWithDistance->distance_in_meters);
-  }
+  $this->assertEquals(1.4142135623731, $testPlaceWithDistance->distance_in_meters);
+});
 
-  /** @test */
-  public function it_filters_by_distance(): void
-  {
-    TestPlace::factory()->create([
-      'point' => new Point(0, 0),
-    ]);
+it('filters by distance', function (): void {
+  $pointWithinDistance = new Point(0, 0);
+  $pointNotWithinDistance = new Point(50, 50);
+  TestPlace::factory()->create(['point' => $pointWithinDistance]);
+  TestPlace::factory()->create(['point' => $pointNotWithinDistance]);
 
-    $testPlaceWithinDistance = TestPlace::query()
-      ->whereDistance('point', new Point(1, 1), '<', 10)
-      ->first();
+  /** @var TestPlace[] $testPlacesWithinDistance */
+  $testPlacesWithinDistance = TestPlace::query()
+    ->whereDistance('point', new Point(1, 1), '<', 10)
+    ->get();
 
-    $this->assertNotNull($testPlaceWithinDistance);
-  }
+  $this->assertCount(1, $testPlacesWithinDistance);
+  $this->assertEquals($pointWithinDistance, $testPlacesWithinDistance[0]->point);
+});
 
-  /** @test */
-  public function it_orders_by_distance(): void
-  {
-    $point = new Point(0, 0);
-    $testPlace1 = TestPlace::factory()->create([
-      'point' => new Point(1, 1),
-    ]);
-    $testPlace2 = TestPlace::factory()->create([
-      'point' => new Point(2, 2),
-    ]);
+it('orders by distance', function (): void {
+  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1)]);
+  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2)]);
 
-    /** @var TestPlace $closestTestPlace */
-    $closestTestPlace = TestPlace::query()
-      ->orderByDistance('point', $point)
-      ->firstOrFail();
+  /** @var TestPlace[] $testPlacesOrderedByDistance */
+  $testPlacesOrderedByDistance = TestPlace::query()
+    ->orderByDistance('point', new Point(0, 0))
+    ->get();
 
-    /** @var TestPlace $farthestTestPlace */
-    $farthestTestPlace = TestPlace::query()
-      ->orderByDistance('point', $point, 'desc')
-      ->firstOrFail();
+  $this->assertEquals($closerTestPlace->id, $testPlacesOrderedByDistance[0]->id);
+  $this->assertEquals($fartherTestPlace->id, $testPlacesOrderedByDistance[1]->id);
+});
 
-    $this->assertEquals($testPlace1->id, $closestTestPlace->id);
-    $this->assertEquals($testPlace2->id, $farthestTestPlace->id);
-  }
+it('desc orders by distance', function (): void {
+  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1)]);
+  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2)]);
 
-  /** @test */
-  public function it_calculates_distance_sphere_column_and_column(): void
-  {
-    TestPlace::factory()->create([
-      'point' => new Point(0, 0),
-    ]);
+  /** @var TestPlace[] $testPlacesOrderedByDistance */
+  $testPlacesOrderedByDistance = TestPlace::query()
+    ->orderByDistance('point', new Point(0, 0), 'desc')
+    ->get();
 
-    /** @var TestPlace $testPlaceWithDistance */
-    $testPlaceWithDistance = TestPlace::query()
-      ->withDistanceSphere('point', 'point')
-      ->firstOrFail();
+  $this->assertEquals($closerTestPlace->id, $testPlacesOrderedByDistance[1]->id);
+  $this->assertEquals($fartherTestPlace->id, $testPlacesOrderedByDistance[0]->id);
+});
 
-    $this->assertEquals(0, $testPlaceWithDistance->distance);
-  }
+it('calculates distance sphere column and column', function (): void {
+  TestPlace::factory()->create(['point' => new Point(0, 0)]);
 
-  /** @test */
-  public function it_calculates_distance_sphere_column_and_geometry(): void
-  {
-    TestPlace::factory()->create([
-      'point' => new Point(0, 0),
-    ]);
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->withDistanceSphere('point', 'point')
+    ->firstOrFail();
 
-    /** @var TestPlace $testPlaceWithDistance */
-    $testPlaceWithDistance = TestPlace::query()
-      ->withDistanceSphere('point', new Point(1, 1))
-      ->firstOrFail();
+  $this->assertEquals(0, $testPlaceWithDistance->distance);
+});
 
-    $this->assertEquals(157249.0357231545, $testPlaceWithDistance->distance);
-  }
+it('calculates distance sphere column and geometry', function (): void {
+  TestPlace::factory()->create(['point' => new Point(0, 0)]);
 
-  /** @test */
-  public function it_calculates_distance_sphere_with_defined_name(): void
-  {
-    TestPlace::factory()->create([
-      'point' => new Point(0, 0),
-    ]);
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->withDistanceSphere('point', new Point(1, 1))
+    ->firstOrFail();
 
-    /** @var TestPlace $testPlaceWithDistance */
-    $testPlaceWithDistance = TestPlace::query()
-      ->withDistanceSphere('point', new Point(1, 1), 'distance_in_meters')
-      ->firstOrFail();
+  $this->assertEquals(157249.0357231545, $testPlaceWithDistance->distance);
+});
 
-    $this->assertEquals(157249.0357231545, $testPlaceWithDistance->distance_in_meters);
-  }
+it('calculates distance sphere with alias', function (): void {
+  TestPlace::factory()->create(['point' => new Point(0, 0)]);
 
-  /** @test */
-  public function it_filters_distance_sphere(): void
-  {
-    TestPlace::factory()->create([
-      'point' => new Point(0, 0),
-    ]);
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->withDistanceSphere('point', new Point(1, 1), 'distance_in_meters')
+    ->firstOrFail();
 
-    $testPlaceWithinDistanceSphere = TestPlace::query()
-      ->whereDistanceSphere('point', new Point(1, 1), '<', 200000)
-      ->first();
+  $this->assertEquals(157249.0357231545, $testPlaceWithDistance->distance_in_meters);
+});
 
-    $this->assertNotNull($testPlaceWithinDistanceSphere);
-  }
+it('filters distance sphere', function (): void {
+  $pointWithinDistance = new Point(0, 0);
+  $pointNotWithinDistance = new Point(50, 50);
+  TestPlace::factory()->create(['point' => $pointWithinDistance]);
+  TestPlace::factory()->create(['point' => $pointNotWithinDistance]);
 
-  /** @test */
-  public function it_orders_by_distance_sphere(): void
-  {
-    $point = new Point(0, 0);
-    $testPlace1 = TestPlace::factory()->create([
-      'point' => new Point(1, 1),
-    ]);
-    $testPlace2 = TestPlace::factory()->create([
-      'point' => new Point(2, 2),
-    ]);
+  /** @var TestPlace[] $testPlacesWithinDistance */
+  $testPlacesWithinDistance = TestPlace::query()
+    ->whereDistanceSphere('point', new Point(1, 1), '<', 200000)
+    ->get();
 
-    /** @var TestPlace $closestTestPlace */
-    $closestTestPlace = TestPlace::query()
-      ->orderByDistanceSphere('point', $point)
-      ->firstOrFail();
+  $this->assertCount(1, $testPlacesWithinDistance);
+  $this->assertEquals($pointWithinDistance, $testPlacesWithinDistance[0]->point);
+});
 
-    /** @var TestPlace $farthestTestPlace */
-    $farthestTestPlace = TestPlace::query()
-      ->orderByDistanceSphere('point', $point, 'desc')
-      ->firstOrFail();
+it('orders by distance sphere', function (): void {
+  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1)]);
+  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2)]);
 
-    $this->assertEquals($testPlace1->id, $closestTestPlace->id);
-    $this->assertEquals($testPlace2->id, $farthestTestPlace->id);
-  }
+  /** @var TestPlace[] $testPlacesOrderedByDistance */
+  $testPlacesOrderedByDistance = TestPlace::query()
+    ->orderByDistanceSphere('point', new Point(0, 0))
+    ->get();
 
-  /** @test */
-  public function it_filters_by_within(): void
-  {
-    TestPlace::factory()->create([
-      'point' => new Point(0, 0),
-    ]);
+  $this->assertEquals($closerTestPlace->id, $testPlacesOrderedByDistance[0]->id);
+  $this->assertEquals($fartherTestPlace->id, $testPlacesOrderedByDistance[1]->id);
+});
 
-    $testPlace = TestPlace::query()
-      ->whereWithin('point', Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}'))
-      ->first();
+it('desc orders by distance sphere', function (): void {
+  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1)]);
+  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2)]);
 
-    $this->assertNotNull($testPlace);
-  }
+  /** @var TestPlace[] $testPlacesOrderedByDistance */
+  $testPlacesOrderedByDistance = TestPlace::query()
+    ->orderByDistanceSphere('point', new Point(0, 0), 'desc')
+    ->get();
 
-  /** @test */
-  public function it_filters_by_contains(): void
-  {
-    TestPlace::factory()->create([
-      'polygon' => Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}'),
-    ]);
+  $this->assertEquals($closerTestPlace->id, $testPlacesOrderedByDistance[1]->id);
+  $this->assertEquals($fartherTestPlace->id, $testPlacesOrderedByDistance[0]->id);
+});
 
-    $testPlace = TestPlace::query()
-      ->whereContains('polygon', new Point(0, 0))
-      ->first();
+it('filters by within', function (): void {
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
+  $pointWithinPolygon = new Point(0, 0);
+  $pointOutsidePolygon = new Point(50, 50);
+  TestPlace::factory()->create(['point' => $pointWithinPolygon]);
+  TestPlace::factory()->create(['point' => $pointOutsidePolygon]);
 
-    $this->assertNotNull($testPlace);
-  }
+  /** @var TestPlace[] $testPlacesWithinPolygon */
+  $testPlacesWithinPolygon = TestPlace::query()
+    ->whereWithin('point', $polygon)
+    ->get();
 
-  /** @test */
-  public function it_filters_by_touches(): void
-  {
-    TestPlace::factory()->create([
-      'point' => new Point(0, 0),
-    ]);
+  $this->assertCount(1, $testPlacesWithinPolygon);
+  $this->assertEquals($pointWithinPolygon, $testPlacesWithinPolygon[0]->point);
+});
 
-    $testPlace = TestPlace::query()
-      ->whereTouches('point', Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[0,-1],[0,0],[-1,0],[-1,-1]]]}'))
-      ->first();
+it('filters by contains', function (): void {
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
+  $pointWithinPolygon = new Point(0, 0);
+  $pointOutsidePolygon = new Point(50, 50);
+  TestPlace::factory()->create(['polygon' => $polygon]);
 
-    $this->assertNotNull($testPlace);
-  }
+  $testPlace = TestPlace::query()
+    ->whereContains('polygon', $pointWithinPolygon)
+    ->first();
+  $testPlace2 = TestPlace::query()
+    ->whereContains('polygon', $pointOutsidePolygon)
+    ->first();
 
-  /** @test */
-  public function it_filters_by_intersects(): void
-  {
-    TestPlace::factory()->create([
-      'point' => new Point(0, 0),
-    ]);
+  $this->assertNotNull($testPlace);
+  $this->assertNull($testPlace2);
+});
 
-    $testPlace = TestPlace::query()
-      ->whereIntersects('point', Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}'))
-      ->first();
+it('filters by touches', function (): void {
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[0,-1],[0,0],[-1,0],[-1,-1]]]}');
+  $pointTouchesPolygon = new Point(0, 0);
+  $pointNotTouchesPolygon = new Point(50, 50);
+  TestPlace::factory()->create(['point' => $pointTouchesPolygon]);
+  TestPlace::factory()->create(['point' => $pointNotTouchesPolygon]);
 
-    $this->assertNotNull($testPlace);
-  }
+  /** @var TestPlace[] $testPlacesTouchPolygon */
+  $testPlacesTouchPolygon = TestPlace::query()
+    ->whereTouches('point', $polygon)
+    ->get();
 
-  /** @test */
-  public function it_filters_by_crosses(): void
-  {
-    TestPlace::factory()->create([
-      'line_string' => LineString::fromJson('{"type":"LineString","coordinates":[[0,0],[2,0]]}'),
-    ]);
+  $this->assertCount(1, $testPlacesTouchPolygon);
+  $this->assertEquals($pointTouchesPolygon, $testPlacesTouchPolygon[0]->point);
+});
 
-    $testPlace = TestPlace::query()
-      ->whereCrosses('line_string', Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}'))
-      ->first();
+it('filters by intersects', function (): void {
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
+  $pointIntersectsPolygon = new Point(0, 0);
+  $pointNotIntersectsPolygon = new Point(50, 50);
+  TestPlace::factory()->create(['point' => $pointIntersectsPolygon]);
+  TestPlace::factory()->create(['point' => $pointNotIntersectsPolygon]);
 
-    $this->assertNotNull($testPlace);
-  }
+  /** @var TestPlace[] $testPlacesInterestPolygon */
+  $testPlacesInterestPolygon = TestPlace::query()
+    ->whereIntersects('point', $polygon)
+    ->get();
 
-  /** @test */
-  public function it_filters_by_disjoint(): void
-  {
-    TestPlace::factory()->create([
-      'point' => new Point(0, 0),
-    ]);
+  $this->assertCount(1, $testPlacesInterestPolygon);
+  $this->assertEquals($pointIntersectsPolygon, $testPlacesInterestPolygon[0]->point);
+});
 
-    $testPlace = TestPlace::query()
-      ->whereDisjoint('point', Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[-0.5,-1],[-0.5,-0.5],[-1,-0.5],[-1,-1]]]}'))
-      ->first();
+it('filters by crosses', function (): void {
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
+  $lineStringCrossesPolygon = LineString::fromJson('{"type":"LineString","coordinates":[[0,0],[2,0]]}');
+  $lineStringNotCrossesPolygon = LineString::fromJson('{"type":"LineString","coordinates":[[50,50],[52,50]]}');
+  TestPlace::factory()->create(['line_string' => $lineStringCrossesPolygon]);
+  TestPlace::factory()->create(['line_string' => $lineStringNotCrossesPolygon]);
 
-    $this->assertNotNull($testPlace);
-  }
+  /** @var TestPlace[] $testPlacesCrossPolygon */
+  $testPlacesCrossPolygon = TestPlace::query()
+    ->whereCrosses('line_string', $polygon)
+    ->get();
 
-  /** @test */
-  public function it_filters_by_overlaps(): void
-  {
-    TestPlace::factory()->create([
-      'polygon' => Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[-0.5,-1],[-0.5,-0.5],[-1,-0.5],[-1,-1]]]}'),
-    ]);
+  $this->assertCount(1, $testPlacesCrossPolygon);
+  $this->assertEquals($lineStringCrossesPolygon, $testPlacesCrossPolygon[0]->line_string);
+});
 
-    $testPlace = TestPlace::query()
-      ->whereOverlaps('polygon', Polygon::fromJson('{"type":"Polygon","coordinates":[[[-0.75,-0.75],[1,-1],[1,1],[-1,1],[-0.75,-0.75]]]}'))
-      ->first();
+it('filters by disjoint', function (): void {
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[-0.5,-1],[-0.5,-0.5],[-1,-0.5],[-1,-1]]]}');
+  $pointDisjointsPolygon = new Point(0, 0);
+  $pointNotDisjointsPolygon = new Point(-1, -1);
+  TestPlace::factory()->create(['point' => $pointDisjointsPolygon]);
+  TestPlace::factory()->create(['point' => $pointNotDisjointsPolygon]);
 
-    $this->assertNotNull($testPlace);
-  }
+  /** @var TestPlace[] $testPlacesDisjointPolygon */
+  $testPlacesDisjointPolygon = TestPlace::query()
+    ->whereDisjoint('point', $polygon)
+    ->get();
 
-  /** @test */
-  public function it_filters_by_equals(): void
-  {
-    TestPlace::factory()->create([
-      'point' => new Point(0, 0),
-    ]);
+  $this->assertCount(1, $testPlacesDisjointPolygon);
+  $this->assertEquals($pointDisjointsPolygon, $testPlacesDisjointPolygon[0]->point);
+});
 
-    $testPlace = TestPlace::query()
-      ->whereEquals('point', new Point(0, 0))
-      ->first();
+it('filters by overlaps', function (): void {
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-0.75,-0.75],[1,-1],[1,1],[-1,1],[-0.75,-0.75]]]}');
+  $overlappingPolygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[-0.5,-1],[-0.5,-0.5],[-1,-0.5],[-1,-1]]]}');
+  $notOverlappingPolygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-10,-10],[-5,-10],[-5,-5],[-10,-5],[-10,-10]]]}');
+  TestPlace::factory()->create(['polygon' => $overlappingPolygon]);
+  TestPlace::factory()->create(['polygon' => $notOverlappingPolygon]);
 
-    $this->assertNotNull($testPlace);
-  }
-}
+  /** @var TestPlace[] $overlappingTestPlaces */
+  $overlappingTestPlaces = TestPlace::query()
+    ->whereOverlaps('polygon', $polygon)
+    ->get();
+
+  $this->assertCount(1, $overlappingTestPlaces);
+  $this->assertEquals($overlappingPolygon, $overlappingTestPlaces[0]->polygon);
+});
+
+it('filters by equals', function (): void {
+  $point1 = new Point(0, 0);
+  $point2 = new Point(50, 50);
+  TestPlace::factory()->create(['point' => $point1]);
+  TestPlace::factory()->create(['point' => $point2]);
+
+  /** @var TestPlace[] $testPlaces */
+  $testPlaces = TestPlace::query()
+    ->whereEquals('point', $point1)
+    ->get();
+
+  $this->assertCount(1, $testPlaces);
+  $this->assertEquals($point1, $testPlaces[0]->point);
+});

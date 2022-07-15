@@ -56,6 +56,7 @@ class TestPlace extends Model
   ];
 
   /**
+   * @param $query
    * @return SpatialBuilder<TestPlace>
    */
   public function newEloquentBuilder($query): SpatialBuilder

@@ -6,8 +6,10 @@ parameters:
         - tests
     level: max
     ignoreErrors:
+    		-
+    			message: '#^Undefined variable\: \$this$#'
+    			path: tests/*.php
     excludePaths:
         - ./src/Factory.php
     checkMissingIterableValueType: true
     checkGenericClassInNonGenericObjectType: false
-    
