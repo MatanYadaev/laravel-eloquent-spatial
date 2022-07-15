@@ -89,34 +89,6 @@ class GeometryCastTest extends TestCase
   }
 
   /** @test */
-  public function it_gets_dirty_when_geometry_is_changed(): void
-  {
-    $point = new Point(180, 0);
-    $point2 = new Point(0, 0);
-
-    /** @var TestPlace $testPlace */
-    $testPlace = TestPlace::factory()->create([
-      'point' => $point,
-    ]);
-    $testPlace->point = $point2;
-
-    $this->assertTrue($testPlace->isDirty('point'));
-  }
-
-  /** @test */
-  public function it_does_not_get_dirty_when_geometry_is_not_changed(): void
-  {
-    $point = new Point(180, 0);
-
-    /** @var TestPlace $testPlace */
-    $testPlace = TestPlace::factory()->create([
-      'point' => $point,
-    ]);
-
-    $this->assertFalse($testPlace->isDirty('point'));
-  }
-
-  /** @test */
   public function it_serializes_model_to_array_with_geometry(): void
   {
     $point = new Point(180, 0);
