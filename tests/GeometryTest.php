@@ -11,49 +11,49 @@ use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 class GeometryTest extends TestCase
 {
-    use DatabaseMigrations;
+  use DatabaseMigrations;
 
-    /** @test */
-    public function it_throws_exception_when_generating_geometry_from_invalid_value(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
+  /** @test */
+  public function it_throws_exception_when_generating_geometry_from_invalid_value(): void
+  {
+    $this->expectException(InvalidArgumentException::class);
 
-        Point::fromJson('invalid-value');
-    }
+    Point::fromJson('invalid-value');
+  }
 
-    /** @test */
-    public function it_throws_exception_when_generating_geometry_from_other_geometry_wkb(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
+  /** @test */
+  public function it_throws_exception_when_generating_geometry_from_other_geometry_wkb(): void
+  {
+    $this->expectException(InvalidArgumentException::class);
 
-        TestPlace::insert(array_merge(TestPlace::factory()->definition(), [
-            'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
-        ]));
+    TestPlace::insert(array_merge(TestPlace::factory()->definition(), [
+      'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
+    ]));
 
-        TestPlace::firstOrFail()->getAttribute('point_with_line_string_cast');
-    }
+    TestPlace::firstOrFail()->getAttribute('point_with_line_string_cast');
+  }
 
-    /** @test */
-    public function it_throws_exception_when_generating_geometry_from_other_geometry_wkt(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
+  /** @test */
+  public function it_throws_exception_when_generating_geometry_from_other_geometry_wkt(): void
+  {
+    $this->expectException(InvalidArgumentException::class);
 
-        LineString::fromWkt('POINT(0 180)');
-    }
+    LineString::fromWkt('POINT(0 180)');
+  }
 
-    /** @test */
-    public function it_throws_exception_when_generating_geometry_from_invalid_geo_json(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
+  /** @test */
+  public function it_throws_exception_when_generating_geometry_from_invalid_geo_json(): void
+  {
+    $this->expectException(InvalidArgumentException::class);
 
-        Point::fromJson('{}');
-    }
+    Point::fromJson('{}');
+  }
 
-    /** @test */
-    public function it_throws_exception_when_generating_geometry_from_other_geometry_geo_json(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
+  /** @test */
+  public function it_throws_exception_when_generating_geometry_from_other_geometry_geo_json(): void
+  {
+    $this->expectException(InvalidArgumentException::class);
 
-        Point::fromJson('{"type":"LineString","coordinates":[[0,180],[1,179]]}');
-    }
+    Point::fromJson('{"type":"LineString","coordinates":[[0,180],[1,179]]}');
+  }
 }

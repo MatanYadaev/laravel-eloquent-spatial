@@ -16,137 +16,137 @@ use MatanYadaev\EloquentSpatial\GeometryCast;
 
 abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable
 {
-    abstract public function toWkt(bool $withFunction = true): string;
+  abstract public function toWkt(bool $withFunction = true): string;
 
-    /**
-     * @param  int  $options
-     * @return string
-     *
-     * @throws JsonException
-     */
-    public function toJson($options = 0): string
-    {
-        return json_encode($this, $options | JSON_THROW_ON_ERROR);
+  /**
+   * @param  int  $options
+   * @return string
+   *
+   * @throws JsonException
+   */
+  public function toJson($options = 0): string
+  {
+    return json_encode($this, $options | JSON_THROW_ON_ERROR);
+  }
+
+  /**
+   * @param  string  $wkb
+   * @return static
+   *
+   * @throws InvalidArgumentException
+   */
+  public static function fromWkb(string $wkb): static
+  {
+    $geometry = Factory::parse($wkb, true);
+
+    if (! ($geometry instanceof static)) {
+      throw new InvalidArgumentException(
+        sprintf('Expected %s, %s given.', static::class, $geometry::class)
+      );
     }
 
-    /**
-     * @param  string  $wkb
-     * @return static
-     *
-     * @throws InvalidArgumentException
-     */
-    public static function fromWkb(string $wkb): static
-    {
-        $geometry = Factory::parse($wkb, true);
+    return $geometry;
+  }
 
-        if (! ($geometry instanceof static)) {
-            throw new InvalidArgumentException(
-                sprintf('Expected %s, %s given.', static::class, $geometry::class)
-            );
-        }
+  /**
+   * @param  string  $wkt
+   * @return static
+   *
+   * @throws InvalidArgumentException
+   */
+  public static function fromWkt(string $wkt): static
+  {
+    $geometry = Factory::parse($wkt, false);
 
-        return $geometry;
+    if (! ($geometry instanceof static)) {
+      throw new InvalidArgumentException(
+        sprintf('Expected %s, %s given.', static::class, $geometry::class)
+      );
     }
 
-    /**
-     * @param  string  $wkt
-     * @return static
-     *
-     * @throws InvalidArgumentException
-     */
-    public static function fromWkt(string $wkt): static
-    {
-        $geometry = Factory::parse($wkt, false);
+    return $geometry;
+  }
 
-        if (! ($geometry instanceof static)) {
-            throw new InvalidArgumentException(
-                sprintf('Expected %s, %s given.', static::class, $geometry::class)
-            );
-        }
+  /**
+   * @param  string  $geoJson
+   * @return static
+   *
+   * @throws InvalidArgumentException
+   */
+  public static function fromJson(string $geoJson): static
+  {
+    $geometry = Factory::parse($geoJson, false);
 
-        return $geometry;
+    if (! ($geometry instanceof static)) {
+      throw new InvalidArgumentException(
+        sprintf('Expected %s, %s given.', static::class, $geometry::class)
+      );
     }
 
-    /**
-     * @param  string  $geoJson
-     * @return static
-     *
-     * @throws InvalidArgumentException
-     */
-    public static function fromJson(string $geoJson): static
-    {
-        $geometry = Factory::parse($geoJson, false);
+    return $geometry;
+  }
 
-        if (! ($geometry instanceof static)) {
-            throw new InvalidArgumentException(
-                sprintf('Expected %s, %s given.', static::class, $geometry::class)
-            );
-        }
+  /**
+   * @return array<mixed>
+   */
+  public function jsonSerialize(): array
+  {
+    return $this->toArray();
+  }
 
-        return $geometry;
+  /**
+   * @return array{type: string, coordinates: array<mixed>}
+   */
+  public function toArray(): array
+  {
+    return [
+      'type' => class_basename(static::class),
+      'coordinates' => $this->getCoordinates(),
+    ];
+  }
+
+  /**
+   * @return string
+   *
+   * @throws JsonException
+   */
+  public function toFeatureCollectionJson(): string
+  {
+    if (static::class === GeometryCollection::class) {
+      /** @var GeometryCollection<Geometry> $this */
+      $geometries = $this->geometries;
+    } else {
+      $geometries = collect([$this]);
     }
 
-    /**
-     * @return array<mixed>
-     */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
-    }
+    $features = $geometries->map(static function (self $geometry): array {
+      return [
+        'type' => 'Feature',
+        'properties' => [],
+        'geometry' => $geometry->toArray(),
+      ];
+    });
 
-    /**
-     * @return array{type: string, coordinates: array<mixed>}
-     */
-    public function toArray(): array
-    {
-        return [
-            'type' => class_basename(static::class),
-            'coordinates' => $this->getCoordinates(),
-        ];
-    }
+    return json_encode(
+      [
+        'type' => 'FeatureCollection',
+        'features' => $features,
+      ],
+      JSON_THROW_ON_ERROR
+    );
+  }
 
-    /**
-     * @return string
-     *
-     * @throws JsonException
-     */
-    public function toFeatureCollectionJson(): string
-    {
-        if (static::class === GeometryCollection::class) {
-            /** @var GeometryCollection<Geometry> $this */
-            $geometries = $this->geometries;
-        } else {
-            $geometries = collect([$this]);
-        }
+  /**
+   * @return array<mixed>
+   */
+  abstract public function getCoordinates(): array;
 
-        $features = $geometries->map(static function (self $geometry): array {
-            return [
-                'type' => 'Feature',
-                'properties' => [],
-                'geometry' => $geometry->toArray(),
-            ];
-        });
-
-        return json_encode(
-            [
-                'type' => 'FeatureCollection',
-                'features' => $features,
-            ],
-            JSON_THROW_ON_ERROR
-        );
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    abstract public function getCoordinates(): array;
-
-    /**
-     * @param  array<string>  $arguments
-     * @return CastsAttributes
-     */
-    public static function castUsing(array $arguments): CastsAttributes
-    {
-        return new GeometryCast(static::class);
-    }
+  /**
+   * @param  array<string>  $arguments
+   * @return CastsAttributes
+   */
+  public static function castUsing(array $arguments): CastsAttributes
+  {
+    return new GeometryCast(static::class);
+  }
 }

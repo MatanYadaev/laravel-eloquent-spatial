@@ -6,14 +6,14 @@ namespace MatanYadaev\EloquentSpatial\Objects;
 
 class Polygon extends MultiLineString
 {
-    public function toWkt(bool $withFunction = true): string
-    {
-        $wkt = $this->toCollectionWkt(withFunction: false);
+  public function toWkt(bool $withFunction = true): string
+  {
+    $wkt = $this->toCollectionWkt(withFunction: false);
 
-        if ($withFunction) {
-            return "POLYGON({$wkt})";
-        }
-
-        return "(${wkt})";
+    if ($withFunction) {
+      return "POLYGON({$wkt})";
     }
+
+    return "(${wkt})";
+  }
 }

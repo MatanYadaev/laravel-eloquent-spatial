@@ -12,20 +12,20 @@ namespace MatanYadaev\EloquentSpatial\Objects;
  */
 class MultiLineString extends GeometryCollection
 {
-    protected string $collectionOf = LineString::class;
+  protected string $collectionOf = LineString::class;
 
-    protected int $minimumGeometries = 1;
+  protected int $minimumGeometries = 1;
 
-    /**
-     * @param  bool  $withFunction
-     * @return string
-     *
-     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
-     */
-    public function toWkt(bool $withFunction = true): string
-    {
-        $wkt = $this->toCollectionWkt(withFunction: false);
+  /**
+   * @param  bool  $withFunction
+   * @return string
+   *
+   * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+   */
+  public function toWkt(bool $withFunction = true): string
+  {
+    $wkt = $this->toCollectionWkt(withFunction: false);
 
-        return "MULTILINESTRING({$wkt})";
-    }
+    return "MULTILINESTRING({$wkt})";
+  }
 }
