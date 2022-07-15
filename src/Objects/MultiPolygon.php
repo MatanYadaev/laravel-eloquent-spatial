@@ -12,20 +12,20 @@ namespace MatanYadaev\EloquentSpatial\Objects;
  */
 class MultiPolygon extends GeometryCollection
 {
-    protected string $collectionOf = Polygon::class;
+  protected string $collectionOf = Polygon::class;
 
-    protected int $minimumGeometries = 1;
+  protected int $minimumGeometries = 1;
 
-    /**
-     * @param  bool  $withFunction
-     * @return string
-     *
-     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
-     */
-    public function toWkt(bool $withFunction = true): string
-    {
-        $wkt = $this->toCollectionWkt(withFunction: false);
+  /**
+   * @param  bool  $withFunction
+   * @return string
+   *
+   * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+   */
+  public function toWkt(bool $withFunction = true): string
+  {
+    $wkt = $this->toCollectionWkt(withFunction: false);
 
-        return "MULTIPOLYGON({$wkt})";
-    }
+    return "MULTIPOLYGON({$wkt})";
+  }
 }

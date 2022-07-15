@@ -6,16 +6,16 @@ namespace MatanYadaev\EloquentSpatial\Objects;
 
 class LineString extends PointCollection
 {
-    protected int $minimumGeometries = 2;
+  protected int $minimumGeometries = 2;
 
-    public function toWkt(bool $withFunction = true): string
-    {
-        $wkt = $this->toCollectionWkt(withFunction: false);
+  public function toWkt(bool $withFunction = true): string
+  {
+    $wkt = $this->toCollectionWkt(withFunction: false);
 
-        if ($withFunction) {
-            return "LINESTRING(${wkt})";
-        }
-
-        return "(${wkt})";
+    if ($withFunction) {
+      return "LINESTRING(${wkt})";
     }
+
+    return "(${wkt})";
+  }
 }

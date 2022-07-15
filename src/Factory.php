@@ -25,63 +25,63 @@ use Polygon as geoPHPPolygon;
 
 class Factory
 {
-    public static function parse(string $value, bool $isWkb): Geometry
-    {
-        if ($isWkb) {
-            // MySQL adds 4 NULL bytes at the start of the WKB
-            $value = substr($value, 4);
-        }
-
-        try {
-            /** @var geoPHPGeometry|false $geoPHPGeometry */
-            $geoPHPGeometry = geoPHP::load($value);
-        } finally {
-            if (! isset($geoPHPGeometry) || ! $geoPHPGeometry) {
-                throw new InvalidArgumentException('Invalid spatial value');
-            }
-        }
-
-        return self::createFromGeometry($geoPHPGeometry);
+  public static function parse(string $value, bool $isWkb): Geometry
+  {
+    if ($isWkb) {
+      // MySQL adds 4 NULL bytes at the start of the WKB
+      $value = substr($value, 4);
     }
 
-    protected static function createFromGeometry(geoPHPGeometry $geometry): Geometry
-    {
-        if ($geometry instanceof geoPHPPoint) {
-            if ($geometry->coords[0] === null || $geometry->coords[1] === null) {
-                if (! isset($geoPHPGeometry) || ! $geoPHPGeometry) {
-                    throw new InvalidArgumentException('Invalid spatial value');
-                }
-            }
-
-            return new Point($geometry->coords[1], $geometry->coords[0]);
-        }
-
-        /** @var geoPHPGeometryCollection $geometry */
-        $components = collect($geometry->components)
-            ->map(static function (geoPHPGeometry $geometryComponent): Geometry {
-                return self::createFromGeometry($geometryComponent);
-            });
-
-        if ($geometry::class === geoPHPMultiPoint::class) {
-            return new MultiPoint($components);
-        }
-
-        if ($geometry::class === geoPHPLineString::class) {
-            return new LineString($components);
-        }
-
-        if ($geometry::class === geoPHPPolygon::class) {
-            return new Polygon($components);
-        }
-
-        if ($geometry::class === geoPHPMultiLineString::class) {
-            return new MultiLineString($components);
-        }
-
-        if ($geometry::class === geoPHPMultiPolygon::class) {
-            return new MultiPolygon($components);
-        }
-
-        return new GeometryCollection($components);
+    try {
+      /** @var geoPHPGeometry|false $geoPHPGeometry */
+      $geoPHPGeometry = geoPHP::load($value);
+    } finally {
+      if (! isset($geoPHPGeometry) || ! $geoPHPGeometry) {
+        throw new InvalidArgumentException('Invalid spatial value');
+      }
     }
+
+    return self::createFromGeometry($geoPHPGeometry);
+  }
+
+  protected static function createFromGeometry(geoPHPGeometry $geometry): Geometry
+  {
+    if ($geometry instanceof geoPHPPoint) {
+      if ($geometry->coords[0] === null || $geometry->coords[1] === null) {
+        if (! isset($geoPHPGeometry) || ! $geoPHPGeometry) {
+          throw new InvalidArgumentException('Invalid spatial value');
+        }
+      }
+
+      return new Point($geometry->coords[1], $geometry->coords[0]);
+    }
+
+    /** @var geoPHPGeometryCollection $geometry */
+    $components = collect($geometry->components)
+      ->map(static function (geoPHPGeometry $geometryComponent): Geometry {
+        return self::createFromGeometry($geometryComponent);
+      });
+
+    if ($geometry::class === geoPHPMultiPoint::class) {
+      return new MultiPoint($components);
+    }
+
+    if ($geometry::class === geoPHPLineString::class) {
+      return new LineString($components);
+    }
+
+    if ($geometry::class === geoPHPPolygon::class) {
+      return new Polygon($components);
+    }
+
+    if ($geometry::class === geoPHPMultiLineString::class) {
+      return new MultiLineString($components);
+    }
+
+    if ($geometry::class === geoPHPMultiPolygon::class) {
+      return new MultiPolygon($components);
+    }
+
+    return new GeometryCollection($components);
+  }
 }

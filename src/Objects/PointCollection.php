@@ -12,5 +12,5 @@ namespace MatanYadaev\EloquentSpatial\Objects;
  */
 abstract class PointCollection extends GeometryCollection
 {
-    protected string $collectionOf = Point::class;
+  protected string $collectionOf = Point::class;
 }

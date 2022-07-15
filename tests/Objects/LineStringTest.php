@@ -12,87 +12,87 @@ use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 class LineStringTest extends TestCase
 {
-    use DatabaseMigrations;
+  use DatabaseMigrations;
 
-    /** @test */
-    public function it_stores_line_string(): void
-    {
-        /** @var TestPlace $testPlace */
-        $testPlace = TestPlace::factory()->create([
-            'line_string' => new LineString([
-                new Point(180, 0),
-                new Point(179, 1),
-            ]),
-        ]);
+  /** @test */
+  public function it_stores_line_string(): void
+  {
+    /** @var TestPlace $testPlace */
+    $testPlace = TestPlace::factory()->create([
+      'line_string' => new LineString([
+        new Point(180, 0),
+        new Point(179, 1),
+      ]),
+    ]);
 
-        $this->assertTrue($testPlace->line_string instanceof LineString);
+    $this->assertTrue($testPlace->line_string instanceof LineString);
 
-        $this->assertEquals(180, $testPlace->line_string[0]->latitude);
-        $this->assertEquals(0, $testPlace->line_string[0]->longitude);
-        $this->assertEquals(179, $testPlace->line_string[1]->latitude);
-        $this->assertEquals(1, $testPlace->line_string[1]->longitude);
+    $this->assertEquals(180, $testPlace->line_string[0]->latitude);
+    $this->assertEquals(0, $testPlace->line_string[0]->longitude);
+    $this->assertEquals(179, $testPlace->line_string[1]->latitude);
+    $this->assertEquals(1, $testPlace->line_string[1]->longitude);
 
-        $this->assertDatabaseCount($testPlace->getTable(), 1);
-    }
+    $this->assertDatabaseCount($testPlace->getTable(), 1);
+  }
 
-    /** @test */
-    public function it_stores_line_string_from_json(): void
-    {
-        /** @var TestPlace $testPlace */
-        $testPlace = TestPlace::factory()->create([
-            'line_string' => LineString::fromJson('{"type":"LineString","coordinates":[[0,180],[1,179]]}'),
-        ]);
+  /** @test */
+  public function it_stores_line_string_from_json(): void
+  {
+    /** @var TestPlace $testPlace */
+    $testPlace = TestPlace::factory()->create([
+      'line_string' => LineString::fromJson('{"type":"LineString","coordinates":[[0,180],[1,179]]}'),
+    ]);
 
-        $this->assertTrue($testPlace->line_string instanceof LineString);
+    $this->assertTrue($testPlace->line_string instanceof LineString);
 
-        $this->assertEquals(180, $testPlace->line_string[0]->latitude);
-        $this->assertEquals(0, $testPlace->line_string[0]->longitude);
-        $this->assertEquals(179, $testPlace->line_string[1]->latitude);
-        $this->assertEquals(1, $testPlace->line_string[1]->longitude);
+    $this->assertEquals(180, $testPlace->line_string[0]->latitude);
+    $this->assertEquals(0, $testPlace->line_string[0]->longitude);
+    $this->assertEquals(179, $testPlace->line_string[1]->latitude);
+    $this->assertEquals(1, $testPlace->line_string[1]->longitude);
 
-        $this->assertDatabaseCount($testPlace->getTable(), 1);
-    }
+    $this->assertDatabaseCount($testPlace->getTable(), 1);
+  }
 
-    /** @test */
-    public function it_generates_line_string_geo_json(): void
-    {
-        $lineString = new LineString([
-            new Point(180, 0),
-            new Point(179, 1),
-        ]);
+  /** @test */
+  public function it_generates_line_string_geo_json(): void
+  {
+    $lineString = new LineString([
+      new Point(180, 0),
+      new Point(179, 1),
+    ]);
 
-        $this->assertEquals('{"type":"LineString","coordinates":[[0,180],[1,179]]}', $lineString->toJson());
-    }
+    $this->assertEquals('{"type":"LineString","coordinates":[[0,180],[1,179]]}', $lineString->toJson());
+  }
 
-    /** @test */
-    public function it_generates_line_string_feature_collection_json(): void
-    {
-        $lineString = new LineString([
-            new Point(180, 0),
-            new Point(179, 1),
-        ]);
+  /** @test */
+  public function it_generates_line_string_feature_collection_json(): void
+  {
+    $lineString = new LineString([
+      new Point(180, 0),
+      new Point(179, 1),
+    ]);
 
-        $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"LineString","coordinates":[[0,180],[1,179]]}}]}', $lineString->toFeatureCollectionJson());
-    }
+    $this->assertEquals('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"LineString","coordinates":[[0,180],[1,179]]}}]}', $lineString->toFeatureCollectionJson());
+  }
 
-    /** @test */
-    public function it_throws_exception_when_line_string_has_less_than_2_points(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
+  /** @test */
+  public function it_throws_exception_when_line_string_has_less_than_2_points(): void
+  {
+    $this->expectException(InvalidArgumentException::class);
 
-        new LineString([
-            new Point(180, 0),
-        ]);
-    }
+    new LineString([
+      new Point(180, 0),
+    ]);
+  }
 
-    /** @test */
-    public function it_throws_exception_when_line_string_has_composed_by_polygon(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
+  /** @test */
+  public function it_throws_exception_when_line_string_has_composed_by_polygon(): void
+  {
+    $this->expectException(InvalidArgumentException::class);
 
-        // @phpstan-ignore-next-line
-        new LineString([
-            Polygon::fromJson('{"type":"Polygon","coordinates":[[[0,180],[1,179],[2,178],[3,177],[0,180]]]}'),
-        ]);
-    }
+    // @phpstan-ignore-next-line
+    new LineString([
+      Polygon::fromJson('{"type":"Polygon","coordinates":[[[0,180],[1,179],[2,178],[3,177],[0,180]]]}'),
+    ]);
+  }
 }

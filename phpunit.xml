@@ -10,22 +10,22 @@
          stopOnFailure="false"
          verbose="true"
 >
-    <testsuites>
-        <testsuite name="Test Suite">
-            <directory>tests</directory>
-        </testsuite>
-    </testsuites>
-    <coverage>
-        <include>
-            <directory suffix=".php">./src</directory>
-        </include>
-        <report>
-            <html outputDirectory="build/coverage"/>
-            <text outputFile="build/coverage.txt"/>
-            <clover outputFile="build/logs/clover.xml"/>
-        </report>
-    </coverage>
-    <logging>
-        <junit outputFile="build/report.junit.xml"/>
-    </logging>
+  <testsuites>
+    <testsuite name="Test Suite">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+  <coverage>
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+    <report>
+      <html outputDirectory="build/coverage"/>
+      <text outputFile="build/coverage.txt"/>
+      <clover outputFile="build/logs/clover.xml"/>
+    </report>
+  </coverage>
+  <logging>
+    <junit outputFile="build/report.junit.xml"/>
+  </logging>
 </phpunit>
