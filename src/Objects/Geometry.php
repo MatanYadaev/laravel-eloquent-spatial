@@ -22,7 +22,6 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  int  $options
-     *
      * @return string
      *
      * @throws JsonException
@@ -34,7 +33,6 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  string  $wkb
-     *
      * @return static
      *
      * @throws InvalidArgumentException
@@ -62,7 +60,6 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  string  $wkt
-     *
      * @return static
      *
      * @throws InvalidArgumentException
@@ -86,7 +83,6 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     /**
      * @param  string  $geoJson
      * @param  int  $srid
-     *
      * @return static
      *
      * @throws InvalidArgumentException
@@ -164,7 +160,6 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  array<string>  $arguments
-     *
      * @return CastsAttributes
      */
     public static function castUsing(array $arguments): CastsAttributes
@@ -174,7 +169,6 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  int  $srid
-     *
      * @return $this
      */
     public function setSrid(int $srid): self
@@ -191,7 +185,6 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  int|null  $srid
-     *
      * @return void
      * setDefaultSrid for get default SRID if exists in mysql config
      */

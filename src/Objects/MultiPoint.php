@@ -10,7 +10,6 @@ class MultiPoint extends PointCollection
 
     /**
      * @param  bool  $withFunction
-     *
      * @return string
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
