@@ -34,8 +34,8 @@ class Point extends Geometry
     public function getCoordinates(): array
     {
         return [
-            $this->longitude,
-            $this->latitude,
+          $this->longitude,
+          $this->latitude,
         ];
     }
 }

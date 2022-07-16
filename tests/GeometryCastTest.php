@@ -20,7 +20,7 @@ class GeometryCastTest extends TestCase
 
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => $point,
+          'point' => $point,
         ]);
 
         $this->assertEquals($point, $testPlace->point);
@@ -31,7 +31,7 @@ class GeometryCastTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => null,
+          'point' => null,
         ]);
 
         $this->assertEquals(null, $testPlace->point);
@@ -45,11 +45,11 @@ class GeometryCastTest extends TestCase
 
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => $point,
+          'point' => $point,
         ]);
 
         $testPlace->update([
-            'point' => $point2,
+          'point' => $point2,
         ]);
 
         $this->assertEquals($point2, $testPlace->point);
@@ -62,11 +62,11 @@ class GeometryCastTest extends TestCase
 
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => $point,
+          'point' => $point,
         ]);
 
         $testPlace->update([
-            'point' => null,
+          'point' => null,
         ]);
 
         $this->assertEquals(null, $testPlace->point);
@@ -80,7 +80,7 @@ class GeometryCastTest extends TestCase
 
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => $point,
+          'point' => $point,
         ]);
         $testPlace->point = $point2;
         $testPlace->save();
@@ -96,7 +96,7 @@ class GeometryCastTest extends TestCase
 
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => $point,
+          'point' => $point,
         ]);
         $testPlace->point = $point2;
 
@@ -110,7 +110,7 @@ class GeometryCastTest extends TestCase
 
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => $point,
+          'point' => $point,
         ]);
 
         $this->assertFalse($testPlace->wasChanged('point'));
@@ -123,7 +123,7 @@ class GeometryCastTest extends TestCase
 
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => $point,
+          'point' => $point,
         ]);
 
         $this->assertEquals($point->toArray(), $testPlace->toArray()['point']);
@@ -136,7 +136,7 @@ class GeometryCastTest extends TestCase
 
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => $point,
+          'point' => $point,
         ]);
 
         $json = $testPlace->toJson();
@@ -152,10 +152,10 @@ class GeometryCastTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         TestPlace::factory()->make([
-            'point' => new LineString([
-                new Point(180, 0),
-                new Point(179, 1),
-            ]),
+          'point' => new LineString([
+            new Point(180, 0),
+            new Point(179, 1),
+          ]),
         ]);
     }
 
@@ -165,7 +165,7 @@ class GeometryCastTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         TestPlace::factory()->make([
-            'point' => 'not-a-point-object',
+          'point' => 'not-a-point-object',
         ]);
     }
 
@@ -175,7 +175,7 @@ class GeometryCastTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         TestPlace::insert(array_merge(TestPlace::factory()->definition(), [
-            'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
+          'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
         ]));
 
         /** @var TestPlace $testPlace */

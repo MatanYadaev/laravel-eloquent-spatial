@@ -42,10 +42,9 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
         $string = substr($wkb, 0, 4);
         $string = unpack('L', $string);
         $srid = is_array($string) ? (int) $string[1] : 0;
-        // if($srid && count($srid) > 1){
-        // }
 
         $geometry = Factory::parse($wkb, true);
+
         if (! ($geometry instanceof static)) {
             throw new InvalidArgumentException(
                 sprintf('Expected %s, %s given.', static::class, $geometry::class)
@@ -60,6 +59,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  string  $wkt
+     * @param  int|null  $srid
      * @return static
      *
      * @throws InvalidArgumentException
@@ -73,6 +73,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
                 sprintf('Expected %s, %s given.', static::class, $geometry::class)
             );
         }
+
         if ($srid) {
             $geometry->setSrid($srid);
         }
@@ -82,7 +83,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
     /**
      * @param  string  $geoJson
-     * @param  int  $srid
+     * @param  int|null  $srid
      * @return static
      *
      * @throws InvalidArgumentException
@@ -117,8 +118,8 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     public function toArray(): array
     {
         return [
-            'type' => class_basename(static::class),
-            'coordinates' => $this->getCoordinates(),
+          'type' => class_basename(static::class),
+          'coordinates' => $this->getCoordinates(),
         ];
     }
 
@@ -138,16 +139,16 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
         $features = $geometries->map(static function (self $geometry): array {
             return [
-                'type' => 'Feature',
-                'properties' => [],
-                'geometry' => $geometry->toArray(),
+              'type' => 'Feature',
+              'properties' => [],
+              'geometry' => $geometry->toArray(),
             ];
         });
 
         return json_encode(
             [
-                'type' => 'FeatureCollection',
-                'features' => $features,
+              'type' => 'FeatureCollection',
+              'features' => $features,
             ],
             JSON_THROW_ON_ERROR
         );

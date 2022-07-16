@@ -59,8 +59,8 @@ class Factory
         /** @var geoPHPGeometryCollection $geometry */
         $components = collect($geometry->components)
             ->map(static function (geoPHPGeometry $geometryComponent): Geometry {
-                return self::createFromGeometry($geometryComponent);
-            });
+          return self::createFromGeometry($geometryComponent);
+      });
 
         if ($geometry::class === geoPHPMultiPoint::class) {
             return new MultiPoint($components);

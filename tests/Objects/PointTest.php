@@ -17,7 +17,7 @@ class PointTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => new Point(180, 0),
+          'point' => new Point(180, 0),
         ]);
 
         $this->assertTrue($testPlace->point instanceof Point);
@@ -32,7 +32,7 @@ class PointTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => new Point(30.0526012, 31.2772677, 4326),
+          'point' => new Point(30.0526012, 31.2772677, 4326),
         ]);
 
         $this->assertTrue($testPlace->point instanceof Point);
@@ -49,7 +49,7 @@ class PointTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => Point::fromJson('{"type":"Point","coordinates":[0,180]}'),
+          'point' => Point::fromJson('{"type":"Point","coordinates":[0,180]}'),
         ]);
 
         $this->assertTrue($testPlace->point instanceof Point);
@@ -64,7 +64,7 @@ class PointTest extends TestCase
     {
         /** @var TestPlace $testPlace */
         $testPlace = TestPlace::factory()->create([
-            'point' => Point::fromJson('{"type":"Point","coordinates":[31.2772677,30.0526012]}', 4326),
+          'point' => Point::fromJson('{"type":"Point","coordinates":[31.2772677,30.0526012]}', 4326),
         ]);
 
         $this->assertTrue($testPlace->point instanceof Point);
