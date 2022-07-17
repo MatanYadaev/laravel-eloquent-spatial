@@ -16,7 +16,7 @@ it('calculates distance between column and column', function (): void {
     ->withDistance('point', 'point')
     ->firstOrFail();
 
-  $this->assertEquals(0, $testPlaceWithDistance->distance);
+  expect($testPlaceWithDistance->distance)->toBe(0.0);
 });
 
 it('calculates distance between column and geometry', function (): void {
@@ -27,7 +27,7 @@ it('calculates distance between column and geometry', function (): void {
     ->withDistance('point', new Point(1, 1))
     ->firstOrFail();
 
-  $this->assertEquals(1.4142135623731, $testPlaceWithDistance->distance);
+  expect($testPlaceWithDistance->distance)->toBe(1.4142135623730951);
 });
 
 it('calculates distance with alias', function (): void {
@@ -38,7 +38,7 @@ it('calculates distance with alias', function (): void {
     ->withDistance('point', new Point(1, 1), 'distance_in_meters')
     ->firstOrFail();
 
-  $this->assertEquals(1.4142135623731, $testPlaceWithDistance->distance_in_meters);
+  expect($testPlaceWithDistance->distance_in_meters)->toBe(1.4142135623730951);
 });
 
 it('filters by distance', function (): void {
@@ -52,8 +52,8 @@ it('filters by distance', function (): void {
     ->whereDistance('point', new Point(1, 1), '<', 10)
     ->get();
 
-  $this->assertCount(1, $testPlacesWithinDistance);
-  $this->assertEquals($pointWithinDistance, $testPlacesWithinDistance[0]->point);
+  expect($testPlacesWithinDistance)->toHaveCount(1);
+  expect($testPlacesWithinDistance[0]->point)->toEqual($pointWithinDistance);
 });
 
 it('orders by distance', function (): void {
@@ -65,8 +65,8 @@ it('orders by distance', function (): void {
     ->orderByDistance('point', new Point(0, 0))
     ->get();
 
-  $this->assertEquals($closerTestPlace->id, $testPlacesOrderedByDistance[0]->id);
-  $this->assertEquals($fartherTestPlace->id, $testPlacesOrderedByDistance[1]->id);
+  expect($testPlacesOrderedByDistance[0]->id)->toBe($closerTestPlace->id);
+  expect($testPlacesOrderedByDistance[1]->id)->toBe($fartherTestPlace->id);
 });
 
 it('desc orders by distance', function (): void {
@@ -78,8 +78,8 @@ it('desc orders by distance', function (): void {
     ->orderByDistance('point', new Point(0, 0), 'desc')
     ->get();
 
-  $this->assertEquals($closerTestPlace->id, $testPlacesOrderedByDistance[1]->id);
-  $this->assertEquals($fartherTestPlace->id, $testPlacesOrderedByDistance[0]->id);
+  expect($testPlacesOrderedByDistance[1]->id)->toBe($closerTestPlace->id);
+  expect($testPlacesOrderedByDistance[0]->id)->toBe($fartherTestPlace->id);
 });
 
 it('calculates distance sphere column and column', function (): void {
@@ -90,7 +90,7 @@ it('calculates distance sphere column and column', function (): void {
     ->withDistanceSphere('point', 'point')
     ->firstOrFail();
 
-  $this->assertEquals(0, $testPlaceWithDistance->distance);
+  expect($testPlaceWithDistance->distance)->toBe(0.0);
 });
 
 it('calculates distance sphere column and geometry', function (): void {
@@ -101,7 +101,7 @@ it('calculates distance sphere column and geometry', function (): void {
     ->withDistanceSphere('point', new Point(1, 1))
     ->firstOrFail();
 
-  $this->assertEquals(157249.0357231545, $testPlaceWithDistance->distance);
+  expect($testPlaceWithDistance->distance)->toBe(157249.0357231545);
 });
 
 it('calculates distance sphere with alias', function (): void {
@@ -112,7 +112,7 @@ it('calculates distance sphere with alias', function (): void {
     ->withDistanceSphere('point', new Point(1, 1), 'distance_in_meters')
     ->firstOrFail();
 
-  $this->assertEquals(157249.0357231545, $testPlaceWithDistance->distance_in_meters);
+  expect($testPlaceWithDistance->distance_in_meters)->toBe(157249.0357231545);
 });
 
 it('filters distance sphere', function (): void {
@@ -126,8 +126,8 @@ it('filters distance sphere', function (): void {
     ->whereDistanceSphere('point', new Point(1, 1), '<', 200000)
     ->get();
 
-  $this->assertCount(1, $testPlacesWithinDistance);
-  $this->assertEquals($pointWithinDistance, $testPlacesWithinDistance[0]->point);
+  expect($testPlacesWithinDistance)->toHaveCount(1);
+  expect($testPlacesWithinDistance[0]->point)->toEqual($pointWithinDistance);
 });
 
 it('orders by distance sphere', function (): void {
@@ -139,8 +139,8 @@ it('orders by distance sphere', function (): void {
     ->orderByDistanceSphere('point', new Point(0, 0))
     ->get();
 
-  $this->assertEquals($closerTestPlace->id, $testPlacesOrderedByDistance[0]->id);
-  $this->assertEquals($fartherTestPlace->id, $testPlacesOrderedByDistance[1]->id);
+  expect($testPlacesOrderedByDistance[0]->id)->toBe($closerTestPlace->id);
+  expect($testPlacesOrderedByDistance[1]->id)->toBe($fartherTestPlace->id);
 });
 
 it('desc orders by distance sphere', function (): void {
@@ -152,8 +152,8 @@ it('desc orders by distance sphere', function (): void {
     ->orderByDistanceSphere('point', new Point(0, 0), 'desc')
     ->get();
 
-  $this->assertEquals($closerTestPlace->id, $testPlacesOrderedByDistance[1]->id);
-  $this->assertEquals($fartherTestPlace->id, $testPlacesOrderedByDistance[0]->id);
+  expect($testPlacesOrderedByDistance[1]->id)->toBe($closerTestPlace->id);
+  expect($testPlacesOrderedByDistance[0]->id)->toBe($fartherTestPlace->id);
 });
 
 it('filters by within', function (): void {
@@ -168,8 +168,8 @@ it('filters by within', function (): void {
     ->whereWithin('point', $polygon)
     ->get();
 
-  $this->assertCount(1, $testPlacesWithinPolygon);
-  $this->assertEquals($pointWithinPolygon, $testPlacesWithinPolygon[0]->point);
+  expect($testPlacesWithinPolygon)->toHaveCount(1);
+  expect($testPlacesWithinPolygon[0]->point)->toEqual($pointWithinPolygon);
 });
 
 it('filters by contains', function (): void {
@@ -185,8 +185,8 @@ it('filters by contains', function (): void {
     ->whereContains('polygon', $pointOutsidePolygon)
     ->first();
 
-  $this->assertNotNull($testPlace);
-  $this->assertNull($testPlace2);
+  expect($testPlace)->not->toBeNull();
+  expect($testPlace2)->toBeNull();
 });
 
 it('filters by touches', function (): void {
@@ -201,8 +201,8 @@ it('filters by touches', function (): void {
     ->whereTouches('point', $polygon)
     ->get();
 
-  $this->assertCount(1, $testPlacesTouchPolygon);
-  $this->assertEquals($pointTouchesPolygon, $testPlacesTouchPolygon[0]->point);
+  expect($testPlacesTouchPolygon)->toHaveCount(1);
+  expect($testPlacesTouchPolygon[0]->point)->toEqual($pointTouchesPolygon);
 });
 
 it('filters by intersects', function (): void {
@@ -217,8 +217,8 @@ it('filters by intersects', function (): void {
     ->whereIntersects('point', $polygon)
     ->get();
 
-  $this->assertCount(1, $testPlacesInterestPolygon);
-  $this->assertEquals($pointIntersectsPolygon, $testPlacesInterestPolygon[0]->point);
+  expect($testPlacesInterestPolygon)->toHaveCount(1);
+  expect($testPlacesInterestPolygon[0]->point)->toEqual($pointIntersectsPolygon);
 });
 
 it('filters by crosses', function (): void {
@@ -233,8 +233,8 @@ it('filters by crosses', function (): void {
     ->whereCrosses('line_string', $polygon)
     ->get();
 
-  $this->assertCount(1, $testPlacesCrossPolygon);
-  $this->assertEquals($lineStringCrossesPolygon, $testPlacesCrossPolygon[0]->line_string);
+  expect($testPlacesCrossPolygon)->toHaveCount(1);
+  expect($testPlacesCrossPolygon[0]->line_string)->toEqual($lineStringCrossesPolygon);
 });
 
 it('filters by disjoint', function (): void {
@@ -249,8 +249,8 @@ it('filters by disjoint', function (): void {
     ->whereDisjoint('point', $polygon)
     ->get();
 
-  $this->assertCount(1, $testPlacesDisjointPolygon);
-  $this->assertEquals($pointDisjointsPolygon, $testPlacesDisjointPolygon[0]->point);
+  expect($testPlacesDisjointPolygon)->toHaveCount(1);
+  expect($testPlacesDisjointPolygon[0]->point)->toEqual($pointDisjointsPolygon);
 });
 
 it('filters by overlaps', function (): void {
@@ -265,8 +265,8 @@ it('filters by overlaps', function (): void {
     ->whereOverlaps('polygon', $polygon)
     ->get();
 
-  $this->assertCount(1, $overlappingTestPlaces);
-  $this->assertEquals($overlappingPolygon, $overlappingTestPlaces[0]->polygon);
+  expect($overlappingTestPlaces)->toHaveCount(1);
+  expect($overlappingTestPlaces[0]->polygon)->toEqual($overlappingPolygon);
 });
 
 it('filters by equals', function (): void {
@@ -280,6 +280,6 @@ it('filters by equals', function (): void {
     ->whereEquals('point', $point1)
     ->get();
 
-  $this->assertCount(1, $testPlaces);
-  $this->assertEquals($point1, $testPlaces[0]->point);
+  expect($testPlaces)->toHaveCount(1);
+  expect($testPlaces[0]->point)->toEqual($point1);
 });
