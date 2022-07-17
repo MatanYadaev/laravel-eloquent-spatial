@@ -10,7 +10,7 @@ uses(DatabaseMigrations::class);
 
 it('throws exception when generating geometry from other geometry WKB', function (): void {
   expect(function (): void {
-    $pointWkb = '000000000140000000000000004010000000000000'; // POINT
+    $pointWkb = (new Point(0, 180))->toWkb();
 
     LineString::fromWkb($pointWkb);
   })->toThrow(InvalidArgumentException::class);
