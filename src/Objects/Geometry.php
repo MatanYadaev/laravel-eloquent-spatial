@@ -14,6 +14,7 @@ use JsonException;
 use JsonSerializable;
 use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\GeometryCast;
+use WKB as geoPHPWkb;
 
 abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable
 {
@@ -34,7 +35,8 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   {
     $geoPHPGeometry = geoPHP::load($this->toWkt());
 
-    return (new \WKB)->write($geoPHPGeometry, true);
+    // @phpstan-ignore-next-line
+    return (new geoPHPWkb)->write($geoPHPGeometry, true);
   }
 
   /**
