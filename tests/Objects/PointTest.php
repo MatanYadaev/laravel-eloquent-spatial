@@ -1,7 +1,10 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
+
+uses(DatabaseMigrations::class);
 
 it('creates a model record with point', function (): void {
   $point = new Point(180, 0);
