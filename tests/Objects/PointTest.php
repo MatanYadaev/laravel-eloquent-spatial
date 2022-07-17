@@ -1,10 +1,7 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
-
-uses(DatabaseMigrations::class);
 
 it('creates a model record with point', function (): void {
   $point = new Point(180, 0);
@@ -12,9 +9,9 @@ it('creates a model record with point', function (): void {
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['point' => $point]);
 
-  $this->assertTrue($testPlace->point instanceof Point);
-  $this->assertEquals($point, $testPlace->point);
-  $this->assertDatabaseCount($testPlace->getTable(), 1);
+  expect($testPlace->point)->toBeInstanceOf(Point::class);
+  expect($testPlace->point)->toEqual($point);
+  expect($testPlace->count())->toBe(1);
 });
 
 it('creates point from JSON', function (): void {
@@ -22,13 +19,13 @@ it('creates point from JSON', function (): void {
 
   $pointFromJson = Point::fromJson('{"type":"Point","coordinates":[0,180]}');
 
-  $this->assertEquals($point, $pointFromJson);
+  expect($pointFromJson)->toEqual($point);
 });
 
 it('generates point json', function (): void {
   $point = new Point(180, 0);
 
-  $this->assertEquals('{"type":"Point","coordinates":[0,180]}', $point->toJson());
+  expect($point->toJson())->toBe('{"type":"Point","coordinates":[0,180]}');
 });
 
 it('throws exception when creating point from invalid JSON', function (): void {

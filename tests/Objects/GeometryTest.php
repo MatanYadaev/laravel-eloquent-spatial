@@ -1,10 +1,7 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
-
-uses(DatabaseMigrations::class);
 
 it('throws exception when generating geometry from other geometry WKB', function (): void {
   expect(function (): void {
