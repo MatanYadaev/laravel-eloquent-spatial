@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
+use geoPHP;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Support\Arrayable;
@@ -13,6 +14,7 @@ use JsonException;
 use JsonSerializable;
 use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\GeometryCast;
+use WKB as geoPHPWkb;
 
 abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable
 {
@@ -27,6 +29,14 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   public function toJson($options = 0): string
   {
     return json_encode($this, $options | JSON_THROW_ON_ERROR);
+  }
+
+  public function toWkb(): string
+  {
+    $geoPHPGeometry = geoPHP::load($this->toWkt());
+
+    // @phpstan-ignore-next-line
+    return (new geoPHPWkb)->write($geoPHPGeometry, true);
   }
 
   /**

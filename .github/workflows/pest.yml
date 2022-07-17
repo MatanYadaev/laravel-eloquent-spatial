@@ -4,7 +4,7 @@ on: [ push, pull_request ]
 
 jobs:
   test:
-    name: PHPUnit - PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+    name: Pest - PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
     runs-on: ubuntu-latest
 
@@ -49,4 +49,4 @@ jobs:
       - name: Execute tests
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
-        run: vendor/bin/phpunit
+        run: vendor/bin/pest

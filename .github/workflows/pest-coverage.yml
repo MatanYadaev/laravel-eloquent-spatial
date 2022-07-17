@@ -1,0 +1,37 @@
+name: Tests coverage
+
+on: [ push, pull_request ]
+
+jobs:
+  test:
+    name: Pest - coverage
+
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: laravel_eloquent_spatial_test
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          coverage: xdebug
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction
+
+      - name: Execute tests
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+        run: XDEBUG_MODE=coverage ./vendor/bin/pest --coverage --min=100
