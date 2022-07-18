@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
@@ -66,6 +65,6 @@ it('throws exception when creating line string from incorrect geometry', functio
     // @phpstan-ignore-next-line
     new LineString([
       Polygon::fromJson('{"type":"Polygon","coordinates":[[[0,180],[1,179],[2,178],[3,177],[0,180]]]}'),
-    ]);;
+    ]);
   })->toThrow(InvalidArgumentException::class);
 });

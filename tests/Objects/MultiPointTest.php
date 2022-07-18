@@ -1,8 +1,6 @@
 <?php
 
-
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
