@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
@@ -91,4 +90,3 @@ it('throws exception when creating polygon from incorrect geometry', function ()
     ]);
   })->toThrow(InvalidArgumentException::class);
 });
-

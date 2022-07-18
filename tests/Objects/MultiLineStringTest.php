@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
@@ -18,7 +17,7 @@ it('creates a model record with multi line string', function (): void {
   ]);
 
   /** @var TestPlace $testPlace */
-  $testPlace = TestPlace::factory()->create([    'multi_line_string' => $multiLineString  ]);
+  $testPlace = TestPlace::factory()->create(['multi_line_string' => $multiLineString]);
 
   expect($testPlace->multi_line_string)->toBeInstanceOf(MultiLineString::class);
   expect($testPlace->multi_line_string)->toEqual($multiLineString);
