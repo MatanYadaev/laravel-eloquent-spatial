@@ -1,158 +1,106 @@
 <?php
 
-namespace MatanYadaev\EloquentSpatial\Tests;
-
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
-use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
-class GeometryCastTest extends TestCase
-{
-  use DatabaseMigrations;
+uses(DatabaseMigrations::class);
 
-  /** @test */
-  public function it_creates_model_record(): void
-  {
-    $point = new Point(180, 0);
+it('creates a model record with null geometry', function (): void {
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['point' => null]);
 
-    /** @var TestPlace $testPlace */
-    $testPlace = TestPlace::factory()->create([
-      'point' => $point,
-    ]);
+  expect($testPlace->point)->toBeNull();
+});
 
-    $this->assertEquals($point, $testPlace->point);
-  }
+it('updates a model record', function (): void {
+  $point = new Point(180, 0);
+  $point2 = new Point(0, 0);
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['point' => $point]);
 
-  /** @test */
-  public function it_creates_model_record_with_geometry_null(): void
-  {
-    /** @var TestPlace $testPlace */
-    $testPlace = TestPlace::factory()->create([
-      'point' => null,
-    ]);
+  $testPlace->update(['point' => $point2]);
 
-    $this->assertEquals(null, $testPlace->point);
-  }
+  expect($testPlace->point)->not->toEqual($point);
+  expect($testPlace->point)->toEqual($point2);
+});
 
-  /** @test */
-  public function it_updates_model_record(): void
-  {
-    $point = new Point(180, 0);
-    $point2 = new Point(0, 0);
+it('updates a model record with null geometry', function (): void {
+  $point = new Point(180, 0);
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['point' => $point]);
 
-    /** @var TestPlace $testPlace */
-    $testPlace = TestPlace::factory()->create([
-      'point' => $point,
-    ]);
+  $testPlace->update(['point' => null]);
 
-    $testPlace->update([
-      'point' => $point2,
-    ]);
+  expect($testPlace->point)->toBeNull();
+});
 
-    $this->assertEquals($point2, $testPlace->point);
-  }
+it('gets original geometry field', function (): void {
+  $point = new Point(180, 0);
+  $point2 = new Point(0, 0);
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['point' => $point]);
 
-  /** @test */
-  public function it_updates_model_record_with_geometry_null(): void
-  {
-    $point = new Point(180, 0);
+  $testPlace->point = $point2;
 
-    /** @var TestPlace $testPlace */
-    $testPlace = TestPlace::factory()->create([
-      'point' => $point,
-    ]);
+  expect($testPlace->getOriginal('point'))->toEqual($point);
+  expect($testPlace->point)->not->toEqual($point);
+  expect($testPlace->point)->toEqual($point2);
+});
 
-    $testPlace->update([
-      'point' => null,
-    ]);
+it('serializes a model record to array with geometry', function (): void {
+  $point = new Point(180, 0);
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['point' => $point]);
 
-    $this->assertEquals(null, $testPlace->point);
-  }
+  $serialized = $testPlace->toArray();
 
-  /** @test */
-  public function it_gets_original_geometry_field(): void
-  {
-    $point = new Point(180, 0);
-    $point2 = new Point(180, 0);
+  $expectedArray = $point->toArray();
+  expect($serialized['point'])->toEqual($expectedArray);
+});
 
-    /** @var TestPlace $testPlace */
-    $testPlace = TestPlace::factory()->create([
-      'point' => $point,
-    ]);
-    $testPlace->point = $point2;
-    $testPlace->save();
+it('serializes a model record to json with geometry', function (): void {
+  $point = new Point(180, 0);
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['point' => $point]);
 
-    $this->assertEquals($point, $testPlace->getOriginal('point'));
-  }
+  $serialized = $testPlace->toJson();
 
-  /** @test */
-  public function it_serializes_model_to_array_with_geometry(): void
-  {
-    $point = new Point(180, 0);
+  // @phpstan-ignore-next-line
+  $json = json_encode(json_decode($serialized, true)['point']);
+  $expectedJson = $point->toJson();
+  expect($json)->toBe($expectedJson);
+});
 
-    /** @var TestPlace $testPlace */
-    $testPlace = TestPlace::factory()->create([
-      'point' => $point,
-    ]);
-
-    $this->assertEquals($point->toArray(), $testPlace->toArray()['point']);
-  }
-
-  /** @test */
-  public function it_serializes_model_to_json_with_geometry(): void
-  {
-    $point = new Point(180, 0);
-
-    /** @var TestPlace $testPlace */
-    $testPlace = TestPlace::factory()->create([
-      'point' => $point,
-    ]);
-
-    $json = $testPlace->toJson();
-    // @phpstan-ignore-next-line
-    $jsonOfPoint = json_encode(json_decode($json, true)['point']);
-
-    $this->assertEquals($point->toJson(), $jsonOfPoint);
-  }
-
-  /** @test */
-  public function it_throws_exception_when_serializing_invalid_geometry_object(): void
-  {
-    $this->expectException(InvalidArgumentException::class);
-
+it('throws exception when cast serializing incorrect geometry object', function (): void {
+  expect(function (): void {
     TestPlace::factory()->make([
       'point' => new LineString([
         new Point(180, 0),
         new Point(179, 1),
       ]),
     ]);
-  }
+  })->toThrow(InvalidArgumentException::class);
+});
 
-  /** @test */
-  public function it_throws_exception_when_serializing_invalid_type(): void
-  {
-    $this->expectException(InvalidArgumentException::class);
-
+it('throws exception when cast serializing non-geometry object', function (): void {
+  expect(function (): void {
     TestPlace::factory()->make([
       'point' => 'not-a-point-object',
     ]);
-  }
+  })->toThrow(InvalidArgumentException::class);
+});
 
-  /** @test */
-  public function it_throws_exception_when_deserializing_invalid_geometry_object(): void
-  {
-    $this->expectException(InvalidArgumentException::class);
+it('throws exception when cast deserializing incorrect geometry object', function (): void {
+  TestPlace::insert(array_merge(TestPlace::factory()->definition(), [
+    'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
+  ]));
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::firstOrFail();
 
-    TestPlace::insert(array_merge(TestPlace::factory()->definition(), [
-      'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
-    ]));
-
-    /** @var TestPlace $testPlace */
-    $testPlace = TestPlace::firstOrFail();
-
+  expect(function () use ($testPlace): void {
     $testPlace->getAttribute('point_with_line_string_cast');
-  }
-}
+  })->toThrow(InvalidArgumentException::class);
+});

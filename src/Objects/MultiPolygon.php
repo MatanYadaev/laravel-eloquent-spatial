@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
+use Illuminate\Support\Collection;
+use InvalidArgumentException;
+
 /**
- * @method array<Polygon> getGeometries()
- * @method Polygon offsetGet(mixed $offset)
+ * @property Collection<int, Polygon> $geometries
  *
- * @extends GeometryCollection<Polygon>
+ * @method Collection<int, Polygon> getGeometries()
+ * @method Polygon offsetGet(int $offset)
+ * @method void offsetSet(int $offset, Polygon $value)
  */
 class MultiPolygon extends GeometryCollection
 {
@@ -17,11 +21,16 @@ class MultiPolygon extends GeometryCollection
   protected int $minimumGeometries = 1;
 
   /**
-   * @param  bool  $withFunction
-   * @return string
+   * @param  Collection<int, Polygon>|array<int, Polygon>  $geometries
    *
-   * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+   * @throws InvalidArgumentException
    */
+  public function __construct(Collection|array $geometries)
+  {
+    // @phpstan-ignore-next-line
+    parent::__construct($geometries);
+  }
+
   public function toWkt(bool $withFunction = true): string
   {
     $wkt = $this->toCollectionWkt(withFunction: false);

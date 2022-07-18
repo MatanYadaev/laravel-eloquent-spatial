@@ -123,7 +123,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   public function toFeatureCollectionJson(): string
   {
     if (static::class === GeometryCollection::class) {
-      /** @var GeometryCollection<Geometry> $this */
+      /** @var GeometryCollection $this */
       $geometries = $this->geometries;
     } else {
       $geometries = collect([$this]);

@@ -7,9 +7,6 @@ parameters:
     level: max
     ignoreErrors:
     		-
-    			message: '#^Undefined variable\: \$this$#'
-    			path: tests/*.php
-    		-
     			message: '#^Call to an undefined method Pest\\Expectation\|Pest\\Support\\Extendable\:\:.+\(\)\.$#'
     			path: tests/*.php
     		-
