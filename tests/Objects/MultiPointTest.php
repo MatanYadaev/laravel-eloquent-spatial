@@ -35,8 +35,10 @@ it('generates multi point JSON', function (): void {
     new Point(180, 0),
   ]);
 
+  $json = $multiPoint->toJson();
+
   $expectedJson = '{"type":"MultiPoint","coordinates":[[0,180]]}';
-  expect($multiPoint->toJson())->toBe($expectedJson);
+  expect($json)->toBe($expectedJson);
 });
 
 it('generates multi point feature collection JSON', function (): void {

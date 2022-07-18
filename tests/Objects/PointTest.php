@@ -27,8 +27,10 @@ it('creates point from JSON', function (): void {
 it('generates point json', function (): void {
   $point = new Point(180, 0);
 
+  $json = $point->toJson();
+
   $expectedJson = '{"type":"Point","coordinates":[0,180]}';
-  expect($point->toJson())->toBe($expectedJson);
+  expect($json)->toBe($expectedJson);
 });
 
 it('throws exception when creating point from invalid JSON', function (): void {

@@ -38,8 +38,10 @@ it('generates line string JSON', function (): void {
     new Point(179, 1),
   ]);
 
+  $json = $lineString->toJson();
+
   $expectedJson = '{"type":"LineString","coordinates":[[0,180],[1,179]]}';
-  expect($lineString->toJson())->toBe($expectedJson);
+  expect($json)->toBe($expectedJson);
 });
 
 it('generates line string feature collection JSON', function (): void {
@@ -48,8 +50,10 @@ it('generates line string feature collection JSON', function (): void {
     new Point(179, 1),
   ]);
 
+  $featureCollectionJson = $lineString->toFeatureCollectionJson();
+
   $expectedFeatureCollectionJson = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"LineString","coordinates":[[0,180],[1,179]]}}]}';
-  expect($lineString->toFeatureCollectionJson())->toBe($expectedFeatureCollectionJson);
+  expect($featureCollectionJson)->toBe($expectedFeatureCollectionJson);
 });
 
 it('throws exception when line string has less than two points', function (): void {

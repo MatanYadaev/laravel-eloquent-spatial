@@ -82,8 +82,10 @@ it('generates geometry collection JSON', function (): void {
     new Point(180, 0),
   ]);
 
+  $json = $geometryCollection->toJson();
+
   $expectedJson = '{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[0,180],[1,179],[2,178],[3,177],[0,180]]]},{"type":"Point","coordinates":[0,180]}]}';
-  expect($geometryCollection->toJson())->toBe($expectedJson);
+  expect($json)->toBe($expectedJson);
 });
 
 it('generates geometry collection feature collection JSON', function (): void {
@@ -100,8 +102,10 @@ it('generates geometry collection feature collection JSON', function (): void {
     new Point(180, 0),
   ]);
 
+  $featureCollectionJson = $geometryCollection->toFeatureCollectionJson();
+
   $expectedFeatureCollectionJson = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"Polygon","coordinates":[[[0,180],[1,179],[2,178],[3,177],[0,180]]]}},{"type":"Feature","properties":[],"geometry":{"type":"Point","coordinates":[0,180]}}]}';
-  expect($geometryCollection->toFeatureCollectionJson())->toBe($expectedFeatureCollectionJson);
+  expect($featureCollectionJson)->toBe($expectedFeatureCollectionJson);
 });
 
 it('does not throw exception when geometry collection has no geometries', function (): void {
