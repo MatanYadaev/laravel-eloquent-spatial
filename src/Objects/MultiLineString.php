@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
+use Illuminate\Support\Collection;
+use InvalidArgumentException;
+
 /**
- * @method array<LineString> getGeometries()
- * @method LineString offsetGet(mixed $offset)
+ * @property Collection<int, LineString> $geometries
  *
- * @extends GeometryCollection<LineString>
+ * @method Collection<int, LineString> getGeometries()
+ * @method LineString offsetGet(int $offset)
+ * @method void offsetSet(int $offset, LineString $value)
  */
 class MultiLineString extends GeometryCollection
 {
@@ -17,11 +21,16 @@ class MultiLineString extends GeometryCollection
   protected int $minimumGeometries = 1;
 
   /**
-   * @param  bool  $withFunction
-   * @return string
+   * @param  Collection<int, LineString>|array<int, LineString>  $geometries
    *
-   * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+   * @throws InvalidArgumentException
    */
+  public function __construct(Collection|array $geometries)
+  {
+    // @phpstan-ignore-next-line
+    parent::__construct($geometries);
+  }
+
   public function toWkt(bool $withFunction = true): string
   {
     $wkt = $this->toCollectionWkt(withFunction: false);

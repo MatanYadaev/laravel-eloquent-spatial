@@ -4,13 +4,28 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
+use Illuminate\Support\Collection;
+use InvalidArgumentException;
+
 /**
- * @method array<Point> getGeometries()
- * @method Point offsetGet(mixed $offset)
+ * @property Collection<int, Point> $geometries
  *
- * @extends GeometryCollection<Point>
+ * @method Collection<int, Point> getGeometries()
+ * @method Point offsetGet(int $offset)
+ * @method void offsetSet(int $offset, Point $value)
  */
 abstract class PointCollection extends GeometryCollection
 {
   protected string $collectionOf = Point::class;
+
+  /**
+   * @param  Collection<int, Point>|array<int, Point>  $geometries
+   *
+   * @throws InvalidArgumentException
+   */
+  public function __construct(Collection|array $geometries)
+  {
+    // @phpstan-ignore-next-line
+    parent::__construct($geometries);
+  }
 }

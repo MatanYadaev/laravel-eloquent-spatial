@@ -9,23 +9,17 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
-/**
- * @template TGeometry of Geometry
- *
- * @implements ArrayAccess<int, TGeometry>
- */
 class GeometryCollection extends Geometry implements ArrayAccess
 {
-  /** @var Collection<int, TGeometry> */
+  /** @var Collection<int, Geometry> */
   protected Collection $geometries;
 
-  /** @var class-string<TGeometry> */
   protected string $collectionOf = Geometry::class;
 
   protected int $minimumGeometries = 0;
 
   /**
-   * @param  Collection<int, TGeometry>|array<int, TGeometry>  $geometries
+   * @param  Collection<int, Geometry>|array<int, Geometry>  $geometries
    *
    * @throws InvalidArgumentException
    */
@@ -41,12 +35,6 @@ class GeometryCollection extends Geometry implements ArrayAccess
     $this->validateGeometriesCount();
   }
 
-  /**
-   * @param  bool  $withFunction
-   * @return string
-   *
-   * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
-   */
   public function toWkt(bool $withFunction = true): string
   {
     $wkt = $this->toCollectionWkt(withFunction: true);
@@ -84,7 +72,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
   }
 
   /**
-   * @return Collection<int, TGeometry>
+   * @return Collection<int, Geometry>
    */
   public function getGeometries(): Collection
   {
@@ -102,20 +90,21 @@ class GeometryCollection extends Geometry implements ArrayAccess
 
   /**
    * @param  int  $offset
-   * @return TGeometry|null
+   * @return Geometry
    */
-  public function offsetGet($offset): ?Geometry
+  public function offsetGet($offset): Geometry
   {
+    // @phpstan-ignore-next-line
     return $this->geometries[$offset];
   }
 
   /**
    * @param  int  $offset
-   * @param  TGeometry  $geometry
+   * @param  Geometry  $value
    */
-  public function offsetSet($offset, $geometry): void
+  public function offsetSet($offset, $value): void
   {
-    $this->geometries[$offset] = $geometry;
+    $this->geometries[$offset] = $value;
     $this->validateGeometriesType();
   }
 
