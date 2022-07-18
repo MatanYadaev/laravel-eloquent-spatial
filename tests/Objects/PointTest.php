@@ -14,7 +14,6 @@ it('creates a model record with point', function (): void {
 
   expect($testPlace->point)->toBeInstanceOf(Point::class);
   expect($testPlace->point)->toEqual($point);
-  expect($testPlace->count())->toBe(1);
 });
 
 it('creates point from JSON', function (): void {
@@ -28,11 +27,12 @@ it('creates point from JSON', function (): void {
 it('generates point json', function (): void {
   $point = new Point(180, 0);
 
-  expect($point->toJson())->toBe('{"type":"Point","coordinates":[0,180]}');
+  $expectedJson = '{"type":"Point","coordinates":[0,180]}';
+  expect($point->toJson())->toBe($expectedJson);
 });
 
 it('throws exception when creating point from invalid JSON', function (): void {
-  $this->expectException(InvalidArgumentException::class);
-
-  Point::fromJson('{"type":"Point","coordinates":[]}');
+  expect(function (): void {
+    Point::fromJson('{"type":"Point","coordinates":[]}');
+  })->toThrow(InvalidArgumentException::class);
 });
