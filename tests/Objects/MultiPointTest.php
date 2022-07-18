@@ -32,7 +32,7 @@ it('creates multi point from JSON', function (): void {
   expect($multiPointFromJson)->toEqual($multiPoint);
 });
 
-it('generates multi point geo json', function (): void {
+it('generates multi point JSON', function (): void {
   $multiPoint = new MultiPoint([
     new Point(180, 0),
   ]);
@@ -58,7 +58,7 @@ it('throws exception when multi point has no points', function (): void {
   })->toThrow(InvalidArgumentException::class);
 });
 
-it('throws exception when creating multi point from invalid geometry', function (): void {
+it('throws exception when creating multi point from incorrect geometry', function (): void {
   expect(function (): void {
     // @phpstan-ignore-next-line
     new MultiPoint([
