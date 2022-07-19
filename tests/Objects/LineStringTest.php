@@ -21,6 +21,18 @@ it('creates a model record with line string', function (): void {
   expect($testPlace->line_string)->toEqual($lineString);
 });
 
+it('creates a model record with line string with SRID', function (): void {
+  $lineString = new LineString([
+    new Point(180, 0),
+    new Point(179, 1),
+  ], 4326);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['line_string' => $lineString]);
+
+  expect($testPlace->line_string->srid)->toBe(4326);
+});
+
 it('creates line string from JSON', function (): void {
   $lineString = new LineString([
     new Point(180, 0),
@@ -28,6 +40,17 @@ it('creates line string from JSON', function (): void {
   ]);
 
   $lineStringFromJson = LineString::fromJson('{"type":"LineString","coordinates":[[0,180],[1,179]]}');
+
+  expect($lineStringFromJson)->toEqual($lineString);
+});
+
+it('creates line string with SRID from JSON', function (): void {
+  $lineString = new LineString([
+    new Point(180, 0),
+    new Point(179, 1),
+  ], 4326);
+
+  $lineStringFromJson = LineString::fromJson('{"type":"LineString","coordinates":[[0,180],[1,179]]}', 4326);
 
   expect($lineStringFromJson)->toEqual($lineString);
 });
@@ -54,6 +77,50 @@ it('generates line string feature collection JSON', function (): void {
 
   $expectedFeatureCollectionJson = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"LineString","coordinates":[[0,180],[1,179]]}}]}';
   expect($featureCollectionJson)->toBe($expectedFeatureCollectionJson);
+});
+
+it('creates line string from WKT', function (): void {
+  $lineString = new LineString([
+    new Point(180, 0),
+    new Point(179, 1),
+  ]);
+
+  $lineStringFromWkt = LineString::fromWkt('LINESTRING(0 180,1 179)');
+
+  expect($lineStringFromWkt)->toEqual($lineString);
+});
+
+it('creates line string with SRID from WKT', function (): void {
+  $lineString = new LineString([
+    new Point(180, 0),
+    new Point(179, 1),
+  ], 4326);
+
+  $lineStringFromWkt = LineString::fromWkt('LINESTRING(0 180,1 179)', 4326);
+
+  expect($lineStringFromWkt)->toEqual($lineString);
+});
+
+it('creates line string from WKB', function (): void {
+  $lineString = new LineString([
+    new Point(180, 0),
+    new Point(179, 1),
+  ]);
+
+  $lineStringFromWkb = LineString::fromWkb($lineString->toWkb());
+
+  expect($lineStringFromWkb)->toEqual($lineString);
+});
+
+it('creates line string with SRID from WKB', function (): void {
+  $lineString = new LineString([
+    new Point(180, 0),
+    new Point(179, 1),
+  ], 4326);
+
+  $lineStringFromWkb = LineString::fromWkb($lineString->toWkb(), 4326);
+
+  expect($lineStringFromWkb)->toEqual($lineString);
 });
 
 it('throws exception when line string has less than two points', function (): void {
