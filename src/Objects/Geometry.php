@@ -18,6 +18,8 @@ use WKB as geoPHPWkb;
 
 abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable
 {
+  public int $srid = 0;
+
   abstract public function toWkt(bool $withFunction = true): string;
 
   /**
@@ -33,21 +35,29 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
   public function toWkb(): string
   {
-    $geoPHPGeometry = geoPHP::load($this->toWkt());
+    /** @var \Point $geoPHPGeometry */
+    $geoPHPGeometry = geoPHP::load($this->toJson());
+
+    $sridInBinary = pack('L', $this->srid);
 
     // @phpstan-ignore-next-line
-    return (new geoPHPWkb)->write($geoPHPGeometry, true);
+    return $sridInBinary . (new geoPHPWkb)->write($geoPHPGeometry);
   }
 
   /**
    * @param  string  $wkb
+   * @param  int  $srid
    * @return static
    *
    * @throws InvalidArgumentException
    */
   public static function fromWkb(string $wkb): static
   {
+    $srid = substr($wkb, 0, 4);
+    $srid = unpack('L', $srid)[1];
+
     $geometry = Factory::parse($wkb, true);
+    $geometry->srid = $srid;
 
     if (! ($geometry instanceof static)) {
       throw new InvalidArgumentException(
@@ -58,15 +68,10 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     return $geometry;
   }
 
-  /**
-   * @param  string  $wkt
-   * @return static
-   *
-   * @throws InvalidArgumentException
-   */
-  public static function fromWkt(string $wkt): static
+  public static function fromWkt(string $wkt, int $srid = 0): static
   {
     $geometry = Factory::parse($wkt, false);
+    $geometry->srid = $srid;
 
     if (! ($geometry instanceof static)) {
       throw new InvalidArgumentException(
@@ -77,15 +82,10 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     return $geometry;
   }
 
-  /**
-   * @param  string  $geoJson
-   * @return static
-   *
-   * @throws InvalidArgumentException
-   */
-  public static function fromJson(string $geoJson): static
+  public static function fromJson(string $geoJson, int $srid = 0): static
   {
     $geometry = Factory::parse($geoJson, false);
+    $geometry->srid = $srid;
 
     if (! ($geometry instanceof static)) {
       throw new InvalidArgumentException(

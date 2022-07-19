@@ -108,7 +108,7 @@ it('creates multi point with SRID from WKB', function (): void {
     new Point(180, 0),
   ], 4326);
 
-  $multiPointFromWkb = MultiPoint::fromWkb($multiPoint->toWkb(), 4326);
+  $multiPointFromWkb = MultiPoint::fromWkb($multiPoint->toWkb());
 
   expect($multiPointFromWkb)->toEqual($multiPoint);
 });

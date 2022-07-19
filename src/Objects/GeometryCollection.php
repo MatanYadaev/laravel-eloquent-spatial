@@ -20,16 +20,18 @@ class GeometryCollection extends Geometry implements ArrayAccess
 
   /**
    * @param  Collection<int, Geometry>|array<int, Geometry>  $geometries
+   * @param  int  $srid
    *
    * @throws InvalidArgumentException
    */
-  public function __construct(Collection|array $geometries)
+  public function __construct(Collection|array $geometries, int $srid = 0)
   {
     if (is_array($geometries)) {
       $geometries = collect($geometries);
     }
 
     $this->geometries = $geometries;
+    $this->srid = $srid;
 
     $this->validateGeometriesType();
     $this->validateGeometriesCount();
@@ -154,9 +156,9 @@ class GeometryCollection extends Geometry implements ArrayAccess
   {
     return $this->geometries
       ->map(static function (Geometry $geometry) use ($withFunction): string {
-        return (string) $geometry->toWkt($withFunction);
+        return $geometry->toWkt($withFunction);
       })
-      ->join(',');
+      ->join(', ');
   }
 
   /**

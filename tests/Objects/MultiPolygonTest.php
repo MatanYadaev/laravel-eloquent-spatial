@@ -135,7 +135,7 @@ it('creates multi polygon from WKT', function (): void {
     ]),
   ]);
 
-  $multiPolygonFromWkt = MultiPolygon::fromWkt('MULTIPOLYGON(((0 180,1 179,2 178,3 177,0 180)))');
+  $multiPolygonFromWkt = MultiPolygon::fromWkt('MULTIPOLYGON(((0 180, 1 179, 2 178, 3 177, 0 180)))');
 
   expect($multiPolygonFromWkt)->toEqual($multiPolygon);
 });
@@ -153,7 +153,7 @@ it('creates multi polygon with SRID from WKT', function (): void {
     ]),
   ], 4326);
 
-  $multiPolygonFromWkt = MultiPolygon::fromWkt('MULTIPOLYGON(((0 180,1 179,2 178,3 177,0 180)))', 4326);
+  $multiPolygonFromWkt = MultiPolygon::fromWkt('MULTIPOLYGON(((0 180, 1 179, 2 178, 3 177, 0 180)))', 4326);
 
   expect($multiPolygonFromWkt)->toEqual($multiPolygon);
 });
@@ -171,7 +171,7 @@ it('creates multi polygon from WKB', function (): void {
     ]),
   ]);
 
-  $multiPolygonFromWkb = MultiPolygon::fromWkt($multiPolygon->toWkb());
+  $multiPolygonFromWkb = MultiPolygon::fromWkb($multiPolygon->toWkb());
 
   expect($multiPolygonFromWkb)->toEqual($multiPolygon);
 });
@@ -189,7 +189,7 @@ it('creates multi polygon with SRID from WKB', function (): void {
     ]),
   ], 4326);
 
-  $multiPolygonFromWkb = MultiPolygon::fromWkt($multiPolygon->toWkb(), 4326);
+  $multiPolygonFromWkb = MultiPolygon::fromWkb($multiPolygon->toWkb(), 4326);
 
   expect($multiPolygonFromWkb)->toEqual($multiPolygon);
 });

@@ -85,7 +85,7 @@ it('creates line string from WKT', function (): void {
     new Point(179, 1),
   ]);
 
-  $lineStringFromWkt = LineString::fromWkt('LINESTRING(0 180,1 179)');
+  $lineStringFromWkt = LineString::fromWkt('LINESTRING(0 180, 1 179)');
 
   expect($lineStringFromWkt)->toEqual($lineString);
 });
@@ -96,7 +96,7 @@ it('creates line string with SRID from WKT', function (): void {
     new Point(179, 1),
   ], 4326);
 
-  $lineStringFromWkt = LineString::fromWkt('LINESTRING(0 180,1 179)', 4326);
+  $lineStringFromWkt = LineString::fromWkt('LINESTRING(0 180, 1 179)', 4326);
 
   expect($lineStringFromWkt)->toEqual($lineString);
 });
@@ -118,7 +118,7 @@ it('creates line string with SRID from WKB', function (): void {
     new Point(179, 1),
   ], 4326);
 
-  $lineStringFromWkb = LineString::fromWkb($lineString->toWkb(), 4326);
+  $lineStringFromWkb = LineString::fromWkb($lineString->toWkb());
 
   expect($lineStringFromWkb)->toEqual($lineString);
 });

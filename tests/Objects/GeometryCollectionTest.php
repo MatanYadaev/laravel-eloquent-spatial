@@ -161,7 +161,7 @@ it('creates geometry collection from WKT', function (): void {
     new Point(180, 0),
   ]);
 
-  $geometryCollectionFromWkt = GeometryCollection::fromWkt('GEOMETRYCOLLECTION(POLYGON((0 180,1 179,2 178,3 177,0 180)),POINT(0 180))');
+  $geometryCollectionFromWkt = GeometryCollection::fromWkt('GEOMETRYCOLLECTION(POLYGON((0 180, 1 179, 2 178, 3 177, 0 180)),POINT(0 180))');
 
   expect($geometryCollectionFromWkt)->toEqual($geometryCollection);
 });
@@ -180,7 +180,7 @@ it('creates geometry collection with SRID from WKT', function (): void {
     new Point(180, 0),
   ], 4326);
 
-  $geometryCollectionFromWkt = GeometryCollection::fromWkt('GEOMETRYCOLLECTION(POLYGON((0 180,1 179,2 178,3 177,0 180)),POINT(0 180))', 4326);
+  $geometryCollectionFromWkt = GeometryCollection::fromWkt('GEOMETRYCOLLECTION(POLYGON((0 180, 1 179, 2 178, 3 177, 0 180)),POINT(0 180))', 4326);
 
   expect($geometryCollectionFromWkt)->toEqual($geometryCollection);
 });
@@ -218,7 +218,7 @@ it('creates geometry collection with SRID from WKB', function (): void {
     new Point(180, 0),
   ], 4326);
 
-  $geometryCollectionFromWkb = GeometryCollection::fromWkb($geometryCollection->toWkb(), 4326);
+  $geometryCollectionFromWkb = GeometryCollection::fromWkb($geometryCollection->toWkb());
 
   expect($geometryCollectionFromWkb)->toEqual($geometryCollection);
 });

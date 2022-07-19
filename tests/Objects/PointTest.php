@@ -83,7 +83,7 @@ it('creates point from WKB', function (): void {
 it('creates point with SRID from WKB', function (): void {
   $point = new Point(180, 0, 4326);
 
-  $pointFromWkb = Point::fromWkb($point->toWkb(), 4326);
+  $pointFromWkb = Point::fromWkb($point->toWkb());
 
   expect($pointFromWkb)->toEqual($point);
 });

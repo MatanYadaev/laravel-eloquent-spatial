@@ -120,7 +120,7 @@ it('creates polygon from WKT', function (): void {
     ]),
   ]);
 
-  $polygonFromWkt = Polygon::fromWkt('POLYGON((0 180,1 179,2 178,3 177,0 180))');
+  $polygonFromWkt = Polygon::fromWkt('POLYGON((0 180, 1 179, 2 178, 3 177, 0 180))');
 
   expect($polygonFromWkt)->toEqual($polygon);
 });
@@ -136,7 +136,7 @@ it('creates polygon with SRID from WKT', function (): void {
     ]),
   ], 4326);
 
-  $polygonFromWkt = Polygon::fromWkt('POLYGON((0 180,1 179,2 178,3 177,0 180))', 4326);
+  $polygonFromWkt = Polygon::fromWkt('POLYGON((0 180, 1 179, 2 178, 3 177, 0 180))', 4326);
 
   expect($polygonFromWkt)->toEqual($polygon);
 });
@@ -168,7 +168,7 @@ it('creates polygon with SRID from WKB', function (): void {
     ]),
   ], 4326);
 
-  $polygonFromWkb = Polygon::fromWkb($polygon->toWkb(), 4326);
+  $polygonFromWkb = Polygon::fromWkb($polygon->toWkb());
 
   expect($polygonFromWkb)->toEqual($polygon);
 });

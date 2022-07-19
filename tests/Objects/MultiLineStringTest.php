@@ -99,7 +99,7 @@ it('creates multi line string from WKT', function (): void {
     ]),
   ]);
 
-  $multiLineStringFromWkt = MultiLineString::fromWkt('MULTILINESTRING((0 180,1 179))',);
+  $multiLineStringFromWkt = MultiLineString::fromWkt('MULTILINESTRING((0 180, 1 179))',);
 
   expect($multiLineStringFromWkt)->toEqual($multiLineString);
 });
@@ -112,7 +112,7 @@ it('creates multi line string with SRID from WKT', function (): void {
     ]),
   ], 4326);
 
-  $multiLineStringFromWkt = MultiLineString::fromWkt('MULTILINESTRING((0 180,1 179))', 4326);
+  $multiLineStringFromWkt = MultiLineString::fromWkt('MULTILINESTRING((0 180, 1 179))', 4326);
 
   expect($multiLineStringFromWkt)->toEqual($multiLineString);
 });
@@ -125,7 +125,7 @@ it('creates multi line string from WKB', function (): void {
     ]),
   ]);
 
-  $multiLineStringFromWkb = MultiLineString::fromWkb($multiLineString->toWkb(),);
+  $multiLineStringFromWkb = MultiLineString::fromWkb($multiLineString->toWkb());
 
   expect($multiLineStringFromWkb)->toEqual($multiLineString);
 });
@@ -138,7 +138,7 @@ it('creates multi line string with SRID from WKB', function (): void {
     ]),
   ], 4326);
 
-  $multiLineStringFromWkb = MultiLineString::fromWkb($multiLineString->toWkb(), 4326);
+  $multiLineStringFromWkb = MultiLineString::fromWkb($multiLineString->toWkb());
 
   expect($multiLineStringFromWkb)->toEqual($multiLineString);
 });
