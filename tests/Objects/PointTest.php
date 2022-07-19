@@ -22,7 +22,7 @@ it('creates a model record with point with SRID', function (): void {
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['point' => $point]);
 
-  expect($testPlace->point->srid)->toEqual(4326);
+  expect($testPlace->point->srid)->toBe(4326);
 });
 
 it('creates point from JSON', function (): void {
@@ -39,6 +39,21 @@ it('creates point with SRID from JSON', function (): void {
   $pointFromJson = Point::fromJson('{"type":"Point","coordinates":[0,180]}', 4326);
 
   expect($pointFromJson)->toEqual($point);
+});
+
+it('generates point json', function (): void {
+  $point = new Point(180, 0);
+
+  $json = $point->toJson();
+
+  $expectedJson = '{"type":"Point","coordinates":[0,180]}';
+  expect($json)->toBe($expectedJson);
+});
+
+it('throws exception when creating point from invalid JSON', function (): void {
+  expect(function (): void {
+    Point::fromJson('{"type":"Point","coordinates":[]}');
+  })->toThrow(InvalidArgumentException::class);
 });
 
 it('creates point from WKT', function (): void {
@@ -71,19 +86,4 @@ it('creates point with SRID from WKB', function (): void {
   $pointFromWkb = Point::fromWkb($point->toWkb(), 4326);
 
   expect($pointFromWkb)->toEqual($point);
-});
-
-it('generates point json', function (): void {
-  $point = new Point(180, 0);
-
-  $json = $point->toJson();
-
-  $expectedJson = '{"type":"Point","coordinates":[0,180]}';
-  expect($json)->toBe($expectedJson);
-});
-
-it('throws exception when creating point from invalid JSON', function (): void {
-  expect(function (): void {
-    Point::fromJson('{"type":"Point","coordinates":[]}');
-  })->toThrow(InvalidArgumentException::class);
 });
