@@ -30,6 +30,26 @@ it('creates a model record with geometry collection', function (): void {
   expect($testPlace->geometry_collection)->toEqual($geometryCollection);
 });
 
+it('creates a model record with geometry collection with SRID', function (): void {
+  $geometryCollection = new GeometryCollection([
+    new Polygon([
+      new LineString([
+        new Point(180, 0),
+        new Point(179, 1),
+        new Point(178, 2),
+        new Point(177, 3),
+        new Point(180, 0),
+      ]),
+    ]),
+    new Point(180, 0),
+  ], 4326);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['geometry_collection' => $geometryCollection]);
+
+  expect($testPlace->geometry_collection->srid)->toBe(4326);
+});
+
 it('creates geometry collection from JSON', function (): void {
   $geometryCollection = new GeometryCollection([
     new Polygon([
@@ -45,6 +65,25 @@ it('creates geometry collection from JSON', function (): void {
   ]);
 
   $geometryCollectionFromJson = GeometryCollection::fromJson('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[0,180],[1,179],[2,178],[3,177],[0,180]]]},{"type":"Point","coordinates":[0,180]}]}');
+
+  expect($geometryCollectionFromJson)->toEqual($geometryCollection);
+});
+
+it('creates geometry collection with SRID from JSON', function (): void {
+  $geometryCollection = new GeometryCollection([
+    new Polygon([
+      new LineString([
+        new Point(180, 0),
+        new Point(179, 1),
+        new Point(178, 2),
+        new Point(177, 3),
+        new Point(180, 0),
+      ]),
+    ]),
+    new Point(180, 0),
+  ], 4326);
+
+  $geometryCollectionFromJson = GeometryCollection::fromJson('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[0,180],[1,179],[2,178],[3,177],[0,180]]]},{"type":"Point","coordinates":[0,180]}]}', 4326);
 
   expect($geometryCollectionFromJson)->toEqual($geometryCollection);
 });
@@ -106,6 +145,82 @@ it('generates geometry collection feature collection JSON', function (): void {
 
   $expectedFeatureCollectionJson = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"Polygon","coordinates":[[[0,180],[1,179],[2,178],[3,177],[0,180]]]}},{"type":"Feature","properties":[],"geometry":{"type":"Point","coordinates":[0,180]}}]}';
   expect($featureCollectionJson)->toBe($expectedFeatureCollectionJson);
+});
+
+it('creates geometry collection from WKT', function (): void {
+  $geometryCollection = new GeometryCollection([
+    new Polygon([
+      new LineString([
+        new Point(180, 0),
+        new Point(179, 1),
+        new Point(178, 2),
+        new Point(177, 3),
+        new Point(180, 0),
+      ]),
+    ]),
+    new Point(180, 0),
+  ]);
+
+  $geometryCollectionFromWkt = GeometryCollection::fromWkt('GEOMETRYCOLLECTION(POLYGON((0 180,1 179,2 178,3 177,0 180)),POINT(0 180))');
+
+  expect($geometryCollectionFromWkt)->toEqual($geometryCollection);
+});
+
+it('creates geometry collection with SRID from WKT', function (): void {
+  $geometryCollection = new GeometryCollection([
+    new Polygon([
+      new LineString([
+        new Point(180, 0),
+        new Point(179, 1),
+        new Point(178, 2),
+        new Point(177, 3),
+        new Point(180, 0),
+      ]),
+    ]),
+    new Point(180, 0),
+  ], 4326);
+
+  $geometryCollectionFromWkt = GeometryCollection::fromWkt('GEOMETRYCOLLECTION(POLYGON((0 180,1 179,2 178,3 177,0 180)),POINT(0 180))', 4326);
+
+  expect($geometryCollectionFromWkt)->toEqual($geometryCollection);
+});
+
+it('creates geometry collection from WKB', function (): void {
+  $geometryCollection = new GeometryCollection([
+    new Polygon([
+      new LineString([
+        new Point(180, 0),
+        new Point(179, 1),
+        new Point(178, 2),
+        new Point(177, 3),
+        new Point(180, 0),
+      ]),
+    ]),
+    new Point(180, 0),
+  ]);
+
+  $geometryCollectionFromWkb = GeometryCollection::fromWkb($geometryCollection->toWkb());
+
+  expect($geometryCollectionFromWkb)->toEqual($geometryCollection);
+});
+
+it('creates geometry collection with SRID from WKB', function (): void {
+  $geometryCollection = new GeometryCollection([
+    new Polygon([
+      new LineString([
+        new Point(180, 0),
+        new Point(179, 1),
+        new Point(178, 2),
+        new Point(177, 3),
+        new Point(180, 0),
+      ]),
+    ]),
+    new Point(180, 0),
+  ], 4326);
+
+  $geometryCollectionFromWkb = GeometryCollection::fromWkb($geometryCollection->toWkb(), 4326);
+
+  expect($geometryCollectionFromWkb)->toEqual($geometryCollection);
 });
 
 it('does not throw exception when geometry collection has no geometries', function (): void {
