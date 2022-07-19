@@ -35,18 +35,16 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
   public function toWkb(): string
   {
-    /** @var \Point $geoPHPGeometry */
     $geoPHPGeometry = geoPHP::load($this->toJson());
 
     $sridInBinary = pack('L', $this->srid);
 
     // @phpstan-ignore-next-line
-    return $sridInBinary . (new geoPHPWkb)->write($geoPHPGeometry);
+    return $sridInBinary.(new geoPHPWkb)->write($geoPHPGeometry);
   }
 
   /**
    * @param  string  $wkb
-   * @param  int  $srid
    * @return static
    *
    * @throws InvalidArgumentException
@@ -54,6 +52,7 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   public static function fromWkb(string $wkb): static
   {
     $srid = substr($wkb, 0, 4);
+    // @phpstan-ignore-next-line
     $srid = unpack('L', $srid)[1];
 
     $geometry = Factory::parse($wkb, true);

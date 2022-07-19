@@ -189,7 +189,7 @@ it('creates multi polygon with SRID from WKB', function (): void {
     ]),
   ], 4326);
 
-  $multiPolygonFromWkb = MultiPolygon::fromWkb($multiPolygon->toWkb(), 4326);
+  $multiPolygonFromWkb = MultiPolygon::fromWkb($multiPolygon->toWkb());
 
   expect($multiPolygonFromWkb)->toEqual($multiPolygon);
 });

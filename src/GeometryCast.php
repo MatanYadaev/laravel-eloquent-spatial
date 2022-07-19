@@ -85,6 +85,6 @@ class GeometryCast implements CastsAttributes
   {
     preg_match('/ST_GeomFromText\(\'.+\', (.+)\)/', (string) $expression, $match);
 
-    return (int)$match[1];
+    return (int) $match[1];
   }
 }
