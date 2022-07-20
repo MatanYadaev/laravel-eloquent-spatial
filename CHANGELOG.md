@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v2.1.1 - 2022-07-20
+
+Refactor `toWkt`
+
 ## v2.1.0 - 2022-07-20
 
 - SRID support
