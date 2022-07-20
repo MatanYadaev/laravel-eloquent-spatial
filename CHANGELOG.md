@@ -2,6 +2,13 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v2.1.0 - 2022-07-20
+
+- SRID support
+- Add `Geometry@toWkt`
+- Add `Geometry@toWkb`
+- Fix generic type issue with `GeometryCollection`
+
 ## v2.0.1 - 2022-07-12
 
 Make `Geometry::toWkt` parameters optional
