@@ -41,7 +41,7 @@ it('creates point with SRID from JSON', function (): void {
   expect($pointFromJson)->toEqual($point);
 });
 
-it('generates point json', function (): void {
+it('generates point JSON', function (): void {
   $point = new Point(180, 0);
 
   $json = $point->toJson();
@@ -70,6 +70,15 @@ it('creates point with SRID from WKT', function (): void {
   $pointFromWkt = Point::fromWkt('POINT(0 180)', 4326);
 
   expect($pointFromWkt)->toEqual($point);
+});
+
+it('generates point WKT', function (): void {
+  $point = new Point(180, 0);
+
+  $wkt = $point->toWkt();
+
+  $expectedWkt = 'POINT(0 180)';
+  expect($wkt)->toBe($expectedWkt);
 });
 
 it('creates point from WKB', function (): void {

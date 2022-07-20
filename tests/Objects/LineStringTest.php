@@ -101,6 +101,18 @@ it('creates line string with SRID from WKT', function (): void {
   expect($lineStringFromWkt)->toEqual($lineString);
 });
 
+it('generates line string WKT', function (): void {
+  $lineString = new LineString([
+    new Point(180, 0),
+    new Point(179, 1),
+  ]);
+
+  $wkt = $lineString->toWkt();
+
+  $expectedWkt = 'LINESTRING(0 180, 1 179)';
+  expect($wkt)->toBe($expectedWkt);
+});
+
 it('creates line string from WKB', function (): void {
   $lineString = new LineString([
     new Point(180, 0),

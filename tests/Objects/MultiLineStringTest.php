@@ -117,6 +117,20 @@ it('creates multi line string with SRID from WKT', function (): void {
   expect($multiLineStringFromWkt)->toEqual($multiLineString);
 });
 
+it('generates multi line string WKT', function (): void {
+  $multiLineString = new MultiLineString([
+    new LineString([
+      new Point(180, 0),
+      new Point(179, 1),
+    ]),
+  ]);
+
+  $wkt = $multiLineString->toWkt();
+
+  $expectedWkt = 'MULTILINESTRING((0 180, 1 179))';
+  expect($wkt)->toBe($expectedWkt);
+});
+
 it('creates multi line string from WKB', function (): void {
   $multiLineString = new MultiLineString([
     new LineString([

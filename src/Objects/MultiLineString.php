@@ -32,10 +32,21 @@ class MultiLineString extends GeometryCollection
     parent::__construct($geometries, $srid);
   }
 
-  public function toWkt(bool $withFunction = true): string
+  public function toWkt(): string
   {
-    $wkt = $this->toCollectionWkt(withFunction: false);
+    $wktData = $this->getWktData();
 
-    return "MULTILINESTRING({$wkt})";
+    return "MULTILINESTRING({$wktData})";
+  }
+
+  public function getWktData(): string
+  {
+    return $this->geometries
+      ->map(static function (LineString $lineString): string {
+        $wktData = $lineString->getWktData();
+
+        return "({$wktData})";
+      })
+      ->join(', ');
   }
 }

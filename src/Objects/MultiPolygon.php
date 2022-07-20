@@ -32,10 +32,21 @@ class MultiPolygon extends GeometryCollection
     parent::__construct($geometries, $srid);
   }
 
-  public function toWkt(bool $withFunction = true): string
+  public function toWkt(): string
   {
-    $wkt = $this->toCollectionWkt(withFunction: false);
+    $wktData = $this->getWktData();
 
-    return "MULTIPOLYGON({$wkt})";
+    return "MULTIPOLYGON({$wktData})";
+  }
+
+  public function getWktData(): string
+  {
+    return $this->geometries
+      ->map(static function (Polygon $polygon): string {
+        $wktData = $polygon->getWktData();
+
+        return "({$wktData})";
+      })
+      ->join(', ');
   }
 }

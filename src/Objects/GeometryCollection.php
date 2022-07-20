@@ -37,11 +37,20 @@ class GeometryCollection extends Geometry implements ArrayAccess
     $this->validateGeometriesCount();
   }
 
-  public function toWkt(bool $withFunction = true): string
+  public function toWkt(): string
   {
-    $wkt = $this->toCollectionWkt(withFunction: true);
+    $wktData = $this->getWktData();
 
-    return "GEOMETRYCOLLECTION({$wkt})";
+    return "GEOMETRYCOLLECTION({$wktData})";
+  }
+
+  public function getWktData(): string
+  {
+    return $this->geometries
+      ->map(static function (Geometry $geometry): string {
+        return $geometry->toWkt();
+      })
+      ->join(', ');
   }
 
   /**
@@ -150,15 +159,6 @@ class GeometryCollection extends Geometry implements ArrayAccess
         );
       }
     });
-  }
-
-  protected function toCollectionWkt(bool $withFunction): string
-  {
-    return $this->geometries
-      ->map(static function (Geometry $geometry) use ($withFunction): string {
-        return $geometry->toWkt($withFunction);
-      })
-      ->join(', ');
   }
 
   /**

@@ -141,6 +141,23 @@ it('creates polygon with SRID from WKT', function (): void {
   expect($polygonFromWkt)->toEqual($polygon);
 });
 
+it('generates polygon WKT', function (): void {
+  $polygon = new Polygon([
+    new LineString([
+      new Point(180, 0),
+      new Point(179, 1),
+      new Point(178, 2),
+      new Point(177, 3),
+      new Point(180, 0),
+    ]),
+  ]);
+
+  $wkt = $polygon->toWkt();
+
+  $expectedWkt = 'POLYGON((0 180, 1 179, 2 178, 3 177, 0 180))';
+  expect($wkt)->toBe($expectedWkt);
+});
+
 it('creates polygon from WKB', function (): void {
   $polygon = new Polygon([
     new LineString([

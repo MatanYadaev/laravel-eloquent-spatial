@@ -263,7 +263,7 @@ class SpatialBuilder extends Builder
   protected function toExpression(Geometry|string $geometryOrColumn): Expression
   {
     if ($geometryOrColumn instanceof Geometry) {
-      $wkt = $geometryOrColumn->toWkt(withFunction: true);
+      $wkt = $geometryOrColumn->toWkt();
 
       return DB::raw("ST_GeomFromText('{$wkt}')");
     }

@@ -6,14 +6,21 @@ namespace MatanYadaev\EloquentSpatial\Objects;
 
 class Polygon extends MultiLineString
 {
-  public function toWkt(bool $withFunction = true): string
+  public function toWkt(): string
   {
-    $wkt = $this->toCollectionWkt(withFunction: false);
+    $wktData = $this->getWktData();
 
-    if ($withFunction) {
-      return "POLYGON({$wkt})";
-    }
+    return "POLYGON({$wktData})";
+  }
 
-    return "(${wkt})";
+  public function getWktData(): string
+  {
+    return $this->geometries
+      ->map(static function (LineString $lineString): string {
+        $wktData = $lineString->getWktData();
+
+        return "({$wktData})";
+      })
+      ->join(', ');
   }
 }
