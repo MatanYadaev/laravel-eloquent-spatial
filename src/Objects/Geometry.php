@@ -18,6 +18,8 @@ use WKB as geoPHPWkb;
 
 abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable
 {
+  public int $srid = 0;
+
   abstract public function toWkt(bool $withFunction = true): string;
 
   /**
@@ -33,10 +35,14 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
   public function toWkb(): string
   {
-    $geoPHPGeometry = geoPHP::load($this->toWkt());
+    $geoPHPGeometry = geoPHP::load($this->toJson());
+
+    $sridInBinary = pack('L', $this->srid);
 
     // @phpstan-ignore-next-line
-    return (new geoPHPWkb)->write($geoPHPGeometry, true);
+    $wkbWithoutSrid = (new geoPHPWkb)->write($geoPHPGeometry);
+
+    return $sridInBinary.$wkbWithoutSrid;
   }
 
   /**
@@ -47,7 +53,14 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
    */
   public static function fromWkb(string $wkb): static
   {
-    $geometry = Factory::parse($wkb, true);
+    $srid = substr($wkb, 0, 4);
+    // @phpstan-ignore-next-line
+    $srid = unpack('L', $srid)[1];
+
+    $wkb = substr($wkb, 4);
+
+    $geometry = Factory::parse($wkb);
+    $geometry->srid = $srid;
 
     if (! ($geometry instanceof static)) {
       throw new InvalidArgumentException(
@@ -60,13 +73,15 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
   /**
    * @param  string  $wkt
+   * @param  int  $srid
    * @return static
    *
    * @throws InvalidArgumentException
    */
-  public static function fromWkt(string $wkt): static
+  public static function fromWkt(string $wkt, int $srid = 0): static
   {
-    $geometry = Factory::parse($wkt, false);
+    $geometry = Factory::parse($wkt);
+    $geometry->srid = $srid;
 
     if (! ($geometry instanceof static)) {
       throw new InvalidArgumentException(
@@ -79,13 +94,15 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
   /**
    * @param  string  $geoJson
+   * @param  int  $srid
    * @return static
    *
    * @throws InvalidArgumentException
    */
-  public static function fromJson(string $geoJson): static
+  public static function fromJson(string $geoJson, int $srid = 0): static
   {
-    $geometry = Factory::parse($geoJson, false);
+    $geometry = Factory::parse($geoJson);
+    $geometry->srid = $srid;
 
     if (! ($geometry instanceof static)) {
       throw new InvalidArgumentException(

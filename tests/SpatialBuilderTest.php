@@ -283,3 +283,18 @@ it('filters by equals', function (): void {
   expect($testPlaces)->toHaveCount(1);
   expect($testPlaces[0]->point)->toEqual($point1);
 });
+
+it('filters by SRID', function (): void {
+  $point1 = new Point(0, 0, 4326);
+  $point2 = new Point(50, 50, 0);
+  TestPlace::factory()->create(['point' => $point1]);
+  TestPlace::factory()->create(['point' => $point2]);
+
+  /** @var TestPlace[] $testPlaces */
+  $testPlaces = TestPlace::query()
+    ->whereSrid('point', '=', 4326)
+    ->get();
+
+  expect($testPlaces)->toHaveCount(1);
+  expect($testPlaces[0]->point)->toEqual($point1);
+});

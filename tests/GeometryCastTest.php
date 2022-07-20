@@ -38,8 +38,8 @@ it('updates a model record with null geometry', function (): void {
 });
 
 it('gets original geometry field', function (): void {
-  $point = new Point(180, 0);
-  $point2 = new Point(0, 0);
+  $point = new Point(180, 0, 4326);
+  $point2 = new Point(0, 0, 4326);
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['point' => $point]);
 

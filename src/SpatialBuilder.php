@@ -242,6 +242,24 @@ class SpatialBuilder extends Builder
     return $this;
   }
 
+  public function whereSrid(
+    string $column,
+    string $operator,
+    int|float $value
+  ): self
+  {
+    $this->whereRaw(
+      sprintf(
+        'ST_SRID(%s) %s %s',
+        "`{$column}`",
+        $operator,
+        $value,
+      )
+    );
+
+    return $this;
+  }
+
   protected function toExpression(Geometry|string $geometryOrColumn): Expression
   {
     if ($geometryOrColumn instanceof Geometry) {

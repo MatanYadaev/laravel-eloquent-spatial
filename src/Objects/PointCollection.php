@@ -20,12 +20,13 @@ abstract class PointCollection extends GeometryCollection
 
   /**
    * @param  Collection<int, Point>|array<int, Point>  $geometries
+   * @param  int  $srid
    *
    * @throws InvalidArgumentException
    */
-  public function __construct(Collection|array $geometries)
+  public function __construct(Collection|array $geometries, int $srid = 0)
   {
     // @phpstan-ignore-next-line
-    parent::__construct($geometries);
+    parent::__construct($geometries, $srid);
   }
 }
