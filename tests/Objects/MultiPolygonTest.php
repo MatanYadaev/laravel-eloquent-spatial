@@ -158,6 +158,25 @@ it('creates multi polygon with SRID from WKT', function (): void {
   expect($multiPolygonFromWkt)->toEqual($multiPolygon);
 });
 
+it('generates multi polygon WKT', function (): void {
+  $multiPolygon = new MultiPolygon([
+    new Polygon([
+      new LineString([
+        new Point(180, 0),
+        new Point(179, 1),
+        new Point(178, 2),
+        new Point(177, 3),
+        new Point(180, 0),
+      ]),
+    ]),
+  ]);
+
+  $wkt = $multiPolygon->toWkt();
+
+  $expectedWkt = 'MULTIPOLYGON(((0 180, 1 179, 2 178, 3 177, 0 180)))';
+  expect($wkt)->toBe($expectedWkt);
+});
+
 it('creates multi polygon from WKB', function (): void {
   $multiPolygon = new MultiPolygon([
     new Polygon([

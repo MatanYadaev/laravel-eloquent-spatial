@@ -93,6 +93,17 @@ it('creates multi point with SRID from WKT', function (): void {
   expect($multiPointFromWkt)->toEqual($multiPoint);
 });
 
+it('generates multi point WKT', function (): void {
+  $multiPoint = new MultiPoint([
+    new Point(180, 0),
+  ]);
+
+  $wkt = $multiPoint->toWkt();
+
+  $expectedWkt = 'MULTIPOINT(0 180)';
+  expect($wkt)->toBe($expectedWkt);
+});
+
 it('creates multi point from WKB', function (): void {
   $multiPoint = new MultiPoint([
     new Point(180, 0),

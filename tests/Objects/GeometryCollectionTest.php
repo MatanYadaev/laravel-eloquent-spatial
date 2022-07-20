@@ -185,6 +185,26 @@ it('creates geometry collection with SRID from WKT', function (): void {
   expect($geometryCollectionFromWkt)->toEqual($geometryCollection);
 });
 
+it('generates geometry collection WKT', function (): void {
+  $geometryCollection = new GeometryCollection([
+    new Polygon([
+      new LineString([
+        new Point(180, 0),
+        new Point(179, 1),
+        new Point(178, 2),
+        new Point(177, 3),
+        new Point(180, 0),
+      ]),
+    ]),
+    new Point(180, 0),
+  ]);
+
+  $wkt = $geometryCollection->toWkt();
+
+  $expectedWkt = 'GEOMETRYCOLLECTION(POLYGON((0 180, 1 179, 2 178, 3 177, 0 180)),POINT(0 180))';
+  expect($wkt)->toBe($expectedWkt);
+});
+
 it('creates geometry collection from WKB', function (): void {
   $geometryCollection = new GeometryCollection([
     new Polygon([
