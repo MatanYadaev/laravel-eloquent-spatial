@@ -40,7 +40,9 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     $sridInBinary = pack('L', $this->srid);
 
     // @phpstan-ignore-next-line
-    return $sridInBinary.(new geoPHPWkb)->write($geoPHPGeometry);
+    $wkbWithoutSrid = (new geoPHPWkb)->write($geoPHPGeometry);
+
+    return $sridInBinary.$wkbWithoutSrid;
   }
 
   /**
@@ -55,7 +57,9 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     // @phpstan-ignore-next-line
     $srid = unpack('L', $srid)[1];
 
-    $geometry = Factory::parse($wkb, true);
+    $wkb = substr($wkb, 4);
+
+    $geometry = Factory::parse($wkb);
     $geometry->srid = $srid;
 
     if (! ($geometry instanceof static)) {
@@ -67,9 +71,16 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     return $geometry;
   }
 
+  /**
+   * @param  string  $wkt
+   * @param  int  $srid
+   * @return static
+   *
+   * @throws InvalidArgumentException
+   */
   public static function fromWkt(string $wkt, int $srid = 0): static
   {
-    $geometry = Factory::parse($wkt, false);
+    $geometry = Factory::parse($wkt);
     $geometry->srid = $srid;
 
     if (! ($geometry instanceof static)) {
@@ -81,9 +92,16 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     return $geometry;
   }
 
+  /**
+   * @param  string  $geoJson
+   * @param  int  $srid
+   * @return static
+   *
+   * @throws InvalidArgumentException
+   */
   public static function fromJson(string $geoJson, int $srid = 0): static
   {
-    $geometry = Factory::parse($geoJson, false);
+    $geometry = Factory::parse($geoJson);
     $geometry->srid = $srid;
 
     if (! ($geometry instanceof static)) {

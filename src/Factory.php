@@ -25,12 +25,8 @@ use Polygon as geoPHPPolygon;
 
 class Factory
 {
-  public static function parse(string $value, bool $isWkb): Geometry
+  public static function parse(string $value): Geometry
   {
-    if ($isWkb) {
-      $value = substr($value, 4);
-    }
-
     try {
       /** @var geoPHPGeometry|false $geoPHPGeometry */
       $geoPHPGeometry = geoPHP::load($value);
