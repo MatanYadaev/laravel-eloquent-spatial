@@ -8,10 +8,19 @@ class MultiPoint extends PointCollection
 {
   protected int $minimumGeometries = 1;
 
-  public function toWkt(bool $withFunction = true): string
+  public function toWkt(): string
   {
-    $wkt = $this->toCollectionWkt(withFunction: false);
+    $wktData = $this->getWktData();
 
-    return "MULTIPOINT({$wkt})";
+    return "MULTIPOINT({$wktData})";
+  }
+
+  public function getWktData(): string
+  {
+    return $this->geometries
+      ->map(static function (Point $point): string {
+        return $point->getWktData();
+      })
+      ->join(', ');
   }
 }

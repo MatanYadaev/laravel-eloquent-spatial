@@ -17,15 +17,16 @@ class Point extends Geometry
     $this->srid = $srid;
   }
 
-  public function toWkt(bool $withFunction = true): string
+  public function toWkt(): string
   {
-    $wkt = "{$this->longitude} {$this->latitude}";
+    $wktData = $this->getWktData();
 
-    if ($withFunction) {
-      return "POINT({$wkt})";
-    }
+    return "POINT({$wktData})";
+  }
 
-    return $wkt;
+  public function getWktData(): string
+  {
+    return "{$this->longitude} {$this->latitude}";
   }
 
   /**

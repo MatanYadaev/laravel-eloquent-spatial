@@ -20,7 +20,9 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 {
   public int $srid = 0;
 
-  abstract public function toWkt(bool $withFunction = true): string;
+  abstract public function toWkt(): string;
+
+  abstract public function getWktData(): string;
 
   /**
    * @param  int  $options
