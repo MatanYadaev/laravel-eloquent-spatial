@@ -102,7 +102,12 @@ use MatanYadaev\EloquentSpatial\Objects\Point;
 
 $londonEye = Place::create([
     'name' => 'London Eye',
-    'location' => new Point(51.5032973, -0.1195537)
+    'location' => new Point(51.5032973, -0.1217424),
+]);
+
+$whiteHouse = Place::create([
+    'name' => 'White House',
+    'location' => new Point(38.8976763, -77.0365298, 4326), // with SRID
 ]);
 
 $vaticanCity = Place::create([
@@ -119,8 +124,8 @@ $vaticanCity = Place::create([
               new Point(12.457734346389769, 41.905918239316286),
               new Point(12.45572805404663, 41.90637337450963),
               new Point(12.455363273620605, 41.90746728266806),
-        ])
-    ])
+        ]),
+    ]),
 ])
 ```
 
@@ -128,7 +133,9 @@ Retrieve a record with spatial data:
 
 ```php
 echo $londonEye->location->latitude; // 51.5032973
-echo $londonEye->location->longitude; // -0.1195537
+echo $londonEye->location->longitude; // -0.1217424
+
+echo $whiteHouse->location->srid; // 4326
 
 echo $vacationCity->area->toJson(); // {"type":"Polygon","coordinates":[[[41.90746728266806,12.455363273620605],[41.906636872349075,12.450309991836548],[41.90197359839437,12.445632219314575],[41.90027269624499,12.447413206100464],[41.90000118654431,12.457906007766724],[41.90281205461268,12.458517551422117],[41.903107507989986,12.457584142684937],[41.905918239316286,12.457734346389769],[41.90637337450963,12.45572805404663],[41.90746728266806,12.455363273620605]]]}
 ```
@@ -170,13 +177,12 @@ Place::query()->whereDistance(...); // This is IDE-friendly
 Place::whereDistance(...); // This is not
 ```
 
-## Tests
+## Development
 
-``` bash
-composer phpunit
-# or with coverage
-composer phpunit-coverage
-```
+* Test: `composer pest`
+* Test with coverage: `composer pest-coverage`
+* Type check: `composer phpstan`
+* Format: `composer php-cs-fixer`
 
 ## Changelog
 

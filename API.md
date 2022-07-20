@@ -1,23 +1,28 @@
 # API
 
-## Available spatial classes
+## Available geometry classes
 
-* `Point(float $latitude, float $longitude)` - [MySQL Point](https://dev.mysql.com/doc/refman/8.0/en/gis-class-point.html)
-* `MultiPoint(Point[] | Collection<Point>)` - [MySQL MultiPoint](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipoint.html)
-* `LineString(Point[] | Collection<Point>)` - [MySQL LineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-linestring.html)
-* `MultiLineString(LineString[] | Collection<LineString>)` - [MySQL MultiLineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multilinestring.html)
-* `Polygon(LineString[] | Collection<LineString>)` - [MySQL Polygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-polygon.html)
-* `MultiPolygon(Polygon[] | Collection<Polygon>)` - [MySQL MultiPolygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipolygon.html)
-* `GeometryCollection(Geometry[] | Collection<Geometry>)` - [MySQL GeometryCollection](https://dev.mysql.com/doc/refman/8.0/en/gis-class-geometrycollection.html)
+* `Point(float $latitude, float $longitude, int $srid = 0)` - [MySQL Point](https://dev.mysql.com/doc/refman/8.0/en/gis-class-point.html)
+* `MultiPoint(Point[] | Collection<Point>, int $srid = 0)` - [MySQL MultiPoint](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipoint.html)
+* `LineString(Point[] | Collection<Point>, int $srid = 0)` - [MySQL LineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-linestring.html)
+* `MultiLineString(LineString[] | Collection<LineString>, int $srid = 0)` - [MySQL MultiLineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multilinestring.html)
+* `Polygon(LineString[] | Collection<LineString>, int $srid = 0)` - [MySQL Polygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-polygon.html)
+* `MultiPolygon(Polygon[] | Collection<Polygon>, int $srid = 0)` - [MySQL MultiPolygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipolygon.html)
+* `GeometryCollection(Geometry[] | Collection<Geometry>, int $srid = 0)` - [MySQL GeometryCollection](https://dev.mysql.com/doc/refman/8.0/en/gis-class-geometrycollection.html)
 
-## Available spatial functions
+Geometry classes can be also created by these static methods:
 
-Every geometry class has these functions:
+* `fromJson(string $geoJson, int $srid = 0)` - Creates a geometry object from a [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) string.
+* `fromWkt(string $wkt, int $srid = 0)` - Creates a geometry object from a [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry).
+* `fromWkb(string $wkb, int $srid = 0)` - Creates a geometry object from a [WKB](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary).
+
+## Available geometry class methods
 
 * `toArray()` - Serializes the geometry object into a GeoJSON associative array.
 * `toJson()` - Serializes the geometry object into an GeoJSON string.
-* `fromJson(string $geoJson)` - Deserializes a geometry object from a GeoJSON string. (static method) 
 * `toFeatureCollectionJson()` - Serializes the geometry object into an GeoJSON's FeatureCollection string.
+* `toWkt()` - Serializes the geometry object into a WKT.
+* `toWkb()` - Serializes the geometry object into a WKB.
 * `getCoordinates()` - Returns the coordinates of the geometry object.
 
 In addition, `GeometryCollection` also has these functions:
@@ -40,7 +45,7 @@ $geometryCollection = new GeometryCollection([
 ]);
 
 echo $geometryCollection->getGeometries()[1]->latitude; // 180
-// can also access as an array:
+// or access as an array:
 echo $geometryCollection[1]->latitude; // 180
 ```
 
@@ -59,6 +64,7 @@ echo $geometryCollection[1]->latitude; // 180
 * [whereCrosses](#whereCrosses)
 * [whereDisjoint](#whereDisjoint)
 * [whereEquals](#whereEquals)
+* [whereSrid](#whereSrid)
 
 ###  withDistance
 
@@ -368,6 +374,27 @@ Place::create(['location' => new Point(0, 0)]);
 
 Place::query()
     ->whereEquals('location', new Point(0, 0))
+    ->exists(); // true
+```
+</details>
+
+###  whereSrid
+
+Filters records by the [ST_Srid](https://dev.mysql.com/doc/refman/8.0/en/gis-general-property-functions.html#function_st-srid) function.
+
+| parameter name      | type
+| ------------------  | -------------------- 
+| `$column`           | `string`
+| `$operator`         | `string`
+| `$value`            | `int`
+
+<details><summary>Example</summary>
+
+```php
+Place::create(['location' => new Point(0, 0, 4326)]);
+
+Place::query()
+    ->whereSrid('location', '=', 4326)
     ->exists(); // true
 ```
 </details>
