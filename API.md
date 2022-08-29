@@ -33,38 +33,42 @@ In addition, `GeometryCollection` also has these functions:
 $geometryCollection = new GeometryCollection([
         new Polygon([
             new LineString([
-                new Point(180, 0),
-                new Point(179, 1),
-                new Point(178, 2),
-                new Point(177, 3),
-                new Point(180, 0),
+                new Point(0, 180),
+                new Point(1, 179),
+                new Point(2, 178),
+                new Point(3, 177),
+                new Point(0, 180),
             ]),
         ]),
-        new Point(180, 0),
+        new Point(0, 180),
     ]),
 ]);
 
-echo $geometryCollection->getGeometries()[1]->latitude; // 180
+echo $geometryCollection->getGeometries()[1]->latitude; // 0
 // or access as an array:
-echo $geometryCollection[1]->latitude; // 180
+echo $geometryCollection[1]->latitude; // 0
 ```
 
 ## Available spatial scopes
 
-* [withDistance](#withDistance)
-* [whereDistance](#whereDistance)
-* [orderByDistance](#orderByDistance)
-* [withDistanceSphere](#withDistanceSphere)
-* [whereDistanceSphere](#whereDistanceSphere)
-* [orderByDistanceSphere](#orderByDistanceSphere)
-* [whereWithin](#whereWithin)
-* [whereContains](#whereContains)
-* [whereTouches](#whereTouches)
-* [whereIntersects](#whereIntersects)
-* [whereCrosses](#whereCrosses)
-* [whereDisjoint](#whereDisjoint)
-* [whereEquals](#whereEquals)
-* [whereSrid](#whereSrid)
+- [API](#api)
+  - [Available geometry classes](#available-geometry-classes)
+  - [Available geometry class methods](#available-geometry-class-methods)
+  - [Available spatial scopes](#available-spatial-scopes)
+    - [withDistance](#withdistance)
+    - [whereDistance](#wheredistance)
+    - [orderByDistance](#orderbydistance)
+    - [withDistanceSphere](#withdistancesphere)
+    - [whereDistanceSphere](#wheredistancesphere)
+    - [orderByDistanceSphere](#orderbydistancesphere)
+    - [whereWithin](#wherewithin)
+    - [whereContains](#wherecontains)
+    - [whereTouches](#wheretouches)
+    - [whereIntersects](#whereintersects)
+    - [whereCrosses](#wherecrosses)
+    - [whereDisjoint](#wheredisjoint)
+    - [whereEquals](#whereequals)
+    - [whereSrid](#wheresrid)
 
 ###  withDistance
 
@@ -111,7 +115,7 @@ Filters records by distance. Uses [ST_Distance](https://dev.mysql.com/doc/refman
 
 ```php
 Place::create(['location' => new Point(0, 0)]);
-Place::create(['location' => new Point(100, 100)]);
+Place::create(['location' => new Point(50, 50)]);
 
 $placesCountWithinDistance = Place::query()
     ->whereDistance('location', new Point(1, 1), '<', 1.5)
@@ -140,7 +144,7 @@ Place::create([
 ]);
 Place::create([
     'name' => 'second',
-    'location' => new Point(100, 100),
+    'location' => new Point(50, 50),
 ]);
 
 $places = Place::query()
@@ -197,7 +201,7 @@ Filters records by spherical distance. Uses [ST_Distance_Sphere](https://dev.mys
 
 ```php
 Place::create(['location' => new Point(0, 0)]);
-Place::create(['location' => new Point(100, 100)]);
+Place::create(['location' => new Point(50, 50)]);
 
 $placesCountWithinDistance = Place::query()
     ->whereDistanceSphere('location', new Point(1, 1), '<', 160000)
