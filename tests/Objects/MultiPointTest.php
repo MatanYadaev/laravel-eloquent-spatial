@@ -10,7 +10,7 @@ uses(DatabaseMigrations::class);
 
 it('creates a model record with multi point', function (): void {
   $multiPoint = new MultiPoint([
-    new Point(180, 0),
+    new Point(0, 180),
   ]);
 
   /** @var TestPlace $testPlace */
@@ -22,7 +22,7 @@ it('creates a model record with multi point', function (): void {
 
 it('creates a model record with multi point with SRID', function (): void {
   $multiPoint = new MultiPoint([
-    new Point(180, 0),
+    new Point(0, 180),
   ], 4326);
 
   /** @var TestPlace $testPlace */
@@ -33,80 +33,80 @@ it('creates a model record with multi point with SRID', function (): void {
 
 it('creates multi point from JSON', function (): void {
   $multiPoint = new MultiPoint([
-    new Point(180, 0),
+    new Point(0, 180),
   ]);
 
-  $multiPointFromJson = MultiPoint::fromJson('{"type":"MultiPoint","coordinates":[[0,180]]}');
+  $multiPointFromJson = MultiPoint::fromJson('{"type":"MultiPoint","coordinates":[[180,0]]}');
 
   expect($multiPointFromJson)->toEqual($multiPoint);
 });
 
 it('creates multi point with SRID from JSON', function (): void {
   $multiPoint = new MultiPoint([
-    new Point(180, 0),
+    new Point(0, 180),
   ], 4326);
 
-  $multiPointFromJson = MultiPoint::fromJson('{"type":"MultiPoint","coordinates":[[0,180]]}', 4326);
+  $multiPointFromJson = MultiPoint::fromJson('{"type":"MultiPoint","coordinates":[[180,0]]}', 4326);
 
   expect($multiPointFromJson)->toEqual($multiPoint);
 });
 
 it('generates multi point JSON', function (): void {
   $multiPoint = new MultiPoint([
-    new Point(180, 0),
+    new Point(0, 180),
   ]);
 
   $json = $multiPoint->toJson();
 
-  $expectedJson = '{"type":"MultiPoint","coordinates":[[0,180]]}';
+  $expectedJson = '{"type":"MultiPoint","coordinates":[[180,0]]}';
   expect($json)->toBe($expectedJson);
 });
 
 it('generates multi point feature collection JSON', function (): void {
   $multiPoint = new MultiPoint([
-    new Point(180, 0),
+    new Point(0, 180),
   ]);
 
   $multiPointFeatureCollectionJson = $multiPoint->toFeatureCollectionJson();
 
-  $expectedFeatureCollectionJson = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiPoint","coordinates":[[0,180]]}}]}';
+  $expectedFeatureCollectionJson = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiPoint","coordinates":[[180,0]]}}]}';
   expect($multiPointFeatureCollectionJson)->toBe($expectedFeatureCollectionJson);
 });
 
 it('creates multi point from WKT', function (): void {
   $multiPoint = new MultiPoint([
-    new Point(180, 0),
+    new Point(0, 180),
   ]);
 
-  $multiPointFromWkt = MultiPoint::fromWkt('MULTIPOINT(0 180)');
+  $multiPointFromWkt = MultiPoint::fromWkt('MULTIPOINT(180 0)');
 
   expect($multiPointFromWkt)->toEqual($multiPoint);
 });
 
 it('creates multi point with SRID from WKT', function (): void {
   $multiPoint = new MultiPoint([
-    new Point(180, 0),
+    new Point(0, 180),
   ], 4326);
 
-  $multiPointFromWkt = MultiPoint::fromWkt('MULTIPOINT(0 180)', 4326);
+  $multiPointFromWkt = MultiPoint::fromWkt('MULTIPOINT(180 0)', 4326);
 
   expect($multiPointFromWkt)->toEqual($multiPoint);
 });
 
 it('generates multi point WKT', function (): void {
   $multiPoint = new MultiPoint([
-    new Point(180, 0),
+    new Point(0, 180),
   ]);
 
   $wkt = $multiPoint->toWkt();
 
-  $expectedWkt = 'MULTIPOINT(0 180)';
+  $expectedWkt = 'MULTIPOINT(180 0)';
   expect($wkt)->toBe($expectedWkt);
 });
 
 it('creates multi point from WKB', function (): void {
   $multiPoint = new MultiPoint([
-    new Point(180, 0),
+    new Point(0, 180),
   ]);
 
   $multiPointFromWkb = MultiPoint::fromWkb($multiPoint->toWkb());
@@ -116,7 +116,7 @@ it('creates multi point from WKB', function (): void {
 
 it('creates multi point with SRID from WKB', function (): void {
   $multiPoint = new MultiPoint([
-    new Point(180, 0),
+    new Point(0, 180),
   ], 4326);
 
   $multiPointFromWkb = MultiPoint::fromWkb($multiPoint->toWkb());
@@ -134,7 +134,7 @@ it('throws exception when creating multi point from incorrect geometry', functio
   expect(function (): void {
     // @phpstan-ignore-next-line
     new MultiPoint([
-      Polygon::fromJson('{"type":"Polygon","coordinates":[[[0,180],[1,179],[2,178],[3,177],[0,180]]]}'),
+      Polygon::fromJson('{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}'),
     ]);
   })->toThrow(InvalidArgumentException::class);
 });
