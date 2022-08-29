@@ -83,20 +83,20 @@ Retrieves the distance between 2 geometry objects. Uses [ST_Distance](https://de
 <details><summary>Example</summary>
 
 ```php
-Place::create(['location' => new Point(0, 0)]);
+Place::create(['location' => new Point(0, 0, 4326)]);
 
 $placeWithDistance = Place::query()
-    ->withDistance('location', new Point(1, 1))
+    ->withDistance('location', new Point(1, 1, 4326))
     ->first();
 
-echo $placeWithDistance->distance; // 1.4142135623731
+echo $placeWithDistance->distance; // 156897.79947260793
 
 // when using alias:
 $placeWithDistance = Place::query()
-    ->withDistance('location', new Point(1, 1), 'distance_in_meters')
+    ->withDistance('location', new Point(1, 1, 4326), 'distance_in_meters')
     ->first();
 
-echo $placeWithDistance->distance_in_meters; // 1.4142135623731
+echo $placeWithDistance->distance_in_meters; // 156897.79947260793
 ```
 </details>
 
@@ -114,11 +114,11 @@ Filters records by distance. Uses [ST_Distance](https://dev.mysql.com/doc/refman
 <details><summary>Example</summary>
 
 ```php
-Place::create(['location' => new Point(0, 0)]);
-Place::create(['location' => new Point(50, 50)]);
+Place::create(['location' => new Point(0, 0, 4326)]);
+Place::create(['location' => new Point(50, 50, 4326)]);
 
 $placesCountWithinDistance = Place::query()
-    ->whereDistance('location', new Point(1, 1), '<', 1.5)
+    ->whereDistance('location', new Point(1, 1, 4326), '<', 160000)
     ->count();
 
 echo $placesCountWithinDistance; // 1
@@ -140,15 +140,15 @@ Orders records by distance. Uses [ST_Distance](https://dev.mysql.com/doc/refman/
 ```php
 Place::create([
     'name' => 'first',
-    'location' => new Point(0, 0),
+    'location' => new Point(0, 0, 4326),
 ]);
 Place::create([
     'name' => 'second',
-    'location' => new Point(50, 50),
+    'location' => new Point(50, 50, 4326),
 ]);
 
 $places = Place::query()
-    ->orderByDistance('location', new Point(1, 1), 'desc')
+    ->orderByDistance('location', new Point(1, 1, 4326), 'desc')
     ->get();
 
 echo $places[0]->name; // second
@@ -169,20 +169,20 @@ Retrieves the spherical distance between 2 geometry objects. Uses [ST_Distance_S
 <details><summary>Example</summary>
 
 ```php
-Place::create(['location' => new Point(0, 0)]);
+Place::create(['location' => new Point(0, 0, 4326)]);
 
 $placeWithDistance = Place::query()
-    ->withDistanceSphere('location', new Point(1, 1))
+    ->withDistanceSphere('location', new Point(1, 1, 4326))
     ->first();
 
-echo $placeWithDistance->distance; // 157249.0357231545
+echo $placeWithDistance->distance; // 157249.59776850493
 
 // when using alias:
 $placeWithDistance = Place::query()
-    ->withDistanceSphere('location', new Point(1, 1), 'distance_in_meters')
+    ->withDistanceSphere('location', new Point(1, 1, 4326), 'distance_in_meters')
     ->first();
 
-echo $placeWithDistance->distance_in_meters; // 157249.0357231545
+echo $placeWithDistance->distance_in_meters; // 157249.59776850493
 ```
 </details>
 
@@ -200,11 +200,11 @@ Filters records by spherical distance. Uses [ST_Distance_Sphere](https://dev.mys
 <details><summary>Example</summary>
 
 ```php
-Place::create(['location' => new Point(0, 0)]);
-Place::create(['location' => new Point(50, 50)]);
+Place::create(['location' => new Point(0, 0, 4326)]);
+Place::create(['location' => new Point(50, 50, 4326)]);
 
 $placesCountWithinDistance = Place::query()
-    ->whereDistanceSphere('location', new Point(1, 1), '<', 160000)
+    ->whereDistanceSphere('location', new Point(1, 1, 4326), '<', 160000)
     ->count();
 
 echo $placesCountWithinDistance; // 1
@@ -226,15 +226,15 @@ Orders records by spherical distance. Uses [ST_Distance_Sphere](https://dev.mysq
 ```php
 Place::create([
     'name' => 'first',
-    'location' => new Point(0, 0),
+    'location' => new Point(0, 0, 4326),
 ]);
 Place::create([
     'name' => 'second',
-    'location' => new Point(100, 100),
+    'location' => new Point(100, 100, 4326),
 ]);
 
 $places = Place::query()
-    ->orderByDistanceSphere('location', new Point(1, 1), 'desc')
+    ->orderByDistanceSphere('location', new Point(1, 1, 4326), 'desc')
     ->get();
 
 echo $places[0]->name; // second
@@ -254,7 +254,7 @@ Filters records by the [ST_Within](https://dev.mysql.com/doc/refman/8.0/en/spati
 <details><summary>Example</summary>
 
 ```php
-Place::create(['location' => new Point(0, 0)]);
+Place::create(['location' => new Point(0, 0, 4326)]);
 
 Place::query()
     ->whereWithin('location', Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}'))
@@ -277,7 +277,7 @@ Filters records by the [ST_Contains](https://dev.mysql.com/doc/refman/8.0/en/spa
 Place::create(['area' => Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}'),]);
 
 Place::query()
-    ->whereContains('area', new Point(0, 0))
+    ->whereContains('area', new Point(0, 0, 4326))
     ->exists(); // true
 ```
 </details>
@@ -294,7 +294,7 @@ Filters records by the [ST_Touches](https://dev.mysql.com/doc/refman/8.0/en/spat
 <details><summary>Example</summary>
 
 ```php
-Place::create(['location' => new Point(0, 0)]);
+Place::create(['location' => new Point(0, 0, 4326)]);
 
 Place::query()
     ->whereTouches('location', Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[0,-1],[0,0],[-1,0],[-1,-1]]]}'))
@@ -314,7 +314,7 @@ Filters records by the [ST_Intersects](https://dev.mysql.com/doc/refman/8.0/en/s
 <details><summary>Example</summary>
 
 ```php
-Place::create(['location' => new Point(0, 0)]);
+Place::create(['location' => new Point(0, 0, 4326)]);
 
 Place::query()
     ->whereIntersects('location', Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}'))
@@ -354,7 +354,7 @@ Filters records by the [ST_Disjoint](https://dev.mysql.com/doc/refman/8.0/en/spa
 <details><summary>Example</summary>
 
 ```php
-Place::create(['location' => new Point(0, 0)]);
+Place::create(['location' => new Point(0, 0, 4326)]);
 
 Place::query()
     ->whereDisjoint('location', Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[-0.5,-1],[-0.5,-0.5],[-1,-0.5],[-1,-1]]]}'))
@@ -374,10 +374,10 @@ Filters records by the [ST_Equal](https://dev.mysql.com/doc/refman/8.0/en/spatia
 <details><summary>Example</summary>
 
 ```php
-Place::create(['location' => new Point(0, 0)]);
+Place::create(['location' => new Point(0, 0, 4326)]);
 
 Place::query()
-    ->whereEquals('location', new Point(0, 0))
+    ->whereEquals('location', new Point(0, 0, 4326))
     ->exists(); // true
 ```
 </details>
