@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Database\QueryException;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 it('throws exception when generating geometry from other geometry WKB', function (): void {
   expect(function (): void {
@@ -11,9 +13,23 @@ it('throws exception when generating geometry from other geometry WKB', function
   })->toThrow(InvalidArgumentException::class);
 });
 
+it('throws exception when generating geometry with invalid latitude', function (): void {
+  expect(function (): void {
+    $point = (new Point(91, 0, 4326));
+    TestPlace::factory()->create(['point' => $point]);
+  })->toThrow(QueryException::class);
+});
+
+it('throws exception when generating geometry with invalid longitude', function (): void {
+  expect(function (): void {
+    $point = (new Point(0, 181, 4326));
+    TestPlace::factory()->create(['point' => $point]);
+  })->toThrow(QueryException::class);
+});
+
 it('throws exception when generating geometry from other geometry WKT', function (): void {
   expect(function (): void {
-    $pointWkt = 'POINT(0 180)';
+    $pointWkt = 'POINT(180 0)';
 
     LineString::fromWkt($pointWkt);
   })->toThrow(InvalidArgumentException::class);

@@ -265,7 +265,7 @@ class SpatialBuilder extends Builder
     if ($geometryOrColumn instanceof Geometry) {
       $wkt = $geometryOrColumn->toWkt();
 
-      return DB::raw("ST_GeomFromText('{$wkt}')");
+      return DB::raw("ST_GeomFromText('{$wkt}', {$geometryOrColumn->srid}, 'axis-order=long-lat')");
     }
 
     return DB::raw("`{$geometryOrColumn}`");

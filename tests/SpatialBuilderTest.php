@@ -9,7 +9,7 @@ use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 uses(DatabaseMigrations::class);
 
 it('calculates distance between column and column', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
@@ -20,62 +20,62 @@ it('calculates distance between column and column', function (): void {
 });
 
 it('calculates distance between column and geometry', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->withDistance('point', new Point(1, 1))
+    ->withDistance('point', new Point(1, 1, 4326))
     ->firstOrFail();
 
-  expect($testPlaceWithDistance->distance)->toBe(1.4142135623730951);
+  expect($testPlaceWithDistance->distance)->toBe(156897.79947260793);
 });
 
 it('calculates distance with alias', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->withDistance('point', new Point(1, 1), 'distance_in_meters')
+    ->withDistance('point', new Point(1, 1, 4326), 'distance_in_meters')
     ->firstOrFail();
 
-  expect($testPlaceWithDistance->distance_in_meters)->toBe(1.4142135623730951);
+  expect($testPlaceWithDistance->distance_in_meters)->toBe(156897.79947260793);
 });
 
 it('filters by distance', function (): void {
-  $pointWithinDistance = new Point(0, 0);
-  $pointNotWithinDistance = new Point(50, 50);
+  $pointWithinDistance = new Point(0, 0, 4326);
+  $pointNotWithinDistance = new Point(50, 50, 4326);
   TestPlace::factory()->create(['point' => $pointWithinDistance]);
   TestPlace::factory()->create(['point' => $pointNotWithinDistance]);
 
   /** @var TestPlace[] $testPlacesWithinDistance */
   $testPlacesWithinDistance = TestPlace::query()
-    ->whereDistance('point', new Point(1, 1), '<', 10)
+    ->whereDistance('point', new Point(1, 1, 4326), '<', 200_000)
     ->get();
 
   expect($testPlacesWithinDistance)->toHaveCount(1);
   expect($testPlacesWithinDistance[0]->point)->toEqual($pointWithinDistance);
 });
 
-it('orders by distance', function (): void {
-  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1)]);
-  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2)]);
+it('orders by distance ASC', function (): void {
+  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, 4326)]);
+  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2, 4326)]);
 
   /** @var TestPlace[] $testPlacesOrderedByDistance */
   $testPlacesOrderedByDistance = TestPlace::query()
-    ->orderByDistance('point', new Point(0, 0))
+    ->orderByDistance('point', new Point(0, 0, 4326))
     ->get();
 
   expect($testPlacesOrderedByDistance[0]->id)->toBe($closerTestPlace->id);
   expect($testPlacesOrderedByDistance[1]->id)->toBe($fartherTestPlace->id);
 });
 
-it('desc orders by distance', function (): void {
-  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1)]);
-  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2)]);
+it('orders by distance DESC', function (): void {
+  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, 4326)]);
+  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2, 4326)]);
 
   /** @var TestPlace[] $testPlacesOrderedByDistance */
   $testPlacesOrderedByDistance = TestPlace::query()
-    ->orderByDistance('point', new Point(0, 0), 'desc')
+    ->orderByDistance('point', new Point(0, 0, 4326), 'desc')
     ->get();
 
   expect($testPlacesOrderedByDistance[1]->id)->toBe($closerTestPlace->id);
@@ -83,7 +83,7 @@ it('desc orders by distance', function (): void {
 });
 
 it('calculates distance sphere column and column', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
@@ -94,62 +94,62 @@ it('calculates distance sphere column and column', function (): void {
 });
 
 it('calculates distance sphere column and geometry', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->withDistanceSphere('point', new Point(1, 1))
+    ->withDistanceSphere('point', new Point(1, 1, 4326))
     ->firstOrFail();
 
-  expect($testPlaceWithDistance->distance)->toBe(157249.0357231545);
+  expect($testPlaceWithDistance->distance)->toBe(157249.59776850493);
 });
 
 it('calculates distance sphere with alias', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->withDistanceSphere('point', new Point(1, 1), 'distance_in_meters')
+    ->withDistanceSphere('point', new Point(1, 1, 4326), 'distance_in_meters')
     ->firstOrFail();
 
-  expect($testPlaceWithDistance->distance_in_meters)->toBe(157249.0357231545);
+  expect($testPlaceWithDistance->distance_in_meters)->toBe(157249.59776850493);
 });
 
 it('filters distance sphere', function (): void {
-  $pointWithinDistance = new Point(0, 0);
-  $pointNotWithinDistance = new Point(50, 50);
+  $pointWithinDistance = new Point(0, 0, 4326);
+  $pointNotWithinDistance = new Point(50, 50, 4326);
   TestPlace::factory()->create(['point' => $pointWithinDistance]);
   TestPlace::factory()->create(['point' => $pointNotWithinDistance]);
 
   /** @var TestPlace[] $testPlacesWithinDistance */
   $testPlacesWithinDistance = TestPlace::query()
-    ->whereDistanceSphere('point', new Point(1, 1), '<', 200000)
+    ->whereDistanceSphere('point', new Point(1, 1, 4326), '<', 200000)
     ->get();
 
   expect($testPlacesWithinDistance)->toHaveCount(1);
   expect($testPlacesWithinDistance[0]->point)->toEqual($pointWithinDistance);
 });
 
-it('orders by distance sphere', function (): void {
-  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1)]);
-  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2)]);
+it('orders by distance sphere ASC', function (): void {
+  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, 4326)]);
+  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2, 4326)]);
 
   /** @var TestPlace[] $testPlacesOrderedByDistance */
   $testPlacesOrderedByDistance = TestPlace::query()
-    ->orderByDistanceSphere('point', new Point(0, 0))
+    ->orderByDistanceSphere('point', new Point(0, 0, 4326))
     ->get();
 
   expect($testPlacesOrderedByDistance[0]->id)->toBe($closerTestPlace->id);
   expect($testPlacesOrderedByDistance[1]->id)->toBe($fartherTestPlace->id);
 });
 
-it('desc orders by distance sphere', function (): void {
-  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1)]);
-  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2)]);
+it('orders by distance sphere DESC', function (): void {
+  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, 4326)]);
+  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2, 4326)]);
 
   /** @var TestPlace[] $testPlacesOrderedByDistance */
   $testPlacesOrderedByDistance = TestPlace::query()
-    ->orderByDistanceSphere('point', new Point(0, 0), 'desc')
+    ->orderByDistanceSphere('point', new Point(0, 0, 4326), 'desc')
     ->get();
 
   expect($testPlacesOrderedByDistance[1]->id)->toBe($closerTestPlace->id);
@@ -157,9 +157,9 @@ it('desc orders by distance sphere', function (): void {
 });
 
 it('filters by within', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
-  $pointWithinPolygon = new Point(0, 0);
-  $pointOutsidePolygon = new Point(50, 50);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
+  $pointWithinPolygon = new Point(0, 0, 4326);
+  $pointOutsidePolygon = new Point(50, 50, 4326);
   TestPlace::factory()->create(['point' => $pointWithinPolygon]);
   TestPlace::factory()->create(['point' => $pointOutsidePolygon]);
 
@@ -173,9 +173,9 @@ it('filters by within', function (): void {
 });
 
 it('filters by contains', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
-  $pointWithinPolygon = new Point(0, 0);
-  $pointOutsidePolygon = new Point(50, 50);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
+  $pointWithinPolygon = new Point(0, 0, 4326);
+  $pointOutsidePolygon = new Point(50, 50, 4326);
   TestPlace::factory()->create(['polygon' => $polygon]);
 
   $testPlace = TestPlace::query()
@@ -190,9 +190,9 @@ it('filters by contains', function (): void {
 });
 
 it('filters by touches', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[0,-1],[0,0],[-1,0],[-1,-1]]]}');
-  $pointTouchesPolygon = new Point(0, 0);
-  $pointNotTouchesPolygon = new Point(50, 50);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[0,-1],[0,0],[-1,0],[-1,-1]]]}', 4326);
+  $pointTouchesPolygon = new Point(0, 0, 4326);
+  $pointNotTouchesPolygon = new Point(50, 50, 4326);
   TestPlace::factory()->create(['point' => $pointTouchesPolygon]);
   TestPlace::factory()->create(['point' => $pointNotTouchesPolygon]);
 
@@ -206,9 +206,9 @@ it('filters by touches', function (): void {
 });
 
 it('filters by intersects', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
-  $pointIntersectsPolygon = new Point(0, 0);
-  $pointNotIntersectsPolygon = new Point(50, 50);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
+  $pointIntersectsPolygon = new Point(0, 0, 4326);
+  $pointNotIntersectsPolygon = new Point(50, 50, 4326);
   TestPlace::factory()->create(['point' => $pointIntersectsPolygon]);
   TestPlace::factory()->create(['point' => $pointNotIntersectsPolygon]);
 
@@ -222,9 +222,9 @@ it('filters by intersects', function (): void {
 });
 
 it('filters by crosses', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
-  $lineStringCrossesPolygon = LineString::fromJson('{"type":"LineString","coordinates":[[0,0],[2,0]]}');
-  $lineStringNotCrossesPolygon = LineString::fromJson('{"type":"LineString","coordinates":[[50,50],[52,50]]}');
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
+  $lineStringCrossesPolygon = LineString::fromJson('{"type":"LineString","coordinates":[[0,0],[2,0]]}', 4326);
+  $lineStringNotCrossesPolygon = LineString::fromJson('{"type":"LineString","coordinates":[[50,50],[52,50]]}', 4326);
   TestPlace::factory()->create(['line_string' => $lineStringCrossesPolygon]);
   TestPlace::factory()->create(['line_string' => $lineStringNotCrossesPolygon]);
 
@@ -238,9 +238,9 @@ it('filters by crosses', function (): void {
 });
 
 it('filters by disjoint', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[-0.5,-1],[-0.5,-0.5],[-1,-0.5],[-1,-1]]]}');
-  $pointDisjointsPolygon = new Point(0, 0);
-  $pointNotDisjointsPolygon = new Point(-1, -1);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[-0.5,-1],[-0.5,-0.5],[-1,-0.5],[-1,-1]]]}', 4326);
+  $pointDisjointsPolygon = new Point(0, 0, 4326);
+  $pointNotDisjointsPolygon = new Point(-1, -1, 4326);
   TestPlace::factory()->create(['point' => $pointDisjointsPolygon]);
   TestPlace::factory()->create(['point' => $pointNotDisjointsPolygon]);
 
@@ -254,9 +254,9 @@ it('filters by disjoint', function (): void {
 });
 
 it('filters by overlaps', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-0.75,-0.75],[1,-1],[1,1],[-1,1],[-0.75,-0.75]]]}');
-  $overlappingPolygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[-0.5,-1],[-0.5,-0.5],[-1,-0.5],[-1,-1]]]}');
-  $notOverlappingPolygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-10,-10],[-5,-10],[-5,-5],[-10,-5],[-10,-10]]]}');
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-0.75,-0.75],[1,-1],[1,1],[-1,1],[-0.75,-0.75]]]}', 4326);
+  $overlappingPolygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[-0.5,-1],[-0.5,-0.5],[-1,-0.5],[-1,-1]]]}', 4326);
+  $notOverlappingPolygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-10,-10],[-5,-10],[-5,-5],[-10,-5],[-10,-10]]]}', 4326);
   TestPlace::factory()->create(['polygon' => $overlappingPolygon]);
   TestPlace::factory()->create(['polygon' => $notOverlappingPolygon]);
 
@@ -270,8 +270,8 @@ it('filters by overlaps', function (): void {
 });
 
 it('filters by equals', function (): void {
-  $point1 = new Point(0, 0);
-  $point2 = new Point(50, 50);
+  $point1 = new Point(0, 0, 4326);
+  $point2 = new Point(50, 50, 4326);
   TestPlace::factory()->create(['point' => $point1]);
   TestPlace::factory()->create(['point' => $point2]);
 

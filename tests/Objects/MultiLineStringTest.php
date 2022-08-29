@@ -11,8 +11,8 @@ uses(DatabaseMigrations::class);
 it('creates a model record with multi line string', function (): void {
   $multiLineString = new MultiLineString([
     new LineString([
-      new Point(180, 0),
-      new Point(179, 1),
+      new Point(0, 180),
+      new Point(1, 179),
     ]),
   ]);
 
@@ -26,8 +26,8 @@ it('creates a model record with multi line string', function (): void {
 it('creates a model record with multi line string with SRID', function (): void {
   $multiLineString = new MultiLineString([
     new LineString([
-      new Point(180, 0),
-      new Point(179, 1),
+      new Point(0, 180),
+      new Point(1, 179),
     ]),
   ], 4326);
 
@@ -40,12 +40,12 @@ it('creates a model record with multi line string with SRID', function (): void 
 it('creates multi line string from JSON', function (): void {
   $multiLineString = new MultiLineString([
     new LineString([
-      new Point(180, 0),
-      new Point(179, 1),
+      new Point(0, 180),
+      new Point(1, 179),
     ]),
   ]);
 
-  $multiLineStringFromJson = MultiLineString::fromJson('{"type":"MultiLineString","coordinates":[[[0,180],[1,179]]]}');
+  $multiLineStringFromJson = MultiLineString::fromJson('{"type":"MultiLineString","coordinates":[[[180,0],[179,1]]]}');
 
   expect($multiLineStringFromJson)->toEqual($multiLineString);
 });
@@ -53,12 +53,12 @@ it('creates multi line string from JSON', function (): void {
 it('creates multi line string with SRID from JSON', function (): void {
   $multiLineString = new MultiLineString([
     new LineString([
-      new Point(180, 0),
-      new Point(179, 1),
+      new Point(0, 180),
+      new Point(1, 179),
     ]),
   ], 4326);
 
-  $multiLineStringFromJson = MultiLineString::fromJson('{"type":"MultiLineString","coordinates":[[[0,180],[1,179]]]}', 4326);
+  $multiLineStringFromJson = MultiLineString::fromJson('{"type":"MultiLineString","coordinates":[[[180,0],[179,1]]]}', 4326);
 
   expect($multiLineStringFromJson)->toEqual($multiLineString);
 });
@@ -66,40 +66,40 @@ it('creates multi line string with SRID from JSON', function (): void {
 it('generates multi line string JSON', function (): void {
   $multiLineString = new MultiLineString([
     new LineString([
-      new Point(180, 0),
-      new Point(179, 1),
+      new Point(0, 180),
+      new Point(1, 179),
     ]),
   ]);
 
   $json = $multiLineString->toJson();
 
-  $expectedJson = '{"type":"MultiLineString","coordinates":[[[0,180],[1,179]]]}';
+  $expectedJson = '{"type":"MultiLineString","coordinates":[[[180,0],[179,1]]]}';
   expect($json)->toBe($expectedJson);
 });
 
 it('generates multi line string feature collection JSON', function (): void {
   $multiLineString = new MultiLineString([
     new LineString([
-      new Point(180, 0),
-      new Point(179, 1),
+      new Point(0, 180),
+      new Point(1, 179),
     ]),
   ]);
 
   $featureCollectionJson = $multiLineString->toFeatureCollectionJson();
 
-  $expectedFeatureCollectionJson = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiLineString","coordinates":[[[0,180],[1,179]]]}}]}';
+  $expectedFeatureCollectionJson = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiLineString","coordinates":[[[180,0],[179,1]]]}}]}';
   expect($featureCollectionJson)->toBe($expectedFeatureCollectionJson);
 });
 
 it('creates multi line string from WKT', function (): void {
   $multiLineString = new MultiLineString([
     new LineString([
-      new Point(180, 0),
-      new Point(179, 1),
+      new Point(0, 180),
+      new Point(1, 179),
     ]),
   ]);
 
-  $multiLineStringFromWkt = MultiLineString::fromWkt('MULTILINESTRING((0 180, 1 179))', );
+  $multiLineStringFromWkt = MultiLineString::fromWkt('MULTILINESTRING((180 0, 179 1))', );
 
   expect($multiLineStringFromWkt)->toEqual($multiLineString);
 });
@@ -107,12 +107,12 @@ it('creates multi line string from WKT', function (): void {
 it('creates multi line string with SRID from WKT', function (): void {
   $multiLineString = new MultiLineString([
     new LineString([
-      new Point(180, 0),
-      new Point(179, 1),
+      new Point(0, 180),
+      new Point(1, 179),
     ]),
   ], 4326);
 
-  $multiLineStringFromWkt = MultiLineString::fromWkt('MULTILINESTRING((0 180, 1 179))', 4326);
+  $multiLineStringFromWkt = MultiLineString::fromWkt('MULTILINESTRING((180 0, 179 1))', 4326);
 
   expect($multiLineStringFromWkt)->toEqual($multiLineString);
 });
@@ -120,22 +120,22 @@ it('creates multi line string with SRID from WKT', function (): void {
 it('generates multi line string WKT', function (): void {
   $multiLineString = new MultiLineString([
     new LineString([
-      new Point(180, 0),
-      new Point(179, 1),
+      new Point(0, 180),
+      new Point(1, 179),
     ]),
   ]);
 
   $wkt = $multiLineString->toWkt();
 
-  $expectedWkt = 'MULTILINESTRING((0 180, 1 179))';
+  $expectedWkt = 'MULTILINESTRING((180 0, 179 1))';
   expect($wkt)->toBe($expectedWkt);
 });
 
 it('creates multi line string from WKB', function (): void {
   $multiLineString = new MultiLineString([
     new LineString([
-      new Point(180, 0),
-      new Point(179, 1),
+      new Point(0, 180),
+      new Point(1, 179),
     ]),
   ]);
 
@@ -147,8 +147,8 @@ it('creates multi line string from WKB', function (): void {
 it('creates multi line string with SRID from WKB', function (): void {
   $multiLineString = new MultiLineString([
     new LineString([
-      new Point(180, 0),
-      new Point(179, 1),
+      new Point(0, 180),
+      new Point(1, 179),
     ]),
   ], 4326);
 

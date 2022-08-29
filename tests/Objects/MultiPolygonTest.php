@@ -13,11 +13,11 @@ it('creates a model record with multi polygon', function (): void {
   $multiPolygon = new MultiPolygon([
     new Polygon([
       new LineString([
-        new Point(180, 0),
-        new Point(179, 1),
-        new Point(178, 2),
-        new Point(177, 3),
-        new Point(180, 0),
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
       ]),
     ]),
   ]);
@@ -33,11 +33,11 @@ it('creates a model record with multi polygon with SRID', function (): void {
   $multiPolygon = new MultiPolygon([
     new Polygon([
       new LineString([
-        new Point(180, 0),
-        new Point(179, 1),
-        new Point(178, 2),
-        new Point(177, 3),
-        new Point(180, 0),
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
       ]),
     ]),
   ], 4326);
@@ -52,16 +52,16 @@ it('creates multi polygon from JSON', function (): void {
   $multiPolygon = new MultiPolygon([
     new Polygon([
       new LineString([
-        new Point(180, 0),
-        new Point(179, 1),
-        new Point(178, 2),
-        new Point(177, 3),
-        new Point(180, 0),
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
       ]),
     ]),
   ]);
 
-  $multiPolygonFromJson = MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[0,180],[1,179],[2,178],[3,177],[0,180]]]]}');
+  $multiPolygonFromJson = MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[180,0],[179,1],[178,2],[177,3],[180,0]]]]}');
 
   expect($multiPolygonFromJson)->toEqual($multiPolygon);
 });
@@ -70,16 +70,16 @@ it('creates multi polygon with SRID from JSON', function (): void {
   $multiPolygon = new MultiPolygon([
     new Polygon([
       new LineString([
-        new Point(180, 0),
-        new Point(179, 1),
-        new Point(178, 2),
-        new Point(177, 3),
-        new Point(180, 0),
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
       ]),
     ]),
   ], 4326);
 
-  $multiPolygonFromJson = MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[0,180],[1,179],[2,178],[3,177],[0,180]]]]}', 4326);
+  $multiPolygonFromJson = MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[180,0],[179,1],[178,2],[177,3],[180,0]]]]}', 4326);
 
   expect($multiPolygonFromJson)->toEqual($multiPolygon);
 });
@@ -88,18 +88,18 @@ it('generates multi polygon JSON', function (): void {
   $multiPolygon = new MultiPolygon([
     new Polygon([
       new LineString([
-        new Point(180, 0),
-        new Point(179, 1),
-        new Point(178, 2),
-        new Point(177, 3),
-        new Point(180, 0),
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
       ]),
     ]),
   ]);
 
   $json = $multiPolygon->toJson();
 
-  $expectedJson = '{"type":"MultiPolygon","coordinates":[[[[0,180],[1,179],[2,178],[3,177],[0,180]]]]}';
+  $expectedJson = '{"type":"MultiPolygon","coordinates":[[[[180,0],[179,1],[178,2],[177,3],[180,0]]]]}';
   expect($json)->toBe($expectedJson);
 });
 
@@ -107,18 +107,18 @@ it('generates multi polygon feature collection JSON', function (): void {
   $multiPolygon = new MultiPolygon([
     new Polygon([
       new LineString([
-        new Point(180, 0),
-        new Point(179, 1),
-        new Point(178, 2),
-        new Point(177, 3),
-        new Point(180, 0),
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
       ]),
     ]),
   ]);
 
   $featureCollectionJson = $multiPolygon->toFeatureCollectionJson();
 
-  $expectedFeatureCollectionJson = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiPolygon","coordinates":[[[[0,180],[1,179],[2,178],[3,177],[0,180]]]]}}]}';
+  $expectedFeatureCollectionJson = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"MultiPolygon","coordinates":[[[[180,0],[179,1],[178,2],[177,3],[180,0]]]]}}]}';
   expect($featureCollectionJson)->toBe($expectedFeatureCollectionJson);
 });
 
@@ -126,16 +126,16 @@ it('creates multi polygon from WKT', function (): void {
   $multiPolygon = new MultiPolygon([
     new Polygon([
       new LineString([
-        new Point(180, 0),
-        new Point(179, 1),
-        new Point(178, 2),
-        new Point(177, 3),
-        new Point(180, 0),
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
       ]),
     ]),
   ]);
 
-  $multiPolygonFromWkt = MultiPolygon::fromWkt('MULTIPOLYGON(((0 180, 1 179, 2 178, 3 177, 0 180)))');
+  $multiPolygonFromWkt = MultiPolygon::fromWkt('MULTIPOLYGON(((180 0, 179 1, 178 2, 177 3, 180 0)))');
 
   expect($multiPolygonFromWkt)->toEqual($multiPolygon);
 });
@@ -144,16 +144,16 @@ it('creates multi polygon with SRID from WKT', function (): void {
   $multiPolygon = new MultiPolygon([
     new Polygon([
       new LineString([
-        new Point(180, 0),
-        new Point(179, 1),
-        new Point(178, 2),
-        new Point(177, 3),
-        new Point(180, 0),
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
       ]),
     ]),
   ], 4326);
 
-  $multiPolygonFromWkt = MultiPolygon::fromWkt('MULTIPOLYGON(((0 180, 1 179, 2 178, 3 177, 0 180)))', 4326);
+  $multiPolygonFromWkt = MultiPolygon::fromWkt('MULTIPOLYGON(((180 0, 179 1, 178 2, 177 3, 180 0)))', 4326);
 
   expect($multiPolygonFromWkt)->toEqual($multiPolygon);
 });
@@ -162,18 +162,18 @@ it('generates multi polygon WKT', function (): void {
   $multiPolygon = new MultiPolygon([
     new Polygon([
       new LineString([
-        new Point(180, 0),
-        new Point(179, 1),
-        new Point(178, 2),
-        new Point(177, 3),
-        new Point(180, 0),
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
       ]),
     ]),
   ]);
 
   $wkt = $multiPolygon->toWkt();
 
-  $expectedWkt = 'MULTIPOLYGON(((0 180, 1 179, 2 178, 3 177, 0 180)))';
+  $expectedWkt = 'MULTIPOLYGON(((180 0, 179 1, 178 2, 177 3, 180 0)))';
   expect($wkt)->toBe($expectedWkt);
 });
 
@@ -181,11 +181,11 @@ it('creates multi polygon from WKB', function (): void {
   $multiPolygon = new MultiPolygon([
     new Polygon([
       new LineString([
-        new Point(180, 0),
-        new Point(179, 1),
-        new Point(178, 2),
-        new Point(177, 3),
-        new Point(180, 0),
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
       ]),
     ]),
   ]);
@@ -199,11 +199,11 @@ it('creates multi polygon with SRID from WKB', function (): void {
   $multiPolygon = new MultiPolygon([
     new Polygon([
       new LineString([
-        new Point(180, 0),
-        new Point(179, 1),
-        new Point(178, 2),
-        new Point(177, 3),
-        new Point(180, 0),
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
       ]),
     ]),
   ], 4326);

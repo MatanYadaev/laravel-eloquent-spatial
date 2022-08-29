@@ -16,7 +16,7 @@ it('creates a model record with null geometry', function (): void {
 });
 
 it('updates a model record', function (): void {
-  $point = new Point(180, 0);
+  $point = new Point(0, 180);
   $point2 = new Point(0, 0);
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['point' => $point]);
@@ -28,7 +28,7 @@ it('updates a model record', function (): void {
 });
 
 it('updates a model record with null geometry', function (): void {
-  $point = new Point(180, 0);
+  $point = new Point(0, 180);
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['point' => $point]);
 
@@ -38,7 +38,7 @@ it('updates a model record with null geometry', function (): void {
 });
 
 it('gets original geometry field', function (): void {
-  $point = new Point(180, 0, 4326);
+  $point = new Point(0, 180, 4326);
   $point2 = new Point(0, 0, 4326);
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['point' => $point]);
@@ -51,7 +51,7 @@ it('gets original geometry field', function (): void {
 });
 
 it('serializes a model record to array with geometry', function (): void {
-  $point = new Point(180, 0);
+  $point = new Point(0, 180);
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['point' => $point]);
 
@@ -62,7 +62,7 @@ it('serializes a model record to array with geometry', function (): void {
 });
 
 it('serializes a model record to json with geometry', function (): void {
-  $point = new Point(180, 0);
+  $point = new Point(0, 180);
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['point' => $point]);
 
@@ -78,8 +78,8 @@ it('throws exception when cast serializing incorrect geometry object', function 
   expect(function (): void {
     TestPlace::factory()->make([
       'point' => new LineString([
-        new Point(180, 0),
-        new Point(179, 1),
+        new Point(0, 180),
+        new Point(1, 179),
       ]),
     ]);
   })->toThrow(InvalidArgumentException::class);
