@@ -51,24 +51,20 @@ echo $geometryCollection[1]->latitude; // 0
 
 ## Available spatial scopes
 
-- [API](#api)
-  - [Available geometry classes](#available-geometry-classes)
-  - [Available geometry class methods](#available-geometry-class-methods)
-  - [Available spatial scopes](#available-spatial-scopes)
-    - [withDistance](#withdistance)
-    - [whereDistance](#wheredistance)
-    - [orderByDistance](#orderbydistance)
-    - [withDistanceSphere](#withdistancesphere)
-    - [whereDistanceSphere](#wheredistancesphere)
-    - [orderByDistanceSphere](#orderbydistancesphere)
-    - [whereWithin](#wherewithin)
-    - [whereContains](#wherecontains)
-    - [whereTouches](#wheretouches)
-    - [whereIntersects](#whereintersects)
-    - [whereCrosses](#wherecrosses)
-    - [whereDisjoint](#wheredisjoint)
-    - [whereEquals](#whereequals)
-    - [whereSrid](#wheresrid)
+* [withDistance](#withDistance)
+* [whereDistance](#whereDistance)
+* [orderByDistance](#orderByDistance)
+* [withDistanceSphere](#withDistanceSphere)
+* [whereDistanceSphere](#whereDistanceSphere)
+* [orderByDistanceSphere](#orderByDistanceSphere)
+* [whereWithin](#whereWithin)
+* [whereContains](#whereContains)
+* [whereTouches](#whereTouches)
+* [whereIntersects](#whereIntersects)
+* [whereCrosses](#whereCrosses)
+* [whereDisjoint](#whereDisjoint)
+* [whereEquals](#whereEquals)
+* [whereSrid](#whereSrid)
 
 ###  withDistance
 
