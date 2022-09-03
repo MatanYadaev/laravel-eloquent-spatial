@@ -13,6 +13,7 @@ jobs:
       matrix:
         php: [ 8.1, 8.0 ]
         laravel: [ 9.*, 8.* ]
+        db: [ mysql:8.0, mariadb:10.9 ]
         # dependency-version: [prefer-lowest, prefer-stable]
         dependency-version: [ prefer-stable ]
         include:
@@ -22,8 +23,8 @@ jobs:
             testbench: 7.*
 
     services:
-      mysql:
-        image: mysql:8.0
+      db:
+        image: ${{ matrix.db }}
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: laravel_eloquent_spatial_test
