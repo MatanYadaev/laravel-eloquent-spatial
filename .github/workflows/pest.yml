@@ -4,7 +4,7 @@ on: [ push, pull_request ]
 
 jobs:
   test:
-    name: Pest - PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+    name: Pest - PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - DB ${{ matrix.db }} ${{ matrix.dependency-version }}
 
     runs-on: ubuntu-latest
 
@@ -13,7 +13,7 @@ jobs:
       matrix:
         php: [ 8.1, 8.0 ]
         laravel: [ 9.*, 8.* ]
-        db: [ mysql:8.0, mariadb:10.9 ]
+        db: [ 'mysql:8.0', 'mariadb:10.9' ]
         # dependency-version: [prefer-lowest, prefer-stable]
         dependency-version: [ prefer-stable ]
         include:
