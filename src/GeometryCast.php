@@ -70,7 +70,10 @@ class GeometryCast implements CastsAttributes
     }
 
     $wkt = $value->toWkt();
-
+    $serverVersion = $model->getQuery()->getConnection()->getPDO()->getAttribute(\PDO::ATTR_SERVER_VERSION);
+    if (preg_match('/mariadb/i', $serverVersion)) {
+      return DB::raw("ST_GeomFromText('{$wkt}', {$value->srid})");
+    }
     return DB::raw("ST_GeomFromText('{$wkt}', {$value->srid}, 'axis-order=long-lat')");
   }
 

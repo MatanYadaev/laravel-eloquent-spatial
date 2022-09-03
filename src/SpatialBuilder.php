@@ -264,7 +264,10 @@ class SpatialBuilder extends Builder
   {
     if ($geometryOrColumn instanceof Geometry) {
       $wkt = $geometryOrColumn->toWkt();
-
+      $serverVersion = $this->getQuery()->getConnection()->getPDO()->getAttribute(\PDO::ATTR_SERVER_VERSION);
+      if (preg_match('/mariadb/i', $serverVersion)) {
+        return DB::raw("ST_GeomFromText('{$wkt}', {$value->srid})");
+      }
       return DB::raw("ST_GeomFromText('{$wkt}', {$geometryOrColumn->srid}, 'axis-order=long-lat')");
     }
 
