@@ -87,7 +87,7 @@ it('filters by distance - MariaDB', function (): void {
 
   /** @var TestPlace[] $testPlacesWithinDistance */
   $testPlacesWithinDistance = TestPlace::query()
-    ->whereDistance('point', new Point(1, 1, 4326), '<', 200_000)
+    ->whereDistance('point', new Point(1, 1, 4326), '<', 2)
     ->get();
 
   expect($testPlacesWithinDistance)->toHaveCount(1);
