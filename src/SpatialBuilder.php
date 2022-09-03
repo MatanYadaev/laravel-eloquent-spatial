@@ -268,7 +268,9 @@ class SpatialBuilder extends Builder
       $isMariaDb = $this->getConnection()->isMaria();
 
       if ($isMariaDb) {
+        // @codeCoverageIgnoreStart
         return DB::raw("ST_GeomFromText('{$wkt}', {$geometryOrColumn->srid})");
+        // @codeCoverageIgnoreEnd
       }
 
       return DB::raw("ST_GeomFromText('{$wkt}', {$geometryOrColumn->srid}, 'axis-order=long-lat')");
