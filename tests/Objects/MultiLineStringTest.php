@@ -99,7 +99,7 @@ it('creates multi line string from WKT', function (): void {
     ]),
   ]);
 
-  $multiLineStringFromWkt = MultiLineString::fromWkt('MULTILINESTRING((180 0, 179 1))', );
+  $multiLineStringFromWkt = MultiLineString::fromWkt('MULTILINESTRING((180 0, 179 1))');
 
   expect($multiLineStringFromWkt)->toEqual($multiLineString);
 });

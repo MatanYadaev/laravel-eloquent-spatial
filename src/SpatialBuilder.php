@@ -265,6 +265,12 @@ class SpatialBuilder extends Builder
     if ($geometryOrColumn instanceof Geometry) {
       $wkt = $geometryOrColumn->toWkt();
 
+      $isMariaDb = $this->getConnection()->isMaria();
+
+      if ($isMariaDb) {
+        return DB::raw("ST_GeomFromText('{$wkt}', {$geometryOrColumn->srid})");
+      }
+
       return DB::raw("ST_GeomFromText('{$wkt}', {$geometryOrColumn->srid}, 'axis-order=long-lat')");
     }
 
