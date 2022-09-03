@@ -48,5 +48,5 @@ jobs:
 
       - name: Execute tests
         env:
-          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          DB_PORT: ${{ job.services.db.ports['3306'] }}
         run: vendor/bin/pest
