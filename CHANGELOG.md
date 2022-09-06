@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v2.3.0 - 2022-09-06
+
+Added MariaDB support
+
 ## v2.2.0 - 2022-08-29
 
 Fix `axis-order` when using SRID
