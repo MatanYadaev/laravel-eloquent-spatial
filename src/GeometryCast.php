@@ -71,19 +71,27 @@ class GeometryCast implements CastsAttributes
 
     $wkt = $value->toWkt();
 
+    $isMariaDb = $model->getConnection()->isMaria();
+
+    if ($isMariaDb) {
+      // @codeCoverageIgnoreStart
+      return DB::raw("ST_GeomFromText('{$wkt}', {$value->srid})");
+      // @codeCoverageIgnoreEnd
+    }
+
     return DB::raw("ST_GeomFromText('{$wkt}', {$value->srid}, 'axis-order=long-lat')");
   }
 
   private function extractWktFromExpression(Expression $expression): string
   {
-    preg_match('/ST_GeomFromText\(\'(.+)\', .+, .+\)/', (string) $expression, $match);
+    preg_match('/ST_GeomFromText\(\'(.+)\', .+(, .+)?\)/', (string) $expression, $match);
 
     return $match[1];
   }
 
   private function extractSridFromExpression(Expression $expression): int
   {
-    preg_match('/ST_GeomFromText\(\'.+\', (.+), .+\)/', (string) $expression, $match);
+    preg_match('/ST_GeomFromText\(\'.+\', (.+)(, .+)?\)/', (string) $expression, $match);
 
     return (int) $match[1];
   }

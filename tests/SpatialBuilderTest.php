@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
@@ -28,7 +29,18 @@ it('calculates distance between column and geometry', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(156897.79947260793);
-});
+})->skip(fn () => DB::isMaria());
+
+it('calculates distance between column and geometry - MariaDB', function (): void {
+  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->withDistance('point', new Point(1, 1, 4326))
+    ->firstOrFail();
+
+  expect($testPlaceWithDistance->distance)->toBe(1.4142135623730951);
+})->skip(fn () => ! DB::isMaria());
 
 it('calculates distance with alias', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
@@ -39,7 +51,18 @@ it('calculates distance with alias', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance_in_meters)->toBe(156897.79947260793);
-});
+})->skip(fn () => DB::isMaria());
+
+it('calculates distance with alias - MariaDB', function (): void {
+  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->withDistance('point', new Point(1, 1, 4326), 'distance_in_meters')
+    ->firstOrFail();
+
+  expect($testPlaceWithDistance->distance_in_meters)->toBe(1.4142135623730951);
+})->skip(fn () => ! DB::isMaria());
 
 it('filters by distance', function (): void {
   $pointWithinDistance = new Point(0, 0, 4326);
@@ -54,7 +77,22 @@ it('filters by distance', function (): void {
 
   expect($testPlacesWithinDistance)->toHaveCount(1);
   expect($testPlacesWithinDistance[0]->point)->toEqual($pointWithinDistance);
-});
+})->skip(fn () => DB::isMaria());
+
+it('filters by distance - MariaDB', function (): void {
+  $pointWithinDistance = new Point(0, 0, 4326);
+  $pointNotWithinDistance = new Point(50, 50, 4326);
+  TestPlace::factory()->create(['point' => $pointWithinDistance]);
+  TestPlace::factory()->create(['point' => $pointNotWithinDistance]);
+
+  /** @var TestPlace[] $testPlacesWithinDistance */
+  $testPlacesWithinDistance = TestPlace::query()
+    ->whereDistance('point', new Point(1, 1, 4326), '<', 2)
+    ->get();
+
+  expect($testPlacesWithinDistance)->toHaveCount(1);
+  expect($testPlacesWithinDistance[0]->point)->toEqual($pointWithinDistance);
+})->skip(fn () => ! DB::isMaria());
 
 it('orders by distance ASC', function (): void {
   $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, 4326)]);
@@ -102,7 +140,18 @@ it('calculates distance sphere column and geometry', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(157249.59776850493);
-});
+})->skip(fn () => DB::isMaria());
+
+it('calculates distance sphere column and geometry - MariaDB', function (): void {
+  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->withDistanceSphere('point', new Point(1, 1, 4326))
+    ->firstOrFail();
+
+  expect($testPlaceWithDistance->distance)->toBe(157249.0357231545);
+})->skip(fn () => ! DB::isMaria());
 
 it('calculates distance sphere with alias', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
@@ -113,7 +162,18 @@ it('calculates distance sphere with alias', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance_in_meters)->toBe(157249.59776850493);
-});
+})->skip(fn () => DB::isMaria());
+
+it('calculates distance sphere with alias - MariaDB', function (): void {
+  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->withDistanceSphere('point', new Point(1, 1, 4326), 'distance_in_meters')
+    ->firstOrFail();
+
+  expect($testPlaceWithDistance->distance_in_meters)->toBe(157249.0357231545);
+})->skip(fn () => ! DB::isMaria());
 
 it('filters distance sphere', function (): void {
   $pointWithinDistance = new Point(0, 0, 4326);
