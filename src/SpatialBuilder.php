@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
+use MatanYadaev\EloquentSpatial\Traits\AxisOrder;
 
 /**
  * @template TModel of \Illuminate\Database\Eloquent\Model
@@ -18,6 +19,8 @@ use MatanYadaev\EloquentSpatial\Objects\Geometry;
  */
 class SpatialBuilder extends Builder
 {
+  use AxisOrder;
+
   public function withDistance(
     string $column,
     Geometry|string $geometryOrColumn,
@@ -265,9 +268,7 @@ class SpatialBuilder extends Builder
     if ($geometryOrColumn instanceof Geometry) {
       $wkt = $geometryOrColumn->toWkt();
 
-      $isMariaDb = $this->getConnection()->isMaria();
-
-      if ($isMariaDb) {
+      if ($this->useWithoutAxisOrder($this)) {
         // @codeCoverageIgnoreStart
         return DB::raw("ST_GeomFromText('{$wkt}', {$geometryOrColumn->srid})");
         // @codeCoverageIgnoreEnd

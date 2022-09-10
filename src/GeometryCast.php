@@ -10,9 +10,12 @@ use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
+use MatanYadaev\EloquentSpatial\Traits\AxisOrder;
 
 class GeometryCast implements CastsAttributes
 {
+  use AxisOrder;
+
   /** @var class-string<Geometry> */
   private string $className;
 
@@ -71,9 +74,7 @@ class GeometryCast implements CastsAttributes
 
     $wkt = $value->toWkt();
 
-    $isMariaDb = $model->getConnection()->isMaria();
-
-    if ($isMariaDb) {
+    if ($this->useWithoutAxisOrder($model)) {
       // @codeCoverageIgnoreStart
       return DB::raw("ST_GeomFromText('{$wkt}', {$value->srid})");
       // @codeCoverageIgnoreEnd
@@ -95,4 +96,6 @@ class GeometryCast implements CastsAttributes
 
     return (int) $match[1];
   }
+
+
 }
