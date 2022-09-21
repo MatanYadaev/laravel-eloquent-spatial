@@ -232,6 +232,23 @@ it('filters by within', function (): void {
   expect($testPlacesWithinPolygon[0]->point)->toEqual($pointWithinPolygon);
 });
 
+it('filters by not within', function (): void {
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
+  $pointWithinPolygon = new Point(0, 0, 4326);
+  $pointOutsidePolygon = new Point(50, 50, 4326);
+  $anotherPointOutsidePolygon = new Point(55, 55, 4326);
+  TestPlace::factory()->create(['point' => $pointWithinPolygon]);
+  TestPlace::factory()->create(['point' => $pointOutsidePolygon]);
+  TestPlace::factory()->create(['point' => $anotherPointOutsidePolygon]);
+
+  /** @var TestPlace[] $testPlacesNotWithinPolygon */
+  $testPlacesNotWithinPolygon = TestPlace::query()
+    ->whereNotWithin('point', $polygon)
+    ->get();
+
+  expect($testPlacesNotWithinPolygon)->toHaveCount(2);
+});
+
 it('filters by contains', function (): void {
   $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
   $pointWithinPolygon = new Point(0, 0, 4326);
@@ -247,6 +264,23 @@ it('filters by contains', function (): void {
 
   expect($testPlace)->not->toBeNull();
   expect($testPlace2)->toBeNull();
+});
+
+it('filters by not contains', function (): void {
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
+  $pointWithinPolygon = new Point(0, 0, 4326);
+  $pointOutsidePolygon = new Point(50, 50, 4326);
+  TestPlace::factory()->create(['polygon' => $polygon]);
+
+  $testPlace = TestPlace::query()
+    ->whereNotContains('polygon', $pointWithinPolygon)
+    ->first();
+  $testPlace2 = TestPlace::query()
+    ->whereNotContains('polygon', $pointOutsidePolygon)
+    ->first();
+
+  expect($testPlace)->toBeNull();
+  expect($testPlace2)->not->toBeNull();
 });
 
 it('filters by touches', function (): void {

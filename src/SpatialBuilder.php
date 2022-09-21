@@ -155,10 +155,10 @@ class SpatialBuilder extends Builder
   {
     $this->whereRaw(
       sprintf(
-        'ST_WITHIN(%s, %s)',
+        'ST_WITHIN(%s, %s) = 0',
         "`{$column}`",
         $this->toExpression($geometryOrColumn),
-      ) . ' = 0 '
+      )
     );
 
     return $this;
@@ -169,6 +169,19 @@ class SpatialBuilder extends Builder
     $this->whereRaw(
       sprintf(
         'ST_CONTAINS(%s, %s)',
+        "`{$column}`",
+        $this->toExpression($geometryOrColumn),
+      )
+    );
+
+    return $this;
+  }
+
+  public function whereNotContains(string $column, Geometry|string $geometryOrColumn): self
+  {
+    $this->whereRaw(
+      sprintf(
+        'ST_CONTAINS(%s, %s) = 0',
         "`{$column}`",
         $this->toExpression($geometryOrColumn),
       )
