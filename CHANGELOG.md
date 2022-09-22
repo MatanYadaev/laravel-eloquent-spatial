@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v2.4.0 - 2022-09-22
+
+- Add `whereNotWithin` Builder method
+- Add `whereNotContains` Builder method
+
 ## v2.3.0 - 2022-09-06
 
 Added MariaDB support
