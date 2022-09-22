@@ -245,6 +245,7 @@ it('filters by not within', function (): void {
     ->get();
 
   expect($testPlacesNotWithinPolygon)->toHaveCount(1);
+  expect($testPlacesNotWithinPolygon[0]->point)->toEqual($pointOutsidePolygon);
 });
 
 it('filters by contains', function (): void {
