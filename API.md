@@ -58,7 +58,9 @@ echo $geometryCollection[1]->latitude; // 0
 * [whereDistanceSphere](#whereDistanceSphere)
 * [orderByDistanceSphere](#orderByDistanceSphere)
 * [whereWithin](#whereWithin)
+* [whereNotWithin](#whereNotWithin)
 * [whereContains](#whereContains)
+* [whereNotContains](#whereNotContains)
 * [whereTouches](#whereTouches)
 * [whereIntersects](#whereIntersects)
 * [whereCrosses](#whereCrosses)
@@ -258,6 +260,26 @@ Place::query()
 ```
 </details>
 
+###  whereNotWithin
+
+Filters records by the [ST_Within](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-within) function.
+
+| parameter name      | type                 
+| ------------------  | -------------------- 
+| `$column`           | `string`             
+| `$geometryOrColumn` | `Geometry \| string` 
+
+<details><summary>Example</summary>
+
+```php
+Place::create(['location' => new Point(0, 0, 4326)]);
+
+Place::query()
+    ->whereNotWithin('location', Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}'))
+    ->exists(); // false
+```
+</details>
+
 ###  whereContains
 
 Filters records by the [ST_Contains](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-contains) function.
@@ -275,6 +297,26 @@ Place::create(['area' => Polygon::fromJson('{"type":"Polygon","coordinates":[[[-
 Place::query()
     ->whereContains('area', new Point(0, 0, 4326))
     ->exists(); // true
+```
+</details>
+
+###  whereNotContains
+
+Filters records by the [ST_Contains](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-contains) function.
+
+| parameter name      | type                 
+| ------------------  | -------------------- 
+| `$column`           | `string`             
+| `$geometryOrColumn` | `Geometry \| string` 
+
+<details><summary>Example</summary>
+
+```php
+Place::create(['area' => Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}'),]);
+
+Place::query()
+    ->whereNotContains('area', new Point(0, 0, 4326))
+    ->exists(); // false
 ```
 </details>
 
