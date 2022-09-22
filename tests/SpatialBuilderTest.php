@@ -236,17 +236,15 @@ it('filters by not within', function (): void {
   $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
   $pointWithinPolygon = new Point(0, 0, 4326);
   $pointOutsidePolygon = new Point(50, 50, 4326);
-  $anotherPointOutsidePolygon = new Point(55, 55, 4326);
   TestPlace::factory()->create(['point' => $pointWithinPolygon]);
   TestPlace::factory()->create(['point' => $pointOutsidePolygon]);
-  TestPlace::factory()->create(['point' => $anotherPointOutsidePolygon]);
 
   /** @var TestPlace[] $testPlacesNotWithinPolygon */
   $testPlacesNotWithinPolygon = TestPlace::query()
     ->whereNotWithin('point', $polygon)
     ->get();
 
-  expect($testPlacesNotWithinPolygon)->toHaveCount(2);
+  expect($testPlacesNotWithinPolygon)->toHaveCount(1);
 });
 
 it('filters by contains', function (): void {
