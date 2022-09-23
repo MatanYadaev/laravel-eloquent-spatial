@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
+use MatanYadaev\EloquentSpatial\AxisOrder;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
@@ -29,9 +30,9 @@ it('calculates distance between column and geometry', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(156897.79947260793);
-})->skip(fn () => DB::isMaria());
+})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
-it('calculates distance between column and geometry - MariaDB', function (): void {
+it('calculates distance between column and geometry - without axis-order', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
@@ -40,7 +41,7 @@ it('calculates distance between column and geometry - MariaDB', function (): voi
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(1.4142135623730951);
-})->skip(fn () => ! DB::isMaria());
+})->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
 it('calculates distance with alias', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
@@ -51,9 +52,9 @@ it('calculates distance with alias', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance_in_meters)->toBe(156897.79947260793);
-})->skip(fn () => DB::isMaria());
+})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
-it('calculates distance with alias - MariaDB', function (): void {
+it('calculates distance with alias - without axis-order', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
@@ -62,7 +63,7 @@ it('calculates distance with alias - MariaDB', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance_in_meters)->toBe(1.4142135623730951);
-})->skip(fn () => ! DB::isMaria());
+})->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
 it('filters by distance', function (): void {
   $pointWithinDistance = new Point(0, 0, 4326);
@@ -77,9 +78,9 @@ it('filters by distance', function (): void {
 
   expect($testPlacesWithinDistance)->toHaveCount(1);
   expect($testPlacesWithinDistance[0]->point)->toEqual($pointWithinDistance);
-})->skip(fn () => DB::isMaria());
+})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
-it('filters by distance - MariaDB', function (): void {
+it('filters by distance - without axis-order', function (): void {
   $pointWithinDistance = new Point(0, 0, 4326);
   $pointNotWithinDistance = new Point(50, 50, 4326);
   TestPlace::factory()->create(['point' => $pointWithinDistance]);
@@ -92,7 +93,7 @@ it('filters by distance - MariaDB', function (): void {
 
   expect($testPlacesWithinDistance)->toHaveCount(1);
   expect($testPlacesWithinDistance[0]->point)->toEqual($pointWithinDistance);
-})->skip(fn () => ! DB::isMaria());
+})->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
 it('orders by distance ASC', function (): void {
   $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, 4326)]);
@@ -140,9 +141,9 @@ it('calculates distance sphere column and geometry', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(157249.59776850493);
-})->skip(fn () => DB::isMaria());
+})->skip(fn () =>! (new AxisOrder)->supported(DB::connection()));
 
-it('calculates distance sphere column and geometry - MariaDB', function (): void {
+it('calculates distance sphere column and geometry - without axis-order', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
@@ -151,7 +152,7 @@ it('calculates distance sphere column and geometry - MariaDB', function (): void
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(157249.0357231545);
-})->skip(fn () => ! DB::isMaria());
+})->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
 it('calculates distance sphere with alias', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
@@ -162,9 +163,9 @@ it('calculates distance sphere with alias', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance_in_meters)->toBe(157249.59776850493);
-})->skip(fn () => DB::isMaria());
+})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
-it('calculates distance sphere with alias - MariaDB', function (): void {
+it('calculates distance sphere with alias - without axis-order', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
@@ -173,7 +174,7 @@ it('calculates distance sphere with alias - MariaDB', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance_in_meters)->toBe(157249.0357231545);
-})->skip(fn () => ! DB::isMaria());
+})->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
 it('filters distance sphere', function (): void {
   $pointWithinDistance = new Point(0, 0, 4326);

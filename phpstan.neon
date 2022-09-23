@@ -12,7 +12,6 @@ parameters:
     		-
     			message: '#^Access to an undefined property Pest\\Expectation\|Pest\\Support\\Extendable\:\:\$.+\.$#'
     			path: tests/*.php
-    		- '#^Call to an undefined( static)? method .+\:\:isMaria\(\)\.$#'
     excludePaths:
         - ./src/Factory.php
     checkMissingIterableValueType: true
