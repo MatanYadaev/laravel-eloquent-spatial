@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v2.5.0 - 2022-09-23
+
+Support MySQL 5.7
+
 ## v2.4.0 - 2022-09-22
 
 - Add `whereNotWithin` Builder method
