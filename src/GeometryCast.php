@@ -6,7 +6,6 @@ namespace MatanYadaev\EloquentSpatial;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\MySqlConnection;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
@@ -72,7 +71,6 @@ class GeometryCast implements CastsAttributes
 
     $wkt = $value->toWkt();
 
-    /** @var MySqlConnection $connection */
     $connection = $model->getConnection();
 
     if (! (new AxisOrder)->supported($connection)) {

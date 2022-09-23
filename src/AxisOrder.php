@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial;
 
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\MySqlConnection;
 use PDO;
 
@@ -11,8 +12,9 @@ class AxisOrder
 {
   public function __construct() {}
 
-  public function supported(MySqlConnection $connection): bool
+  public function supported(ConnectionInterface $connection): bool
   {
+    /** @var MySqlConnection $connection */
     if ($this->isMariaDb($connection)) {
       // @codeCoverageIgnoreStart
       return false;
