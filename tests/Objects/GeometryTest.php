@@ -26,6 +26,10 @@ it('throws exception when generating geometry with invalid latitude - without ax
   expect(function (): void {
     $point = (new Point(91, 0, 4326));
     TestPlace::factory()->create(['point' => $point]);
+
+    TestPlace::query()
+      ->withDistanceSphere('point', new Point(1, 1, 4326))
+      ->firstOrFail();
   })->toThrow(QueryException::class);
 })->skip(fn () => (new AxisOrder)->supported(DB::connection()));
 
@@ -40,6 +44,10 @@ it('throws exception when generating geometry with invalid longitude - without a
   expect(function (): void {
     $point = (new Point(0, 181, 4326));
     TestPlace::factory()->create(['point' => $point]);
+
+    TestPlace::query()
+      ->withDistanceSphere('point', new Point(1, 1, 4326))
+      ->firstOrFail();
   })->toThrow(QueryException::class);
 })->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
