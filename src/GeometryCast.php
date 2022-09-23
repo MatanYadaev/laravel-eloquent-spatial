@@ -71,9 +71,9 @@ class GeometryCast implements CastsAttributes
 
     $wkt = $value->toWkt();
 
-    $isMariaDb = $model->getConnection()->isMaria();
+    $connection = $model->getConnection();
 
-    if ($isMariaDb) {
+    if (! (new AxisOrder)->supported($connection)) {
       // @codeCoverageIgnoreStart
       return DB::raw("ST_GeomFromText('{$wkt}', {$value->srid})");
       // @codeCoverageIgnoreEnd

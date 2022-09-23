@@ -12,6 +12,7 @@
   "require": {
     "php": "^8.0",
     "ext-json": "*",
+    "ext-pdo": "*",
     "laravel/framework": "^8.0|^9.0",
     "phayes/geophp": "^1.2"
   },

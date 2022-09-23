@@ -2,6 +2,7 @@
 
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use MatanYadaev\EloquentSpatial\AxisOrder;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
@@ -19,14 +20,36 @@ it('throws exception when generating geometry with invalid latitude', function (
     $point = (new Point(91, 0, 4326));
     TestPlace::factory()->create(['point' => $point]);
   })->toThrow(QueryException::class);
-})->skip(fn () => DB::isMaria());
+})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
+
+it('throws exception when generating geometry with invalid latitude - without axis-order', function (): void {
+  expect(function (): void {
+    $point = (new Point(91, 0, 4326));
+    TestPlace::factory()->create(['point' => $point]);
+
+    TestPlace::query()
+      ->withDistanceSphere('point', new Point(1, 1, 4326))
+      ->firstOrFail();
+  })->toThrow(QueryException::class);
+})->skip(fn () => (new AxisOrder)->supported(DB::connection()));
 
 it('throws exception when generating geometry with invalid longitude', function (): void {
   expect(function (): void {
     $point = (new Point(0, 181, 4326));
     TestPlace::factory()->create(['point' => $point]);
   })->toThrow(QueryException::class);
-})->skip(fn () => DB::isMaria());
+})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
+
+it('throws exception when generating geometry with invalid longitude - without axis-order', function (): void {
+  expect(function (): void {
+    $point = (new Point(0, 181, 4326));
+    TestPlace::factory()->create(['point' => $point]);
+
+    TestPlace::query()
+      ->withDistanceSphere('point', new Point(1, 1, 4326))
+      ->firstOrFail();
+  })->toThrow(QueryException::class);
+})->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
 it('throws exception when generating geometry from other geometry WKT', function (): void {
   expect(function (): void {
