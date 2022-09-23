@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MatanYadaev\EloquentSpatial;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\MySqlConnection;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
@@ -291,9 +292,10 @@ class SpatialBuilder extends Builder
     if ($geometryOrColumn instanceof Geometry) {
       $wkt = $geometryOrColumn->toWkt();
 
-      $isMariaDb = $this->getConnection()->isMaria();
+      /** @var MySqlConnection $connection */
+      $connection = $this->getConnection();
 
-      if ($isMariaDb) {
+      if (! (new AxisOrder)->supported($connection)) {
         // @codeCoverageIgnoreStart
         return DB::raw("ST_GeomFromText('{$wkt}', {$geometryOrColumn->srid})");
         // @codeCoverageIgnoreEnd

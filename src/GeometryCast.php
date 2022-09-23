@@ -6,6 +6,7 @@ namespace MatanYadaev\EloquentSpatial;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\MySqlConnection;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
@@ -71,9 +72,10 @@ class GeometryCast implements CastsAttributes
 
     $wkt = $value->toWkt();
 
-    $isMariaDb = $model->getConnection()->isMaria();
+    /** @var MySqlConnection $connection */
+    $connection = $model->getConnection();
 
-    if ($isMariaDb) {
+    if (! (new AxisOrder)->supported($connection)) {
       // @codeCoverageIgnoreStart
       return DB::raw("ST_GeomFromText('{$wkt}', {$value->srid})");
       // @codeCoverageIgnoreEnd
