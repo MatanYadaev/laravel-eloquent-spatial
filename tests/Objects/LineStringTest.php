@@ -151,3 +151,12 @@ it('throws exception when creating line string from incorrect geometry', functio
     ]);
   })->toThrow(InvalidArgumentException::class);
 });
+
+it('casts a LineString to a string', function (): void {
+  $lineString = new LineString([
+    new Point(0, 180),
+    new Point(1, 179),
+  ]);
+
+  expect($lineString->__toString())->toEqual('LINESTRING(180 0, 179 1)');
+});

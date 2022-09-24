@@ -96,3 +96,9 @@ it('creates point with SRID from WKB', function (): void {
 
   expect($pointFromWkb)->toEqual($point);
 });
+
+it('casts a Point to a string', function (): void {
+  $point = new Point(0, 180, 4326);
+
+  expect($point->__toString())->toEqual('POINT(180 0)');
+});

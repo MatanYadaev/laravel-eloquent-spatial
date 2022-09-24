@@ -348,3 +348,20 @@ it('throws exception when setting invalid item to geometry collection', function
     $polygon[1] = new Point(0, 180);
   })->toThrow(InvalidArgumentException::class);
 });
+
+it('casts a GeometryCollection to a string', function (): void {
+  $geometryCollection = new GeometryCollection([
+    new Polygon([
+      new LineString([
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
+      ]),
+    ]),
+    new Point(0, 180),
+  ]);
+
+  expect($geometryCollection->__toString())->toEqual('GEOMETRYCOLLECTION(POLYGON((180 0, 179 1, 178 2, 177 3, 180 0)), POINT(180 0))');
+});

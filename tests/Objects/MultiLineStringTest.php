@@ -171,3 +171,14 @@ it('throws exception when creating multi line string from incorrect geometry', f
     ]);
   })->toThrow(InvalidArgumentException::class);
 });
+
+it('casts a MultiLineString to a string', function (): void {
+  $multiLineString = new MultiLineString([
+    new LineString([
+      new Point(0, 180),
+      new Point(1, 179),
+    ]),
+  ]);
+
+  expect($multiLineString->__toString())->toEqual('MULTILINESTRING((180 0, 179 1))');
+});
