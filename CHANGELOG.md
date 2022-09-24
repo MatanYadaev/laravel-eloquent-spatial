@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v2.5.1 - 2022-09-24
+
+Geometry objects are now stringable.
+
 ## v2.5.0 - 2022-09-23
 
 Support MySQL 5.7
