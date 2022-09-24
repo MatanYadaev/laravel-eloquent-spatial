@@ -4,6 +4,9 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\Tests\Queues\Invoice;
+use MatanYadaev\EloquentSpatial\Tests\Queues\SomeJob;
+use MatanYadaev\EloquentSpatial\Tests\Queues\SomeOtherJob;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 uses(DatabaseMigrations::class);
@@ -103,4 +106,21 @@ it('throws exception when cast deserializing incorrect geometry object', functio
   expect(function () use ($testPlace): void {
     $testPlace->getAttribute('point_with_line_string_cast');
   })->toThrow(InvalidArgumentException::class);
+});
+
+it('serializes a model with geometry in a queued job', function (): void {
+  $testPlace = TestPlace::factory()->create(['point' => new Point(0, 180)])->fresh();
+
+  SomeJob::dispatch($testPlace);
+
+  expect(true)->toBe(true);
+});
+
+it('serializes an object with a model property in a queued job using the SerializesModels trait', function (): void {
+  $testPlace = TestPlace::factory()->create(['point' => new Point(0, 180)])->fresh();
+  $invoice = new Invoice($testPlace);
+
+  SomeOtherJob::dispatch($invoice);
+
+  expect(true)->toBe(true);
 });
