@@ -23,6 +23,14 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   abstract public function toWkt(): string;
 
   abstract public function getWktData(): string;
+   
+ /**
+  * @return string
+  */ 
+  public function __toString()
+  {
+    return $this->getWktData();
+  }
 
   /**
    * @param  int  $options
