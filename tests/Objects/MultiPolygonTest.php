@@ -227,3 +227,19 @@ it('throws exception when creating multi polygon from incorrect geometry', funct
     ]);
   })->toThrow(InvalidArgumentException::class);
 });
+
+it('casts a MultiPolygon to a string', function (): void {
+  $multiPolygon = new MultiPolygon([
+    new Polygon([
+      new LineString([
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
+      ]),
+    ]),
+  ], 4326);
+
+  expect($multiPolygon->__toString())->toEqual('MULTIPOLYGON(((180 0, 179 1, 178 2, 177 3, 180 0)))');
+});

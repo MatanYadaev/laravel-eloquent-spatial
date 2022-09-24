@@ -138,3 +138,11 @@ it('throws exception when creating multi point from incorrect geometry', functio
     ]);
   })->toThrow(InvalidArgumentException::class);
 });
+
+it('casts a MultiPoint to a string', function (): void {
+  $multiPoint = new MultiPoint([
+    new Point(0, 180),
+  ]);
+
+  expect($multiPoint->__toString())->toEqual('MULTIPOINT(180 0)');
+});

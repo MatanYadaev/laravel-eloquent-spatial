@@ -204,3 +204,17 @@ it('throws exception when creating polygon from incorrect geometry', function ()
     ]);
   })->toThrow(InvalidArgumentException::class);
 });
+
+it('casts a Polygon to a string', function (): void {
+  $polygon = $polygon = new Polygon([
+    new LineString([
+      new Point(0, 180),
+      new Point(1, 179),
+      new Point(2, 178),
+      new Point(3, 177),
+      new Point(0, 180),
+    ]),
+  ]);
+
+  expect($polygon->__toString())->toEqual('POLYGON((180 0, 179 1, 178 2, 177 3, 180 0))');
+});

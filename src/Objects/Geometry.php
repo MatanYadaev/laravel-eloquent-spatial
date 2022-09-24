@@ -14,15 +14,24 @@ use JsonException;
 use JsonSerializable;
 use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\GeometryCast;
+use Stringable;
 use WKB as geoPHPWkb;
 
-abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable
+abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable, Stringable
 {
   public int $srid = 0;
 
   abstract public function toWkt(): string;
 
   abstract public function getWktData(): string;
+
+  /**
+   * @return string
+   */
+  public function __toString(): string
+  {
+    return $this->toWkt();
+  }
 
   /**
    * @param  int  $options
