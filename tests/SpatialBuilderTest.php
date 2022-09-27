@@ -392,3 +392,14 @@ it('filters by SRID', function (): void {
   expect($testPlaces)->toHaveCount(1);
   expect($testPlaces[0]->point)->toEqual($point1);
 });
+
+it('uses spatial function on column that contains its table name', function (): void {
+  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->withDistance('test_places.point', new Point(0, 0, 4326))
+    ->firstOrFail();
+
+  expect($testPlaceWithDistance->distance)->toBe(0.0);
+});
