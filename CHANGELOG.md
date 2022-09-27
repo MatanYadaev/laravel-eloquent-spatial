@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v2.5.2 - 2022-09-27
+
+Query Builder - Support column to have table name #61
+
 ## v2.5.1 - 2022-09-24
 
 Geometry objects are now stringable.
