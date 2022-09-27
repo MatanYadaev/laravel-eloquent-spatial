@@ -398,7 +398,7 @@ it('uses spatial function on column that contains its table name', function (): 
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->withDistance('test_places.point', new Point(0, 0, 4326))
+    ->withDistance('test_places.point', 'test_places.point')
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(0.0);

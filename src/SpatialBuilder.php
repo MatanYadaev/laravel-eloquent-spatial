@@ -302,6 +302,6 @@ class SpatialBuilder extends Builder
       return DB::raw("ST_GeomFromText('{$wkt}', {$geometryOrColumn->srid}, 'axis-order=long-lat')");
     }
 
-    return DB::raw("`{$geometryOrColumn}`");
+    return DB::raw($this->getQuery()->getGrammar()->wrap($geometryOrColumn));
   }
 }
