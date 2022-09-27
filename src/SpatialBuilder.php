@@ -49,12 +49,12 @@ class SpatialBuilder extends Builder
   {
     $this->whereRaw(
       sprintf(
-        'ST_DISTANCE(%s, %s) %s %s',
+        'ST_DISTANCE(%s, %s) %s ?',
         $this->getQuery()->getGrammar()->wrap($column),
         $this->toExpression($geometryOrColumn),
         $operator,
-        $value,
-      )
+      ),
+      [$value],
     );
 
     return $this;
@@ -109,12 +109,12 @@ class SpatialBuilder extends Builder
   {
     $this->whereRaw(
       sprintf(
-        'ST_DISTANCE_SPHERE(%s, %s) %s %s',
+        'ST_DISTANCE_SPHERE(%s, %s) %s ?',
         $this->getQuery()->getGrammar()->wrap($column),
         $this->toExpression($geometryOrColumn),
         $operator,
-        $value
-      )
+      ),
+      [$value],
     );
 
     return $this;
@@ -276,11 +276,11 @@ class SpatialBuilder extends Builder
   {
     $this->whereRaw(
       sprintf(
-        'ST_SRID(%s) %s %s',
+        'ST_SRID(%s) %s ?',
         $this->getQuery()->getGrammar()->wrap($column),
         $operator,
-        $value,
-      )
+      ),
+      [$value],
     );
 
     return $this;
