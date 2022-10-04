@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use MatanYadaev\EloquentSpatial\Tests\LaravelEloquentSpatial;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 uses(DatabaseMigrations::class);
@@ -159,4 +160,21 @@ it('casts a LineString to a string', function (): void {
   ]);
 
   expect($lineString->__toString())->toEqual('LINESTRING(180 0, 179 1)');
+});
+
+it('uses an extended LineString class', function (): void {
+  class ExtendedLineString extends LineString {}
+
+  LaravelEloquentSpatial::$lineStringClass = ExtendedLineString::class;
+
+  $lineString = new ExtendedLineString([
+    new Point(0, 180),
+    new Point(1, 179),
+  ], 4326);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['line_string' => $lineString])->fresh();
+
+  expect($testPlace->line_string)->toBeInstanceOf(ExtendedLineString::class);
+  expect($testPlace->line_string)->toEqual($lineString);
 });

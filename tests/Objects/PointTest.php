@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\Tests\LaravelEloquentSpatial;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 uses(DatabaseMigrations::class);
@@ -101,4 +102,18 @@ it('casts a Point to a string', function (): void {
   $point = new Point(0, 180, 4326);
 
   expect($point->__toString())->toEqual('POINT(180 0)');
+});
+
+it('uses an extended Point class', function (): void {
+  class ExtendedPoint extends Point {}
+
+  LaravelEloquentSpatial::$pointClass = ExtendedPoint::class;
+
+  $point = new ExtendedPoint(0, 180, 4326);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['point' => $point])->fresh();
+
+  expect($testPlace->point)->toBeInstanceOf(ExtendedPoint::class);
+  expect($testPlace->point)->toEqual($point);
 });

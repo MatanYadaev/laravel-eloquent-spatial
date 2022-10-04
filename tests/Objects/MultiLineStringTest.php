@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\Tests\LaravelEloquentSpatial;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 uses(DatabaseMigrations::class);
@@ -181,4 +182,23 @@ it('casts a MultiLineString to a string', function (): void {
   ]);
 
   expect($multiLineString->__toString())->toEqual('MULTILINESTRING((180 0, 179 1))');
+});
+
+it('uses an extended MultiLineString class', function (): void {
+  class ExtendedMultiLineString extends MultiLineString {}
+
+  LaravelEloquentSpatial::$multiLineStringClass = ExtendedMultiLineString::class;
+
+  $multiLineString = new ExtendedMultiLineString([
+    new LineString([
+      new Point(0, 180),
+      new Point(1, 179),
+    ]),
+  ], 4326);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['multi_line_string' => $multiLineString])->fresh();
+
+  expect($testPlace->multi_line_string)->toBeInstanceOf(ExtendedMultiLineString::class);
+  expect($testPlace->multi_line_string)->toEqual($multiLineString);
 });

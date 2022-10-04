@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use MatanYadaev\EloquentSpatial\Tests\LaravelEloquentSpatial;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 uses(DatabaseMigrations::class);
@@ -145,4 +146,20 @@ it('casts a MultiPoint to a string', function (): void {
   ]);
 
   expect($multiPoint->__toString())->toEqual('MULTIPOINT(180 0)');
+});
+
+it('uses an extended MultiPoint class', function (): void {
+  class ExtendedMultiPoint extends MultiPoint {}
+
+  LaravelEloquentSpatial::$multiPointClass = ExtendedMultiPoint::class;
+
+  $multiPoint = new ExtendedMultiPoint([
+    new Point(0, 180),
+  ], 4326);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['multi_point' => $multiPoint])->fresh();
+
+  expect($testPlace->multi_point)->toBeInstanceOf(ExtendedMultiPoint::class);
+  expect($testPlace->multi_point)->toEqual($multiPoint);
 });
