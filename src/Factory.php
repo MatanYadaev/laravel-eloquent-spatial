@@ -17,6 +17,7 @@ use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
 use MatanYadaev\EloquentSpatial\Objects\MultiPolygon;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use MatanYadaev\EloquentSpatial\Tests\LaravelEloquentSpatial;
 use MultiLineString as geoPHPMultiLineString;
 use MultiPoint as geoPHPMultiPoint;
 use MultiPolygon as geoPHPMultiPolygon;
@@ -48,7 +49,7 @@ class Factory
         throw new InvalidArgumentException('Invalid spatial value');
       }
 
-      return new Point($geometry->coords[1], $geometry->coords[0], $srid);
+      return new LaravelEloquentSpatial::$pointClass($geometry->coords[1], $geometry->coords[0], $srid);
     }
 
     /** @var geoPHPGeometryCollection $geometry */
@@ -58,25 +59,25 @@ class Factory
       });
 
     if ($geometry::class === geoPHPMultiPoint::class) {
-      return new MultiPoint($components, $srid);
+      return new LaravelEloquentSpatial::$multiPointClass($components, $srid);
     }
 
     if ($geometry::class === geoPHPLineString::class) {
-      return new LineString($components, $srid);
+      return new LaravelEloquentSpatial::$lineStringClass($components, $srid);
     }
 
     if ($geometry::class === geoPHPPolygon::class) {
-      return new Polygon($components, $srid);
+      return new LaravelEloquentSpatial::$polygonClass($components, $srid);
     }
 
     if ($geometry::class === geoPHPMultiLineString::class) {
-      return new MultiLineString($components, $srid);
+      return new LaravelEloquentSpatial::$multiLineStringClass($components, $srid);
     }
 
     if ($geometry::class === geoPHPMultiPolygon::class) {
-      return new MultiPolygon($components, $srid);
+      return new LaravelEloquentSpatial::$multiPolygonClass($components, $srid);
     }
 
-    return new GeometryCollection($components, $srid);
+    return new LaravelEloquentSpatial::$geometryCollectionClass($components, $srid);
   }
 }
