@@ -176,6 +176,52 @@ Place::query()->whereDistance(...); // This is IDE-friendly
 Place::whereDistance(...); // This is not
 ```
 
+## Extension
+
+You can extend the package by creating your own geometry classes.
+
+1. Create an extended geometry class:
+   ```php
+   class ExtendedPoint extends Point
+   {
+       public function toCustomArray(): array
+       {
+           return [
+               'latitude' => $this->latitude,
+               'longitude' => $this->longitude,
+           ];
+       }
+   }
+   ```
+2. Update the geometry class mapping in a service provider file.
+   ```php
+    class AppServiceProvider extends ServiceProvider
+   {
+       public function boot(): void
+       {
+           LaravelEloquentSpatial::$pointClass = ExtendedPoint::class;
+       }
+   }
+   ```
+3. Cast the extended geometry class.
+   ```php
+   class Place extends Model
+   {
+       protected $casts = [
+           'location' => ExtendedPoint::class,
+       ];
+   }
+   ```
+4. Retrieve a record with the extended geometry class.
+   ```php
+   $place = Place::create([
+       'name' => 'London Eye',
+       'location' => new ExtendedPoint(51.5032973, -0.1217424),
+   ]);
+  
+   $place->fresh()->location->toCustomArray(); // ['latitude' => 51.5032973, 'longitude' => -0.1217424]
+   ```
+
 ## Development
 
 * Test: `composer pest`
