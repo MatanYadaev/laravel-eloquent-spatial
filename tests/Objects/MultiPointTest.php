@@ -169,7 +169,7 @@ it('throws exception when storing a record with regular MultiPoint instead of th
 
   $multiPoint = new MultiPoint([
     new Point(0, 180),
-  ], 4326);;
+  ], 4326);
 
   expect(function () use ($multiPoint): void {
     TestExtendedPlace::factory()->create(['multi_point' => $multiPoint]);
