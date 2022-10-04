@@ -5,7 +5,9 @@ use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\LaravelEloquentSpatial;
+use MatanYadaev\EloquentSpatial\Tests\TestModels\TestExtendedPlace;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
+use MatanYadaev\EloquentSpatial\Tests\TestObjects\ExtendedMultiLineString;
 
 uses(DatabaseMigrations::class);
 
@@ -185,8 +187,6 @@ it('casts a MultiLineString to a string', function (): void {
 });
 
 it('uses an extended MultiLineString class', function (): void {
-  class ExtendedMultiLineString extends MultiLineString {}
-
   LaravelEloquentSpatial::$multiLineStringClass = ExtendedMultiLineString::class;
 
   $multiLineString = new ExtendedMultiLineString([
@@ -196,9 +196,24 @@ it('uses an extended MultiLineString class', function (): void {
     ]),
   ], 4326);
 
-  /** @var TestPlace $testPlace */
-  $testPlace = TestPlace::factory()->create(['multi_line_string' => $multiLineString])->fresh();
+  /** @var TestExtendedPlace $testPlace */
+  $testPlace = TestExtendedPlace::factory()->create(['multi_line_string' => $multiLineString])->fresh();
 
   expect($testPlace->multi_line_string)->toBeInstanceOf(ExtendedMultiLineString::class);
   expect($testPlace->multi_line_string)->toEqual($multiLineString);
+});
+
+it('throws exception when storing a record with regular MultiLineString instead of the extended one', function (): void {
+  LaravelEloquentSpatial::$multiLineStringClass = ExtendedMultiLineString::class;
+
+  $multiLineString = new MultiLineString([
+    new LineString([
+      new Point(0, 180),
+      new Point(1, 179),
+    ]),
+  ], 4326);
+
+  expect(function () use ($multiLineString): void {
+    TestExtendedPlace::factory()->create(['multi_line_string' => $multiLineString]);
+  })->toThrow(InvalidArgumentException::class);
 });

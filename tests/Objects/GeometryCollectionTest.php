@@ -6,7 +6,9 @@ use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\Tests\LaravelEloquentSpatial;
+use MatanYadaev\EloquentSpatial\Tests\TestModels\TestExtendedPlace;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
+use MatanYadaev\EloquentSpatial\Tests\TestObjects\ExtendedGeometryCollection;
 
 uses(DatabaseMigrations::class);
 
@@ -368,8 +370,6 @@ it('casts a GeometryCollection to a string', function (): void {
 });
 
 it('uses an extended GeometryCollection class', function (): void {
-  class ExtendedGeometryCollection extends GeometryCollection {}
-
   LaravelEloquentSpatial::$geometryCollectionClass = ExtendedGeometryCollection::class;
 
   $geometryCollection = new ExtendedGeometryCollection([
@@ -385,9 +385,30 @@ it('uses an extended GeometryCollection class', function (): void {
     new Point(0, 180),
   ], 4326);
 
-  /** @var TestPlace $testPlace */
-  $testPlace = TestPlace::factory()->create(['geometry_collection' => $geometryCollection])->fresh();
+  /** @var TestExtendedPlace $testPlace */
+  $testPlace = TestExtendedPlace::factory()->create(['geometry_collection' => $geometryCollection])->fresh();
 
   expect($testPlace->geometry_collection)->toBeInstanceOf(ExtendedGeometryCollection::class);
   expect($testPlace->geometry_collection)->toEqual($geometryCollection);
+});
+
+it('throws exception when storing a record with regular GeometryCollection instead of the extended one', function (): void {
+  LaravelEloquentSpatial::$geometryCollectionClass = ExtendedGeometryCollection::class;
+
+  $geometryCollection = new GeometryCollection([
+    new Polygon([
+      new LineString([
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
+      ]),
+    ]),
+    new Point(0, 180),
+  ], 4326);
+
+  expect(function () use ($geometryCollection): void {
+    TestExtendedPlace::factory()->create(['geometry_collection' => $geometryCollection]);
+  })->toThrow(InvalidArgumentException::class);
 });

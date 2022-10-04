@@ -3,7 +3,9 @@
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\LaravelEloquentSpatial;
+use MatanYadaev\EloquentSpatial\Tests\TestModels\TestExtendedPlace;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
+use MatanYadaev\EloquentSpatial\Tests\TestObjects\ExtendedPoint;
 
 uses(DatabaseMigrations::class);
 
@@ -105,15 +107,23 @@ it('casts a Point to a string', function (): void {
 });
 
 it('uses an extended Point class', function (): void {
-  class ExtendedPoint extends Point {}
-
   LaravelEloquentSpatial::$pointClass = ExtendedPoint::class;
 
   $point = new ExtendedPoint(0, 180, 4326);
 
-  /** @var TestPlace $testPlace */
-  $testPlace = TestPlace::factory()->create(['point' => $point])->fresh();
+  /** @var TestExtendedPlace $testPlace */
+  $testPlace = TestExtendedPlace::factory()->create(['point' => $point])->fresh();
 
   expect($testPlace->point)->toBeInstanceOf(ExtendedPoint::class);
   expect($testPlace->point)->toEqual($point);
+});
+
+it('throws exception when storing a record with regular Point instead of the extended one', function (): void {
+  LaravelEloquentSpatial::$pointClass = ExtendedPoint::class;
+
+  $point = new Point(0, 180, 4326);
+
+  expect(function () use ($point): void {
+    TestExtendedPlace::factory()->create(['point' => $point]);
+  })->toThrow(InvalidArgumentException::class);
 });

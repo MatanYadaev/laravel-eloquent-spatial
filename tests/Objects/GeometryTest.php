@@ -1,11 +1,14 @@
 <?php
 
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\AxisOrder;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
+
+uses(DatabaseMigrations::class);
 
 it('throws exception when generating geometry from other geometry WKB', function (): void {
   expect(function (): void {

@@ -5,7 +5,9 @@ use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\Tests\LaravelEloquentSpatial;
+use MatanYadaev\EloquentSpatial\Tests\TestModels\TestExtendedPlace;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
+use MatanYadaev\EloquentSpatial\Tests\TestObjects\ExtendedMultiPoint;
 
 uses(DatabaseMigrations::class);
 
@@ -149,17 +151,27 @@ it('casts a MultiPoint to a string', function (): void {
 });
 
 it('uses an extended MultiPoint class', function (): void {
-  class ExtendedMultiPoint extends MultiPoint {}
-
   LaravelEloquentSpatial::$multiPointClass = ExtendedMultiPoint::class;
 
   $multiPoint = new ExtendedMultiPoint([
     new Point(0, 180),
   ], 4326);
 
-  /** @var TestPlace $testPlace */
-  $testPlace = TestPlace::factory()->create(['multi_point' => $multiPoint])->fresh();
+  /** @var TestExtendedPlace $testPlace */
+  $testPlace = TestExtendedPlace::factory()->create(['multi_point' => $multiPoint])->fresh();
 
   expect($testPlace->multi_point)->toBeInstanceOf(ExtendedMultiPoint::class);
   expect($testPlace->multi_point)->toEqual($multiPoint);
+});
+
+it('throws exception when storing a record with regular MultiPoint instead of the extended one', function (): void {
+  LaravelEloquentSpatial::$multiPointClass = ExtendedMultiPoint::class;
+
+  $multiPoint = new MultiPoint([
+    new Point(0, 180),
+  ], 4326);;
+
+  expect(function () use ($multiPoint): void {
+    TestExtendedPlace::factory()->create(['multi_point' => $multiPoint]);
+  })->toThrow(InvalidArgumentException::class);
 });
