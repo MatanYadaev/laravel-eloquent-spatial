@@ -17,6 +17,7 @@
     "phayes/geophp": "^1.2"
   },
   "require-dev": {
+    "doctrine/dbal": "^3.4",
     "friendsofphp/php-cs-fixer": "^3.0",
     "jubeki/laravel-code-style": "^1.0",
     "nunomaduro/larastan": "^1.0|^2.0",
@@ -48,5 +49,12 @@
     }
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "extra": {
+    "laravel": {
+      "providers": [
+        "MatanYadaev\\EloquentSpatial\\EloquentSpatialServiceProvider"
+      ]
+    }
+  }
 }
