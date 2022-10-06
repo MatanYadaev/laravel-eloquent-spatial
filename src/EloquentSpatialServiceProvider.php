@@ -18,6 +18,12 @@ class EloquentSpatialServiceProvider extends DatabaseServiceProvider
 {
   public function boot(): void
   {
+    $connection = DB::connection();
+
+    if (!$connection->isDoctrineAvailable()) {
+      return;
+    }
+
     $geometries = [
       'point' => PointType::class,
       'linestring' => LineStringType::class,
@@ -28,8 +34,6 @@ class EloquentSpatialServiceProvider extends DatabaseServiceProvider
       'geometrycollection' => GeometryCollectionType::class,
       'geomcollection' => GeometryCollectionType::class,
     ];
-
-    $connection = DB::connection();
 
     foreach ($geometries as $type => $class) {
       DB::registerDoctrineType($class, $type, $type);
