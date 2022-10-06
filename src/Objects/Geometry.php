@@ -9,6 +9,7 @@ use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
 use JsonException;
 use JsonSerializable;
@@ -19,6 +20,8 @@ use WKB as geoPHPWkb;
 
 abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable, Stringable
 {
+  use Macroable;
+
   public int $srid = 0;
 
   abstract public function toWkt(): string;
