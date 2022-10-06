@@ -5,6 +5,7 @@ use MatanYadaev\EloquentSpatial\Objects\GeometryCollection;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 uses(DatabaseMigrations::class);
@@ -364,4 +365,26 @@ it('casts a GeometryCollection to a string', function (): void {
   ]);
 
   expect($geometryCollection->__toString())->toEqual('GEOMETRYCOLLECTION(POLYGON((180 0, 179 1, 178 2, 177 3, 180 0)), POINT(180 0))');
+});
+
+it('adds a Macro method to GeometryCollection', function (): void {
+  Geometry::macro('getName', function (): string {
+    return class_basename($this);
+  });
+
+  $geometryCollection = new GeometryCollection([
+    new Polygon([
+      new LineString([
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
+      ]),
+    ]),
+    new Point(0, 180),
+  ]);
+
+  // @phpstan-ignore-next-line
+  expect($geometryCollection->getName())->toBe('GeometryCollection');
 });

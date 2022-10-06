@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 uses(DatabaseMigrations::class);
@@ -145,4 +146,17 @@ it('casts a MultiPoint to a string', function (): void {
   ]);
 
   expect($multiPoint->__toString())->toEqual('MULTIPOINT(180 0)');
+});
+
+it('adds a Macro method to MultiPoint', function (): void {
+  Geometry::macro('getName', function (): string {
+    return class_basename($this);
+  });
+
+  $multiPoint = new MultiPoint([
+    new Point(0, 180),
+  ]);
+
+  // @phpstan-ignore-next-line
+  expect($multiPoint->getName())->toBe('MultiPoint');
 });

@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiPolygon;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
@@ -239,7 +240,28 @@ it('casts a MultiPolygon to a string', function (): void {
         new Point(0, 180),
       ]),
     ]),
-  ], 4326);
+  ]);
 
   expect($multiPolygon->__toString())->toEqual('MULTIPOLYGON(((180 0, 179 1, 178 2, 177 3, 180 0)))');
+});
+
+it('adds a Macro method to MultiPolygon', function (): void {
+  Geometry::macro('getName', function (): string {
+    return class_basename($this);
+  });
+
+  $multiPolygon = new MultiPolygon([
+    new Polygon([
+      new LineString([
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
+      ]),
+    ]),
+  ]);
+
+  // @phpstan-ignore-next-line
+  expect($multiPolygon->getName())->toBe('MultiPolygon');
 });

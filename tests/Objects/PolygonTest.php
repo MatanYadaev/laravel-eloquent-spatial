@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 uses(DatabaseMigrations::class);
@@ -206,7 +207,7 @@ it('throws exception when creating polygon from incorrect geometry', function ()
 });
 
 it('casts a Polygon to a string', function (): void {
-  $polygon = $polygon = new Polygon([
+  $polygon = new Polygon([
     new LineString([
       new Point(0, 180),
       new Point(1, 179),
@@ -217,4 +218,23 @@ it('casts a Polygon to a string', function (): void {
   ]);
 
   expect($polygon->__toString())->toEqual('POLYGON((180 0, 179 1, 178 2, 177 3, 180 0))');
+});
+
+it('adds a Macro method to Polygon', function (): void {
+  Geometry::macro('getName', function (): string {
+    return class_basename($this);
+  });
+
+  $polygon = new Polygon([
+    new LineString([
+      new Point(0, 180),
+      new Point(1, 179),
+      new Point(2, 178),
+      new Point(3, 177),
+      new Point(0, 180),
+    ]),
+  ]);
+
+  // @phpstan-ignore-next-line
+  expect($polygon->getName())->toBe('Polygon');
 });
