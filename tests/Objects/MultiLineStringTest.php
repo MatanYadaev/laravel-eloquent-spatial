@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
@@ -181,4 +182,22 @@ it('casts a MultiLineString to a string', function (): void {
   ]);
 
   expect($multiLineString->__toString())->toEqual('MULTILINESTRING((180 0, 179 1))');
+});
+
+it('adds a macro toMultiLineString', function (): void {
+  Geometry::macro('getName', function (): string {
+    /** @var Geometry $this */
+    // @phpstan-ignore-next-line
+    return class_basename($this);
+  });
+
+  $multiLineString = new MultiLineString([
+    new LineString([
+      new Point(0, 180),
+      new Point(1, 179),
+    ]),
+  ]);
+
+  // @phpstan-ignore-next-line
+  expect($multiLineString->getName())->toBe('MultiLineString');
 });

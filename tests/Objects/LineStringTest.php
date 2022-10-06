@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
@@ -159,4 +160,20 @@ it('casts a LineString to a string', function (): void {
   ]);
 
   expect($lineString->__toString())->toEqual('LINESTRING(180 0, 179 1)');
+});
+
+it('adds a macro toLineString', function (): void {
+  Geometry::macro('getName', function (): string {
+    /** @var Geometry $this */
+    // @phpstan-ignore-next-line
+    return class_basename($this);
+  });
+
+  $lineString = new LineString([
+    new Point(0, 180),
+    new Point(1, 179),
+  ]);
+
+  // @phpstan-ignore-next-line
+  expect($lineString->getName())->toBe('LineString');
 });

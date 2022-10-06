@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
@@ -145,4 +146,19 @@ it('casts a MultiPoint to a string', function (): void {
   ]);
 
   expect($multiPoint->__toString())->toEqual('MULTIPOINT(180 0)');
+});
+
+it('adds a macro toMultiPoint', function (): void {
+  Geometry::macro('getName', function (): string {
+    /** @var Geometry $this */
+    // @phpstan-ignore-next-line
+    return class_basename($this);
+  });
+
+  $multiPoint = new MultiPoint([
+    new Point(0, 180),
+  ]);
+
+  // @phpstan-ignore-next-line
+  expect($multiPoint->getName())->toBe('MultiPoint');
 });

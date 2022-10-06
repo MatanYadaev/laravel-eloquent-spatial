@@ -176,6 +176,33 @@ Place::query()->whereDistance(...); // This is IDE-friendly
 Place::whereDistance(...); // This is not
 ```
 
+## Extension
+
+You can extend the package by adding macro methods to the `Geometry` class.
+
+Register a macro in the `boot` method of your service provider:
+
+```php
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot(): void
+    {
+        Geometry::macro('getName', function (): string {
+            /** @var Geometry $this */
+            return class_basename($this);
+        });
+    }
+}
+```
+
+Use the macro in your code:
+
+```php
+$londonEyePoint = new Point(51.5032973, -0.1217424);
+
+echo $londonEyePoint->getName(); // Point
+```
+
 ## Development
 
 * Test: `composer pest`

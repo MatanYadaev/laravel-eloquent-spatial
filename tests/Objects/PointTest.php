@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
@@ -101,4 +102,17 @@ it('casts a Point to a string', function (): void {
   $point = new Point(0, 180, 4326);
 
   expect($point->__toString())->toEqual('POINT(180 0)');
+});
+
+it('adds a macro toPoint', function (): void {
+  Geometry::macro('getName', function (): string {
+    /** @var Geometry $this */
+    // @phpstan-ignore-next-line
+    return class_basename($this);
+  });
+
+  $point = new Point(0, 180, 4326);
+
+  // @phpstan-ignore-next-line
+  expect($point->getName())->toBe('Point');
 });
