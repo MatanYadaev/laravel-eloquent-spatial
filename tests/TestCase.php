@@ -2,7 +2,6 @@
 
 namespace MatanYadaev\EloquentSpatial\Tests;
 
-use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
