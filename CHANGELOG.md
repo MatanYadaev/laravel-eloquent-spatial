@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v2.6.0 - 2022-10-06
+
+Add Doctrine types
+
 ## v2.5.2 - 2022-09-27
 
 Query Builder - Support column to have table name #61
