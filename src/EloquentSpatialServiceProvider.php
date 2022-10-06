@@ -25,6 +25,7 @@ class EloquentSpatialServiceProvider extends DatabaseServiceProvider
       'polygon' => PolygonType::class,
       'multilinestring' => MultiLineStringType::class,
       'multipolygon' => MultiPolygonType::class,
+      'geometrycollection' => GeometryCollectionType::class,
       'geomcollection' => GeometryCollectionType::class,
     ];
 
