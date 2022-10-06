@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v2.7.0 - 2022-10-06
+
+Macroable geometry classes
+
 ## v2.6.0 - 2022-10-06
 
 Add Doctrine types
