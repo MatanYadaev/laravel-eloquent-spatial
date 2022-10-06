@@ -184,7 +184,7 @@ it('casts a MultiLineString to a string', function (): void {
   expect($multiLineString->__toString())->toEqual('MULTILINESTRING((180 0, 179 1))');
 });
 
-it('adds a Macro method to MultiLineString', function (): void {
+it('adds a macro toMultiLineString', function (): void {
   Geometry::macro('getName', function (): string {
     /** @var Geometry $this */
     // @phpstan-ignore-next-line

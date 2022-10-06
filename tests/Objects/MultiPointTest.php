@@ -148,7 +148,7 @@ it('casts a MultiPoint to a string', function (): void {
   expect($multiPoint->__toString())->toEqual('MULTIPOINT(180 0)');
 });
 
-it('adds a Macro method to MultiPoint', function (): void {
+it('adds a macro toMultiPoint', function (): void {
   Geometry::macro('getName', function (): string {
     /** @var Geometry $this */
     // @phpstan-ignore-next-line

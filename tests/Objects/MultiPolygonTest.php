@@ -245,7 +245,7 @@ it('casts a MultiPolygon to a string', function (): void {
   expect($multiPolygon->__toString())->toEqual('MULTIPOLYGON(((180 0, 179 1, 178 2, 177 3, 180 0)))');
 });
 
-it('adds a Macro method to MultiPolygon', function (): void {
+it('adds a macro toMultiPolygon', function (): void {
   Geometry::macro('getName', function (): string {
     /** @var Geometry $this */
     // @phpstan-ignore-next-line

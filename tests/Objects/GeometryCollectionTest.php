@@ -367,7 +367,7 @@ it('casts a GeometryCollection to a string', function (): void {
   expect($geometryCollection->__toString())->toEqual('GEOMETRYCOLLECTION(POLYGON((180 0, 179 1, 178 2, 177 3, 180 0)), POINT(180 0))');
 });
 
-it('adds a Macro method to GeometryCollection', function (): void {
+it('adds a macro toGeometryCollection', function (): void {
   Geometry::macro('getName', function (): string {
     /** @var Geometry $this */
     // @phpstan-ignore-next-line

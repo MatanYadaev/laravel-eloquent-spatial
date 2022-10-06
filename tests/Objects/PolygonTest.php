@@ -220,7 +220,7 @@ it('casts a Polygon to a string', function (): void {
   expect($polygon->__toString())->toEqual('POLYGON((180 0, 179 1, 178 2, 177 3, 180 0))');
 });
 
-it('adds a Macro method to Polygon', function (): void {
+it('adds a macro toPolygon', function (): void {
   Geometry::macro('getName', function (): string {
     /** @var Geometry $this */
     // @phpstan-ignore-next-line

@@ -104,7 +104,7 @@ it('casts a Point to a string', function (): void {
   expect($point->__toString())->toEqual('POINT(180 0)');
 });
 
-it('adds a Macro method to Point', function (): void {
+it('adds a macro toPoint', function (): void {
   Geometry::macro('getName', function (): string {
     /** @var Geometry $this */
     // @phpstan-ignore-next-line

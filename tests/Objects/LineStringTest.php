@@ -162,7 +162,7 @@ it('casts a LineString to a string', function (): void {
   expect($lineString->__toString())->toEqual('LINESTRING(180 0, 179 1)');
 });
 
-it('adds a Macro method to LineString', function (): void {
+it('adds a macro toLineString', function (): void {
   Geometry::macro('getName', function (): string {
     /** @var Geometry $this */
     // @phpstan-ignore-next-line
