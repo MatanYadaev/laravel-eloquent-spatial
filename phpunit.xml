@@ -28,4 +28,8 @@
   <logging>
     <junit outputFile="build/report.junit.xml"/>
   </logging>
+  <php>
+    <env name="DB_DATABASE" value="laravel_eloquent_spatial_test"/>
+    <env name="DB_USERNAME" value="root"/>
+  </php>
 </phpunit>
