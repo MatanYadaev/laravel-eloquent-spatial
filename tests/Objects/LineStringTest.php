@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
-use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 uses(DatabaseMigrations::class);
@@ -164,6 +164,8 @@ it('casts a LineString to a string', function (): void {
 
 it('adds a Macro method to LineString', function (): void {
   Geometry::macro('getName', function (): string {
+    /** @var Geometry $this */
+    // @phpstan-ignore-next-line
     return class_basename($this);
   });
 

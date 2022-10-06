@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
-use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 uses(DatabaseMigrations::class);
@@ -186,6 +186,8 @@ it('casts a MultiLineString to a string', function (): void {
 
 it('adds a Macro method to MultiLineString', function (): void {
   Geometry::macro('getName', function (): string {
+    /** @var Geometry $this */
+    // @phpstan-ignore-next-line
     return class_basename($this);
   });
 
