@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial;
 
+use Illuminate\Database\Connection;
 use Illuminate\Database\DatabaseServiceProvider;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Doctrine\GeometryCollectionType;
@@ -18,12 +19,16 @@ class EloquentSpatialServiceProvider extends DatabaseServiceProvider
 {
   public function boot(): void
   {
+    /** @var Connection $connection */
     $connection = DB::connection();
 
-    if (!$connection->isDoctrineAvailable()) {
-      return;
+    if ($connection->isDoctrineAvailable()) {
+      $this->registerDoctrineTypes($connection);
     }
+  }
 
+  protected function registerDoctrineTypes(Connection $connection): void
+  {
     $geometries = [
       'point' => PointType::class,
       'linestring' => LineStringType::class,
