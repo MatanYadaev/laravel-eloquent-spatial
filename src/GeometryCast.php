@@ -62,6 +62,10 @@ class GeometryCast implements CastsAttributes
       return null;
     }
 
+    if (is_array($value) && isset($value['type']) && $value['type'] === class_basename($this->className)) {
+        $value = Geometry::fromJson(json_encode($value));
+    }
+
     if (! ($value instanceof $this->className)) {
       $geometryType = is_object($value) ? $value::class : gettype($value);
       throw new InvalidArgumentException(
