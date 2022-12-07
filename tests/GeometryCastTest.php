@@ -104,3 +104,10 @@ it('throws exception when cast deserializing incorrect geometry object', functio
     $testPlace->getAttribute('point_with_line_string_cast');
   })->toThrow(InvalidArgumentException::class);
 });
+
+it('creates a database-ready value string from a geometry', function (): void {
+  $point = new Point(0, 180, 4326);
+
+  expect(\MatanYadaev\EloquentSpatial\GeometryCast::forDB(DB::connection(), $point))
+    ->toEqual('ST_GeomFromText(\'POINT(180 0)\', 4326, \'axis-order=long-lat\')');
+});
