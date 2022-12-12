@@ -132,6 +132,19 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   }
 
   /**
+   * @param  array<mixed>  $geometry
+   * @return static
+   *
+   * @throws JsonException
+   */
+  public static function fromArray(array $geometry): static
+  {
+    $geoJson = json_encode($geometry, JSON_THROW_ON_ERROR);
+
+    return static::fromJson($geoJson);
+  }
+
+  /**
    * @return array<mixed>
    */
   public function jsonSerialize(): array

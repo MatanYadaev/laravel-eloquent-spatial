@@ -3,6 +3,7 @@
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\AxisOrder;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
@@ -92,3 +93,34 @@ it('creates an SQL expression from a geometry - without axis-order', function ()
   expect($point->toSqlExpression(DB::connection()))
     ->toEqual("ST_GeomFromText('POINT(180 0)', 4326)");
 })->skip(fn () => (new AxisOrder)->supported(DB::connection()));
+
+it('creates a geometry object from a geo json array', function (): void {
+  $point = new Point(0, 180);
+  $pointGeoJsonArray = $point->toArray();
+
+  $geometryCollectionFromArray = Point::fromArray($pointGeoJsonArray);
+
+  expect($geometryCollectionFromArray)->toEqual($point);
+});
+
+it('throws exception when creating a geometry object from an invalid geo json array', function (): void {
+  $invalidPointGeoJsonArray = [
+    'type' => 'InvalidGeometryType',
+    'coordinates' => [0, 180],
+  ];
+
+  expect(function () use ($invalidPointGeoJsonArray): void {
+    Geometry::fromArray($invalidPointGeoJsonArray);
+  })->toThrow(InvalidArgumentException::class);
+});
+
+it('throws exception when creating a geometry object from another geometry geo json array', function (): void {
+  $pointGeoJsonArray = [
+    'type' => 'Point',
+    'coordinates' => [0, 180],
+  ];
+
+  expect(function () use ($pointGeoJsonArray): void {
+    LineString::fromArray($pointGeoJsonArray);
+  })->toThrow(InvalidArgumentException::class);
+});
