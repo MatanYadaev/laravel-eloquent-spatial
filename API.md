@@ -25,7 +25,7 @@ Geometry classes can be also created by these static methods:
 * `toWkt()` - Serializes the geometry object into a WKT.
 * `toWkb()` - Serializes the geometry object into a WKB.
 * `getCoordinates()` - Returns the coordinates of the geometry object.
-
+* `toSqlExpression(ConnectionInterface $connection)` - Serializes the geometry object into an SQL query.
 In addition, `GeometryCollection` also has these functions:
 
 * `getGeometries()` - Returns a geometry array. Can be used with `ArrayAccess` as well.

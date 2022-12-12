@@ -9,10 +9,14 @@ use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Query\Expression;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
 use JsonException;
 use JsonSerializable;
+use MatanYadaev\EloquentSpatial\AxisOrder;
 use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\GeometryCast;
 use Stringable;
@@ -202,5 +206,22 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   public static function castUsing(array $arguments): CastsAttributes
   {
     return new GeometryCast(static::class);
+  }
+
+  /**
+   * @param  ConnectionInterface  $connection
+   * @return Expression
+   */
+  public function toSqlExpression(ConnectionInterface $connection): Expression
+  {
+    $wkt = $this->toWkt();
+
+    if (! (new AxisOrder)->supported($connection)) {
+      // @codeCoverageIgnoreStart
+      return DB::raw("ST_GeomFromText('{$wkt}', {$this->srid})");
+      // @codeCoverageIgnoreEnd
+    }
+
+    return DB::raw("ST_GeomFromText('{$wkt}', {$this->srid}, 'axis-order=long-lat')");
   }
 }
