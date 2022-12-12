@@ -52,22 +52,41 @@ it('creates a model record with geometry collection with SRID', function (): voi
 });
 
 it('creates geometry collection from JSON', function (): void {
-  $geometryCollection = new GeometryCollection([
-    new Polygon([
-      new LineString([
-        new Point(0, 180),
-        new Point(1, 179),
-        new Point(2, 178),
-        new Point(3, 177),
-        new Point(0, 180),
+    $geometryCollection = new GeometryCollection([
+      new Polygon([
+        new LineString([
+          new Point(0, 180),
+          new Point(1, 179),
+          new Point(2, 178),
+          new Point(3, 177),
+          new Point(0, 180),
+        ]),
       ]),
-    ]),
-    new Point(0, 180),
-  ]);
+      new Point(0, 180),
+    ]);
 
-  $geometryCollectionFromJson = GeometryCollection::fromJson('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}');
+    $geometryCollectionFromJson = GeometryCollection::fromJson('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}');
 
-  expect($geometryCollectionFromJson)->toEqual($geometryCollection);
+    expect($geometryCollectionFromJson)->toEqual($geometryCollection);
+});
+
+it('creates geometry collection from array (serialized model)', function (): void {
+    $geometryCollection = new GeometryCollection([
+      new Polygon([
+        new LineString([
+          new Point(0, 180),
+          new Point(1, 179),
+          new Point(2, 178),
+          new Point(3, 177),
+          new Point(0, 180),
+        ]),
+      ]),
+      new Point(0, 180),
+    ]);
+
+    $geometryCollectionFromArray = GeometryCollection::fromArray($geometryCollection->toArray());
+
+    expect($geometryCollectionFromArray)->toEqual($geometryCollection);
 });
 
 it('creates geometry collection with SRID from JSON', function (): void {
