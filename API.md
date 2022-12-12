@@ -72,11 +72,11 @@ echo $geometryCollection[1]->latitude; // 0
 
 Retrieves the distance between 2 geometry objects. Uses [ST_Distance](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-distance).
 
-| parameter name      | type                 | default |
-| ------------------  | -------------------- | ------- |
-| `$column`           | `string`             |
-| `$geometryOrColumn` | `Geometry \| string` |
-| `$alias`            | `string`             | `'distance'`
+| parameter name      | type                | default      |
+|---------------------|---------------------|--------------|
+| `$column`           | `string`            |              |
+| `$geometryOrColumn` | `Geometry \ string` |              |
+| `$alias`            | `string`            | `'distance'` |
 
 <details><summary>Example</summary>
 
@@ -102,12 +102,12 @@ echo $placeWithDistance->distance_in_meters; // 156897.79947260793
 
 Filters records by distance. Uses [ST_Distance](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-distance).
 
-| parameter name      | type
-| ------------------  | -------------------- 
-| `$column`           | `string`
-| `$geometryOrColumn` | `Geometry \| string` 
-| `$operator`         | `string`
-| `$value`            | `int \| float`
+| parameter name      | type                |
+|---------------------|---------------------|
+| `$column`           | `string`            |
+| `$geometryOrColumn` | `Geometry \ string` |
+| `$operator`         | `string`            |
+| `$value`            | `int \ float`       |
 
 <details><summary>Example</summary>
 
@@ -127,11 +127,11 @@ echo $placesCountWithinDistance; // 1
 
 Orders records by distance. Uses [ST_Distance](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-distance).
 
-| parameter name      | type                 | default |
-| ------------------  | -------------------- | ------- |
-| `$column`           | `string`             |
-| `$geometryOrColumn` | `Geometry \| string` |
-| `$direction`         | `string`            | `'asc'`
+| parameter name      | type                | default |
+|---------------------|---------------------|---------|
+| `$column`           | `string`            |         |
+| `$geometryOrColumn` | `Geometry \ string` |         |
+| `$direction`        | `string`            | `'asc'` |
 
 <details><summary>Example</summary>
 
@@ -158,11 +158,11 @@ echo $places[1]->name; // first
 
 Retrieves the spherical distance between 2 geometry objects. Uses [ST_Distance_Sphere](https://dev.mysql.com/doc/refman/8.0/en/spatial-convenience-functions.html#function_st-distance-sphere).
 
-| parameter name      | type                 | default |
-| ------------------  | -------------------- | ------- |
-| `$column`           | `string`             |
-| `$geometryOrColumn` | `Geometry \| string` |
-| `$alias`            | `string`             | `'distance'`
+| parameter name      | type                | default      |
+|---------------------|---------------------|--------------|
+| `$column`           | `string`            |              |
+| `$geometryOrColumn` | `Geometry \ string` |              |
+| `$alias`            | `string`            | `'distance'` |
 
 <details><summary>Example</summary>
 
@@ -188,12 +188,12 @@ echo $placeWithDistance->distance_in_meters; // 157249.59776850493
 
 Filters records by spherical distance. Uses [ST_Distance_Sphere](https://dev.mysql.com/doc/refman/8.0/en/spatial-convenience-functions.html#function_st-distance-sphere).
 
-| parameter name      | type
-| ------------------  | -------------------- 
-| `$column`           | `string`
-| `$geometryOrColumn` | `Geometry \| string` 
-| `$operator`         | `string`
-| `$value`            | `int \| float`
+| parameter name      | type                |
+|---------------------|---------------------|
+| `$column`           | `string`            |
+| `$geometryOrColumn` | `Geometry \ string` |
+| `$operator`         | `string`            |
+| `$value`            | `int \ float`       |
 
 <details><summary>Example</summary>
 
@@ -213,11 +213,11 @@ echo $placesCountWithinDistance; // 1
 
 Orders records by spherical distance. Uses [ST_Distance_Sphere](https://dev.mysql.com/doc/refman/8.0/en/spatial-convenience-functions.html#function_st-distance-sphere).
 
-| parameter name      | type                 | default |
-| ------------------  | -------------------- | ------- |
-| `$column`           | `string`             |
-| `$geometryOrColumn` | `Geometry \| string` |
-| `$direction`         | `string`            | `'asc'`
+| parameter name      | type                | default |
+|---------------------|---------------------|---------|
+| `$column`           | `string`            |         |
+| `$geometryOrColumn` | `Geometry \ string` |         |
+| `$direction`        | `string`            | `'asc'` |
 
 <details><summary>Example</summary>
 
@@ -244,10 +244,10 @@ echo $places[1]->name; // first
 
 Filters records by the [ST_Within](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-within) function.
 
-| parameter name      | type                 
-| ------------------  | -------------------- 
-| `$column`           | `string`             
-| `$geometryOrColumn` | `Geometry \| string` 
+| parameter name      | type                |
+|---------------------|---------------------|
+| `$column`           | `string`            |
+| `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
 
@@ -264,10 +264,10 @@ Place::query()
 
 Filters records by the [ST_Within](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-within) function.
 
-| parameter name      | type                 
-| ------------------  | -------------------- 
-| `$column`           | `string`             
-| `$geometryOrColumn` | `Geometry \| string` 
+| parameter name      | type                |
+|---------------------|---------------------|
+| `$column`           | `string`            |
+| `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
 
@@ -284,10 +284,10 @@ Place::query()
 
 Filters records by the [ST_Contains](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-contains) function.
 
-| parameter name      | type                 
-| ------------------  | -------------------- 
-| `$column`           | `string`             
-| `$geometryOrColumn` | `Geometry \| string` 
+| parameter name      | type                |
+|---------------------|---------------------|
+| `$column`           | `string`            |
+| `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
 
@@ -304,10 +304,10 @@ Place::query()
 
 Filters records by the [ST_Contains](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-contains) function.
 
-| parameter name      | type                 
-| ------------------  | -------------------- 
-| `$column`           | `string`             
-| `$geometryOrColumn` | `Geometry \| string` 
+| parameter name      | type                |
+|---------------------|---------------------|
+| `$column`           | `string`            |
+| `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
 
@@ -324,10 +324,10 @@ Place::query()
 
 Filters records by the [ST_Touches](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-touches) function.
 
-| parameter name      | type                 
-| ------------------  | -------------------- 
-| `$column`           | `string`             
-| `$geometryOrColumn` | `Geometry \| string` 
+| parameter name      | type                |
+|---------------------|---------------------|
+| `$column`           | `string`            |
+| `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
 
@@ -344,10 +344,10 @@ Place::query()
 
 Filters records by the [ST_Intersects](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-intersects) function.
 
-| parameter name      | type                 
-| ------------------  | -------------------- 
-| `$column`           | `string`             
-| `$geometryOrColumn` | `Geometry \| string` 
+| parameter name      | type                |
+|---------------------|---------------------|
+| `$column`           | `string`            |
+| `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
 
@@ -364,10 +364,10 @@ Place::query()
 
 Filters records by the [ST_Crosses](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-crosses) function.
 
-| parameter name      | type                 
-| ------------------  | -------------------- 
-| `$column`           | `string`             
-| `$geometryOrColumn` | `Geometry \| string` 
+| parameter name      | type                |
+|---------------------|---------------------|
+| `$column`           | `string`            |
+| `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
 
@@ -384,10 +384,10 @@ Place::query()
 
 Filters records by the [ST_Disjoint](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-disjoint) function.
 
-| parameter name      | type
-| ------------------  | -------------------- 
-| `$column`           | `string`
-| `$geometryOrColumn` | `Geometry \| string` 
+| parameter name      | type                |
+|---------------------|---------------------|
+| `$column`           | `string`            |
+| `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
 
@@ -404,10 +404,10 @@ Place::query()
 
 Filters records by the [ST_Equal](https://dev.mysql.com/doc/refman/8.0/en/spatial-relation-functions-object-shapes.html#function_st-equals) function.
 
-| parameter name      | type
-| ------------------  | -------------------- 
-| `$column`           | `string`
-| `$geometryOrColumn` | `Geometry \| string` 
+| parameter name      | type                |
+|---------------------|---------------------|
+| `$column`           | `string`            |
+| `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
 
@@ -424,11 +424,11 @@ Place::query()
 
 Filters records by the [ST_Srid](https://dev.mysql.com/doc/refman/8.0/en/gis-general-property-functions.html#function_st-srid) function.
 
-| parameter name      | type
-| ------------------  | -------------------- 
-| `$column`           | `string`
-| `$operator`         | `string`
-| `$value`            | `int`
+| parameter name | type     |
+|----------------|----------|
+| `$column`      | `string` |
+| `$operator`    | `string` |
+| `$value`       | `int`    |
 
 <details><summary>Example</summary>
 
