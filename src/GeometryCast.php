@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MatanYadaev\EloquentSpatial;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\DB;
@@ -81,27 +80,6 @@ class GeometryCast implements CastsAttributes
     }
 
     return DB::raw("ST_GeomFromText('{$wkt}', {$value->srid}, 'axis-order=long-lat')");
-  }
-
-  /**
-   * Get a database-ready rendering of this geometry.
-   * Useful for applying manual casting, such as for mass updates where automatic casting is not applied.
-   *
-   * @param  ConnectionInterface  $connection
-   * @param  Geometry  $geometry
-   * @return Expression
-   */
-  public static function forDB(ConnectionInterface $connection, Geometry $geometry): Expression
-  {
-    $wkt = $geometry->toWkt();
-
-    if (! (new AxisOrder)->supported($connection)) {
-      // @codeCoverageIgnoreStart
-      return DB::raw("ST_GeomFromText('{$wkt}', {$geometry->srid})");
-      // @codeCoverageIgnoreEnd
-    }
-
-    return DB::raw("ST_GeomFromText('{$wkt}', {$geometry->srid}, 'axis-order=long-lat')");
   }
 
   private function extractWktFromExpression(Expression $expression): string
