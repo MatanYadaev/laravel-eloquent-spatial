@@ -2,6 +2,11 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v2.8.0 - 2022-12-12
+
+- Cast geometry from array #71
+- Add `Geometry@toSqlExpression` method #70
+
 ## v2.7.0 - 2022-10-06
 
 Macroable geometry classes
