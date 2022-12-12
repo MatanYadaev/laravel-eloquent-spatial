@@ -106,35 +106,39 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
     return $geometry;
   }
 
-    /**
-     * @param  string  $geoJson
-     * @param  int  $srid
-     * @return static
-     *
-     * @throws InvalidArgumentException
-     */
-    public static function fromJson(string $geoJson, int $srid = 0): static
-    {
-      $geometry = Factory::parse($geoJson);
-      $geometry->srid = $srid;
+  /**
+   * @param  string  $geoJson
+   * @param  int  $srid
+   * @return static
+   *
+   * @throws InvalidArgumentException
+   */
+  public static function fromJson(string $geoJson, int $srid = 0): static
+  {
+    $geometry = Factory::parse($geoJson);
+    $geometry->srid = $srid;
 
-      if (! ($geometry instanceof static)) {
-        throw new InvalidArgumentException(
-          sprintf('Expected %s, %s given.', static::class, $geometry::class)
-        );
-      }
-
-      return $geometry;
+    if (! ($geometry instanceof static)) {
+      throw new InvalidArgumentException(
+        sprintf('Expected %s, %s given.', static::class, $geometry::class)
+      );
     }
 
-    /**
-     * @param  array<mixed> $geometry
-     * @return static
-     */
-    public static function fromArray(array $geometry): static
-    {
-      return static::fromJson(json_encode($geometry));
-    }
+    return $geometry;
+  }
+
+  /**
+   * @param  array<mixed>  $geometry
+   * @return static
+   *
+   * @throws JsonException
+   */
+  public static function fromArray(array $geometry): static
+  {
+    $geoJson = json_encode($geometry, JSON_THROW_ON_ERROR);
+
+    return static::fromJson($geoJson);
+  }
 
   /**
    * @return array<mixed>
