@@ -1,10 +1,5 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Test" type="PestRunConfigurationType">
-    <CommandLine>
-      <envs>
-        <env name="DB_USERNAME" value="laravel-geo" />
-      </envs>
-    </CommandLine>
     <option name="pestRunnerSettings">
       <PestRunner method="" scope="ConfigurationFile" />
     </option>
