@@ -15,7 +15,6 @@ use JsonException;
 use JsonSerializable;
 use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\GeometryCast;
-use OutOfBoundsException;
 use Stringable;
 use WKB as geoPHPWkb;
 
@@ -116,31 +115,25 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
      */
     public static function fromJson(string $geoJson, int $srid = 0): static
     {
-        $geometry = Factory::parse($geoJson);
-        $geometry->srid = $srid;
+      $geometry = Factory::parse($geoJson);
+      $geometry->srid = $srid;
 
-        if (! ($geometry instanceof static)) {
-            throw new InvalidArgumentException(
-                sprintf('Expected %s, %s given.', static::class, $geometry::class)
-            );
-        }
+      if (! ($geometry instanceof static)) {
+        throw new InvalidArgumentException(
+          sprintf('Expected %s, %s given.', static::class, $geometry::class)
+        );
+      }
 
-        return $geometry;
+      return $geometry;
     }
 
     /**
-     * @param  array  $geometry
+     * @param  array<mixed> $geometry
      * @return static
-     *
-     * @throws OutOfBoundsException
      */
     public static function fromArray(array $geometry): static
     {
-        if (! isset($geometry['type'])) {
-            throw new OutOfBoundsException('Your geometry doesn\'t contain "type"');
-        }
-
-        return static::fromJson(json_encode($geometry));
+      return static::fromJson(json_encode($geometry));
     }
 
   /**
