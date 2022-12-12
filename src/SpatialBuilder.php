@@ -289,17 +289,7 @@ class SpatialBuilder extends Builder
   protected function toExpression(Geometry|string $geometryOrColumn): Expression
   {
     if ($geometryOrColumn instanceof Geometry) {
-      $wkt = $geometryOrColumn->toWkt();
-
-      $connection = $this->getConnection();
-
-      if (! (new AxisOrder)->supported($connection)) {
-        // @codeCoverageIgnoreStart
-        return DB::raw("ST_GeomFromText('{$wkt}', {$geometryOrColumn->srid})");
-        // @codeCoverageIgnoreEnd
-      }
-
-      return DB::raw("ST_GeomFromText('{$wkt}', {$geometryOrColumn->srid}, 'axis-order=long-lat')");
+      return $geometryOrColumn->toSqlExpression($this->getConnection());
     }
 
     return DB::raw($this->getQuery()->getGrammar()->wrap($geometryOrColumn));

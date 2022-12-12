@@ -7,7 +7,6 @@ namespace MatanYadaev\EloquentSpatial;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Expression;
-use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
@@ -69,17 +68,7 @@ class GeometryCast implements CastsAttributes
       );
     }
 
-    $wkt = $value->toWkt();
-
-    $connection = $model->getConnection();
-
-    if (! (new AxisOrder)->supported($connection)) {
-      // @codeCoverageIgnoreStart
-      return DB::raw("ST_GeomFromText('{$wkt}', {$value->srid})");
-      // @codeCoverageIgnoreEnd
-    }
-
-    return DB::raw("ST_GeomFromText('{$wkt}', {$value->srid}, 'axis-order=long-lat')");
+    return $value->toSqlExpression($model->getConnection());
   }
 
   private function extractWktFromExpression(Expression $expression): string
