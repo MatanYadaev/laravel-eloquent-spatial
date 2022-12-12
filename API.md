@@ -3,12 +3,12 @@
 ## Available geometry classes
 
 * `Point(float $latitude, float $longitude, int $srid = 0)` - [MySQL Point](https://dev.mysql.com/doc/refman/8.0/en/gis-class-point.html)
-* `MultiPoint(Point[] | Collection<Point>, int $srid = 0)` - [MySQL MultiPoint](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipoint.html)
-* `LineString(Point[] | Collection<Point>, int $srid = 0)` - [MySQL LineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-linestring.html)
-* `MultiLineString(LineString[] | Collection<LineString>, int $srid = 0)` - [MySQL MultiLineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multilinestring.html)
-* `Polygon(LineString[] | Collection<LineString>, int $srid = 0)` - [MySQL Polygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-polygon.html)
-* `MultiPolygon(Polygon[] | Collection<Polygon>, int $srid = 0)` - [MySQL MultiPolygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipolygon.html)
-* `GeometryCollection(Geometry[] | Collection<Geometry>, int $srid = 0)` - [MySQL GeometryCollection](https://dev.mysql.com/doc/refman/8.0/en/gis-class-geometrycollection.html)
+* `MultiPoint(Point[] | Collection<Point> $geometries, int $srid = 0)` - [MySQL MultiPoint](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipoint.html)
+* `LineString(Point[] | Collection<Point> $geometries, int $srid = 0)` - [MySQL LineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-linestring.html)
+* `MultiLineString(LineString[] | Collection<LineString> $geometries, int $srid = 0)` - [MySQL MultiLineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multilinestring.html)
+* `Polygon(LineString[] | Collection<LineString> $geometries, int $srid = 0)` - [MySQL Polygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-polygon.html)
+* `MultiPolygon(Polygon[] | Collection<Polygon> $geometries, int $srid = 0)` - [MySQL MultiPolygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipolygon.html)
+* `GeometryCollection(Geometry[] | Collection<Geometry> $geometries, int $srid = 0)` - [MySQL GeometryCollection](https://dev.mysql.com/doc/refman/8.0/en/gis-class-geometrycollection.html)
 
 Geometry classes can be also created by these static methods:
 
