@@ -104,3 +104,13 @@ it('throws exception when cast deserializing incorrect geometry object', functio
     $testPlace->getAttribute('point_with_line_string_cast');
   })->toThrow(InvalidArgumentException::class);
 });
+
+it('creates a model record with geometry from geo json array', function (): void {
+  $point = new Point(0, 180);
+  $pointGeoJsonArray = $point->toArray();
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->make(['point' => $pointGeoJsonArray]);
+
+  expect($testPlace->point)->toEqual($point);
+});
