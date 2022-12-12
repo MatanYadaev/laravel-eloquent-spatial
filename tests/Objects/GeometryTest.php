@@ -83,7 +83,7 @@ it('creates an SQL expression from a geometry', function (): void {
   $point = new Point(0, 180, 4326);
 
   expect($point->toSqlExpression(DB::connection()))
-    ->toEqual('ST_GeomFromText(\'POINT(180 0)\', 4326, \'axis-order=long-lat\')');
+    ->toEqual("ST_GeomFromText('POINT(180 0)', 4326, 'axis-order=long-lat')");
 })->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
 it('creates an SQL expression from a geometry - without axis-order', function (): void {
