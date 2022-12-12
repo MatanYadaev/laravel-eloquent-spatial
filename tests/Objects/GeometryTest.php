@@ -21,7 +21,7 @@ it('throws exception when generating geometry with invalid latitude', function (
     $point = (new Point(91, 0, 4326));
     TestPlace::factory()->create(['point' => $point]);
   })->toThrow(QueryException::class);
-})->skip(fn() => !(new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
 it('throws exception when generating geometry with invalid latitude - without axis-order', function (): void {
   expect(function (): void {
@@ -32,14 +32,14 @@ it('throws exception when generating geometry with invalid latitude - without ax
       ->withDistanceSphere('point', new Point(1, 1, 4326))
       ->firstOrFail();
   })->toThrow(QueryException::class);
-})->skip(fn() => (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => (new AxisOrder)->supported(DB::connection()));
 
 it('throws exception when generating geometry with invalid longitude', function (): void {
   expect(function (): void {
     $point = (new Point(0, 181, 4326));
     TestPlace::factory()->create(['point' => $point]);
   })->toThrow(QueryException::class);
-})->skip(fn() => !(new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
 it('throws exception when generating geometry with invalid longitude - without axis-order', function (): void {
   expect(function (): void {
@@ -50,7 +50,7 @@ it('throws exception when generating geometry with invalid longitude - without a
       ->withDistanceSphere('point', new Point(1, 1, 4326))
       ->firstOrFail();
   })->toThrow(QueryException::class);
-})->skip(fn() => (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => (new AxisOrder)->supported(DB::connection()));
 
 it('throws exception when generating geometry from other geometry WKT', function (): void {
   expect(function (): void {
@@ -86,7 +86,7 @@ it('creates an SQL expression from a geometry', function (): void {
   $sqlExpression = $point->toSqlExpression(DB::connection());
 
   expect($sqlExpression)->toEqual("ST_GeomFromText('POINT(180 0)', 4326, 'axis-order=long-lat')");
-})->skip(fn() => !(new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
 it('creates an SQL expression from a geometry - without axis-order', function (): void {
   $point = new Point(0, 180, 4326);
@@ -94,7 +94,7 @@ it('creates an SQL expression from a geometry - without axis-order', function ()
   $sqlExpression = $point->toSqlExpression(DB::connection());
 
   expect($sqlExpression)->toEqual("ST_GeomFromText('POINT(180 0)', 4326)");
-})->skip(fn() => (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => (new AxisOrder)->supported(DB::connection()));
 
 it('creates a geometry object from a geo json array', function (): void {
   $point = new Point(0, 180);
