@@ -65,6 +65,7 @@ use Illuminate\Database\Eloquent\Model;
 use MatanYadaev\EloquentSpatial\SpatialBuilder;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
 
 /**
  * @property Point $location
@@ -73,6 +74,8 @@ use MatanYadaev\EloquentSpatial\Objects\Polygon;
  */
 class Place extends Model
 {
+    use HasSpatial;
+
     protected $fillable = [
         'name',
         'location',
@@ -83,11 +86,6 @@ class Place extends Model
         'location' => Point::class,
         'area' => Polygon::class,
     ];
-    
-    public function newEloquentBuilder($query): SpatialBuilder
-    {
-        return new SpatialBuilder($query);
-    }
 }
 ```
 
