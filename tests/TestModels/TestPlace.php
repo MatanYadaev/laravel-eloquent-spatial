@@ -25,6 +25,8 @@ use MatanYadaev\EloquentSpatial\Tests\TestFactories\TestPlaceFactory;
  * @property float|null $distance
  * @property float|null $distance_in_meters
  * @mixin Model
+ *
+ * @method static SpatialBuilder<TestPlace> query()
  */
 class TestPlace extends Model
 {

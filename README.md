@@ -56,7 +56,7 @@ Run the migration:
 php artisan migrate
 ```
 
-Fill the `$fillable` and `$casts` arrays and add custom eloquent builder to your new model:
+Fill the `$fillable` and `$casts` arrays and use the `hastSpatial` trait in your new model:
 
 ```php
 namespace App\Models;
