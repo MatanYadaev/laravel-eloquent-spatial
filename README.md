@@ -56,7 +56,7 @@ Run the migration:
 php artisan migrate
 ```
 
-Fill the `$fillable` and `$casts` arrays and use the `hasSpatial` trait in your new model:
+Fill the `$fillable` and `$casts` arrays and use the `HasSpatial` trait in your new model:
 
 ```php
 namespace App\Models;
