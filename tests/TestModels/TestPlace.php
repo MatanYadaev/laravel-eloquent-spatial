@@ -11,8 +11,9 @@ use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
 use MatanYadaev\EloquentSpatial\Objects\MultiPolygon;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
-use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
+use MatanYadaev\EloquentSpatial\SpatialBuilder;
 use MatanYadaev\EloquentSpatial\Tests\TestFactories\TestPlaceFactory;
+use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
 
 /**
  * @property Point $point
