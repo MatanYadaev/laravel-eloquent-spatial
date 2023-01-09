@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v2.9.0 - 2023-01-09
+
+Add HasSpatial trait #75
+
 ## v2.8.0 - 2022-12-12
 
 - Cast geometry from array #71
