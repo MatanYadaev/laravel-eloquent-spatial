@@ -13,6 +13,7 @@ use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\SpatialBuilder;
 use MatanYadaev\EloquentSpatial\Tests\TestFactories\TestPlaceFactory;
+use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
 
 /**
  * @property Point $point
@@ -30,7 +31,7 @@ use MatanYadaev\EloquentSpatial\Tests\TestFactories\TestPlaceFactory;
  */
 class TestPlace extends Model
 {
-  use HasFactory;
+  use HasFactory, HasSpatial;
 
   protected $fillable = [
     'address',
@@ -54,16 +55,6 @@ class TestPlace extends Model
     'geometry_collection' => GeometryCollection::class,
     'point_with_line_string_cast' => LineString::class,
   ];
-
-  /**
-   * @param $query
-   * @return SpatialBuilder<TestPlace>
-   */
-  public function newEloquentBuilder($query): SpatialBuilder
-  {
-    // @phpstan-ignore-next-line
-    return new SpatialBuilder($query);
-  }
 
   protected static function newFactory(): TestPlaceFactory
   {
