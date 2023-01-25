@@ -22,4 +22,4 @@ jobs:
         run: composer install --prefer-dist --no-interaction
 
       - name: Run PHP CS Fixer
-        run: ./vendor/bin/php-cs-fixer fix --allow-risky=yes --diff --dry-run
+        run: PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --allow-risky=yes --diff --dry-run
