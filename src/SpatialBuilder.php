@@ -19,7 +19,7 @@ use MatanYadaev\EloquentSpatial\Objects\Geometry;
 class SpatialBuilder extends Builder
 {
   public function withDistance(
-    string $column,
+    Expression|string $column,
     Geometry|string $geometryOrColumn,
     string $alias = 'distance'
   ): self
@@ -41,7 +41,7 @@ class SpatialBuilder extends Builder
   }
 
   public function whereDistance(
-    string $column,
+    Expression|string $column,
     Geometry|string $geometryOrColumn,
     string $operator,
     int|float $value
@@ -61,7 +61,7 @@ class SpatialBuilder extends Builder
   }
 
   public function orderByDistance(
-    string $column,
+    Expression|string $column,
     Geometry|string $geometryOrColumn,
     string $direction = 'asc'
   ): self
@@ -79,7 +79,7 @@ class SpatialBuilder extends Builder
   }
 
   public function withDistanceSphere(
-    string $column,
+    Expression|string $column,
     Geometry|string $geometryOrColumn,
     string $alias = 'distance'
   ): self
@@ -101,7 +101,7 @@ class SpatialBuilder extends Builder
   }
 
   public function whereDistanceSphere(
-    string $column,
+    Expression|string $column,
     Geometry|string $geometryOrColumn,
     string $operator,
     int|float $value
@@ -121,7 +121,7 @@ class SpatialBuilder extends Builder
   }
 
   public function orderByDistanceSphere(
-    string $column,
+    Expression|string $column,
     Geometry|string $geometryOrColumn,
     string $direction = 'asc'
   ): self
@@ -138,7 +138,7 @@ class SpatialBuilder extends Builder
     return $this;
   }
 
-  public function whereWithin(string $column, Geometry|string $geometryOrColumn): self
+  public function whereWithin(Expression|string $column, Geometry|string $geometryOrColumn): self
   {
     $this->whereRaw(
       sprintf(
@@ -151,7 +151,7 @@ class SpatialBuilder extends Builder
     return $this;
   }
 
-  public function whereNotWithin(string $column, Geometry|string $geometryOrColumn): self
+  public function whereNotWithin(Expression|string $column, Geometry|string $geometryOrColumn): self
   {
     $this->whereRaw(
       sprintf(
@@ -164,7 +164,7 @@ class SpatialBuilder extends Builder
     return $this;
   }
 
-  public function whereContains(string $column, Geometry|string $geometryOrColumn): self
+  public function whereContains(Expression|string $column, Geometry|string $geometryOrColumn): self
   {
     $this->whereRaw(
       sprintf(
@@ -177,7 +177,7 @@ class SpatialBuilder extends Builder
     return $this;
   }
 
-  public function whereNotContains(string $column, Geometry|string $geometryOrColumn): self
+  public function whereNotContains(Expression|string $column, Geometry|string $geometryOrColumn): self
   {
     $this->whereRaw(
       sprintf(
@@ -190,7 +190,7 @@ class SpatialBuilder extends Builder
     return $this;
   }
 
-  public function whereTouches(string $column, Geometry|string $geometryOrColumn): self
+  public function whereTouches(Expression|string $column, Geometry|string $geometryOrColumn): self
   {
     $this->whereRaw(
       sprintf(
@@ -203,7 +203,7 @@ class SpatialBuilder extends Builder
     return $this;
   }
 
-  public function whereIntersects(string $column, Geometry|string $geometryOrColumn): self
+  public function whereIntersects(Expression|string $column, Geometry|string $geometryOrColumn): self
   {
     $this->whereRaw(
       sprintf(
@@ -216,7 +216,7 @@ class SpatialBuilder extends Builder
     return $this;
   }
 
-  public function whereCrosses(string $column, Geometry|string $geometryOrColumn): self
+  public function whereCrosses(Expression|string $column, Geometry|string $geometryOrColumn): self
   {
     $this->whereRaw(
       sprintf(
@@ -229,7 +229,7 @@ class SpatialBuilder extends Builder
     return $this;
   }
 
-  public function whereDisjoint(string $column, Geometry|string $geometryOrColumn): self
+  public function whereDisjoint(Expression|string $column, Geometry|string $geometryOrColumn): self
   {
     $this->whereRaw(
       sprintf(
@@ -242,7 +242,7 @@ class SpatialBuilder extends Builder
     return $this;
   }
 
-  public function whereOverlaps(string $column, Geometry|string $geometryOrColumn): self
+  public function whereOverlaps(Expression|string $column, Geometry|string $geometryOrColumn): self
   {
     $this->whereRaw(
       sprintf(
@@ -255,7 +255,7 @@ class SpatialBuilder extends Builder
     return $this;
   }
 
-  public function whereEquals(string $column, Geometry|string $geometryOrColumn): self
+  public function whereEquals(Expression|string $column, Geometry|string $geometryOrColumn): self
   {
     $this->whereRaw(
       sprintf(
