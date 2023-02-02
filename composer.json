@@ -1,60 +1,60 @@
 {
-  "name": "matanyadaev/laravel-eloquent-spatial",
-  "description": "Spatial library for Laravel",
-  "homepage": "https://github.com/matanyadaev/laravel-eloquent-spatial",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Matan Yadaev",
-      "email": "matan.yed@gmail.com"
+    "name": "matanyadaev/laravel-eloquent-spatial",
+    "description": "Spatial library for Laravel",
+    "homepage": "https://github.com/matanyadaev/laravel-eloquent-spatial",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matan Yadaev",
+            "email": "matan.yed@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "ext-json": "*",
+        "ext-pdo": "*",
+        "laravel/framework": "^8.0|^9.0|^10.0",
+        "phayes/geophp": "^1.2"
+    },
+    "require-dev": {
+        "doctrine/dbal": "^3.4",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "jubeki/laravel-code-style": "^1.0",
+        "nunomaduro/larastan": "^1.0|^2.0",
+        "orchestra/testbench": "^6.23|^7.0|^8.0",
+        "pestphp/pest": "^1.21",
+        "pestphp/pest-plugin-laravel": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "MatanYadaev\\EloquentSpatial\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MatanYadaev\\EloquentSpatial\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "php-cs-fixer": "PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --allow-risky=yes",
+        "phpstan": "./vendor/bin/phpstan analyse --memory-limit=2G",
+        "pest": "./vendor/bin/pest",
+        "pest-coverage": "XDEBUG_MODE=coverage ./vendor/bin/pest --coverage --min=100"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": false,
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MatanYadaev\\EloquentSpatial\\EloquentSpatialServiceProvider"
+            ]
+        }
     }
-  ],
-  "require": {
-    "php": "^8.0",
-    "ext-json": "*",
-    "ext-pdo": "*",
-    "laravel/framework": "^8.0|^9.0",
-    "phayes/geophp": "^1.2"
-  },
-  "require-dev": {
-    "doctrine/dbal": "^3.4",
-    "friendsofphp/php-cs-fixer": "^3.0",
-    "jubeki/laravel-code-style": "^1.0",
-    "nunomaduro/larastan": "^1.0|^2.0",
-    "orchestra/testbench": "^6.23|^7.0",
-    "pestphp/pest": "^1.21",
-    "pestphp/pest-plugin-laravel": "^1.2"
-  },
-  "autoload": {
-    "psr-4": {
-      "MatanYadaev\\EloquentSpatial\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "MatanYadaev\\EloquentSpatial\\Tests\\": "tests"
-    }
-  },
-  "scripts": {
-    "php-cs-fixer": "PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --allow-risky=yes",
-    "phpstan": "./vendor/bin/phpstan analyse --memory-limit=2G",
-    "pest": "./vendor/bin/pest",
-    "pest-coverage": "XDEBUG_MODE=coverage ./vendor/bin/pest --coverage --min=100"
-  },
-  "config": {
-    "sort-packages": true,
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": false,
-      "pestphp/pest-plugin": true
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "extra": {
-    "laravel": {
-      "providers": [
-        "MatanYadaev\\EloquentSpatial\\EloquentSpatialServiceProvider"
-      ]
-    }
-  }
 }
