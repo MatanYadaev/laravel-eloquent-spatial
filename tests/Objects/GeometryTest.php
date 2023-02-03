@@ -3,7 +3,6 @@
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\AxisOrder;
-use MatanYadaev\EloquentSpatial\Expression;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
@@ -84,21 +83,21 @@ it('throws exception when generating geometry from other geometry JSON', functio
 it('creates an SQL expression from a geometry', function (): void {
   $point = new Point(0, 180, 4326);
 
-  $sqlExpression = $point->toSqlExpression(DB::connection());
+  $expression = $point->toSqlExpression(DB::connection());
 
   $grammar = DB::getQueryGrammar();
-  $sqlExpression = Expression::getValue($sqlExpression, $grammar);
-  expect($sqlExpression)->toEqual("ST_GeomFromText('POINT(180 0)', 4326, 'axis-order=long-lat')");
+  $expressionValue = $expression->getValue($grammar);
+  expect($expressionValue)->toEqual("ST_GeomFromText('POINT(180 0)', 4326, 'axis-order=long-lat')");
 })->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
 it('creates an SQL expression from a geometry - without axis-order', function (): void {
   $point = new Point(0, 180, 4326);
 
-  $sqlExpression = $point->toSqlExpression(DB::connection());
+  $expression = $point->toSqlExpression(DB::connection());
 
   $grammar = DB::getQueryGrammar();
-  $sqlExpression = Expression::getValue($sqlExpression, $grammar);
-  expect($sqlExpression)->toEqual("ST_GeomFromText('POINT(180 0)', 4326)");
+  $expressionValue = $expression->getValue($grammar);
+  expect($expressionValue)->toEqual("ST_GeomFromText('POINT(180 0)', 4326)");
 })->skip(fn () => (new AxisOrder)->supported(DB::connection()));
 
 it('creates a geometry object from a geo json array', function (): void {

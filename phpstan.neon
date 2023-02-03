@@ -5,8 +5,7 @@ parameters:
     - src
     - tests
   excludePaths:
-    - ./src/Factory.php
-    - src/Expression.php
+    - src/Factory.php
   level: max
   ignoreErrors:
     -

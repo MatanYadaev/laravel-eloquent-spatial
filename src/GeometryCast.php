@@ -79,7 +79,7 @@ class GeometryCast implements CastsAttributes
   private function extractWktFromExpression(ExpressionContract $expression, Connection $connection): string
   {
     $grammar = $connection->getQueryGrammar();
-    $expressionValue = Expression::getValue($expression, $grammar);
+    $expressionValue = $expression->getValue($grammar);
 
     preg_match('/ST_GeomFromText\(\'(.+)\', .+(, .+)?\)/', (string) $expressionValue, $match);
 
@@ -89,7 +89,7 @@ class GeometryCast implements CastsAttributes
   private function extractSridFromExpression(ExpressionContract $expression, Connection $connection): int
   {
     $grammar = $connection->getQueryGrammar();
-    $expressionValue = Expression::getValue($expression, $grammar);
+    $expressionValue = $expression->getValue($grammar);
 
     preg_match('/ST_GeomFromText\(\'.+\', (.+)(, .+)?\)/', (string) $expressionValue, $match);
 

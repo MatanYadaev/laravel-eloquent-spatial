@@ -329,6 +329,6 @@ class SpatialBuilder extends Builder
       $expression = DB::raw($grammar->wrap($geometryOrColumn));
     }
 
-    return Expression::getValue($expression, $grammar);
+    return (string) $expression->getValue($grammar);
   }
 }
