@@ -13,7 +13,7 @@ jobs:
       matrix:
         php: [ 8.2, 8.1 ]
         laravel: [ 10.*, 9.* ]
-        db: [ mysql:8.0, mysql:5.7, mariadb:10.9 ]
+        db: [ 'mysql:8.0', 'mysql:5.7', 'mariadb:10.9' ]
         dependency-version: [ prefer-lowest, prefer-stable ]
         include:
           - laravel: 10.*
