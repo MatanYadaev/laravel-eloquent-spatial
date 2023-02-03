@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MatanYadaev\EloquentSpatial;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Expression;
 use InvalidArgumentException;
@@ -37,8 +38,8 @@ class GeometryCast implements CastsAttributes
     }
 
     if ($value instanceof Expression) {
-      $wkt = $this->extractWktFromExpression($value);
-      $srid = $this->extractSridFromExpression($value);
+      $wkt = $this->extractWktFromExpression($value, $model->getConnection());
+      $srid = $this->extractSridFromExpression($value, $model->getConnection());
 
       return $this->className::fromWkt($wkt, $srid);
     }
@@ -75,16 +76,22 @@ class GeometryCast implements CastsAttributes
     return $value->toSqlExpression($model->getConnection());
   }
 
-  private function extractWktFromExpression(Expression $expression): string
+  private function extractWktFromExpression(Expression $expression, Connection $connection): string
   {
-    preg_match('/ST_GeomFromText\(\'(.+)\', .+(, .+)?\)/', (string) $expression, $match);
+    $grammar = $connection->getQueryGrammar();
+    $expressionValue = $expression->getValue($grammar);
+
+    preg_match('/ST_GeomFromText\(\'(.+)\', .+(, .+)?\)/', $expressionValue, $match);
 
     return $match[1];
   }
 
-  private function extractSridFromExpression(Expression $expression): int
+  private function extractSridFromExpression(Expression $expression, Connection $connection): int
   {
-    preg_match('/ST_GeomFromText\(\'.+\', (.+)(, .+)?\)/', (string) $expression, $match);
+    $grammar = $connection->getQueryGrammar();
+    $expressionValue = $expression->getValue($grammar);
+
+    preg_match('/ST_GeomFromText\(\'.+\', (.+)(, .+)?\)/', $expressionValue, $match);
 
     return (int) $match[1];
   }
