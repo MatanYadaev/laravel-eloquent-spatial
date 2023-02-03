@@ -95,6 +95,8 @@ it('creates an SQL expression from a geometry - without axis-order', function ()
 
   $sqlExpression = $point->toSqlExpression(DB::connection());
 
+  $grammar = DB::query()->getGrammar();
+  $sqlExpression = $sqlExpression->getValue($grammar);
   expect($sqlExpression)->toEqual("ST_GeomFromText('POINT(180 0)', 4326)");
 })->skip(fn () => (new AxisOrder)->supported(DB::connection()));
 
