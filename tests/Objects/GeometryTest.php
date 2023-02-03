@@ -3,6 +3,7 @@
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\AxisOrder;
+use MatanYadaev\EloquentSpatial\Expression;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
@@ -85,8 +86,8 @@ it('creates an SQL expression from a geometry', function (): void {
 
   $sqlExpression = $point->toSqlExpression(DB::connection());
 
-  $grammar = DB::query()->getGrammar();
-  $sqlExpression = $sqlExpression->getValue($grammar);
+  $grammar = DB::getQueryGrammar();
+  $sqlExpression = Expression::getValue($sqlExpression, $grammar);
   expect($sqlExpression)->toEqual("ST_GeomFromText('POINT(180 0)', 4326, 'axis-order=long-lat')");
 })->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
@@ -95,8 +96,8 @@ it('creates an SQL expression from a geometry - without axis-order', function ()
 
   $sqlExpression = $point->toSqlExpression(DB::connection());
 
-  $grammar = DB::query()->getGrammar();
-  $sqlExpression = $sqlExpression->getValue($grammar);
+  $grammar = DB::getQueryGrammar();
+  $sqlExpression = Expression::getValue($sqlExpression, $grammar);
   expect($sqlExpression)->toEqual("ST_GeomFromText('POINT(180 0)', 4326)");
 })->skip(fn () => (new AxisOrder)->supported(DB::connection()));
 

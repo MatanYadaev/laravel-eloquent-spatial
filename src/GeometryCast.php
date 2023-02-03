@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MatanYadaev\EloquentSpatial;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Illuminate\Contracts\Database\Query\Expression;
+use Illuminate\Contracts\Database\Query\Expression as ExpressionContract;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
@@ -27,7 +27,7 @@ class GeometryCast implements CastsAttributes
   /**
    * @param  Model  $model
    * @param  string  $key
-   * @param  string|Expression|null  $value
+   * @param  string|ExpressionContract|null  $value
    * @param  array<string, mixed>  $attributes
    * @return Geometry|null
    */
@@ -37,7 +37,7 @@ class GeometryCast implements CastsAttributes
       return null;
     }
 
-    if ($value instanceof Expression) {
+    if ($value instanceof ExpressionContract) {
       $wkt = $this->extractWktFromExpression($value, $model->getConnection());
       $srid = $this->extractSridFromExpression($value, $model->getConnection());
 
@@ -52,11 +52,11 @@ class GeometryCast implements CastsAttributes
    * @param  string  $key
    * @param  Geometry|mixed|null  $value
    * @param  array<string, mixed>  $attributes
-   * @return Expression|null
+   * @return ExpressionContract|null
    *
    * @throws InvalidArgumentException
    */
-  public function set($model, string $key, $value, array $attributes): Expression|null
+  public function set($model, string $key, $value, array $attributes): ExpressionContract|null
   {
     if (! $value) {
       return null;
@@ -76,20 +76,20 @@ class GeometryCast implements CastsAttributes
     return $value->toSqlExpression($model->getConnection());
   }
 
-  private function extractWktFromExpression(Expression $expression, Connection $connection): string
+  private function extractWktFromExpression(ExpressionContract $expression, Connection $connection): string
   {
     $grammar = $connection->getQueryGrammar();
-    $expressionValue = $expression->getValue($grammar);
+    $expressionValue = Expression::getValue($expression, $grammar);
 
     preg_match('/ST_GeomFromText\(\'(.+)\', .+(, .+)?\)/', (string) $expressionValue, $match);
 
     return $match[1];
   }
 
-  private function extractSridFromExpression(Expression $expression, Connection $connection): int
+  private function extractSridFromExpression(ExpressionContract $expression, Connection $connection): int
   {
     $grammar = $connection->getQueryGrammar();
-    $expressionValue = $expression->getValue($grammar);
+    $expressionValue = Expression::getValue($expression, $grammar);
 
     preg_match('/ST_GeomFromText\(\'.+\', (.+)(, .+)?\)/', (string) $expressionValue, $match);
 

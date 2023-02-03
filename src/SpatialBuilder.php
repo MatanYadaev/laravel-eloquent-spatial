@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial;
 
-use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
@@ -34,7 +33,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_DISTANCE(%s, %s) AS %s',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
         $alias,
       )
     );
@@ -55,7 +54,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_DISTANCE(%s, %s) %s ?',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
         $operator,
       ),
       [$value],
@@ -76,7 +75,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_DISTANCE(%s, %s) %s',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
         $direction,
       )
     );
@@ -100,7 +99,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_DISTANCE_SPHERE(%s, %s) AS %s',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
         $alias,
       )
     );
@@ -121,7 +120,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_DISTANCE_SPHERE(%s, %s) %s ?',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
         $operator,
       ),
       [$value],
@@ -142,7 +141,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_DISTANCE_SPHERE(%s, %s) %s',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
         $direction
       )
     );
@@ -158,7 +157,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_WITHIN(%s, %s)',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
       )
     );
 
@@ -173,7 +172,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_WITHIN(%s, %s) = 0',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
       )
     );
 
@@ -188,7 +187,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_CONTAINS(%s, %s)',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
       )
     );
 
@@ -203,7 +202,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_CONTAINS(%s, %s) = 0',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
       )
     );
 
@@ -218,7 +217,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_TOUCHES(%s, %s)',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
       )
     );
 
@@ -233,7 +232,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_INTERSECTS(%s, %s)',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
       )
     );
 
@@ -248,7 +247,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_CROSSES(%s, %s)',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
       )
     );
 
@@ -263,7 +262,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_DISJOINT(%s, %s)',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
       )
     );
 
@@ -278,7 +277,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_OVERLAPS(%s, %s)',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
       )
     );
 
@@ -293,7 +292,7 @@ class SpatialBuilder extends Builder
       sprintf(
         'ST_EQUALS(%s, %s)',
         $grammar->wrap($column),
-        $this->toExpression($geometryOrColumn)->getValue($grammar),
+        $this->toExpressionString($geometryOrColumn),
       )
     );
 
@@ -320,14 +319,16 @@ class SpatialBuilder extends Builder
     return $this;
   }
 
-  protected function toExpression(Geometry|string $geometryOrColumn): Expression
+  protected function toExpressionString(Geometry|string $geometryOrColumn): string
   {
-    if ($geometryOrColumn instanceof Geometry) {
-      return $geometryOrColumn->toSqlExpression($this->getConnection());
-    }
-
     $grammar = $this->getQuery()->getGrammar();
 
-    return DB::raw($grammar->wrap($geometryOrColumn));
+    if ($geometryOrColumn instanceof Geometry) {
+      $expression = $geometryOrColumn->toSqlExpression($this->getConnection());
+    } else {
+      $expression = DB::raw($grammar->wrap($geometryOrColumn));
+    }
+
+    return Expression::getValue($expression, $grammar);
   }
 }
