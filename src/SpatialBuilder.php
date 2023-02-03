@@ -27,7 +27,7 @@ class SpatialBuilder extends Builder
       $this->select('*');
     }
 
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->selectRaw(
       sprintf(
@@ -48,7 +48,7 @@ class SpatialBuilder extends Builder
     int|float $value
   ): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->whereRaw(
       sprintf(
@@ -69,7 +69,7 @@ class SpatialBuilder extends Builder
     string $direction = 'asc'
   ): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->orderByRaw(
       sprintf(
@@ -93,7 +93,7 @@ class SpatialBuilder extends Builder
       $this->select('*');
     }
 
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->selectRaw(
       sprintf(
@@ -114,7 +114,7 @@ class SpatialBuilder extends Builder
     int|float $value
   ): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->whereRaw(
       sprintf(
@@ -135,7 +135,7 @@ class SpatialBuilder extends Builder
     string $direction = 'asc'
   ): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->orderByRaw(
       sprintf(
@@ -151,7 +151,7 @@ class SpatialBuilder extends Builder
 
   public function whereWithin(string $column, Geometry|string $geometryOrColumn): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->whereRaw(
       sprintf(
@@ -166,7 +166,7 @@ class SpatialBuilder extends Builder
 
   public function whereNotWithin(string $column, Geometry|string $geometryOrColumn): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->whereRaw(
       sprintf(
@@ -181,7 +181,7 @@ class SpatialBuilder extends Builder
 
   public function whereContains(string $column, Geometry|string $geometryOrColumn): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->whereRaw(
       sprintf(
@@ -196,7 +196,7 @@ class SpatialBuilder extends Builder
 
   public function whereNotContains(string $column, Geometry|string $geometryOrColumn): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->whereRaw(
       sprintf(
@@ -211,7 +211,7 @@ class SpatialBuilder extends Builder
 
   public function whereTouches(string $column, Geometry|string $geometryOrColumn): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->whereRaw(
       sprintf(
@@ -241,7 +241,7 @@ class SpatialBuilder extends Builder
 
   public function whereCrosses(string $column, Geometry|string $geometryOrColumn): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->whereRaw(
       sprintf(
@@ -256,7 +256,7 @@ class SpatialBuilder extends Builder
 
   public function whereDisjoint(string $column, Geometry|string $geometryOrColumn): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->whereRaw(
       sprintf(
@@ -271,7 +271,7 @@ class SpatialBuilder extends Builder
 
   public function whereOverlaps(string $column, Geometry|string $geometryOrColumn): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->whereRaw(
       sprintf(
@@ -286,7 +286,7 @@ class SpatialBuilder extends Builder
 
   public function whereEquals(string $column, Geometry|string $geometryOrColumn): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->whereRaw(
       sprintf(
@@ -305,7 +305,7 @@ class SpatialBuilder extends Builder
     int|float $value
   ): self
   {
-    $grammar = $this->query->grammar;
+    $grammar = $this->getQuery()->getGrammar();
 
     $this->whereRaw(
       sprintf(
