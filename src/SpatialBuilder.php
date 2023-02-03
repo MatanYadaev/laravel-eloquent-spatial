@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial;
 
+use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 

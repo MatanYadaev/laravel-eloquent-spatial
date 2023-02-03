@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace MatanYadaev\EloquentSpatial;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Contracts\Database\Query\Expression;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Expression;
 use InvalidArgumentException;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
@@ -63,7 +63,7 @@ class GeometryCast implements CastsAttributes
     }
 
     if (is_array($value)) {
-        $value = Geometry::fromArray($value);
+      $value = Geometry::fromArray($value);
     }
 
     if (! ($value instanceof $this->className)) {
@@ -81,7 +81,7 @@ class GeometryCast implements CastsAttributes
     $grammar = $connection->getQueryGrammar();
     $expressionValue = $expression->getValue($grammar);
 
-    preg_match('/ST_GeomFromText\(\'(.+)\', .+(, .+)?\)/', $expressionValue, $match);
+    preg_match('/ST_GeomFromText\(\'(.+)\', .+(, .+)?\)/', (string) $expressionValue, $match);
 
     return $match[1];
   }
@@ -91,7 +91,7 @@ class GeometryCast implements CastsAttributes
     $grammar = $connection->getQueryGrammar();
     $expressionValue = $expression->getValue($grammar);
 
-    preg_match('/ST_GeomFromText\(\'.+\', (.+)(, .+)?\)/', $expressionValue, $match);
+    preg_match('/ST_GeomFromText\(\'.+\', (.+)(, .+)?\)/', (string) $expressionValue, $match);
 
     return (int) $match[1];
   }

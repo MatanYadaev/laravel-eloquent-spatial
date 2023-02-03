@@ -21,7 +21,7 @@
     "friendsofphp/php-cs-fixer": "^3.0",
     "jubeki/laravel-code-style": "^1.0",
     "nunomaduro/larastan": "^1.0|^2.0",
-    "orchestra/testbench": "^^7.0|^8.0",
+    "orchestra/testbench": "^7.0|^8.0",
     "pestphp/pest": "^1.21",
     "pestphp/pest-plugin-laravel": "^1.2"
   },
