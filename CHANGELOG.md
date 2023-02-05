@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v3.0.0 - 2023-02-03
+
+Support Larave 10
+
+## v2.10.0 - 2023-01-25
+
+Support PHP 8.2 #74
+
 ## v2.9.0 - 2023-01-09
 
 Add HasSpatial trait #75

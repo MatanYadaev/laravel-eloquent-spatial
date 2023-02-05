@@ -1,12 +1,14 @@
 # Laravel Eloquent Spatial
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/matanyadaev/laravel-eloquent-spatial.svg?style=flat-square)](https://packagist.org/packages/matanyadaev/laravel-eloquent-spatial)
-![Tests](https://img.shields.io/github/workflow/status/matanyadaev/laravel-eloquent-spatial/Tests?label=tests)
+![Tests](https://github.com/matanyadaev/laravel-eloquent-spatial/workflows/Tests/badge.svg)
 ![Static code analysis](https://github.com/matanyadaev/laravel-eloquent-spatial/workflows/Static%20code%20analysis/badge.svg)
 ![Lint](https://github.com/matanyadaev/laravel-eloquent-spatial/workflows/Lint/badge.svg)
 [![Total Downloads](https://img.shields.io/packagist/dt/matanyadaev/laravel-eloquent-spatial.svg?style=flat-square)](https://packagist.org/packages/matanyadaev/laravel-eloquent-spatial)
 
 Laravel package to work with spatial data types and functions.
+
+The latest version (v3) supports Laravel 10 and PHP 8.1+. For Laravel 8 or 9, and PHP 8.0, use v2.
 
 This package supports MySQL v8, MySQL v5.7, and MariaDB v10.
 

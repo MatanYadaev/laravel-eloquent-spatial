@@ -7,10 +7,10 @@ namespace MatanYadaev\EloquentSpatial\Objects;
 use geoPHP;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Contracts\Database\Query\Expression as ExpressionContract;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\ConnectionInterface;
-use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
@@ -210,9 +210,9 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
 
   /**
    * @param  ConnectionInterface  $connection
-   * @return Expression
+   * @return ExpressionContract
    */
-  public function toSqlExpression(ConnectionInterface $connection): Expression
+  public function toSqlExpression(ConnectionInterface $connection): ExpressionContract
   {
     $wkt = $this->toWkt();
 
