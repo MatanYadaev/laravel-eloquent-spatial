@@ -403,3 +403,52 @@ it('uses spatial function on column that contains its table name', function (): 
 
   expect($testPlaceWithDistance->distance)->toBe(0.0);
 });
+
+it('uses spatial function on raw expression', function(): void {
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
+  TestPlace::factory()->create([
+    'longitude' => 0,
+    'latitude' => 0,
+    'polygon' => $polygon,
+  ]);
+
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->whereWithin(DB::raw('POINT(longitude, latitude)'), 'polygon')
+    ->firstOrFail();
+
+  expect($testPlaceWithDistance)->not()->toBeNull();
+});
+
+it('toExpression can handle Expression', function(): void {
+  $spatialBuilder = TestPlace::query();
+  $toExpressionMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpression');
+
+  $result = $toExpressionMethod->invoke($spatialBuilder, DB::raw('POINT(longitude, latitude)'));
+
+  expect($result->getValue())->toBe('POINT(longitude, latitude)');
+});
+
+
+it('toExpression can handle Geometry', function(): void {
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
+
+  $spatialBuilder = TestPlace::query();
+  $toExpressionMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpression');
+
+  $result = $toExpressionMethod->invoke($spatialBuilder, $polygon);
+
+  $sqlSerializedPolygon = $polygon->toSqlExpression($spatialBuilder->getConnection())->getValue();
+
+  expect($result->getValue())->toBe($sqlSerializedPolygon);
+});
+
+
+it('toExpression can handle string', function(): void {
+  $spatialBuilder = TestPlace::query();
+  $toExpressionMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpression');
+
+  $result = $toExpressionMethod->invoke($spatialBuilder, 'test_places.point');
+
+  expect($result->getValue())->toBe('`test_places`.`point`');
+});
