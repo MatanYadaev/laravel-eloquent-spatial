@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MatanYadaev\EloquentSpatial;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\Expression;
+use Illuminate\Contracts\Database\Query\Expression as ExpressionContract;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
@@ -19,8 +19,8 @@ use MatanYadaev\EloquentSpatial\Objects\Geometry;
 class SpatialBuilder extends Builder
 {
   public function withDistance(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
     string $alias = 'distance'
   ): self
   {
@@ -41,8 +41,8 @@ class SpatialBuilder extends Builder
   }
 
   public function whereDistance(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
     string $operator,
     int|float $value
   ): self
@@ -61,8 +61,8 @@ class SpatialBuilder extends Builder
   }
 
   public function orderByDistance(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
     string $direction = 'asc'
   ): self
   {
@@ -79,8 +79,8 @@ class SpatialBuilder extends Builder
   }
 
   public function withDistanceSphere(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
     string $alias = 'distance'
   ): self
   {
@@ -101,8 +101,8 @@ class SpatialBuilder extends Builder
   }
 
   public function whereDistanceSphere(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
     string $operator,
     int|float $value
   ): self
@@ -121,8 +121,8 @@ class SpatialBuilder extends Builder
   }
 
   public function orderByDistanceSphere(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
     string $direction = 'asc'
   ): self
   {
@@ -139,8 +139,8 @@ class SpatialBuilder extends Builder
   }
 
   public function whereWithin(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
   ): self
   {
     $this->whereRaw(
@@ -155,8 +155,8 @@ class SpatialBuilder extends Builder
   }
 
   public function whereNotWithin(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
   ): self
   {
     $this->whereRaw(
@@ -171,8 +171,8 @@ class SpatialBuilder extends Builder
   }
 
   public function whereContains(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
   ): self
   {
     $this->whereRaw(
@@ -187,8 +187,8 @@ class SpatialBuilder extends Builder
   }
 
   public function whereNotContains(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
   ): self
   {
     $this->whereRaw(
@@ -203,8 +203,8 @@ class SpatialBuilder extends Builder
   }
 
   public function whereTouches(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
   ): self
   {
     $this->whereRaw(
@@ -219,8 +219,8 @@ class SpatialBuilder extends Builder
   }
 
   public function whereIntersects(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
   ): self
   {
     $this->whereRaw(
@@ -235,8 +235,8 @@ class SpatialBuilder extends Builder
   }
 
   public function whereCrosses(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
   ): self
   {
     $this->whereRaw(
@@ -251,8 +251,8 @@ class SpatialBuilder extends Builder
   }
 
   public function whereDisjoint(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
   ): self
   {
     $this->whereRaw(
@@ -267,8 +267,8 @@ class SpatialBuilder extends Builder
   }
 
   public function whereOverlaps(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
   ): self
   {
     $this->whereRaw(
@@ -283,8 +283,8 @@ class SpatialBuilder extends Builder
   }
 
   public function whereEquals(
-    Expression|Geometry|string $column,
-    Expression|Geometry|string $geometryOrColumn,
+    ExpressionContract|Geometry|string $column,
+    ExpressionContract|Geometry|string $geometryOrColumn,
   ): self
   {
     $this->whereRaw(
@@ -299,7 +299,7 @@ class SpatialBuilder extends Builder
   }
 
   public function whereSrid(
-    Expression|Geometry|string $column,
+    ExpressionContract|Geometry|string $column,
     string $operator,
     int|float $value
   ): self
@@ -316,11 +316,11 @@ class SpatialBuilder extends Builder
     return $this;
   }
 
-  protected function toExpressionString(Expression|Geometry|string $geometryOrColumnOrExpression): string
+  protected function toExpressionString(ExpressionContract|Geometry|string $geometryOrColumnOrExpression): string
   {
     $grammar = $this->getQuery()->getGrammar();
 
-    if ($geometryOrColumnOrExpression instanceof Expression) {
+    if ($geometryOrColumnOrExpression instanceof ExpressionContract) {
       $expression = $geometryOrColumnOrExpression;
     } else if ($geometryOrColumnOrExpression instanceof Geometry) {
       $expression = $geometryOrColumnOrExpression->toSqlExpression($this->getConnection());

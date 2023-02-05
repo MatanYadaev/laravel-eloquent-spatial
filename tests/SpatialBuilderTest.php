@@ -420,35 +420,36 @@ it('uses spatial function on raw expression', function(): void {
   expect($testPlaceWithDistance)->not()->toBeNull();
 });
 
-it('toExpression can handle Expression', function(): void {
+it('toExpressionString can handle Expression', function(): void {
   $spatialBuilder = TestPlace::query();
-  $toExpressionMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpression');
+  $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
 
-  $result = $toExpressionMethod->invoke($spatialBuilder, DB::raw('POINT(longitude, latitude)'));
+  $result = $toExpressionStringMethod->invoke($spatialBuilder, DB::raw('POINT(longitude, latitude)'));
 
-  expect($result->getValue())->toBe('POINT(longitude, latitude)');
+  expect($result)->toBe('POINT(longitude, latitude)');
 });
 
 
-it('toExpression can handle Geometry', function(): void {
+it('toExpressionString can handle Geometry', function(): void {
   $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
 
   $spatialBuilder = TestPlace::query();
-  $toExpressionMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpression');
+  $grammar = $spatialBuilder->getQuery()->getGrammar();
+  $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
 
-  $result = $toExpressionMethod->invoke($spatialBuilder, $polygon);
+  $result = $toExpressionStringMethod->invoke($spatialBuilder, $polygon);
 
-  $sqlSerializedPolygon = $polygon->toSqlExpression($spatialBuilder->getConnection())->getValue();
+  $sqlSerializedPolygon = $polygon->toSqlExpression($spatialBuilder->getConnection())->getValue($grammar);
 
-  expect($result->getValue())->toBe($sqlSerializedPolygon);
+  expect($result)->toBe($sqlSerializedPolygon);
 });
 
 
-it('toExpression can handle string', function(): void {
+it('toExpressionString can handle string', function(): void {
   $spatialBuilder = TestPlace::query();
-  $toExpressionMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpression');
+  $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
 
-  $result = $toExpressionMethod->invoke($spatialBuilder, 'test_places.point');
+  $result = $toExpressionStringMethod->invoke($spatialBuilder, 'test_places.point');
 
-  expect($result->getValue())->toBe('`test_places`.`point`');
+  expect($result)->toBe('`test_places`.`point`');
 });
