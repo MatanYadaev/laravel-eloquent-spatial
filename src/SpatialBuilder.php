@@ -318,7 +318,7 @@ class SpatialBuilder extends Builder
 
   protected function toExpressionString(ExpressionContract|Geometry|string $geometryOrColumnOrExpression): string
   {
-    $grammar = $this->getQuery()->getGrammar();
+    $grammar = $this->getGrammar();
 
     if ($geometryOrColumnOrExpression instanceof ExpressionContract) {
       $expression = $geometryOrColumnOrExpression;

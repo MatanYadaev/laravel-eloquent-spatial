@@ -10,18 +10,7 @@ use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 uses(DatabaseMigrations::class);
 
-it('calculates distance between column and column', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
-
-  /** @var TestPlace $testPlaceWithDistance */
-  $testPlaceWithDistance = TestPlace::query()
-    ->withDistance('point', 'point')
-    ->firstOrFail();
-
-  expect($testPlaceWithDistance->distance)->toBe(0.0);
-});
-
-it('calculates distance between column and geometry', function (): void {
+it('calculates distance', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
@@ -32,7 +21,7 @@ it('calculates distance between column and geometry', function (): void {
   expect($testPlaceWithDistance->distance)->toBe(156897.79947260793);
 })->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
-it('calculates distance between column and geometry - without axis-order', function (): void {
+it('calculates distance - without axis-order', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
@@ -121,18 +110,7 @@ it('orders by distance DESC', function (): void {
   expect($testPlacesOrderedByDistance[0]->id)->toBe($fartherTestPlace->id);
 });
 
-it('calculates distance sphere column and column', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
-
-  /** @var TestPlace $testPlaceWithDistance */
-  $testPlaceWithDistance = TestPlace::query()
-    ->withDistanceSphere('point', 'point')
-    ->firstOrFail();
-
-  expect($testPlaceWithDistance->distance)->toBe(0.0);
-});
-
-it('calculates distance sphere column and geometry', function (): void {
+it('calculates distance sphere', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
@@ -143,7 +121,7 @@ it('calculates distance sphere column and geometry', function (): void {
   expect($testPlaceWithDistance->distance)->toBe(157249.59776850493);
 })->skip(fn () =>! (new AxisOrder)->supported(DB::connection()));
 
-it('calculates distance sphere column and geometry - without axis-order', function (): void {
+it('calculates distance sphere - without axis-order', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
@@ -393,7 +371,18 @@ it('filters by SRID', function (): void {
   expect($testPlaces[0]->point)->toEqual($point1);
 });
 
-it('uses spatial function on column that contains its table name', function (): void {
+it('uses spatial function with column', function (): void {
+  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->withDistance('point', 'point')
+    ->firstOrFail();
+
+  expect($testPlaceWithDistance->distance)->toBe(0.0);
+});
+
+it('uses spatial function with column that contains table name', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
 
   /** @var TestPlace $testPlaceWithDistance */
@@ -404,23 +393,23 @@ it('uses spatial function on column that contains its table name', function (): 
   expect($testPlaceWithDistance->distance)->toBe(0.0);
 });
 
-it('uses spatial function on raw expression', function (): void {
+it('uses spatial function with expression', function (): void {
   $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
   TestPlace::factory()->create([
+    'polygon' => $polygon,
     'longitude' => 0,
     'latitude' => 0,
-    'polygon' => $polygon,
   ]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->whereWithin(DB::raw('POINT(longitude, latitude)'), 'polygon')
+    ->whereWithin(DB::raw('POINT(longitude, latitude)'), DB::raw('polygon'))
     ->firstOrFail();
 
   expect($testPlaceWithDistance)->not()->toBeNull();
 });
 
-it('toExpressionString can handle Expression', function (): void {
+it('toExpressionString can handle a Expression input', function (): void {
   $spatialBuilder = TestPlace::query();
   $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
 
@@ -429,21 +418,20 @@ it('toExpressionString can handle Expression', function (): void {
   expect($result)->toBe('POINT(longitude, latitude)');
 });
 
-it('toExpressionString can handle Geometry', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
-
+it('toExpressionString can handle a Geometry input', function (): void {
   $spatialBuilder = TestPlace::query();
-  $grammar = $spatialBuilder->getQuery()->getGrammar();
   $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
 
   $result = $toExpressionStringMethod->invoke($spatialBuilder, $polygon);
 
-  $sqlSerializedPolygon = $polygon->toSqlExpression($spatialBuilder->getConnection())->getValue($grammar);
-
+  $grammar = $spatialBuilder->getGrammar();
+  $connection = $spatialBuilder->getConnection();
+  $sqlSerializedPolygon = $polygon->toSqlExpression($connection)->getValue($grammar);
   expect($result)->toBe($sqlSerializedPolygon);
 });
 
-it('toExpressionString can handle string', function (): void {
+it('toExpressionString can handle a string input', function (): void {
   $spatialBuilder = TestPlace::query();
   $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
 
