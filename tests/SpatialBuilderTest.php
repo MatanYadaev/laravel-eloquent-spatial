@@ -404,7 +404,7 @@ it('uses spatial function on column that contains its table name', function (): 
   expect($testPlaceWithDistance->distance)->toBe(0.0);
 });
 
-it('uses spatial function on raw expression', function(): void {
+it('uses spatial function on raw expression', function (): void {
   $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
   TestPlace::factory()->create([
     'longitude' => 0,
@@ -420,7 +420,7 @@ it('uses spatial function on raw expression', function(): void {
   expect($testPlaceWithDistance)->not()->toBeNull();
 });
 
-it('toExpressionString can handle Expression', function(): void {
+it('toExpressionString can handle Expression', function (): void {
   $spatialBuilder = TestPlace::query();
   $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
 
@@ -430,7 +430,7 @@ it('toExpressionString can handle Expression', function(): void {
 });
 
 
-it('toExpressionString can handle Geometry', function(): void {
+it('toExpressionString can handle Geometry', function (): void {
   $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
 
   $spatialBuilder = TestPlace::query();
@@ -445,7 +445,7 @@ it('toExpressionString can handle Geometry', function(): void {
 });
 
 
-it('toExpressionString can handle string', function(): void {
+it('toExpressionString can handle string', function (): void {
   $spatialBuilder = TestPlace::query();
   $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
 

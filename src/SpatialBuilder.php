@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Database\Query\Expression as ExpressionContract;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
@@ -322,7 +322,7 @@ class SpatialBuilder extends Builder
 
     if ($geometryOrColumnOrExpression instanceof ExpressionContract) {
       $expression = $geometryOrColumnOrExpression;
-    } else if ($geometryOrColumnOrExpression instanceof Geometry) {
+    } elseif ($geometryOrColumnOrExpression instanceof Geometry) {
       $expression = $geometryOrColumnOrExpression->toSqlExpression($this->getConnection());
     } else {
       $expression = DB::raw($grammar->wrap($geometryOrColumnOrExpression));
