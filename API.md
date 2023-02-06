@@ -75,7 +75,7 @@ Retrieves the distance between 2 geometry objects. Uses [ST_Distance](https://de
 
 | parameter name      | type                | default      |
 |---------------------|---------------------|--------------|
-| `$column`           | `string`            |              |
+| `$column`           | `Geometry \ string` |              |
 | `$geometryOrColumn` | `Geometry \ string` |              |
 | `$alias`            | `string`            | `'distance'` |
 
@@ -105,7 +105,7 @@ Filters records by distance. Uses [ST_Distance](https://dev.mysql.com/doc/refman
 
 | parameter name      | type                |
 |---------------------|---------------------|
-| `$column`           | `string`            |
+| `$column`           | `Geometry \ string` |
 | `$geometryOrColumn` | `Geometry \ string` |
 | `$operator`         | `string`            |
 | `$value`            | `int \ float`       |
@@ -130,7 +130,7 @@ Orders records by distance. Uses [ST_Distance](https://dev.mysql.com/doc/refman/
 
 | parameter name      | type                | default |
 |---------------------|---------------------|---------|
-| `$column`           | `string`            |         |
+| `$column`           | `Geometry \ string` |         |
 | `$geometryOrColumn` | `Geometry \ string` |         |
 | `$direction`        | `string`            | `'asc'` |
 
@@ -161,7 +161,7 @@ Retrieves the spherical distance between 2 geometry objects. Uses [ST_Distance_S
 
 | parameter name      | type                | default      |
 |---------------------|---------------------|--------------|
-| `$column`           | `string`            |              |
+| `$column`           | `Geometry \ string` |              |
 | `$geometryOrColumn` | `Geometry \ string` |              |
 | `$alias`            | `string`            | `'distance'` |
 
@@ -191,7 +191,7 @@ Filters records by spherical distance. Uses [ST_Distance_Sphere](https://dev.mys
 
 | parameter name      | type                |
 |---------------------|---------------------|
-| `$column`           | `string`            |
+| `$column`           | `Geometry \ string` |
 | `$geometryOrColumn` | `Geometry \ string` |
 | `$operator`         | `string`            |
 | `$value`            | `int \ float`       |
@@ -216,7 +216,7 @@ Orders records by spherical distance. Uses [ST_Distance_Sphere](https://dev.mysq
 
 | parameter name      | type                | default |
 |---------------------|---------------------|---------|
-| `$column`           | `string`            |         |
+| `$column`           | `Geometry \ string` |         |
 | `$geometryOrColumn` | `Geometry \ string` |         |
 | `$direction`        | `string`            | `'asc'` |
 
@@ -247,7 +247,7 @@ Filters records by the [ST_Within](https://dev.mysql.com/doc/refman/8.0/en/spati
 
 | parameter name      | type                |
 |---------------------|---------------------|
-| `$column`           | `string`            |
+| `$column`           | `Geometry \ string` |
 | `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
@@ -267,7 +267,7 @@ Filters records by the [ST_Within](https://dev.mysql.com/doc/refman/8.0/en/spati
 
 | parameter name      | type                |
 |---------------------|---------------------|
-| `$column`           | `string`            |
+| `$column`           | `Geometry \ string` |
 | `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
@@ -287,7 +287,7 @@ Filters records by the [ST_Contains](https://dev.mysql.com/doc/refman/8.0/en/spa
 
 | parameter name      | type                |
 |---------------------|---------------------|
-| `$column`           | `string`            |
+| `$column`           | `Geometry \ string` |
 | `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
@@ -307,7 +307,7 @@ Filters records by the [ST_Contains](https://dev.mysql.com/doc/refman/8.0/en/spa
 
 | parameter name      | type                |
 |---------------------|---------------------|
-| `$column`           | `string`            |
+| `$column`           | `Geometry \ string` |
 | `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
@@ -327,7 +327,7 @@ Filters records by the [ST_Touches](https://dev.mysql.com/doc/refman/8.0/en/spat
 
 | parameter name      | type                |
 |---------------------|---------------------|
-| `$column`           | `string`            |
+| `$column`           | `Geometry \ string` |
 | `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
@@ -347,7 +347,7 @@ Filters records by the [ST_Intersects](https://dev.mysql.com/doc/refman/8.0/en/s
 
 | parameter name      | type                |
 |---------------------|---------------------|
-| `$column`           | `string`            |
+| `$column`           | `Geometry \ string` |
 | `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
@@ -367,7 +367,7 @@ Filters records by the [ST_Crosses](https://dev.mysql.com/doc/refman/8.0/en/spat
 
 | parameter name      | type                |
 |---------------------|---------------------|
-| `$column`           | `string`            |
+| `$column`           | `Geometry \ string` |
 | `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
@@ -387,7 +387,7 @@ Filters records by the [ST_Disjoint](https://dev.mysql.com/doc/refman/8.0/en/spa
 
 | parameter name      | type                |
 |---------------------|---------------------|
-| `$column`           | `string`            |
+| `$column`           | `Geometry \ string` |
 | `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
@@ -407,7 +407,7 @@ Filters records by the [ST_Equal](https://dev.mysql.com/doc/refman/8.0/en/spatia
 
 | parameter name      | type                |
 |---------------------|---------------------|
-| `$column`           | `string`            |
+| `$column`           | `Geometry \ string` |
 | `$geometryOrColumn` | `Geometry \ string` |
 
 <details><summary>Example</summary>
@@ -425,11 +425,11 @@ Place::query()
 
 Filters records by the [ST_Srid](https://dev.mysql.com/doc/refman/8.0/en/gis-general-property-functions.html#function_st-srid) function.
 
-| parameter name | type     |
-|----------------|----------|
-| `$column`      | `string` |
-| `$operator`    | `string` |
-| `$value`       | `int`    |
+| parameter name | type                |
+|----------------|---------------------|
+| `$column`      | `Geometry \ string` |
+| `$operator`    | `string`            |
+| `$value`       | `int`               |
 
 <details><summary>Example</summary>
 
@@ -441,4 +441,3 @@ Place::query()
     ->exists(); // true
 ```
 </details>
-

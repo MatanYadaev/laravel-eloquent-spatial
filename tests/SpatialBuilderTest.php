@@ -403,3 +403,53 @@ it('uses spatial function on column that contains its table name', function (): 
 
   expect($testPlaceWithDistance->distance)->toBe(0.0);
 });
+
+it('uses spatial function on raw expression', function (): void {
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
+  TestPlace::factory()->create([
+    'longitude' => 0,
+    'latitude' => 0,
+    'polygon' => $polygon,
+  ]);
+
+  /** @var TestPlace $testPlaceWithDistance */
+  $testPlaceWithDistance = TestPlace::query()
+    ->whereWithin(DB::raw('POINT(longitude, latitude)'), 'polygon')
+    ->firstOrFail();
+
+  expect($testPlaceWithDistance)->not()->toBeNull();
+});
+
+it('toExpressionString can handle Expression', function (): void {
+  $spatialBuilder = TestPlace::query();
+  $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
+
+  $result = $toExpressionStringMethod->invoke($spatialBuilder, DB::raw('POINT(longitude, latitude)'));
+
+  expect($result)->toBe('POINT(longitude, latitude)');
+});
+
+
+it('toExpressionString can handle Geometry', function (): void {
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
+
+  $spatialBuilder = TestPlace::query();
+  $grammar = $spatialBuilder->getQuery()->getGrammar();
+  $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
+
+  $result = $toExpressionStringMethod->invoke($spatialBuilder, $polygon);
+
+  $sqlSerializedPolygon = $polygon->toSqlExpression($spatialBuilder->getConnection())->getValue($grammar);
+
+  expect($result)->toBe($sqlSerializedPolygon);
+});
+
+
+it('toExpressionString can handle string', function (): void {
+  $spatialBuilder = TestPlace::query();
+  $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
+
+  $result = $toExpressionStringMethod->invoke($spatialBuilder, 'test_places.point');
+
+  expect($result)->toBe('`test_places`.`point`');
+});
