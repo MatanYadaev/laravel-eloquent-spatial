@@ -429,7 +429,6 @@ it('toExpressionString can handle Expression', function (): void {
   expect($result)->toBe('POINT(longitude, latitude)');
 });
 
-
 it('toExpressionString can handle Geometry', function (): void {
   $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
 
@@ -443,7 +442,6 @@ it('toExpressionString can handle Geometry', function (): void {
 
   expect($result)->toBe($sqlSerializedPolygon);
 });
-
 
 it('toExpressionString can handle string', function (): void {
   $spatialBuilder = TestPlace::query();
