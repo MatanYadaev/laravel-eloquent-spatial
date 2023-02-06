@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v3.1.0 - 2023-02-06
+
+### What's Changed
+
+- Support receiving `Expression` as a parameter in `SpatialBuilder` methods by @Riley19280 in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/76
+
+### New Contributors
+
+- @Riley19280 made their first contribution in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/76
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/3.0.0...3.1.0
+
 ## v3.0.0 - 2023-02-03
 
 Support Larave 10
