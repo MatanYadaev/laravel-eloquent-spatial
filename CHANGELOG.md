@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v3.1.1 - 2023-02-16
+
+### What's Changed
+
+- Bugfix: Model spatial column update using Expression by @MatanYadaev in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/81
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/3.1.0...3.1.1
+
 ## v3.1.0 - 2023-02-06
 
 ### What's Changed
