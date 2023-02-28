@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiPolygon;
@@ -41,12 +42,12 @@ it('creates a model record with multi polygon with SRID', function (): void {
         new Point(0, 180),
       ]),
     ]),
-  ], 4326);
+  ], Srid::WGS84->value);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['multi_polygon' => $multiPolygon]);
 
-  expect($testPlace->multi_polygon->srid)->toBe(4326);
+  expect($testPlace->multi_polygon->srid)->toBe(Srid::WGS84->value);
 });
 
 it('creates multi polygon from JSON', function (): void {
@@ -78,9 +79,9 @@ it('creates multi polygon with SRID from JSON', function (): void {
         new Point(0, 180),
       ]),
     ]),
-  ], 4326);
+  ], Srid::WGS84->value);
 
-  $multiPolygonFromJson = MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[180,0],[179,1],[178,2],[177,3],[180,0]]]]}', 4326);
+  $multiPolygonFromJson = MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[180,0],[179,1],[178,2],[177,3],[180,0]]]]}', Srid::WGS84->value);
 
   expect($multiPolygonFromJson)->toEqual($multiPolygon);
 });
@@ -152,9 +153,9 @@ it('creates multi polygon with SRID from WKT', function (): void {
         new Point(0, 180),
       ]),
     ]),
-  ], 4326);
+  ], Srid::WGS84->value);
 
-  $multiPolygonFromWkt = MultiPolygon::fromWkt('MULTIPOLYGON(((180 0, 179 1, 178 2, 177 3, 180 0)))', 4326);
+  $multiPolygonFromWkt = MultiPolygon::fromWkt('MULTIPOLYGON(((180 0, 179 1, 178 2, 177 3, 180 0)))', Srid::WGS84->value);
 
   expect($multiPolygonFromWkt)->toEqual($multiPolygon);
 });
@@ -207,7 +208,7 @@ it('creates multi polygon with SRID from WKB', function (): void {
         new Point(0, 180),
       ]),
     ]),
-  ], 4326);
+  ], Srid::WGS84->value);
 
   $multiPolygonFromWkb = MultiPolygon::fromWkb($multiPolygon->toWkb());
 

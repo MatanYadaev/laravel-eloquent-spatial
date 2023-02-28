@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
@@ -26,12 +27,12 @@ it('creates a model record with line string with SRID', function (): void {
   $lineString = new LineString([
     new Point(0, 180),
     new Point(1, 179),
-  ], 4326);
+  ], Srid::WGS84->value);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['line_string' => $lineString]);
 
-  expect($testPlace->line_string->srid)->toBe(4326);
+  expect($testPlace->line_string->srid)->toBe(Srid::WGS84->value);
 });
 
 it('creates line string from JSON', function (): void {
@@ -49,9 +50,9 @@ it('creates line string with SRID from JSON', function (): void {
   $lineString = new LineString([
     new Point(0, 180),
     new Point(1, 179),
-  ], 4326);
+  ], Srid::WGS84->value);
 
-  $lineStringFromJson = LineString::fromJson('{"type":"LineString","coordinates":[[180,0],[179,1]]}', 4326);
+  $lineStringFromJson = LineString::fromJson('{"type":"LineString","coordinates":[[180,0],[179,1]]}', Srid::WGS84->value);
 
   expect($lineStringFromJson)->toEqual($lineString);
 });
@@ -95,9 +96,9 @@ it('creates line string with SRID from WKT', function (): void {
   $lineString = new LineString([
     new Point(0, 180),
     new Point(1, 179),
-  ], 4326);
+  ], Srid::WGS84->value);
 
-  $lineStringFromWkt = LineString::fromWkt('LINESTRING(180 0, 179 1)', 4326);
+  $lineStringFromWkt = LineString::fromWkt('LINESTRING(180 0, 179 1)', Srid::WGS84->value);
 
   expect($lineStringFromWkt)->toEqual($lineString);
 });
@@ -129,7 +130,7 @@ it('creates line string with SRID from WKB', function (): void {
   $lineString = new LineString([
     new Point(0, 180),
     new Point(1, 179),
-  ], 4326);
+  ], Srid::WGS84->value);
 
   $lineStringFromWkb = LineString::fromWkb($lineString->toWkb());
 

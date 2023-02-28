@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\AxisOrder;
+use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
@@ -11,58 +12,58 @@ use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 uses(DatabaseMigrations::class);
 
 it('calculates distance', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->withDistance('point', new Point(1, 1, 4326))
+    ->withDistance('point', new Point(1, 1, Srid::WGS84->value))
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(156897.79947260793);
 })->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
 it('calculates distance - without axis-order', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->withDistance('point', new Point(1, 1, 4326))
+    ->withDistance('point', new Point(1, 1, Srid::WGS84->value))
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(1.4142135623730951);
 })->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
 it('calculates distance with alias', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->withDistance('point', new Point(1, 1, 4326), 'distance_in_meters')
+    ->withDistance('point', new Point(1, 1, Srid::WGS84->value), 'distance_in_meters')
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance_in_meters)->toBe(156897.79947260793);
 })->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
 it('calculates distance with alias - without axis-order', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->withDistance('point', new Point(1, 1, 4326), 'distance_in_meters')
+    ->withDistance('point', new Point(1, 1, Srid::WGS84->value), 'distance_in_meters')
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance_in_meters)->toBe(1.4142135623730951);
 })->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
 it('filters by distance', function (): void {
-  $pointWithinDistance = new Point(0, 0, 4326);
-  $pointNotWithinDistance = new Point(50, 50, 4326);
+  $pointWithinDistance = new Point(0, 0, Srid::WGS84->value);
+  $pointNotWithinDistance = new Point(50, 50, Srid::WGS84->value);
   TestPlace::factory()->create(['point' => $pointWithinDistance]);
   TestPlace::factory()->create(['point' => $pointNotWithinDistance]);
 
   /** @var TestPlace[] $testPlacesWithinDistance */
   $testPlacesWithinDistance = TestPlace::query()
-    ->whereDistance('point', new Point(1, 1, 4326), '<', 200_000)
+    ->whereDistance('point', new Point(1, 1, Srid::WGS84->value), '<', 200_000)
     ->get();
 
   expect($testPlacesWithinDistance)->toHaveCount(1);
@@ -70,14 +71,14 @@ it('filters by distance', function (): void {
 })->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
 it('filters by distance - without axis-order', function (): void {
-  $pointWithinDistance = new Point(0, 0, 4326);
-  $pointNotWithinDistance = new Point(50, 50, 4326);
+  $pointWithinDistance = new Point(0, 0, Srid::WGS84->value);
+  $pointNotWithinDistance = new Point(50, 50, Srid::WGS84->value);
   TestPlace::factory()->create(['point' => $pointWithinDistance]);
   TestPlace::factory()->create(['point' => $pointNotWithinDistance]);
 
   /** @var TestPlace[] $testPlacesWithinDistance */
   $testPlacesWithinDistance = TestPlace::query()
-    ->whereDistance('point', new Point(1, 1, 4326), '<', 2)
+    ->whereDistance('point', new Point(1, 1, Srid::WGS84->value), '<', 2)
     ->get();
 
   expect($testPlacesWithinDistance)->toHaveCount(1);
@@ -85,12 +86,12 @@ it('filters by distance - without axis-order', function (): void {
 })->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
 it('orders by distance ASC', function (): void {
-  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, 4326)]);
-  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2, 4326)]);
+  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, Srid::WGS84->value)]);
+  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2, Srid::WGS84->value)]);
 
   /** @var TestPlace[] $testPlacesOrderedByDistance */
   $testPlacesOrderedByDistance = TestPlace::query()
-    ->orderByDistance('point', new Point(0, 0, 4326))
+    ->orderByDistance('point', new Point(0, 0, Srid::WGS84->value))
     ->get();
 
   expect($testPlacesOrderedByDistance[0]->id)->toBe($closerTestPlace->id);
@@ -98,12 +99,12 @@ it('orders by distance ASC', function (): void {
 });
 
 it('orders by distance DESC', function (): void {
-  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, 4326)]);
-  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2, 4326)]);
+  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, Srid::WGS84->value)]);
+  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2, Srid::WGS84->value)]);
 
   /** @var TestPlace[] $testPlacesOrderedByDistance */
   $testPlacesOrderedByDistance = TestPlace::query()
-    ->orderByDistance('point', new Point(0, 0, 4326), 'desc')
+    ->orderByDistance('point', new Point(0, 0, Srid::WGS84->value), 'desc')
     ->get();
 
   expect($testPlacesOrderedByDistance[1]->id)->toBe($closerTestPlace->id);
@@ -111,58 +112,58 @@ it('orders by distance DESC', function (): void {
 });
 
 it('calculates distance sphere', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->withDistanceSphere('point', new Point(1, 1, 4326))
+    ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value))
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(157249.59776850493);
 })->skip(fn () =>! (new AxisOrder)->supported(DB::connection()));
 
 it('calculates distance sphere - without axis-order', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->withDistanceSphere('point', new Point(1, 1, 4326))
+    ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value))
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(157249.0357231545);
 })->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
 it('calculates distance sphere with alias', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->withDistanceSphere('point', new Point(1, 1, 4326), 'distance_in_meters')
+    ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value), 'distance_in_meters')
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance_in_meters)->toBe(157249.59776850493);
 })->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
 it('calculates distance sphere with alias - without axis-order', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->withDistanceSphere('point', new Point(1, 1, 4326), 'distance_in_meters')
+    ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value), 'distance_in_meters')
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance_in_meters)->toBe(157249.0357231545);
 })->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
 it('filters distance sphere', function (): void {
-  $pointWithinDistance = new Point(0, 0, 4326);
-  $pointNotWithinDistance = new Point(50, 50, 4326);
+  $pointWithinDistance = new Point(0, 0, Srid::WGS84->value);
+  $pointNotWithinDistance = new Point(50, 50, Srid::WGS84->value);
   TestPlace::factory()->create(['point' => $pointWithinDistance]);
   TestPlace::factory()->create(['point' => $pointNotWithinDistance]);
 
   /** @var TestPlace[] $testPlacesWithinDistance */
   $testPlacesWithinDistance = TestPlace::query()
-    ->whereDistanceSphere('point', new Point(1, 1, 4326), '<', 200000)
+    ->whereDistanceSphere('point', new Point(1, 1, Srid::WGS84->value), '<', 200000)
     ->get();
 
   expect($testPlacesWithinDistance)->toHaveCount(1);
@@ -170,12 +171,12 @@ it('filters distance sphere', function (): void {
 });
 
 it('orders by distance sphere ASC', function (): void {
-  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, 4326)]);
-  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2, 4326)]);
+  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, Srid::WGS84->value)]);
+  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2, Srid::WGS84->value)]);
 
   /** @var TestPlace[] $testPlacesOrderedByDistance */
   $testPlacesOrderedByDistance = TestPlace::query()
-    ->orderByDistanceSphere('point', new Point(0, 0, 4326))
+    ->orderByDistanceSphere('point', new Point(0, 0, Srid::WGS84->value))
     ->get();
 
   expect($testPlacesOrderedByDistance[0]->id)->toBe($closerTestPlace->id);
@@ -183,12 +184,12 @@ it('orders by distance sphere ASC', function (): void {
 });
 
 it('orders by distance sphere DESC', function (): void {
-  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, 4326)]);
-  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2, 4326)]);
+  $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, Srid::WGS84->value)]);
+  $fartherTestPlace = TestPlace::factory()->create(['point' => new Point(2, 2, Srid::WGS84->value)]);
 
   /** @var TestPlace[] $testPlacesOrderedByDistance */
   $testPlacesOrderedByDistance = TestPlace::query()
-    ->orderByDistanceSphere('point', new Point(0, 0, 4326), 'desc')
+    ->orderByDistanceSphere('point', new Point(0, 0, Srid::WGS84->value), 'desc')
     ->get();
 
   expect($testPlacesOrderedByDistance[1]->id)->toBe($closerTestPlace->id);
@@ -196,9 +197,9 @@ it('orders by distance sphere DESC', function (): void {
 });
 
 it('filters by within', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
-  $pointWithinPolygon = new Point(0, 0, 4326);
-  $pointOutsidePolygon = new Point(50, 50, 4326);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', Srid::WGS84->value);
+  $pointWithinPolygon = new Point(0, 0, Srid::WGS84->value);
+  $pointOutsidePolygon = new Point(50, 50, Srid::WGS84->value);
   TestPlace::factory()->create(['point' => $pointWithinPolygon]);
   TestPlace::factory()->create(['point' => $pointOutsidePolygon]);
 
@@ -212,9 +213,9 @@ it('filters by within', function (): void {
 });
 
 it('filters by not within', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
-  $pointWithinPolygon = new Point(0, 0, 4326);
-  $pointOutsidePolygon = new Point(50, 50, 4326);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', Srid::WGS84->value);
+  $pointWithinPolygon = new Point(0, 0, Srid::WGS84->value);
+  $pointOutsidePolygon = new Point(50, 50, Srid::WGS84->value);
   TestPlace::factory()->create(['point' => $pointWithinPolygon]);
   TestPlace::factory()->create(['point' => $pointOutsidePolygon]);
 
@@ -228,9 +229,9 @@ it('filters by not within', function (): void {
 });
 
 it('filters by contains', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
-  $pointWithinPolygon = new Point(0, 0, 4326);
-  $pointOutsidePolygon = new Point(50, 50, 4326);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', Srid::WGS84->value);
+  $pointWithinPolygon = new Point(0, 0, Srid::WGS84->value);
+  $pointOutsidePolygon = new Point(50, 50, Srid::WGS84->value);
   TestPlace::factory()->create(['polygon' => $polygon]);
 
   $testPlace = TestPlace::query()
@@ -245,9 +246,9 @@ it('filters by contains', function (): void {
 });
 
 it('filters by not contains', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
-  $pointWithinPolygon = new Point(0, 0, 4326);
-  $pointOutsidePolygon = new Point(50, 50, 4326);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', Srid::WGS84->value);
+  $pointWithinPolygon = new Point(0, 0, Srid::WGS84->value);
+  $pointOutsidePolygon = new Point(50, 50, Srid::WGS84->value);
   TestPlace::factory()->create(['polygon' => $polygon]);
 
   $testPlace = TestPlace::query()
@@ -262,9 +263,9 @@ it('filters by not contains', function (): void {
 });
 
 it('filters by touches', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[0,-1],[0,0],[-1,0],[-1,-1]]]}', 4326);
-  $pointTouchesPolygon = new Point(0, 0, 4326);
-  $pointNotTouchesPolygon = new Point(50, 50, 4326);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[0,-1],[0,0],[-1,0],[-1,-1]]]}', Srid::WGS84->value);
+  $pointTouchesPolygon = new Point(0, 0, Srid::WGS84->value);
+  $pointNotTouchesPolygon = new Point(50, 50, Srid::WGS84->value);
   TestPlace::factory()->create(['point' => $pointTouchesPolygon]);
   TestPlace::factory()->create(['point' => $pointNotTouchesPolygon]);
 
@@ -278,9 +279,9 @@ it('filters by touches', function (): void {
 });
 
 it('filters by intersects', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
-  $pointIntersectsPolygon = new Point(0, 0, 4326);
-  $pointNotIntersectsPolygon = new Point(50, 50, 4326);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', Srid::WGS84->value);
+  $pointIntersectsPolygon = new Point(0, 0, Srid::WGS84->value);
+  $pointNotIntersectsPolygon = new Point(50, 50, Srid::WGS84->value);
   TestPlace::factory()->create(['point' => $pointIntersectsPolygon]);
   TestPlace::factory()->create(['point' => $pointNotIntersectsPolygon]);
 
@@ -294,9 +295,9 @@ it('filters by intersects', function (): void {
 });
 
 it('filters by crosses', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', 4326);
-  $lineStringCrossesPolygon = LineString::fromJson('{"type":"LineString","coordinates":[[0,0],[2,0]]}', 4326);
-  $lineStringNotCrossesPolygon = LineString::fromJson('{"type":"LineString","coordinates":[[50,50],[52,50]]}', 4326);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', Srid::WGS84->value);
+  $lineStringCrossesPolygon = LineString::fromJson('{"type":"LineString","coordinates":[[0,0],[2,0]]}', Srid::WGS84->value);
+  $lineStringNotCrossesPolygon = LineString::fromJson('{"type":"LineString","coordinates":[[50,50],[52,50]]}', Srid::WGS84->value);
   TestPlace::factory()->create(['line_string' => $lineStringCrossesPolygon]);
   TestPlace::factory()->create(['line_string' => $lineStringNotCrossesPolygon]);
 
@@ -310,9 +311,9 @@ it('filters by crosses', function (): void {
 });
 
 it('filters by disjoint', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[-0.5,-1],[-0.5,-0.5],[-1,-0.5],[-1,-1]]]}', 4326);
-  $pointDisjointsPolygon = new Point(0, 0, 4326);
-  $pointNotDisjointsPolygon = new Point(-1, -1, 4326);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[-0.5,-1],[-0.5,-0.5],[-1,-0.5],[-1,-1]]]}', Srid::WGS84->value);
+  $pointDisjointsPolygon = new Point(0, 0, Srid::WGS84->value);
+  $pointNotDisjointsPolygon = new Point(-1, -1, Srid::WGS84->value);
   TestPlace::factory()->create(['point' => $pointDisjointsPolygon]);
   TestPlace::factory()->create(['point' => $pointNotDisjointsPolygon]);
 
@@ -326,9 +327,9 @@ it('filters by disjoint', function (): void {
 });
 
 it('filters by overlaps', function (): void {
-  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-0.75,-0.75],[1,-1],[1,1],[-1,1],[-0.75,-0.75]]]}', 4326);
-  $overlappingPolygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[-0.5,-1],[-0.5,-0.5],[-1,-0.5],[-1,-1]]]}', 4326);
-  $notOverlappingPolygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-10,-10],[-5,-10],[-5,-5],[-10,-5],[-10,-10]]]}', 4326);
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-0.75,-0.75],[1,-1],[1,1],[-1,1],[-0.75,-0.75]]]}', Srid::WGS84->value);
+  $overlappingPolygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[-0.5,-1],[-0.5,-0.5],[-1,-0.5],[-1,-1]]]}', Srid::WGS84->value);
+  $notOverlappingPolygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-10,-10],[-5,-10],[-5,-5],[-10,-5],[-10,-10]]]}', Srid::WGS84->value);
   TestPlace::factory()->create(['polygon' => $overlappingPolygon]);
   TestPlace::factory()->create(['polygon' => $notOverlappingPolygon]);
 
@@ -342,8 +343,8 @@ it('filters by overlaps', function (): void {
 });
 
 it('filters by equals', function (): void {
-  $point1 = new Point(0, 0, 4326);
-  $point2 = new Point(50, 50, 4326);
+  $point1 = new Point(0, 0, Srid::WGS84->value);
+  $point2 = new Point(50, 50, Srid::WGS84->value);
   TestPlace::factory()->create(['point' => $point1]);
   TestPlace::factory()->create(['point' => $point2]);
 
@@ -357,14 +358,14 @@ it('filters by equals', function (): void {
 });
 
 it('filters by SRID', function (): void {
-  $point1 = new Point(0, 0, 4326);
+  $point1 = new Point(0, 0, Srid::WGS84->value);
   $point2 = new Point(50, 50, 0);
   TestPlace::factory()->create(['point' => $point1]);
   TestPlace::factory()->create(['point' => $point2]);
 
   /** @var TestPlace[] $testPlaces */
   $testPlaces = TestPlace::query()
-    ->whereSrid('point', '=', 4326)
+    ->whereSrid('point', '=', Srid::WGS84->value)
     ->get();
 
   expect($testPlaces)->toHaveCount(1);
@@ -372,7 +373,7 @@ it('filters by SRID', function (): void {
 });
 
 it('uses spatial function with column', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
@@ -383,7 +384,7 @@ it('uses spatial function with column', function (): void {
 });
 
 it('uses spatial function with column that contains table name', function (): void {
-  TestPlace::factory()->create(['point' => new Point(0, 0, 4326)]);
+  TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
