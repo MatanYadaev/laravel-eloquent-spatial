@@ -42,12 +42,12 @@ it('creates a model record with multi polygon with SRID', function (): void {
         new Point(0, 180),
       ]),
     ]),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['multi_polygon' => $multiPolygon]);
 
-  expect($testPlace->multi_polygon->srid)->toBe(SRID::GCS->value);
+  expect($testPlace->multi_polygon->srid)->toBe(SRID::WGS84->value);
 });
 
 it('creates multi polygon from JSON', function (): void {
@@ -79,9 +79,9 @@ it('creates multi polygon with SRID from JSON', function (): void {
         new Point(0, 180),
       ]),
     ]),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
-  $multiPolygonFromJson = MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[180,0],[179,1],[178,2],[177,3],[180,0]]]]}', SRID::GCS->value);
+  $multiPolygonFromJson = MultiPolygon::fromJson('{"type":"MultiPolygon","coordinates":[[[[180,0],[179,1],[178,2],[177,3],[180,0]]]]}', SRID::WGS84->value);
 
   expect($multiPolygonFromJson)->toEqual($multiPolygon);
 });
@@ -153,9 +153,9 @@ it('creates multi polygon with SRID from WKT', function (): void {
         new Point(0, 180),
       ]),
     ]),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
-  $multiPolygonFromWkt = MultiPolygon::fromWkt('MULTIPOLYGON(((180 0, 179 1, 178 2, 177 3, 180 0)))', SRID::GCS->value);
+  $multiPolygonFromWkt = MultiPolygon::fromWkt('MULTIPOLYGON(((180 0, 179 1, 178 2, 177 3, 180 0)))', SRID::WGS84->value);
 
   expect($multiPolygonFromWkt)->toEqual($multiPolygon);
 });
@@ -208,7 +208,7 @@ it('creates multi polygon with SRID from WKB', function (): void {
         new Point(0, 180),
       ]),
     ]),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
   $multiPolygonFromWkb = MultiPolygon::fromWkb($multiPolygon->toWkb());
 

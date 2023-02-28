@@ -37,12 +37,12 @@ it('creates a model record with polygon with SRID', function (): void {
       new Point(3, 177),
       new Point(0, 180),
     ]),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['polygon' => $polygon]);
 
-  expect($testPlace->polygon->srid)->toBe(SRID::GCS->value);
+  expect($testPlace->polygon->srid)->toBe(SRID::WGS84->value);
 });
 
 it('creates polygon from JSON', function (): void {
@@ -70,9 +70,9 @@ it('creates polygon with SRID from JSON', function (): void {
       new Point(3, 177),
       new Point(0, 180),
     ]),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
-  $polygonFromJson = Polygon::fromJson('{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}', SRID::GCS->value);
+  $polygonFromJson = Polygon::fromJson('{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}', SRID::WGS84->value);
 
   expect($polygonFromJson)->toEqual($polygon);
 });
@@ -136,9 +136,9 @@ it('creates polygon with SRID from WKT', function (): void {
       new Point(3, 177),
       new Point(0, 180),
     ]),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
-  $polygonFromWkt = Polygon::fromWkt('POLYGON((180 0, 179 1, 178 2, 177 3, 180 0))', SRID::GCS->value);
+  $polygonFromWkt = Polygon::fromWkt('POLYGON((180 0, 179 1, 178 2, 177 3, 180 0))', SRID::WGS84->value);
 
   expect($polygonFromWkt)->toEqual($polygon);
 });
@@ -185,7 +185,7 @@ it('creates polygon with SRID from WKB', function (): void {
       new Point(3, 177),
       new Point(0, 180),
     ]),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
   $polygonFromWkb = Polygon::fromWkb($polygon->toWkb());
 

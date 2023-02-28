@@ -98,6 +98,7 @@ use App\Models\Place;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\Constants\SRID;
 
 $londonEye = Place::create([
     'name' => 'London Eye',
@@ -106,7 +107,7 @@ $londonEye = Place::create([
 
 $whiteHouse = Place::create([
     'name' => 'White House',
-    'location' => new Point(38.8976763, -77.0365298, SRID::GCS->value), // with SRID
+    'location' => new Point(38.8976763, -77.0365298, SRID::WGS84->value), // with SRID
 ]);
 
 $vaticanCity = Place::create([

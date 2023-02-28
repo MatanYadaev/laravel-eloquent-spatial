@@ -51,8 +51,8 @@ it('updates a model record with null geometry', function (): void {
 });
 
 it('gets original geometry field', function (): void {
-  $point = new Point(0, 180, SRID::GCS->value);
-  $point2 = new Point(0, 0, SRID::GCS->value);
+  $point = new Point(0, 180, SRID::WGS84->value);
+  $point2 = new Point(0, 0, SRID::WGS84->value);
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['point' => $point]);
 

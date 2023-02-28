@@ -19,12 +19,12 @@ it('creates a model record with point', function (): void {
 });
 
 it('creates a model record with point with SRID', function (): void {
-  $point = new Point(0, 180, SRID::GCS->value);
+  $point = new Point(0, 180, SRID::WGS84->value);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['point' => $point]);
 
-  expect($testPlace->point->srid)->toBe(SRID::GCS->value);
+  expect($testPlace->point->srid)->toBe(SRID::WGS84->value);
 });
 
 it('creates point from JSON', function (): void {
@@ -36,9 +36,9 @@ it('creates point from JSON', function (): void {
 });
 
 it('creates point with SRID from JSON', function (): void {
-  $point = new Point(0, 180, SRID::GCS->value);
+  $point = new Point(0, 180, SRID::WGS84->value);
 
-  $pointFromJson = Point::fromJson('{"type":"Point","coordinates":[180,0]}', SRID::GCS->value);
+  $pointFromJson = Point::fromJson('{"type":"Point","coordinates":[180,0]}', SRID::WGS84->value);
 
   expect($pointFromJson)->toEqual($point);
 });
@@ -67,9 +67,9 @@ it('creates point from WKT', function (): void {
 });
 
 it('creates point with SRID from WKT', function (): void {
-  $point = new Point(0, 180, SRID::GCS->value);
+  $point = new Point(0, 180, SRID::WGS84->value);
 
-  $pointFromWkt = Point::fromWkt('POINT(180 0)', SRID::GCS->value);
+  $pointFromWkt = Point::fromWkt('POINT(180 0)', SRID::WGS84->value);
 
   expect($pointFromWkt)->toEqual($point);
 });
@@ -92,7 +92,7 @@ it('creates point from WKB', function (): void {
 });
 
 it('creates point with SRID from WKB', function (): void {
-  $point = new Point(0, 180, SRID::GCS->value);
+  $point = new Point(0, 180, SRID::WGS84->value);
 
   $pointFromWkb = Point::fromWkb($point->toWkb());
 
@@ -100,7 +100,7 @@ it('creates point with SRID from WKB', function (): void {
 });
 
 it('casts a Point to a string', function (): void {
-  $point = new Point(0, 180, SRID::GCS->value);
+  $point = new Point(0, 180, SRID::WGS84->value);
 
   expect($point->__toString())->toEqual('POINT(180 0)');
 });
@@ -112,7 +112,7 @@ it('adds a macro toPoint', function (): void {
     return class_basename($this);
   });
 
-  $point = new Point(0, 180, SRID::GCS->value);
+  $point = new Point(0, 180, SRID::WGS84->value);
 
   // @phpstan-ignore-next-line
   expect($point->getName())->toBe('Point');

@@ -31,12 +31,12 @@ it('creates a model record with multi line string with SRID', function (): void 
       new Point(0, 180),
       new Point(1, 179),
     ]),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['multi_line_string' => $multiLineString]);
 
-  expect($testPlace->multi_line_string->srid)->toBe(SRID::GCS->value);
+  expect($testPlace->multi_line_string->srid)->toBe(SRID::WGS84->value);
 });
 
 it('creates multi line string from JSON', function (): void {
@@ -58,9 +58,9 @@ it('creates multi line string with SRID from JSON', function (): void {
       new Point(0, 180),
       new Point(1, 179),
     ]),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
-  $multiLineStringFromJson = MultiLineString::fromJson('{"type":"MultiLineString","coordinates":[[[180,0],[179,1]]]}', SRID::GCS->value);
+  $multiLineStringFromJson = MultiLineString::fromJson('{"type":"MultiLineString","coordinates":[[[180,0],[179,1]]]}', SRID::WGS84->value);
 
   expect($multiLineStringFromJson)->toEqual($multiLineString);
 });
@@ -112,9 +112,9 @@ it('creates multi line string with SRID from WKT', function (): void {
       new Point(0, 180),
       new Point(1, 179),
     ]),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
-  $multiLineStringFromWkt = MultiLineString::fromWkt('MULTILINESTRING((180 0, 179 1))', SRID::GCS->value);
+  $multiLineStringFromWkt = MultiLineString::fromWkt('MULTILINESTRING((180 0, 179 1))', SRID::WGS84->value);
 
   expect($multiLineStringFromWkt)->toEqual($multiLineString);
 });
@@ -152,7 +152,7 @@ it('creates multi line string with SRID from WKB', function (): void {
       new Point(0, 180),
       new Point(1, 179),
     ]),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
   $multiLineStringFromWkb = MultiLineString::fromWkb($multiLineString->toWkb());
 

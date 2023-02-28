@@ -44,12 +44,12 @@ it('creates a model record with geometry collection with SRID', function (): voi
       ]),
     ]),
     new Point(0, 180),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['geometry_collection' => $geometryCollection]);
 
-  expect($testPlace->geometry_collection->srid)->toBe(SRID::GCS->value);
+  expect($testPlace->geometry_collection->srid)->toBe(SRID::WGS84->value);
 });
 
 it('creates geometry collection from JSON', function (): void {
@@ -83,9 +83,9 @@ it('creates geometry collection with SRID from JSON', function (): void {
       ]),
     ]),
     new Point(0, 180),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
-  $geometryCollectionFromJson = GeometryCollection::fromJson('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}', SRID::GCS->value);
+  $geometryCollectionFromJson = GeometryCollection::fromJson('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}', SRID::WGS84->value);
 
   expect($geometryCollectionFromJson)->toEqual($geometryCollection);
 });
@@ -180,9 +180,9 @@ it('creates geometry collection with SRID from WKT', function (): void {
       ]),
     ]),
     new Point(0, 180),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
-  $geometryCollectionFromWkt = GeometryCollection::fromWkt('GEOMETRYCOLLECTION(POLYGON((180 0, 179 1, 178 2, 177 3, 180 0)), POINT(180 0))', SRID::GCS->value);
+  $geometryCollectionFromWkt = GeometryCollection::fromWkt('GEOMETRYCOLLECTION(POLYGON((180 0, 179 1, 178 2, 177 3, 180 0)), POINT(180 0))', SRID::WGS84->value);
 
   expect($geometryCollectionFromWkt)->toEqual($geometryCollection);
 });
@@ -238,7 +238,7 @@ it('creates geometry collection with SRID from WKB', function (): void {
       ]),
     ]),
     new Point(0, 180),
-  ], SRID::GCS->value);
+  ], SRID::WGS84->value);
 
   $geometryCollectionFromWkb = GeometryCollection::fromWkb($geometryCollection->toWkb());
 

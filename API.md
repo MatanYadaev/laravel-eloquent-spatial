@@ -54,11 +54,12 @@ echo $geometryCollection[1]->latitude; // 0
 
 Spatial reference identifiers (SRID) identify the type of coordinate system to use.
 
-| Identifier | Value | Description                                                                                           |
-|------------|-------|-------------------------------------------------------------------------------------------------------|
-| SRID::GCS  | 4326  | [Geographic coordinate system](https://epsg.org/crs_4326/WGS-84.html)                                 |                                 
-| SRID::UTM  | 26717 | [Universal Transverse Mercator coordinate system](https://epsg.org/crs_26717/NAD27-UTM-zone-17N.html) | 
-| SRID::SPCS | 6576  | [State Plane Coordinate System](https://epsg.org/crs_6576/NAD83-2011-Tennessee-ftUS.html)             |             
+An enum is provided with the following values:
+
+| Identifier         | Value | Description                                                                         |
+|--------------------|-------|-------------------------------------------------------------------------------------|
+| SRID::WGS84        | 4326  | [Geographic coordinate system](https://epsg.org/crs_4326/WGS-84.html)               |                                 
+| SRID::WEB_MERCATOR | 3857  | [Mercator coordinate system](https://epsg.org/crs_3857/WGS-84-Pseudo-Mercator.html) | 
 
 ## Available spatial scopes
 
