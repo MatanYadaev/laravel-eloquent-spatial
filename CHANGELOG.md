@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v3.1.2 - 2023-02-28
+
+### What's Changed
+
+- Add SRID Enum by @Riley19280 in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/84
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/3.1.1...3.1.2
+
 ## v3.1.1 - 2023-02-16
 
 ### What's Changed
