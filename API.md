@@ -56,10 +56,10 @@ Spatial reference identifiers (SRID) identify the type of coordinate system to u
 
 An enum is provided with the following values:
 
-| Identifier         | Value | Description                                                                         |
-|--------------------|-------|-------------------------------------------------------------------------------------|
-| SRID::WGS84        | 4326  | [Geographic coordinate system](https://epsg.org/crs_4326/WGS-84.html)               |                                 
-| SRID::WEB_MERCATOR | 3857  | [Mercator coordinate system](https://epsg.org/crs_3857/WGS-84-Pseudo-Mercator.html) | 
+| Identifier           | Value  | Description                                                                         |
+|----------------------|--------|-------------------------------------------------------------------------------------|
+| `Srid::WGS84`        | `4326` | [Geographic coordinate system](https://epsg.org/crs_4326/WGS-84.html)               |                                 
+| `Srid::WEB_MERCATOR` | `3857` | [Mercator coordinate system](https://epsg.org/crs_3857/WGS-84-Pseudo-Mercator.html) | 
 
 ## Available spatial scopes
 
