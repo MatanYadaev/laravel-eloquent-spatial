@@ -3,7 +3,7 @@
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\AxisOrder;
-use MatanYadaev\EloquentSpatial\Constants\SRID;
+use MatanYadaev\EloquentSpatial\Enums\SRID;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;

@@ -50,7 +50,7 @@ echo $geometryCollection->getGeometries()[1]->latitude; // 0
 echo $geometryCollection[1]->latitude; // 0
 ```
 
-## Available Constants
+## Available Enums
 
 Spatial reference identifiers (SRID) identify the type of coordinate system to use.
 

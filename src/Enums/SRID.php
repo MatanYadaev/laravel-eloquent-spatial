@@ -1,6 +1,6 @@
 <?php
 
-namespace MatanYadaev\EloquentSpatial\Constants;
+namespace MatanYadaev\EloquentSpatial\Enums;
 
 /**
  * Spatial reference identifiers identify the type of coordinate system to use.

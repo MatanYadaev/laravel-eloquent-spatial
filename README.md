@@ -98,7 +98,7 @@ use App\Models\Place;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
-use MatanYadaev\EloquentSpatial\Constants\SRID;
+use MatanYadaev\EloquentSpatial\Enums\SRID;
 
 $londonEye = Place::create([
     'name' => 'London Eye',
