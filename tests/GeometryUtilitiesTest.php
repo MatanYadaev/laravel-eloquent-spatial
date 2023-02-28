@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\GeometryUtilities;
+use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
 
 uses(DatabaseMigrations::class);
@@ -19,4 +20,15 @@ it('creates a convex hull', function (): void {
   // Compare coordinates like this to prevent ordering differences between database types/versions
   // @phpstan-ignore-next-line
   expect($hull->toArray()['coordinates'][0])->toEqualCanonicalizing($expectedPolygon['coordinates'][0]);
+});
+
+it('calculates the distance between points on a sphere with sphere size', function (): void {
+
+  $point1 = new Point(41.9631174, -87.6770458);
+  $point2 = new Point(40.7628267, -73.9898293);
+
+  $distance = GeometryUtilities::make()
+    ->distanceSphere($point1, $point2);
+
+  expect($distance)->toBe(1148798.720296128);
 });

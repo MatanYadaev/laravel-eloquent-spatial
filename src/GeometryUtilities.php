@@ -7,6 +7,7 @@ use Illuminate\Database\Query\Grammars\Grammar;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Exceptions\GeometryQueryException;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
+use MatanYadaev\EloquentSpatial\Objects\Point;
 
 class GeometryUtilities
 {
@@ -49,5 +50,41 @@ class GeometryUtilities
 
     // @phpstan-ignore-next-line
     return Geometry::fromWkb($queryResult->result);
+  }
+
+  /**
+   * Compute the distance between two points on a sphere in meters.
+   *
+   * @param  ExpressionContract|Point|string  $point1
+   * @param  ExpressionContract|Point|string  $point2
+   * @param  float|null  $sphereSize Size of the sphere
+   * @return float Distance between points
+   */
+  public function distanceSphere(ExpressionContract|Point|string $point1, ExpressionContract|Point|string $point2, float $sphereSize = null): float
+  {
+    $queryResult = DB::connection($this->connection)
+      ->query()
+      ->when($sphereSize, fn ($query) => $query
+        ->selectRaw(
+          sprintf(
+            'ST_DISTANCE_SPHERE(%s, %s, %s) as result',
+            $this->toExpressionString($point1),
+            $this->toExpressionString($point2),
+            $sphereSize
+          )
+        ), fn ($query) => $query
+        ->selectRaw(
+          sprintf(
+            'ST_DISTANCE_SPHERE(%s, %s) as result',
+            $this->toExpressionString($point1),
+            $this->toExpressionString($point2),
+          )
+        )
+      )
+      ->first();
+
+    throw_unless($queryResult, GeometryQueryException::noData());
+
+    return $queryResult->result;
   }
 }

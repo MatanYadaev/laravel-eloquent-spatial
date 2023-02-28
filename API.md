@@ -442,7 +442,29 @@ Place::query()
 ```
 </details>
 
-## Available Spatial Queries
+## Available Geometry Helpers
+
+
+###  distanceSphere
+
+Compute the spherical distance between two points using the [ST_Distance_Sphere](https://dev.mysql.com/doc/refman/5.7/en/spatial-convenience-functions.html#function_st-distance-sphere) function.
+
+| parameter name | type             |
+|----------------|------------------|
+| `$point1`      | `Point \ string` |
+| `$point2`      | `Point \ string` |
+
+<details><summary>Example</summary>
+
+```php
+  $point1 = new Point(41.9631174, -87.6770458);
+  $point2 = new Point(40.7628267, -73.9898293);
+
+  $distance = GeometryUtilities::make()
+    ->distanceSphere($point1, $point2); // 1148798.720296128 (meters)
+```
+</details>
+
 
 ###  convexHull
 
