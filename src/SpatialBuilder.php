@@ -6,7 +6,6 @@ namespace MatanYadaev\EloquentSpatial;
 
 use Illuminate\Contracts\Database\Query\Expression as ExpressionContract;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
 /**
@@ -18,6 +17,8 @@ use MatanYadaev\EloquentSpatial\Objects\Geometry;
  */
 class SpatialBuilder extends Builder
 {
+  use SpatialQueryHelpers;
+
   public function withDistance(
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
@@ -314,20 +315,5 @@ class SpatialBuilder extends Builder
     );
 
     return $this;
-  }
-
-  protected function toExpressionString(ExpressionContract|Geometry|string $geometryOrColumnOrExpression): string
-  {
-    $grammar = $this->getGrammar();
-
-    if ($geometryOrColumnOrExpression instanceof ExpressionContract) {
-      $expression = $geometryOrColumnOrExpression;
-    } elseif ($geometryOrColumnOrExpression instanceof Geometry) {
-      $expression = $geometryOrColumnOrExpression->toSqlExpression($this->getConnection());
-    } else {
-      $expression = DB::raw($grammar->wrap($geometryOrColumnOrExpression));
-    }
-
-    return (string) $expression->getValue($grammar);
   }
 }

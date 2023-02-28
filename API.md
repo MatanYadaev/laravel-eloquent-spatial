@@ -441,3 +441,27 @@ Place::query()
     ->exists(); // true
 ```
 </details>
+
+## Available Spatial Queries
+
+###  convexHull
+
+Creates a ConvexHull using the specified geometry using the [ST_ConvexHull](https://dev.mysql.com/doc/refman/8.0/en/spatial-operator-functions.html#function_st-convexhull) function.
+
+| parameter name | type                |
+|----------------|---------------------|
+| `$geometry`    | `Geometry \ string` |
+
+<details><summary>Example</summary>
+
+```php
+$points = MultiPoint::fromJson('{"type":"MultiPoint","coordinates":[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1],[0,0]]}');
+
+$wkbHull = SpatialQuery::make()
+  ->convexHull($points)
+  ->first()
+  ->convex_hull;
+  
+Polygon::fromWkb($wkbHull) // {"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}
+```
+</details>
