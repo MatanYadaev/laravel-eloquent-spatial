@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
+use MatanYadaev\EloquentSpatial\Constants\SRID;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
@@ -50,8 +51,8 @@ it('updates a model record with null geometry', function (): void {
 });
 
 it('gets original geometry field', function (): void {
-  $point = new Point(0, 180, 4326);
-  $point2 = new Point(0, 0, 4326);
+  $point = new Point(0, 180, SRID::GCS->value);
+  $point2 = new Point(0, 0, SRID::GCS->value);
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['point' => $point]);
 

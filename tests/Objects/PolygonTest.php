@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use MatanYadaev\EloquentSpatial\Constants\SRID;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
@@ -36,12 +37,12 @@ it('creates a model record with polygon with SRID', function (): void {
       new Point(3, 177),
       new Point(0, 180),
     ]),
-  ], 4326);
+  ], SRID::GCS->value);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['polygon' => $polygon]);
 
-  expect($testPlace->polygon->srid)->toBe(4326);
+  expect($testPlace->polygon->srid)->toBe(SRID::GCS->value);
 });
 
 it('creates polygon from JSON', function (): void {
@@ -69,9 +70,9 @@ it('creates polygon with SRID from JSON', function (): void {
       new Point(3, 177),
       new Point(0, 180),
     ]),
-  ], 4326);
+  ], SRID::GCS->value);
 
-  $polygonFromJson = Polygon::fromJson('{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}', 4326);
+  $polygonFromJson = Polygon::fromJson('{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}', SRID::GCS->value);
 
   expect($polygonFromJson)->toEqual($polygon);
 });
@@ -135,9 +136,9 @@ it('creates polygon with SRID from WKT', function (): void {
       new Point(3, 177),
       new Point(0, 180),
     ]),
-  ], 4326);
+  ], SRID::GCS->value);
 
-  $polygonFromWkt = Polygon::fromWkt('POLYGON((180 0, 179 1, 178 2, 177 3, 180 0))', 4326);
+  $polygonFromWkt = Polygon::fromWkt('POLYGON((180 0, 179 1, 178 2, 177 3, 180 0))', SRID::GCS->value);
 
   expect($polygonFromWkt)->toEqual($polygon);
 });
@@ -184,7 +185,7 @@ it('creates polygon with SRID from WKB', function (): void {
       new Point(3, 177),
       new Point(0, 180),
     ]),
-  ], 4326);
+  ], SRID::GCS->value);
 
   $polygonFromWkb = Polygon::fromWkb($polygon->toWkb());
 

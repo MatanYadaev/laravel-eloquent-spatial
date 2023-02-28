@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use MatanYadaev\EloquentSpatial\Constants\SRID;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\GeometryCollection;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
@@ -43,12 +44,12 @@ it('creates a model record with geometry collection with SRID', function (): voi
       ]),
     ]),
     new Point(0, 180),
-  ], 4326);
+  ], SRID::GCS->value);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['geometry_collection' => $geometryCollection]);
 
-  expect($testPlace->geometry_collection->srid)->toBe(4326);
+  expect($testPlace->geometry_collection->srid)->toBe(SRID::GCS->value);
 });
 
 it('creates geometry collection from JSON', function (): void {
@@ -82,9 +83,9 @@ it('creates geometry collection with SRID from JSON', function (): void {
       ]),
     ]),
     new Point(0, 180),
-  ], 4326);
+  ], SRID::GCS->value);
 
-  $geometryCollectionFromJson = GeometryCollection::fromJson('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}', 4326);
+  $geometryCollectionFromJson = GeometryCollection::fromJson('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}', SRID::GCS->value);
 
   expect($geometryCollectionFromJson)->toEqual($geometryCollection);
 });
@@ -179,9 +180,9 @@ it('creates geometry collection with SRID from WKT', function (): void {
       ]),
     ]),
     new Point(0, 180),
-  ], 4326);
+  ], SRID::GCS->value);
 
-  $geometryCollectionFromWkt = GeometryCollection::fromWkt('GEOMETRYCOLLECTION(POLYGON((180 0, 179 1, 178 2, 177 3, 180 0)), POINT(180 0))', 4326);
+  $geometryCollectionFromWkt = GeometryCollection::fromWkt('GEOMETRYCOLLECTION(POLYGON((180 0, 179 1, 178 2, 177 3, 180 0)), POINT(180 0))', SRID::GCS->value);
 
   expect($geometryCollectionFromWkt)->toEqual($geometryCollection);
 });
@@ -237,7 +238,7 @@ it('creates geometry collection with SRID from WKB', function (): void {
       ]),
     ]),
     new Point(0, 180),
-  ], 4326);
+  ], SRID::GCS->value);
 
   $geometryCollectionFromWkb = GeometryCollection::fromWkb($geometryCollection->toWkb());
 

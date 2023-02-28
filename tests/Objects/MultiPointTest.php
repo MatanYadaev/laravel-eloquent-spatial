@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use MatanYadaev\EloquentSpatial\Constants\SRID;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
 use MatanYadaev\EloquentSpatial\Objects\Point;
@@ -24,12 +25,12 @@ it('creates a model record with multi point', function (): void {
 it('creates a model record with multi point with SRID', function (): void {
   $multiPoint = new MultiPoint([
     new Point(0, 180),
-  ], 4326);
+  ], SRID::GCS->value);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['multi_point' => $multiPoint]);
 
-  expect($testPlace->multi_point->srid)->toBe(4326);
+  expect($testPlace->multi_point->srid)->toBe(SRID::GCS->value);
 });
 
 it('creates multi point from JSON', function (): void {
@@ -45,9 +46,9 @@ it('creates multi point from JSON', function (): void {
 it('creates multi point with SRID from JSON', function (): void {
   $multiPoint = new MultiPoint([
     new Point(0, 180),
-  ], 4326);
+  ], SRID::GCS->value);
 
-  $multiPointFromJson = MultiPoint::fromJson('{"type":"MultiPoint","coordinates":[[180,0]]}', 4326);
+  $multiPointFromJson = MultiPoint::fromJson('{"type":"MultiPoint","coordinates":[[180,0]]}', SRID::GCS->value);
 
   expect($multiPointFromJson)->toEqual($multiPoint);
 });
@@ -87,9 +88,9 @@ it('creates multi point from WKT', function (): void {
 it('creates multi point with SRID from WKT', function (): void {
   $multiPoint = new MultiPoint([
     new Point(0, 180),
-  ], 4326);
+  ], SRID::GCS->value);
 
-  $multiPointFromWkt = MultiPoint::fromWkt('MULTIPOINT(180 0)', 4326);
+  $multiPointFromWkt = MultiPoint::fromWkt('MULTIPOINT(180 0)', SRID::GCS->value);
 
   expect($multiPointFromWkt)->toEqual($multiPoint);
 });
@@ -118,7 +119,7 @@ it('creates multi point from WKB', function (): void {
 it('creates multi point with SRID from WKB', function (): void {
   $multiPoint = new MultiPoint([
     new Point(0, 180),
-  ], 4326);
+  ], SRID::GCS->value);
 
   $multiPointFromWkb = MultiPoint::fromWkb($multiPoint->toWkb());
 

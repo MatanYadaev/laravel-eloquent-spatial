@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use MatanYadaev\EloquentSpatial\Constants\SRID;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
@@ -18,12 +19,12 @@ it('creates a model record with point', function (): void {
 });
 
 it('creates a model record with point with SRID', function (): void {
-  $point = new Point(0, 180, 4326);
+  $point = new Point(0, 180, SRID::GCS->value);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['point' => $point]);
 
-  expect($testPlace->point->srid)->toBe(4326);
+  expect($testPlace->point->srid)->toBe(SRID::GCS->value);
 });
 
 it('creates point from JSON', function (): void {
@@ -35,9 +36,9 @@ it('creates point from JSON', function (): void {
 });
 
 it('creates point with SRID from JSON', function (): void {
-  $point = new Point(0, 180, 4326);
+  $point = new Point(0, 180, SRID::GCS->value);
 
-  $pointFromJson = Point::fromJson('{"type":"Point","coordinates":[180,0]}', 4326);
+  $pointFromJson = Point::fromJson('{"type":"Point","coordinates":[180,0]}', SRID::GCS->value);
 
   expect($pointFromJson)->toEqual($point);
 });
@@ -66,9 +67,9 @@ it('creates point from WKT', function (): void {
 });
 
 it('creates point with SRID from WKT', function (): void {
-  $point = new Point(0, 180, 4326);
+  $point = new Point(0, 180, SRID::GCS->value);
 
-  $pointFromWkt = Point::fromWkt('POINT(180 0)', 4326);
+  $pointFromWkt = Point::fromWkt('POINT(180 0)', SRID::GCS->value);
 
   expect($pointFromWkt)->toEqual($point);
 });
@@ -91,7 +92,7 @@ it('creates point from WKB', function (): void {
 });
 
 it('creates point with SRID from WKB', function (): void {
-  $point = new Point(0, 180, 4326);
+  $point = new Point(0, 180, SRID::GCS->value);
 
   $pointFromWkb = Point::fromWkb($point->toWkb());
 
@@ -99,7 +100,7 @@ it('creates point with SRID from WKB', function (): void {
 });
 
 it('casts a Point to a string', function (): void {
-  $point = new Point(0, 180, 4326);
+  $point = new Point(0, 180, SRID::GCS->value);
 
   expect($point->__toString())->toEqual('POINT(180 0)');
 });
@@ -111,7 +112,7 @@ it('adds a macro toPoint', function (): void {
     return class_basename($this);
   });
 
-  $point = new Point(0, 180, 4326);
+  $point = new Point(0, 180, SRID::GCS->value);
 
   // @phpstan-ignore-next-line
   expect($point->getName())->toBe('Point');

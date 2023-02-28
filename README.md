@@ -106,7 +106,7 @@ $londonEye = Place::create([
 
 $whiteHouse = Place::create([
     'name' => 'White House',
-    'location' => new Point(38.8976763, -77.0365298, 4326), // with SRID
+    'location' => new Point(38.8976763, -77.0365298, SRID::GCS->value), // with SRID
 ]);
 
 $vaticanCity = Place::create([
