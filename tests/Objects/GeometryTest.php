@@ -3,7 +3,7 @@
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\AxisOrder;
-use MatanYadaev\EloquentSpatial\Enums\SRID;
+use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
@@ -19,36 +19,36 @@ it('throws exception when generating geometry from other geometry WKB', function
 
 it('throws exception when generating geometry with invalid latitude', function (): void {
   expect(function (): void {
-    $point = (new Point(91, 0, SRID::WGS84->value));
+    $point = (new Point(91, 0, Srid::WGS84->value));
     TestPlace::factory()->create(['point' => $point]);
   })->toThrow(QueryException::class);
 })->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
 it('throws exception when generating geometry with invalid latitude - without axis-order', function (): void {
   expect(function (): void {
-    $point = (new Point(91, 0, SRID::WGS84->value));
+    $point = (new Point(91, 0, Srid::WGS84->value));
     TestPlace::factory()->create(['point' => $point]);
 
     TestPlace::query()
-      ->withDistanceSphere('point', new Point(1, 1, SRID::WGS84->value))
+      ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value))
       ->firstOrFail();
   })->toThrow(QueryException::class);
 })->skip(fn () => (new AxisOrder)->supported(DB::connection()));
 
 it('throws exception when generating geometry with invalid longitude', function (): void {
   expect(function (): void {
-    $point = (new Point(0, 181, SRID::WGS84->value));
+    $point = (new Point(0, 181, Srid::WGS84->value));
     TestPlace::factory()->create(['point' => $point]);
   })->toThrow(QueryException::class);
 })->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
 it('throws exception when generating geometry with invalid longitude - without axis-order', function (): void {
   expect(function (): void {
-    $point = (new Point(0, 181, SRID::WGS84->value));
+    $point = (new Point(0, 181, Srid::WGS84->value));
     TestPlace::factory()->create(['point' => $point]);
 
     TestPlace::query()
-      ->withDistanceSphere('point', new Point(1, 1, SRID::WGS84->value))
+      ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value))
       ->firstOrFail();
   })->toThrow(QueryException::class);
 })->skip(fn () => (new AxisOrder)->supported(DB::connection()));
@@ -82,7 +82,7 @@ it('throws exception when generating geometry from other geometry JSON', functio
 });
 
 it('creates an SQL expression from a geometry', function (): void {
-  $point = new Point(0, 180, SRID::WGS84->value);
+  $point = new Point(0, 180, Srid::WGS84->value);
 
   $expression = $point->toSqlExpression(DB::connection());
 
@@ -92,7 +92,7 @@ it('creates an SQL expression from a geometry', function (): void {
 })->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
 
 it('creates an SQL expression from a geometry - without axis-order', function (): void {
-  $point = new Point(0, 180, SRID::WGS84->value);
+  $point = new Point(0, 180, Srid::WGS84->value);
 
   $expression = $point->toSqlExpression(DB::connection());
 
