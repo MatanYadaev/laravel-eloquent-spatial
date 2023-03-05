@@ -39,4 +39,12 @@ class Point extends Geometry
       $this->latitude,
     ];
   }
+  
+  public function toArray(): array
+  {
+      return [
+          'latitude' => $this->latitude,
+          'longitude' => $this->longitude,
+      ];
+  }
 }
