@@ -27,6 +27,18 @@ it('updates a model record', function (): void {
   expect($testPlace->point)->toEqual($point2);
 });
 
+it('updates a model record with expression', function (): void {
+  $point = new Point(0, 180);
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['point' => $point]);
+  $pointFromAttributes = $testPlace->getAttributes()['point'];
+
+  expect(function () use ($testPlace, $pointFromAttributes): void {
+    $testPlace->update(['point' => $pointFromAttributes]);
+  })->not->toThrow(InvalidArgumentException::class);
+  expect(true)->toBeTrue(); // because of Pest's bug: https://github.com/pestphp/pest/issues/657
+});
+
 it('updates a model record with null geometry', function (): void {
   $point = new Point(0, 180);
   /** @var TestPlace $testPlace */
