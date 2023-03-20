@@ -22,8 +22,8 @@
     "jubeki/laravel-code-style": "^1.2",
     "nunomaduro/larastan": "^1.0|^2.4",
     "orchestra/testbench": "^8.0",
-    "pestphp/pest": "^1.22.4",
-    "pestphp/pest-plugin-laravel": "^1.4"
+    "pestphp/pest": "^2.0",
+    "pestphp/pest-plugin-laravel": "^2.0"
   },
   "autoload": {
     "psr-4": {
