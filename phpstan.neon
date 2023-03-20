@@ -7,15 +7,5 @@ parameters:
   excludePaths:
     - src/Factory.php
   level: max
-  ignoreErrors:
-    -
-      message: '#^Call to an undefined method Pest\\Expectation\|Pest\\Support\\Extendable\:\:.+\(\)\.$#'
-      path: tests/*.php
-    -
-      message: '#^Access to an undefined property Pest\\Expectation\|Pest\\Support\\Extendable\:\:\$.+\.$#'
-      path: tests/*.php
-    -
-      message: '#^Call to an undefined method Pest\\Expectation\:\:.+\(\)\.$#'
-      path: tests/*.php
   checkMissingIterableValueType: true
   checkGenericClassInNonGenericObjectType: false
