@@ -106,6 +106,8 @@ use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
 
+// Create new records
+
 $londonEye = Place::create([
     'name' => 'London Eye',
     'location' => new Point(51.5032973, -0.1217424),
@@ -133,11 +135,9 @@ $vaticanCity = Place::create([
         ]),
     ]),
 ])
-```
 
-Retrieve a record with spatial data:
+// Access the data
 
-```php
 echo $londonEye->location->latitude; // 51.5032973
 echo $londonEye->location->longitude; // -0.1217424
 
