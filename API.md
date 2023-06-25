@@ -79,6 +79,7 @@ An enum is provided with the following values:
 * [whereDisjoint](#whereDisjoint)
 * [whereEquals](#whereEquals)
 * [whereSrid](#whereSrid)
+* [withCentroid](#withCentroid)
 
 ###  withDistance
 
@@ -450,5 +451,37 @@ Place::create(['location' => new Point(0, 0, 4326)]);
 Place::query()
     ->whereSrid('location', '=', 4326)
     ->exists(); // true
+```
+</details>
+
+###  withCentroid
+
+Retrieves the centroid of the geometry object. Uses [ST_Centroid](https://dev.mysql.com/doc/refman/8.0/en/gis-polygon-property-functions.html#function_st-centroid).
+
+| parameter name      | type                | default      |
+|---------------------|---------------------|--------------|
+| `$column`           | `Geometry \ string` |              |
+| `$alias`            | `string`            | `'centroid'` |
+
+<details><summary>Example</summary>
+
+```php
+$polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
+Place::create(['polygon' => $polygon]);
+
+$placeWithCentroid = Place::query()
+    ->withCentroid('polygon')
+    ->withCast('centroid', Point:class) // This is important, otherwise the centroid will be returned as a binary string.
+    ->first();
+
+echo $placeWithDistance->centroid; // POINT(0 0)
+
+// when using alias:
+$placeWithCentroid = Place::query()
+    ->withCentroid('polygon', 'centroid_alias')
+    ->withCast('centroid_alias', Point:class)
+    ->first();
+
+echo $placeWithDistance->centroid_alias; // POINT(0 0)
 ```
 </details>
