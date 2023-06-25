@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v3.2.0 - 2023-06-25
+
+### What's Changed
+
+- Support `St_Centroid` spatial function
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/3.1.2...3.2.0
+
 ## v2.10.1 - 2023-03-09
 
 ### What's Changed
