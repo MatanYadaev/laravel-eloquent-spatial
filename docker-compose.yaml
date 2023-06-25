@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: mysql-laravel-eloquent-spatial
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: laravel_eloquent_spatial_test
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
