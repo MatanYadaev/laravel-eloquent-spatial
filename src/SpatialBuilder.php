@@ -22,8 +22,7 @@ class SpatialBuilder extends Builder
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
     string $alias = 'distance'
-  ): self
-  {
+  ): self {
     if (! $this->getQuery()->columns) {
       $this->select('*');
     }
@@ -45,8 +44,7 @@ class SpatialBuilder extends Builder
     ExpressionContract|Geometry|string $geometryOrColumn,
     string $operator,
     int|float $value
-  ): self
-  {
+  ): self {
     $this->whereRaw(
       sprintf(
         'ST_DISTANCE(%s, %s) %s ?',
@@ -64,8 +62,7 @@ class SpatialBuilder extends Builder
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
     string $direction = 'asc'
-  ): self
-  {
+  ): self {
     $this->orderByRaw(
       sprintf(
         'ST_DISTANCE(%s, %s) %s',
@@ -82,8 +79,7 @@ class SpatialBuilder extends Builder
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
     string $alias = 'distance'
-  ): self
-  {
+  ): self {
     if (! $this->getQuery()->columns) {
       $this->select('*');
     }
@@ -105,8 +101,7 @@ class SpatialBuilder extends Builder
     ExpressionContract|Geometry|string $geometryOrColumn,
     string $operator,
     int|float $value
-  ): self
-  {
+  ): self {
     $this->whereRaw(
       sprintf(
         'ST_DISTANCE_SPHERE(%s, %s) %s ?',
@@ -124,8 +119,7 @@ class SpatialBuilder extends Builder
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
     string $direction = 'asc'
-  ): self
-  {
+  ): self {
     $this->orderByRaw(
       sprintf(
         'ST_DISTANCE_SPHERE(%s, %s) %s',
@@ -141,8 +135,7 @@ class SpatialBuilder extends Builder
   public function whereWithin(
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
-  ): self
-  {
+  ): self {
     $this->whereRaw(
       sprintf(
         'ST_WITHIN(%s, %s)',
@@ -157,8 +150,7 @@ class SpatialBuilder extends Builder
   public function whereNotWithin(
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
-  ): self
-  {
+  ): self {
     $this->whereRaw(
       sprintf(
         'ST_WITHIN(%s, %s) = 0',
@@ -173,8 +165,7 @@ class SpatialBuilder extends Builder
   public function whereContains(
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
-  ): self
-  {
+  ): self {
     $this->whereRaw(
       sprintf(
         'ST_CONTAINS(%s, %s)',
@@ -189,8 +180,7 @@ class SpatialBuilder extends Builder
   public function whereNotContains(
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
-  ): self
-  {
+  ): self {
     $this->whereRaw(
       sprintf(
         'ST_CONTAINS(%s, %s) = 0',
@@ -205,8 +195,7 @@ class SpatialBuilder extends Builder
   public function whereTouches(
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
-  ): self
-  {
+  ): self {
     $this->whereRaw(
       sprintf(
         'ST_TOUCHES(%s, %s)',
@@ -221,8 +210,7 @@ class SpatialBuilder extends Builder
   public function whereIntersects(
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
-  ): self
-  {
+  ): self {
     $this->whereRaw(
       sprintf(
         'ST_INTERSECTS(%s, %s)',
@@ -237,8 +225,7 @@ class SpatialBuilder extends Builder
   public function whereCrosses(
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
-  ): self
-  {
+  ): self {
     $this->whereRaw(
       sprintf(
         'ST_CROSSES(%s, %s)',
@@ -253,8 +240,7 @@ class SpatialBuilder extends Builder
   public function whereDisjoint(
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
-  ): self
-  {
+  ): self {
     $this->whereRaw(
       sprintf(
         'ST_DISJOINT(%s, %s)',
@@ -269,8 +255,7 @@ class SpatialBuilder extends Builder
   public function whereOverlaps(
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
-  ): self
-  {
+  ): self {
     $this->whereRaw(
       sprintf(
         'ST_OVERLAPS(%s, %s)',
@@ -285,8 +270,7 @@ class SpatialBuilder extends Builder
   public function whereEquals(
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
-  ): self
-  {
+  ): self {
     $this->whereRaw(
       sprintf(
         'ST_EQUALS(%s, %s)',
@@ -302,8 +286,7 @@ class SpatialBuilder extends Builder
     ExpressionContract|Geometry|string $column,
     string $operator,
     int|float $value
-  ): self
-  {
+  ): self {
     $this->whereRaw(
       sprintf(
         'ST_SRID(%s) %s ?',
@@ -311,6 +294,21 @@ class SpatialBuilder extends Builder
         $operator,
       ),
       [$value],
+    );
+
+    return $this;
+  }
+
+  public function withCentroid(
+    ExpressionContract|Geometry|string $column,
+    string $alias = 'centroid',
+  ): self {
+    $this->selectRaw(
+      sprintf(
+        'ST_CENTROID(%s) AS %s',
+        $this->toExpressionString($column),
+        $this->getGrammar()->wrap($alias),
+      )
     );
 
     return $this;

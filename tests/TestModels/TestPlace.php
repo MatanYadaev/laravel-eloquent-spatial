@@ -25,6 +25,8 @@ use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
  * @property GeometryCollection $geometry_collection
  * @property float|null $distance
  * @property float|null $distance_in_meters
+ * @property Point|null $centroid
+ * @property Point|null $centroid_alias
  * @mixin Model
  *
  * @method static SpatialBuilder<TestPlace> query()

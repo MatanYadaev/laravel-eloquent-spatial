@@ -372,6 +372,40 @@ it('filters by SRID', function (): void {
   expect($testPlaces[0]->point)->toEqual($point1);
 });
 
+it('calculates geometry centroid', function (): void {
+  // Arrange
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
+  TestPlace::factory()->create(['polygon' => $polygon]);
+
+  // Act
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::query()
+    ->withCentroid('polygon')
+    ->withCasts(['centroid' => Point::class])
+    ->firstOrFail();
+
+  // Assert
+  $expectedCentroid = new Point(0, 0);
+  expect($testPlace->centroid)->toEqual($expectedCentroid);
+});
+
+it('calculates geometry centroid with alias', function (): void {
+  // Arrange
+  $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
+  TestPlace::factory()->create(['polygon' => $polygon]);
+
+  // Act
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::query()
+    ->withCentroid('polygon', 'centroid_alias')
+    ->withCasts(['centroid_alias' => Point::class])
+    ->firstOrFail();
+
+  // Assert
+  $expectedCentroid = new Point(0, 0);
+  expect($testPlace->centroid_alias)->toEqual($expectedCentroid);
+});
+
 it('uses spatial function with column', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
 

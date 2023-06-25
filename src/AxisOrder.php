@@ -10,7 +10,9 @@ use PDO;
 
 class AxisOrder
 {
-  public function __construct() {}
+  public function __construct()
+  {
+  }
 
   public function supported(ConnectionInterface $connection): bool
   {
@@ -30,7 +32,8 @@ class AxisOrder
     return true;
   }
 
-  private function isMariaDb(MySqlConnection $connection): bool {
+  private function isMariaDb(MySqlConnection $connection): bool
+  {
     return $connection->isMaria();
   }
 
