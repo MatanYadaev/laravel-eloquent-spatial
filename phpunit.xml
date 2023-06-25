@@ -5,7 +5,7 @@
          colors="true"
          processIsolation="false"
          stopOnFailure="false"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.2/phpunit.xsd"
          cacheDirectory=".phpunit.cache"
          backupStaticProperties="false"
 >
@@ -15,9 +15,6 @@
     </testsuite>
   </testsuites>
   <coverage>
-    <include>
-      <directory suffix=".php">./src</directory>
-    </include>
     <report>
       <html outputDirectory="build/coverage"/>
       <text outputFile="build/coverage.txt"/>
@@ -31,4 +28,9 @@
     <env name="DB_DATABASE" value="laravel_eloquent_spatial_test"/>
     <env name="DB_USERNAME" value="root"/>
   </php>
+  <source>
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+  </source>
 </phpunit>
