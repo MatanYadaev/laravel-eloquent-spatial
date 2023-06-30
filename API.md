@@ -471,7 +471,7 @@ Place::create(['polygon' => $polygon]);
 
 $placeWithCentroid = Place::query()
     ->withCentroid('polygon')
-    ->withCast('centroid', Point:class) // This is important, otherwise the centroid will be returned as a binary string.
+    ->withCasts(['centroid' => Point::class]) // This is important, otherwise the centroid will be returned as a binary string.
     ->first();
 
 echo $placeWithDistance->centroid; // POINT(0 0)
@@ -479,7 +479,7 @@ echo $placeWithDistance->centroid; // POINT(0 0)
 // when using alias:
 $placeWithCentroid = Place::query()
     ->withCentroid('polygon', 'centroid_alias')
-    ->withCast('centroid_alias', Point:class)
+    ->withCasts(['centroid_alias' => Point::class])
     ->first();
 
 echo $placeWithDistance->centroid_alias; // POINT(0 0)
