@@ -13,8 +13,8 @@ trait HasSpatial
   }
 
   /**
-   * @param array<string, mixed> $attributes
-   * @param bool $sync
+   * @param  array<string, mixed>  $attributes
+   * @param  bool  $sync
    * @return $this
    */
   public function setRawAttributes(array $attributes, $sync = false)
