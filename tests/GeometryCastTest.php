@@ -111,8 +111,6 @@ it('throws exception when cast deserializing incorrect geometry object', functio
   ]));
 
   expect(function (): void {
-    // cast deserialization happens in setRawAttributes
-    // called immediately after retrieving db record
     TestPlace::firstOrFail();
   })->toThrow(InvalidArgumentException::class);
 });
@@ -127,40 +125,31 @@ it('creates a model record with geometry from geo json array', function (): void
   expect($testPlace->point)->toEqual($point);
 });
 
-it('is serializeable and JSON encodeable by standard serialize / JSON encode functions', function (): void {
+it('serializes and json encodes a model record with geometry', function (): void {
+  // Arrange
   $point = new Point(0, 180);
-
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->make(['point' => $point]);
 
-  $serialized = serialize($testPlace);
-  $json = json_encode($serialized);
-
-  expect($json)->toBeTruthy('JSON encoding failed.');
-
+  // Act
   // @phpstan-ignore-next-line
-  $recoveredTestPlace = unserialize(json_decode($json));
+  $recoveredTestPlace = unserialize(json_decode(json_encode(serialize($testPlace))));
 
+  // Assert
   expect($recoveredTestPlace)->toEqual($testPlace);
 });
 
-it('is serializeable and JSON encodeable by standard serialize / JSON encode functions when retrieved from db', function (): void {
+it('serializes and json encodes a model record with geometry when retrieving from database', function (): void {
+  // Arrange
   $point = new Point(0, 180);
-
   /** @var TestPlace $testPlace */
-  $testPlace = TestPlace::factory()->make(['point' => $point]);
-
-  $testPlace->save();
-
+  $testPlace = TestPlace::factory()->create(['point' => $point]);
   $testPlaceFromDb = TestPlace::find($testPlace->id);
 
-  $serialized = serialize($testPlaceFromDb);
-  $json = json_encode($serialized);
-
-  expect($json)->toBeTruthy('JSON encoding failed.');
-
+  // Act
   // @phpstan-ignore-next-line
-  $recoveredTestPlace = unserialize(json_decode($json));
+  $recoveredTestPlace = unserialize(json_decode(json_encode(serialize($testPlaceFromDb))));
 
+  // Assert
   expect($recoveredTestPlace)->toEqual($testPlaceFromDb);
 });
