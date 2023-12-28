@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v3.2.1 - 2023-12-28
+
+- Fixed model serialization bug #100
+
 ## v3.2.0 - 2023-06-25
 
 ### What's Changed
