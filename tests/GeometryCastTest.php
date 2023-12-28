@@ -109,11 +109,11 @@ it('throws exception when cast deserializing incorrect geometry object', functio
   TestPlace::insert(array_merge(TestPlace::factory()->definition(), [
     'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
   ]));
-  /** @var TestPlace $testPlace */
-  $testPlace = TestPlace::firstOrFail();
 
-  expect(function () use ($testPlace): void {
-    $testPlace->getAttribute('point_with_line_string_cast');
+  expect(function (): void {
+    // cast deserialization happens in setRawAttributes
+    // called immediately after retrieving db record
+    TestPlace::firstOrFail();
   })->toThrow(InvalidArgumentException::class);
 });
 
@@ -125,4 +125,42 @@ it('creates a model record with geometry from geo json array', function (): void
   $testPlace = TestPlace::factory()->make(['point' => $pointGeoJsonArray]);
 
   expect($testPlace->point)->toEqual($point);
+});
+
+it('is serializeable and JSON encodeable by standard serialize / JSON encode functions', function (): void {
+  $point = new Point(0, 180);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->make(['point' => $point]);
+
+  $serialized = serialize($testPlace);
+  $json = json_encode($serialized);
+
+  expect($json)->toBeTruthy('JSON encoding failed.');
+
+  // @phpstan-ignore-next-line
+  $recoveredTestPlace = unserialize(json_decode($json));
+
+  expect($recoveredTestPlace)->toEqual($testPlace);
+});
+
+it('is serializeable and JSON encodeable by standard serialize / JSON encode functions when retrieved from db', function (): void {
+  $point = new Point(0, 180);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->make(['point' => $point]);
+
+  $testPlace->save();
+
+  $testPlaceFromDb = TestPlace::find($testPlace->id);
+
+  $serialized = serialize($testPlaceFromDb);
+  $json = json_encode($serialized);
+
+  expect($json)->toBeTruthy('JSON encoding failed.');
+
+  // @phpstan-ignore-next-line
+  $recoveredTestPlace = unserialize(json_decode($json));
+
+  expect($recoveredTestPlace)->toEqual($testPlaceFromDb);
 });
