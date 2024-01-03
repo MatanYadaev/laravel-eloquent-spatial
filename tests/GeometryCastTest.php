@@ -115,6 +115,23 @@ it('throws exception when cast deserializing incorrect geometry object', functio
   })->toThrow(InvalidArgumentException::class);
 });
 
+it('casts correctly if attribute is already geometry', function (): void {
+  $pointA = new Point(0, 180);
+  $pointB = new Point(1, 180);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['point' => $pointA]);
+
+  $testPlace->point = $pointB;
+  $testPlace->save();
+
+  expect(function () use ($testPlace): void {
+    $testPlace->refresh();
+  })->not->toThrow(InvalidArgumentException::class);
+
+  expect($pointB)->toEqual($testPlace->point);
+});
+
 it('creates a model record with geometry from geo json array', function (): void {
   $point = new Point(0, 180);
   $pointGeoJsonArray = $point->toArray();

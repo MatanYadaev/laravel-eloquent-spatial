@@ -37,6 +37,10 @@ class GeometryCast implements CastsAttributes
       return null;
     }
 
+    if($value instanceof Geometry) {
+      return $value;
+    }
+
     if ($value instanceof ExpressionContract) {
       $wkt = $this->extractWktFromExpression($value, $model->getConnection());
       $srid = $this->extractSridFromExpression($value, $model->getConnection());
