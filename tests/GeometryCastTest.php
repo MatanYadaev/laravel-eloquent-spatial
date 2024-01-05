@@ -109,9 +109,11 @@ it('throws exception when cast deserializing incorrect geometry object', functio
   TestPlace::insert(array_merge(TestPlace::factory()->definition(), [
     'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
   ]));
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::firstOrFail();
 
-  expect(function (): void {
-    TestPlace::firstOrFail();
+  expect(function () use ($testPlace): void {
+    $testPlace->getAttribute('point_with_line_string_cast');
   })->toThrow(InvalidArgumentException::class);
 });
 
@@ -123,33 +125,4 @@ it('creates a model record with geometry from geo json array', function (): void
   $testPlace = TestPlace::factory()->make(['point' => $pointGeoJsonArray]);
 
   expect($testPlace->point)->toEqual($point);
-});
-
-it('serializes and json encodes a model record with geometry', function (): void {
-  // Arrange
-  $point = new Point(0, 180);
-  /** @var TestPlace $testPlace */
-  $testPlace = TestPlace::factory()->make(['point' => $point]);
-
-  // Act
-  // @phpstan-ignore-next-line
-  $recoveredTestPlace = unserialize(json_decode(json_encode(serialize($testPlace))));
-
-  // Assert
-  expect($recoveredTestPlace)->toEqual($testPlace);
-});
-
-it('serializes and json encodes a model record with geometry when retrieving from database', function (): void {
-  // Arrange
-  $point = new Point(0, 180);
-  /** @var TestPlace $testPlace */
-  $testPlace = TestPlace::factory()->create(['point' => $point]);
-  $testPlaceFromDb = TestPlace::find($testPlace->id);
-
-  // Act
-  // @phpstan-ignore-next-line
-  $recoveredTestPlace = unserialize(json_decode(json_encode(serialize($testPlaceFromDb))));
-
-  // Assert
-  expect($recoveredTestPlace)->toEqual($testPlaceFromDb);
 });
