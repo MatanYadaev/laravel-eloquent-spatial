@@ -68,7 +68,6 @@ composer require matanyadaev/laravel-eloquent-spatial
     namespace App\Models;
 
     use Illuminate\Database\Eloquent\Model;
-    use MatanYadaev\EloquentSpatial\SpatialBuilder;
     use MatanYadaev\EloquentSpatial\Objects\Point;
     use MatanYadaev\EloquentSpatial\Objects\Polygon;
     use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
@@ -76,7 +75,6 @@ composer require matanyadaev/laravel-eloquent-spatial
     /**
      * @property Point $location
      * @property Polygon $area
-     * @method static SpatialBuilder query()
      */
     class Place extends Model
     {
@@ -150,39 +148,6 @@ echo $vacationCity->area->toJson(); // {"type":"Polygon","coordinates":[[[41.907
 
 For more comprehensive documentation on the API, please refer to the [API](API.md) page.
 
-## Tips for Improving IDE Support
-
-In order to get better IDE support, you can add a `query` method phpDoc annotation to your model:
-
-```php
-/**
- * @method static SpatialBuilder query()
- */
-class Place extends Model
-{
-    // ...
-}
-```
-
-Or you could override the method:
-
-```php
-class Place extends Model
-{
-    public static function query(): SpatialBuilder
-    {
-        return parent::query();
-    }
-}
-```
-
-Create queries only with the `query()` static method:
-
-```php
-Place::query()->whereDistance(...); // This is IDE-friendly
-Place::whereDistance(...); // This is not
-```
-
 ## Extension
 
 You can add new methods to the `Geometry` class through macros.
@@ -218,6 +183,8 @@ Here are some useful commands for development:
 * Run tests with coverage: `composer pest-coverage`
 * Perform type checking: `composer phpstan`
 * Format your code: `composer php-cs-fixer`
+
+Before running tests, make sure to run `docker-compose up` to start the database container.
 
 ## Updates and Changes
 
