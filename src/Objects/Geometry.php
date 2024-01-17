@@ -5,22 +5,23 @@ declare(strict_types=1);
 namespace MatanYadaev\EloquentSpatial\Objects;
 
 use geoPHP;
+use Stringable;
+use JsonException;
+use JsonSerializable;
+use WKB as geoPHPWkb;
+use InvalidArgumentException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Traits\Macroable;
+use MatanYadaev\EloquentSpatial\Factory;
+use Illuminate\Contracts\Support\Jsonable;
+use MatanYadaev\EloquentSpatial\AxisOrder;
+use Illuminate\Contracts\Support\Arrayable;
+use MatanYadaev\EloquentSpatial\Enums\Srid;
+use Illuminate\Database\ConnectionInterface;
+use MatanYadaev\EloquentSpatial\GeometryCast;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Database\Query\Expression as ExpressionContract;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Database\ConnectionInterface;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Traits\Macroable;
-use InvalidArgumentException;
-use JsonException;
-use JsonSerializable;
-use MatanYadaev\EloquentSpatial\AxisOrder;
-use MatanYadaev\EloquentSpatial\Factory;
-use MatanYadaev\EloquentSpatial\GeometryCast;
-use Stringable;
-use WKB as geoPHPWkb;
 
 abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializable, Stringable
 {
@@ -96,10 +97,10 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
    *
    * @throws InvalidArgumentException
    */
-  public static function fromWkt(string $wkt, int $srid = 0): static
+  public static function fromWkt(string $wkt, int|Srid $srid = 0): static
   {
     $geometry = Factory::parse($wkt);
-    $geometry->srid = $srid;
+    $geometry->srid = $srid instanceof Srid ? $srid->getValue() : $srid;
 
     if (! ($geometry instanceof static)) {
       throw new InvalidArgumentException(
@@ -117,10 +118,10 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
    *
    * @throws InvalidArgumentException
    */
-  public static function fromJson(string $geoJson, int $srid = 0): static
+  public static function fromJson(string $geoJson, int|Srid $srid = 0): static
   {
     $geometry = Factory::parse($geoJson);
-    $geometry->srid = $srid;
+    $geometry->srid = $srid instanceof Srid ? $srid->getValue() : $srid;
 
     if (! ($geometry instanceof static)) {
       throw new InvalidArgumentException(
