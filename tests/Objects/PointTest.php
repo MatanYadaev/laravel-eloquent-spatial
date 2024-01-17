@@ -18,8 +18,17 @@ it('creates a model record with point', function (): void {
   expect($testPlace->point)->toEqual($point);
 });
 
-it('creates a model record with point with SRID', function (): void {
+it('creates a model record with point with SRID integer', function (): void {
   $point = new Point(0, 180, Srid::WGS84->value);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['point' => $point]);
+
+  expect($testPlace->point->srid)->toBe(Srid::WGS84->value);
+});
+
+it('creates a model record with point with SRID enum', function (): void {
+  $point = new Point(0, 180, Srid::WGS84);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['point' => $point]);

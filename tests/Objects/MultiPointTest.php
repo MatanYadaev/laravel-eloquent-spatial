@@ -22,10 +22,21 @@ it('creates a model record with multi point', function (): void {
   expect($testPlace->multi_point)->toEqual($multiPoint);
 });
 
-it('creates a model record with multi point with SRID', function (): void {
+it('creates a model record with multi point with SRID integer', function (): void {
   $multiPoint = new MultiPoint([
     new Point(0, 180),
   ], Srid::WGS84->value);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['multi_point' => $multiPoint]);
+
+  expect($testPlace->multi_point->srid)->toBe(Srid::WGS84->value);
+});
+
+it('creates a model record with multi point with SRID enum', function (): void {
+  $multiPoint = new MultiPoint([
+    new Point(0, 180),
+  ], Srid::WGS84);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['multi_point' => $multiPoint]);

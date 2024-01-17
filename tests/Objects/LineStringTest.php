@@ -23,11 +23,23 @@ it('creates a model record with line string', function (): void {
   expect($testPlace->line_string)->toEqual($lineString);
 });
 
-it('creates a model record with line string with SRID', function (): void {
+it('creates a model record with line string with SRID integer', function (): void {
   $lineString = new LineString([
     new Point(0, 180),
     new Point(1, 179),
   ], Srid::WGS84->value);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['line_string' => $lineString]);
+
+  expect($testPlace->line_string->srid)->toBe(Srid::WGS84->value);
+});
+
+it('creates a model record with line string with SRID enum', function (): void {
+  $lineString = new LineString([
+    new Point(0, 180),
+    new Point(1, 179),
+  ], Srid::WGS84);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['line_string' => $lineString]);
