@@ -20,7 +20,7 @@
     "doctrine/dbal": "^3.5.3",
     "friendsofphp/php-cs-fixer": "^3.14.3",
     "jubeki/laravel-code-style": "^1.2",
-    "nunomaduro/larastan": "^1.0|^2.4",
+    "larastan/larastan": "^1.0|^2.4",
     "orchestra/testbench": "^8.0",
     "pestphp/pest": "^2.0",
     "pestphp/pest-plugin-laravel": "^2.0"

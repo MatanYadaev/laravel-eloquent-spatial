@@ -445,7 +445,7 @@ it('uses spatial function with expression', function (): void {
 });
 
 it('toExpressionString can handle a Expression input', function (): void {
-  $spatialBuilder = TestPlace::query();
+  $spatialBuilder = new TestPlace();
   $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
 
   $result = $toExpressionStringMethod->invoke($spatialBuilder, DB::raw('POINT(longitude, latitude)'));
@@ -454,7 +454,7 @@ it('toExpressionString can handle a Expression input', function (): void {
 });
 
 it('toExpressionString can handle a Geometry input', function (): void {
-  $spatialBuilder = TestPlace::query();
+  $spatialBuilder = new TestPlace();
   $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
   $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
 
@@ -467,7 +467,7 @@ it('toExpressionString can handle a Geometry input', function (): void {
 });
 
 it('toExpressionString can handle a string input', function (): void {
-  $spatialBuilder = TestPlace::query();
+  $spatialBuilder = new TestPlace();
   $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
 
   $result = $toExpressionStringMethod->invoke($spatialBuilder, 'test_places.point');
