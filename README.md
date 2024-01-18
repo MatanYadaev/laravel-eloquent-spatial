@@ -8,8 +8,6 @@
 
 **This Laravel package allows you to easily work with spatial data types and functions.**
 
-The latest version, v3, supports Laravel 10 and PHP 8.1+. For Laravel 8 or 9, and PHP 8.0, use v2.
-
 This package supports MySQL v8, MySQL v5.7, and MariaDB v10.
 
 ## Getting Started
