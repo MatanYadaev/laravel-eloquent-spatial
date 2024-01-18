@@ -31,7 +31,7 @@ it('creates a model record with multi polygon', function (): void {
   expect($testPlace->multi_polygon)->toEqual($multiPolygon);
 });
 
-it('creates a model record with multi polygon with SRID', function (): void {
+it('creates a model record with multi polygon with SRID integer', function (): void {
   $multiPolygon = new MultiPolygon([
     new Polygon([
       new LineString([
@@ -43,6 +43,25 @@ it('creates a model record with multi polygon with SRID', function (): void {
       ]),
     ]),
   ], Srid::WGS84->value);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['multi_polygon' => $multiPolygon]);
+
+  expect($testPlace->multi_polygon->srid)->toBe(Srid::WGS84->value);
+});
+
+it('creates a model record with multi polygon with SRID enum', function (): void {
+  $multiPolygon = new MultiPolygon([
+    new Polygon([
+      new LineString([
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
+      ]),
+    ]),
+  ], Srid::WGS84);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['multi_polygon' => $multiPolygon]);

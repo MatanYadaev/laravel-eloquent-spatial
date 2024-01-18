@@ -17,6 +17,7 @@ use InvalidArgumentException;
 use JsonException;
 use JsonSerializable;
 use MatanYadaev\EloquentSpatial\AxisOrder;
+use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\GeometryCast;
 use Stringable;
@@ -96,10 +97,10 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
    *
    * @throws InvalidArgumentException
    */
-  public static function fromWkt(string $wkt, int $srid = 0): static
+  public static function fromWkt(string $wkt, int|Srid $srid = 0): static
   {
     $geometry = Factory::parse($wkt);
-    $geometry->srid = $srid;
+    $geometry->srid = $srid instanceof Srid ? $srid->value : $srid;
 
     if (! ($geometry instanceof static)) {
       throw new InvalidArgumentException(
@@ -117,10 +118,10 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
    *
    * @throws InvalidArgumentException
    */
-  public static function fromJson(string $geoJson, int $srid = 0): static
+  public static function fromJson(string $geoJson, int|Srid $srid = 0): static
   {
     $geometry = Factory::parse($geoJson);
-    $geometry->srid = $srid;
+    $geometry->srid = $srid instanceof Srid ? $srid->value : $srid;
 
     if (! ($geometry instanceof static)) {
       throw new InvalidArgumentException(

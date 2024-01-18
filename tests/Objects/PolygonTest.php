@@ -28,7 +28,7 @@ it('creates a model record with polygon', function (): void {
   expect($testPlace->polygon)->toEqual($polygon);
 });
 
-it('creates a model record with polygon with SRID', function (): void {
+it('creates a model record with polygon with SRID integer', function (): void {
   $polygon = new Polygon([
     new LineString([
       new Point(0, 180),
@@ -38,6 +38,23 @@ it('creates a model record with polygon with SRID', function (): void {
       new Point(0, 180),
     ]),
   ], Srid::WGS84->value);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['polygon' => $polygon]);
+
+  expect($testPlace->polygon->srid)->toBe(Srid::WGS84->value);
+});
+
+it('creates a model record with polygon with SRID enum', function (): void {
+  $polygon = new Polygon([
+    new LineString([
+      new Point(0, 180),
+      new Point(1, 179),
+      new Point(2, 178),
+      new Point(3, 177),
+      new Point(0, 180),
+    ]),
+  ], Srid::WGS84);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['polygon' => $polygon]);

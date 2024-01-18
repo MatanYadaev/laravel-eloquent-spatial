@@ -2,20 +2,20 @@
 
 ## Available geometry classes
 
-* `Point(float $latitude, float $longitude, int $srid = 0)` - [MySQL Point](https://dev.mysql.com/doc/refman/8.0/en/gis-class-point.html)
-* `MultiPoint(Point[] | Collection<Point> $geometries, int $srid = 0)` - [MySQL MultiPoint](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipoint.html)
-* `LineString(Point[] | Collection<Point> $geometries, int $srid = 0)` - [MySQL LineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-linestring.html)
-* `MultiLineString(LineString[] | Collection<LineString> $geometries, int $srid = 0)` - [MySQL MultiLineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multilinestring.html)
-* `Polygon(LineString[] | Collection<LineString> $geometries, int $srid = 0)` - [MySQL Polygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-polygon.html)
-* `MultiPolygon(Polygon[] | Collection<Polygon> $geometries, int $srid = 0)` - [MySQL MultiPolygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipolygon.html)
-* `GeometryCollection(Geometry[] | Collection<Geometry> $geometries, int $srid = 0)` - [MySQL GeometryCollection](https://dev.mysql.com/doc/refman/8.0/en/gis-class-geometrycollection.html)
+* `Point(float $latitude, float $longitude, int|Srid $srid = 0)` - [MySQL Point](https://dev.mysql.com/doc/refman/8.0/en/gis-class-point.html)
+* `MultiPoint(Point[] | Collection<Point> $geometries, int|Srid $srid = 0)` - [MySQL MultiPoint](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipoint.html)
+* `LineString(Point[] | Collection<Point> $geometries, int|Srid $srid = 0)` - [MySQL LineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-linestring.html)
+* `MultiLineString(LineString[] | Collection<LineString> $geometries, int|Srid $srid = 0)` - [MySQL MultiLineString](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multilinestring.html)
+* `Polygon(LineString[] | Collection<LineString> $geometries, int|Srid $srid = 0)` - [MySQL Polygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-polygon.html)
+* `MultiPolygon(Polygon[] | Collection<Polygon> $geometries, int|Srid $srid = 0)` - [MySQL MultiPolygon](https://dev.mysql.com/doc/refman/8.0/en/gis-class-multipolygon.html)
+* `GeometryCollection(Geometry[] | Collection<Geometry> $geometries, int|Srid $srid = 0)` - [MySQL GeometryCollection](https://dev.mysql.com/doc/refman/8.0/en/gis-class-geometrycollection.html)
 
 Geometry classes can be also created by these static methods:
 
 * `fromArray(array $geometry)` - Creates a geometry object from a [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) array.
-* `fromJson(string $geoJson, int $srid = 0)` - Creates a geometry object from a [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) string.
-* `fromWkt(string $wkt, int $srid = 0)` - Creates a geometry object from a [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry).
-* `fromWkb(string $wkb, int $srid = 0)` - Creates a geometry object from a [WKB](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary).
+* `fromJson(string $geoJson, int|Srid $srid = 0)` - Creates a geometry object from a [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) string.
+* `fromWkt(string $wkt, int|Srid $srid = 0)` - Creates a geometry object from a [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry).
+* `fromWkb(string $wkb)` - Creates a geometry object from a [WKB](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary).
 
 ## Available geometry class methods
 
@@ -58,8 +58,8 @@ An enum is provided with the following values:
 
 | Identifier           | Value  | Description                                                                         |
 |----------------------|--------|-------------------------------------------------------------------------------------|
-| `Srid::WGS84`        | `4326` | [Geographic coordinate system](https://epsg.org/crs_4326/WGS-84.html)               |                                 
-| `Srid::WEB_MERCATOR` | `3857` | [Mercator coordinate system](https://epsg.org/crs_3857/WGS-84-Pseudo-Mercator.html) | 
+| `Srid::WGS84`        | `4326` | [Geographic coordinate system](https://epsg.org/crs_4326/WGS-84.html)               |
+| `Srid::WEB_MERCATOR` | `3857` | [Mercator coordinate system](https://epsg.org/crs_3857/WGS-84-Pseudo-Mercator.html) |
 
 ## Available spatial scopes
 

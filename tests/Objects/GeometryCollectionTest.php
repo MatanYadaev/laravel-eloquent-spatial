@@ -32,7 +32,7 @@ it('creates a model record with geometry collection', function (): void {
   expect($testPlace->geometry_collection)->toEqual($geometryCollection);
 });
 
-it('creates a model record with geometry collection with SRID', function (): void {
+it('creates a model record with geometry collection with SRID integer', function (): void {
   $geometryCollection = new GeometryCollection([
     new Polygon([
       new LineString([
@@ -45,6 +45,26 @@ it('creates a model record with geometry collection with SRID', function (): voi
     ]),
     new Point(0, 180),
   ], Srid::WGS84->value);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['geometry_collection' => $geometryCollection]);
+
+  expect($testPlace->geometry_collection->srid)->toBe(Srid::WGS84->value);
+});
+
+it('creates a model record with geometry collection with SRID enum', function (): void {
+  $geometryCollection = new GeometryCollection([
+    new Polygon([
+      new LineString([
+        new Point(0, 180),
+        new Point(1, 179),
+        new Point(2, 178),
+        new Point(3, 177),
+        new Point(0, 180),
+      ]),
+    ]),
+    new Point(0, 180),
+  ], Srid::WGS84);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['geometry_collection' => $geometryCollection]);

@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
+use MatanYadaev\EloquentSpatial\Enums\Srid;
+
 class Point extends Geometry
 {
   public float $latitude;
 
   public float $longitude;
 
-  public function __construct(float $latitude, float $longitude, int $srid = 0)
+  public function __construct(float $latitude, float $longitude, int|Srid $srid = 0)
   {
     $this->latitude = $latitude;
     $this->longitude = $longitude;
-    $this->srid = $srid;
+    $this->srid = $srid instanceof Srid ? $srid->value : $srid;
   }
 
   public function toWkt(): string

@@ -8,6 +8,7 @@ use ArrayAccess;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use MatanYadaev\EloquentSpatial\Enums\Srid;
 
 class GeometryCollection extends Geometry implements ArrayAccess
 {
@@ -24,14 +25,14 @@ class GeometryCollection extends Geometry implements ArrayAccess
    *
    * @throws InvalidArgumentException
    */
-  public function __construct(Collection|array $geometries, int $srid = 0)
+  public function __construct(Collection|array $geometries, int|Srid $srid = 0)
   {
     if (is_array($geometries)) {
       $geometries = collect($geometries);
     }
 
     $this->geometries = $geometries;
-    $this->srid = $srid;
+    $this->srid = $srid instanceof Srid ? $srid->value : $srid;
 
     $this->validateGeometriesType();
     $this->validateGeometriesCount();

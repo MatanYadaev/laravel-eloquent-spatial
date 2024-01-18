@@ -25,13 +25,27 @@ it('creates a model record with multi line string', function (): void {
   expect($testPlace->multi_line_string)->toEqual($multiLineString);
 });
 
-it('creates a model record with multi line string with SRID', function (): void {
+it('creates a model record with multi line string with SRID integer', function (): void {
   $multiLineString = new MultiLineString([
     new LineString([
       new Point(0, 180),
       new Point(1, 179),
     ]),
   ], Srid::WGS84->value);
+
+  /** @var TestPlace $testPlace */
+  $testPlace = TestPlace::factory()->create(['multi_line_string' => $multiLineString]);
+
+  expect($testPlace->multi_line_string->srid)->toBe(Srid::WGS84->value);
+});
+
+it('creates a model record with multi line string with SRID enum', function (): void {
+  $multiLineString = new MultiLineString([
+    new LineString([
+      new Point(0, 180),
+      new Point(1, 179),
+    ]),
+  ], Srid::WGS84);
 
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::factory()->create(['multi_line_string' => $multiLineString]);
