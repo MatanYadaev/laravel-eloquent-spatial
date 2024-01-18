@@ -2,6 +2,21 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.0.0 - 2024-01-18
+
+### What's Changed
+
+* Moved away from spatialbuilder to scopes by @yinx in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/102
+* Allow srid enum as srid property aside from integer by @yinx in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/103
+* Add php 8.3 support by @gdebrauwer in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/105
+
+### New Contributors
+
+* @yinx made their first contribution in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/102
+* @gdebrauwer made their first contribution in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/105
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/3.2.2...4.0.0
+
 ## v3.2.2 - 2024-01-05
 
 - Revert v3.2.1 changes
