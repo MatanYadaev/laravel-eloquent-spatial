@@ -66,13 +66,11 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   }
 
   /**
-   * @param  string  $wkb
-   * @param  ConnectionInterface  $connection
+   * @param string $wkb
+   * @param ConnectionInterface|null $connection
    * @return static
-   *
-   * @throws InvalidArgumentException
    */
-  public static function fromWkb(string $wkb, ConnectionInterface $connection): static
+  public static function fromWkb(string $wkb, ?ConnectionInterface $connection = null): static
   {
     if ($connection instanceof PostgresConnection) {
       // @TODO: Check when this fails and how to fix it
