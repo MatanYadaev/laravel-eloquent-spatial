@@ -16,32 +16,24 @@ class AxisOrder
 
   public function supported(ConnectionInterface $connection): bool
   {
-    /** @var MySqlConnection $connection */
-    if ($this->isMariaDb($connection)) {
+    if ($this->isMySql8OrAbove($connection)) {
       // @codeCoverageIgnoreStart
-      return false;
+      return true;
       // @codeCoverageIgnoreEnd
     }
 
-    if ($this->isMySql57($connection)) {
-      // @codeCoverageIgnoreStart
+    return false;
+  }
+
+  private function isMySql8OrAbove(ConnectionInterface $connection): bool
+  {
+    if (!($connection instanceof MySqlConnection)) {
       return false;
-      // @codeCoverageIgnoreEnd
     }
 
-    return true;
-  }
-
-  private function isMariaDb(MySqlConnection $connection): bool
-  {
-    return $connection->isMaria();
-  }
-
-  private function isMySql57(MySqlConnection $connection): bool
-  {
     /** @var string $version */
     $version = $connection->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION);
 
-    return version_compare($version, '5.8.0', '<');
+    return version_compare($version, '8.0.0', '>=');
   }
 }

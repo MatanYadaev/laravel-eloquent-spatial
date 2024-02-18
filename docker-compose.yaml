@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  db:
+  mysql:
     container_name: mysql-laravel-eloquent-spatial
     image: mysql:8.0
     environment:
@@ -12,6 +12,17 @@ services:
     ports:
       - 3306:3306
     restart: unless-stopped
+  postgres:
+    container_name: postgres-laravel-eloquent-spatial
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: laravel_eloquent_spatial_test
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    restart: unless-stopped
 
 volumes:
   mysql_data:
+  postgres_data:

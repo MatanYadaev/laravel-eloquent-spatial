@@ -4,6 +4,7 @@ namespace MatanYadaev\EloquentSpatial\Traits;
 
 use Illuminate\Contracts\Database\Query\Expression as ExpressionContract;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\PostgresConnection;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
@@ -73,10 +74,16 @@ trait HasSpatial
       $query->select('*');
     }
 
+    // @TODO: Use strategy pattern or something
+    $function = $this->getConnection() instanceof PostgresConnection
+      ? 'ST_DistanceSphere'
+      : 'ST_DISTANCE_SPHERE';
+
     $query->selectRaw(
       sprintf(
-        'ST_DISTANCE_SPHERE(%s, %s) AS %s',
-        $this->toExpressionString($column),
+        '%s(%s, %s) AS %s',
+        $function,
+        $this->toExpressionString($column)."::geometry",
         $this->toExpressionString($geometryOrColumn),
         $alias,
       )
