@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
@@ -155,7 +156,7 @@ it('creates multi line string from WKB', function (): void {
     ]),
   ]);
 
-  $multiLineStringFromWkb = MultiLineString::fromWkb($multiLineString->toWkb());
+  $multiLineStringFromWkb = MultiLineString::fromWkb($multiLineString->toWkb(), DB::connection());
 
   expect($multiLineStringFromWkb)->toEqual($multiLineString);
 });
@@ -168,7 +169,7 @@ it('creates multi line string with SRID from WKB', function (): void {
     ]),
   ], Srid::WGS84->value);
 
-  $multiLineStringFromWkb = MultiLineString::fromWkb($multiLineString->toWkb());
+  $multiLineStringFromWkb = MultiLineString::fromWkb($multiLineString->toWkb(), DB::connection());
 
   expect($multiLineStringFromWkb)->toEqual($multiLineString);
 });

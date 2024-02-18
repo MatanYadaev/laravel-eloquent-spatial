@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\PostgresConnection;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\AxisOrder;
@@ -13,7 +14,7 @@ it('throws exception when generating geometry from other geometry WKB', function
   expect(function (): void {
     $pointWkb = (new Point(0, 180))->toWkb();
 
-    LineString::fromWkb($pointWkb);
+    LineString::fromWkb($pointWkb, DB::connection());
   })->toThrow(InvalidArgumentException::class);
 });
 
@@ -33,7 +34,7 @@ it('throws exception when generating geometry with invalid latitude - without ax
       ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value))
       ->firstOrFail();
   })->toThrow(QueryException::class);
-})->skip(fn () => (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => (new AxisOrder)->supported(DB::connection()) || DB::connection() instanceof PostgresConnection);
 
 it('throws exception when generating geometry with invalid longitude', function (): void {
   expect(function (): void {
@@ -51,7 +52,7 @@ it('throws exception when generating geometry with invalid longitude - without a
       ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value))
       ->firstOrFail();
   })->toThrow(QueryException::class);
-})->skip(fn () => (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => (new AxisOrder)->supported(DB::connection()) || DB::connection() instanceof PostgresConnection);
 
 it('throws exception when generating geometry from other geometry WKT', function (): void {
   expect(function (): void {

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\PostgresConnection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\AxisOrder;
@@ -130,7 +131,8 @@ it('calculates distance sphere - without axis-order', function (): void {
     ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value))
     ->firstOrFail();
 
-  expect($testPlaceWithDistance->distance)->toBe(157249.0357231545);
+  expect($testPlaceWithDistance->distance)->toBeOnPostgres(157249.59776851);
+  expect($testPlaceWithDistance->distance)->toBeOnMysql(157249.0357231545);
 })->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
 it('calculates distance sphere with alias', function (): void {
@@ -152,7 +154,8 @@ it('calculates distance sphere with alias - without axis-order', function (): vo
     ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value), 'distance_in_meters')
     ->firstOrFail();
 
-  expect($testPlaceWithDistance->distance_in_meters)->toBe(157249.0357231545);
+  expect($testPlaceWithDistance->distance_in_meters)->toBeOnPostgres(157249.59776851);
+  expect($testPlaceWithDistance->distance_in_meters)->toBeOnMysql(157249.0357231545);
 })->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
 
 it('filters distance sphere', function (): void {
@@ -435,10 +438,12 @@ it('uses spatial function with expression', function (): void {
     'longitude' => 0,
     'latitude' => 0,
   ]);
+  $expression = DB::connection() instanceof PostgresConnection ? DB::raw('POINT(longitude, latitude)::geometry') : DB::raw('POINT(longitude, latitude)');
+  $expression2 = DB::connection() instanceof PostgresConnection ? DB::raw('polygon::geometry') : DB::raw('test_places.polygon');
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
-    ->whereWithin(DB::raw('POINT(longitude, latitude)'), DB::raw('polygon'))
+    ->whereWithin($expression, $expression2)
     ->firstOrFail();
 
   expect($testPlaceWithDistance)->not()->toBeNull();
@@ -472,5 +477,6 @@ it('toExpressionString can handle a string input', function (): void {
 
   $result = $toExpressionStringMethod->invoke($spatialBuilder, 'test_places.point');
 
-  expect($result)->toBe('`test_places`.`point`');
+  expect($result)->toBeOnPostgres('"test_places"."point"::geometry');
+  expect($result)->toBeOnMysql('`test_places`.`point`');
 });

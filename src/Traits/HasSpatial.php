@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\PostgresConnection;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
+use MatanYadaev\EloquentSpatial\SpatialFunctionNormalizer;
 
 trait HasSpatial
 {
@@ -74,16 +75,13 @@ trait HasSpatial
       $query->select('*');
     }
 
-    // @TODO: Use strategy pattern or something
-    $function = $this->getConnection() instanceof PostgresConnection
-      ? 'ST_DistanceSphere'
-      : 'ST_DISTANCE_SPHERE';
+    $function = SpatialFunctionNormalizer::getDistanceSphereFunction($query->getConnection());
 
     $query->selectRaw(
       sprintf(
         '%s(%s, %s) AS %s',
         $function,
-        $this->toExpressionString($column)."::geometry",
+        $this->toExpressionString($column),
         $this->toExpressionString($geometryOrColumn),
         $alias,
       )
@@ -97,9 +95,12 @@ trait HasSpatial
     string $operator,
     int|float $value
   ): void {
+    $function = SpatialFunctionNormalizer::getDistanceSphereFunction($query->getConnection());
+
     $query->whereRaw(
       sprintf(
-        'ST_DISTANCE_SPHERE(%s, %s) %s ?',
+        '%s(%s, %s) %s ?',
+        $function,
         $this->toExpressionString($column),
         $this->toExpressionString($geometryOrColumn),
         $operator,
@@ -114,9 +115,12 @@ trait HasSpatial
     ExpressionContract|Geometry|string $geometryOrColumn,
     string $direction = 'asc'
   ): void {
+    $function = SpatialFunctionNormalizer::getDistanceSphereFunction($query->getConnection());
+
     $query->orderByRaw(
       sprintf(
-        'ST_DISTANCE_SPHERE(%s, %s) %s',
+        '%s(%s, %s) %s',
+        $function,
         $this->toExpressionString($column),
         $this->toExpressionString($geometryOrColumn),
         $direction
@@ -143,11 +147,14 @@ trait HasSpatial
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
   ): void {
+    $value = $this->getConnection() instanceof PostgresConnection ? 'false' : 0;
+
     $query->whereRaw(
       sprintf(
-        'ST_WITHIN(%s, %s) = 0',
+        'ST_WITHIN(%s, %s) = %s',
         $this->toExpressionString($column),
         $this->toExpressionString($geometryOrColumn),
+        $value,
       )
     );
   }
@@ -171,11 +178,14 @@ trait HasSpatial
     ExpressionContract|Geometry|string $column,
     ExpressionContract|Geometry|string $geometryOrColumn,
   ): void {
+    $value = $this->getConnection() instanceof PostgresConnection ? 'false' : 0;
+
     $query->whereRaw(
       sprintf(
-        'ST_CONTAINS(%s, %s) = 0',
+        'ST_CONTAINS(%s, %s) = %s',
         $this->toExpressionString($column),
         $this->toExpressionString($geometryOrColumn),
+        $value,
       )
     );
   }
@@ -298,12 +308,15 @@ trait HasSpatial
   {
     $grammar = $this->getGrammar();
 
+    $cast = $this->getConnection() instanceof PostgresConnection ? '::geometry' : '';
+
     if ($geometryOrColumnOrExpression instanceof ExpressionContract) {
       $expression = $geometryOrColumnOrExpression;
     } elseif ($geometryOrColumnOrExpression instanceof Geometry) {
       $expression = $geometryOrColumnOrExpression->toSqlExpression($this->getConnection());
+      $expression = DB::raw($expression->getValue($grammar).$cast);
     } else {
-      $expression = DB::raw($grammar->wrap($geometryOrColumnOrExpression));
+      $expression = DB::raw($grammar->wrap($geometryOrColumnOrExpression).$cast);
     }
 
     return (string) $expression->getValue($grammar);

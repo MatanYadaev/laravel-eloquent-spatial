@@ -7,6 +7,7 @@ namespace MatanYadaev\EloquentSpatial;
 use Illuminate\Database\Connection;
 use Illuminate\Database\DatabaseServiceProvider;
 use Illuminate\Support\Facades\DB;
+use MatanYadaev\EloquentSpatial\Doctrine\GeographyType;
 use MatanYadaev\EloquentSpatial\Doctrine\GeometryCollectionType;
 use MatanYadaev\EloquentSpatial\Doctrine\LineStringType;
 use MatanYadaev\EloquentSpatial\Doctrine\MultiLineStringType;
@@ -38,6 +39,7 @@ class EloquentSpatialServiceProvider extends DatabaseServiceProvider
       'multipolygon' => MultiPolygonType::class,
       'geometrycollection' => GeometryCollectionType::class,
       'geomcollection' => GeometryCollectionType::class,
+      'geography' => GeographyType::class,
     ];
 
     foreach ($geometries as $type => $class) {

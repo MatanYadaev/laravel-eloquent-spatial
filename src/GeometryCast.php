@@ -44,7 +44,7 @@ class GeometryCast implements CastsAttributes
       return $this->className::fromWkt($wkt, $srid);
     }
 
-    return $this->className::fromWkb($value);
+    return $this->className::fromWkb($value, $model->getConnection());
   }
 
   /**

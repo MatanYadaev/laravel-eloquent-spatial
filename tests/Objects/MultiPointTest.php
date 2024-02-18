@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\MultiPoint;
@@ -122,7 +123,7 @@ it('creates multi point from WKB', function (): void {
     new Point(0, 180),
   ]);
 
-  $multiPointFromWkb = MultiPoint::fromWkb($multiPoint->toWkb());
+  $multiPointFromWkb = MultiPoint::fromWkb($multiPoint->toWkb(), DB::connection());
 
   expect($multiPointFromWkb)->toEqual($multiPoint);
 });
@@ -132,7 +133,7 @@ it('creates multi point with SRID from WKB', function (): void {
     new Point(0, 180),
   ], Srid::WGS84->value);
 
-  $multiPointFromWkb = MultiPoint::fromWkb($multiPoint->toWkb());
+  $multiPointFromWkb = MultiPoint::fromWkb($multiPoint->toWkb(), DB::connection());
 
   expect($multiPointFromWkb)->toEqual($multiPoint);
 });

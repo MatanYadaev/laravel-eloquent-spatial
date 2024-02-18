@@ -27,7 +27,7 @@ class AxisOrder
 
   private function isMySql8OrAbove(ConnectionInterface $connection): bool
   {
-    if (!($connection instanceof MySqlConnection)) {
+    if (! ($connection instanceof MySqlConnection)) {
       return false;
     }
 
