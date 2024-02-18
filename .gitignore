@@ -1,5 +1,6 @@
 .idea
 .php-cs-fixer.cache
+.phpunit.cache
 .phpunit.result.cache
 build
 composer.lock

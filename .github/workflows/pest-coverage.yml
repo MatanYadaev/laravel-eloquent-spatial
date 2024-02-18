@@ -8,15 +8,23 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        db: [ 'mysql:8.0', 'postgis/postgis:16-3.4' ]
+
     services:
       db:
-        image: mysql:8.0
+        image: ${{ matrix.db }}
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: laravel_eloquent_spatial_test
+          POSTGRES_DB: laravel_eloquent_spatial_test
+          POSTGRES_PORT: 3306
+          POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: ${{ (contains(matrix.db, 'postgis') && '--health-cmd="pg_isready" || '--health-cmd="mysqladmin ping" }} --health-interval=10s --health-timeout=5s --health-retries=3'
 
     steps:
       - name: Checkout code

@@ -38,10 +38,10 @@
   "scripts": {
     "php-cs-fixer": "PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --allow-risky=yes",
     "phpstan": "./vendor/bin/phpstan analyse --memory-limit=2G",
-    "pest:mysql": "./vendor/bin/pest",
+    "pest:mysql": "DB_PORT=3307 ./vendor/bin/pest",
     "pest:postgres": "DB_CONNECTION=pgsql DB_PORT=5433 ./vendor/bin/pest",
-    "pest:maria": "./vendor/bin/pest",
-    "pest-coverage": "XDEBUG_MODE=coverage ./vendor/bin/pest --coverage --min=100"
+    "pest-coverage:mysql": "XDEBUG_MODE=coverage DB_PORT=3307 ./vendor/bin/pest --coverage --min=100",
+    "pest-coverage:postgres": "XDEBUG_MODE=coverage DB_CONNECTION=pgsql DB_PORT=5433 ./vendor/bin/pest --coverage --min=100"
   },
   "config": {
     "sort-packages": true,

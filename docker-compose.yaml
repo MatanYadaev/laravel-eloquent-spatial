@@ -10,7 +10,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
-      - 3306:3306
+      - 3307:3306
     restart: unless-stopped
   postgres:
     container_name: postgres-laravel-eloquent-spatial
