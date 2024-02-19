@@ -120,7 +120,7 @@ it('creates multi point from WKB', function (): void {
     new Point(0, 180),
   ]);
 
-  $multiPointFromWkb = MultiPoint::fromWkb($multiPoint->toWkb(), DB::connection());
+  $multiPointFromWkb = MultiPoint::fromWkb($multiPoint->toWkb());
 
   expect($multiPointFromWkb)->toEqual($multiPoint);
 });
@@ -130,7 +130,7 @@ it('creates multi point with SRID from WKB', function (): void {
     new Point(0, 180),
   ], Srid::WGS84->value);
 
-  $multiPointFromWkb = MultiPoint::fromWkb($multiPoint->toWkb(), DB::connection());
+  $multiPointFromWkb = MultiPoint::fromWkb($multiPoint->toWkb());
 
   expect($multiPointFromWkb)->toEqual($multiPoint);
 });

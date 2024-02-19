@@ -239,7 +239,7 @@ it('creates geometry collection from WKB', function (): void {
     new Point(0, 180),
   ]);
 
-  $geometryCollectionFromWkb = GeometryCollection::fromWkb($geometryCollection->toWkb(), DB::connection());
+  $geometryCollectionFromWkb = GeometryCollection::fromWkb($geometryCollection->toWkb());
 
   expect($geometryCollectionFromWkb)->toEqual($geometryCollection);
 });
@@ -258,7 +258,7 @@ it('creates geometry collection with SRID from WKB', function (): void {
     new Point(0, 180),
   ], Srid::WGS84->value);
 
-  $geometryCollectionFromWkb = GeometryCollection::fromWkb($geometryCollection->toWkb(), DB::connection());
+  $geometryCollectionFromWkb = GeometryCollection::fromWkb($geometryCollection->toWkb());
 
   expect($geometryCollectionFromWkb)->toEqual($geometryCollection);
 });

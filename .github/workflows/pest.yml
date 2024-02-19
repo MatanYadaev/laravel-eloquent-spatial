@@ -30,7 +30,9 @@ jobs:
           POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 3306
-        options: ${{ (contains(matrix.db, 'postgis') && '--health-cmd="pg_isready" || '--health-cmd="mysqladmin ping" }} --health-interval=10s --health-timeout=5s --health-retries=3'
+        options: >-
+          ${{ (contains(matrix.db, 'postgis') && '--health-cmd="pg_isready"') || '--health-cmd="mysqladmin ping"' }}
+          --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout code

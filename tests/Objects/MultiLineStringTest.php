@@ -153,7 +153,7 @@ it('creates multi line string from WKB', function (): void {
     ]),
   ]);
 
-  $multiLineStringFromWkb = MultiLineString::fromWkb($multiLineString->toWkb(), DB::connection());
+  $multiLineStringFromWkb = MultiLineString::fromWkb($multiLineString->toWkb());
 
   expect($multiLineStringFromWkb)->toEqual($multiLineString);
 });
@@ -166,7 +166,7 @@ it('creates multi line string with SRID from WKB', function (): void {
     ]),
   ], Srid::WGS84->value);
 
-  $multiLineStringFromWkb = MultiLineString::fromWkb($multiLineString->toWkb(), DB::connection());
+  $multiLineStringFromWkb = MultiLineString::fromWkb($multiLineString->toWkb());
 
   expect($multiLineStringFromWkb)->toEqual($multiLineString);
 });

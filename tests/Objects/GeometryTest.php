@@ -15,7 +15,7 @@ it('throws exception when generating geometry from other geometry WKB', function
   expect(function (): void {
     $pointWkb = (new Point(0, 180))->toWkb();
 
-    LineString::fromWkb($pointWkb, DB::connection());
+    LineString::fromWkb($pointWkb);
   })->toThrow(InvalidArgumentException::class);
 });
 

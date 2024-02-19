@@ -93,7 +93,7 @@ it('generates point WKT', function (): void {
 it('creates point from WKB', function (): void {
   $point = new Point(0, 180);
 
-  $pointFromWkb = Point::fromWkb($point->toWkb(), DB::connection());
+  $pointFromWkb = Point::fromWkb($point->toWkb());
 
   expect($pointFromWkb)->toEqual($point);
 });
@@ -101,7 +101,7 @@ it('creates point from WKB', function (): void {
 it('creates point with SRID from WKB', function (): void {
   $point = new Point(0, 180, Srid::WGS84->value);
 
-  $pointFromWkb = Point::fromWkb($point->toWkb(), DB::connection());
+  $pointFromWkb = Point::fromWkb($point->toWkb());
 
   expect($pointFromWkb)->toEqual($point);
 });

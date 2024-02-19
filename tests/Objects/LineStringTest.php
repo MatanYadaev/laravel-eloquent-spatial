@@ -131,7 +131,7 @@ it('creates line string from WKB', function (): void {
     new Point(1, 179),
   ]);
 
-  $lineStringFromWkb = LineString::fromWkb($lineString->toWkb(), DB::connection());
+  $lineStringFromWkb = LineString::fromWkb($lineString->toWkb());
 
   expect($lineStringFromWkb)->toEqual($lineString);
 });
@@ -142,7 +142,7 @@ it('creates line string with SRID from WKB', function (): void {
     new Point(1, 179),
   ], Srid::WGS84->value);
 
-  $lineStringFromWkb = LineString::fromWkb($lineString->toWkb(), DB::connection());
+  $lineStringFromWkb = LineString::fromWkb($lineString->toWkb());
 
   expect($lineStringFromWkb)->toEqual($lineString);
 });

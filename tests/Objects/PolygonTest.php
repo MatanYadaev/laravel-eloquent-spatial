@@ -186,7 +186,7 @@ it('creates polygon from WKB', function (): void {
     ]),
   ]);
 
-  $polygonFromWkb = Polygon::fromWkb($polygon->toWkb(), DB::connection());
+  $polygonFromWkb = Polygon::fromWkb($polygon->toWkb());
 
   expect($polygonFromWkb)->toEqual($polygon);
 });
@@ -202,7 +202,7 @@ it('creates polygon with SRID from WKB', function (): void {
     ]),
   ], Srid::WGS84->value);
 
-  $polygonFromWkb = Polygon::fromWkb($polygon->toWkb(), DB::connection());
+  $polygonFromWkb = Polygon::fromWkb($polygon->toWkb());
 
   expect($polygonFromWkb)->toEqual($polygon);
 });

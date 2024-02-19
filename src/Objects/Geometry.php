@@ -71,9 +71,9 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
    * @param  ConnectionInterface|null  $connection
    * @return static
    */
-  public static function fromWkb(string $wkb, ?ConnectionInterface $connection = null): static
+  public static function fromWkb(string $wkb): static
   {
-    if ($connection instanceof PostgresConnection && ctype_xdigit($wkb)) {
+    if (ctype_xdigit($wkb)) {
       $geometry = Factory::parse($wkb);
     } else {
       $srid = substr($wkb, 0, 4);
