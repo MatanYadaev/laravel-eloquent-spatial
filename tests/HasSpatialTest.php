@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\PostgresConnection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\AxisOrder;
@@ -8,6 +7,7 @@ use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use MatanYadaev\EloquentSpatial\SpatialFunctionNormalizer;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 uses(DatabaseMigrations::class);
@@ -438,8 +438,8 @@ it('uses spatial function with expression', function (): void {
     'longitude' => 0,
     'latitude' => 0,
   ]);
-  $expression = DB::connection() instanceof PostgresConnection ? DB::raw('POINT(longitude, latitude)::geometry') : DB::raw('POINT(longitude, latitude)');
-  $expression2 = DB::connection() instanceof PostgresConnection ? DB::raw('polygon::geometry') : DB::raw('test_places.polygon');
+  $expression = DB::raw(SpatialFunctionNormalizer::normalizeGeometryExpression(DB::connection(), 'POINT(longitude, latitude)'));
+  $expression2 = DB::raw(SpatialFunctionNormalizer::normalizeGeometryExpression(DB::connection(), 'polygon'));
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()

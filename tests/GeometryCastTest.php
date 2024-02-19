@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\SpatialFunctionNormalizer;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 uses(DatabaseMigrations::class);
@@ -107,14 +108,16 @@ it('throws exception when cast serializing non-geometry object', function (): vo
 
 it('throws exception when cast deserializing incorrect geometry object', function (): void {
   TestPlace::insert(array_merge(TestPlace::factory()->definition(), [
-    'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
+    'point_with_line_string_cast' => DB::raw(
+      SpatialFunctionNormalizer::normalizeGeometryExpression(DB::connection(), 'POINT(0, 180)')
+    ),
   ]));
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::firstOrFail();
 
   expect(function () use ($testPlace): void {
     $testPlace->getAttribute('point_with_line_string_cast');
-  })->toThrow(Exception::class);
+  })->toThrow(InvalidArgumentException::class);
 });
 
 it('creates a model record with geometry from geo json array', function (): void {

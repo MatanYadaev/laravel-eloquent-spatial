@@ -308,14 +308,14 @@ trait HasSpatial
   {
     $grammar = $this->getGrammar();
 
-    $cast = $this->getConnection() instanceof PostgresConnection ? '::geometry' : '';
-
     if ($geometryOrColumnOrExpression instanceof ExpressionContract) {
       $expression = $geometryOrColumnOrExpression;
     } elseif ($geometryOrColumnOrExpression instanceof Geometry) {
       $expression = DB::raw($geometryOrColumnOrExpression->toSqlExpression($this->getConnection())->getValue($grammar));
     } else {
-      $expression = DB::raw($grammar->wrap($geometryOrColumnOrExpression).$cast);
+      $expression = DB::raw(
+        SpatialFunctionNormalizer::normalizeGeometryExpression($this->getConnection(), $grammar->wrap($geometryOrColumnOrExpression))
+      );
     }
 
     return (string) $expression->getValue($grammar);

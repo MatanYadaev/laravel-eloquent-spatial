@@ -8,6 +8,7 @@ use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\SpatialFunctionNormalizer;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 it('throws exception when generating geometry from other geometry WKB', function (): void {
@@ -99,7 +100,9 @@ it('creates an SQL expression from a geometry - without axis-order', function ()
 
   $grammar = DB::getQueryGrammar();
   $expressionValue = $expression->getValue($grammar);
-  expect($expressionValue)->toEqual("ST_GeomFromText('POINT(180 0)', 4326)");
+  expect($expressionValue)->toEqual(
+    SpatialFunctionNormalizer::normalizeGeometryExpression(DB::connection(), "ST_GeomFromText('POINT(180 0)', 4326)")
+  );
 })->skip(fn () => (new AxisOrder)->supported(DB::connection()));
 
 it('creates a geometry object from a geo json array', function (): void {

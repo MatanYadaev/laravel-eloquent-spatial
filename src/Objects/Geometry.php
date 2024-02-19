@@ -21,6 +21,7 @@ use MatanYadaev\EloquentSpatial\AxisOrder;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\GeometryCast;
+use MatanYadaev\EloquentSpatial\SpatialFunctionNormalizer;
 use Stringable;
 use WKB as geoPHPWkb;
 
@@ -66,14 +67,13 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   }
 
   /**
-   * @param string $wkb
-   * @param ConnectionInterface|null $connection
+   * @param  string  $wkb
+   * @param  ConnectionInterface|null  $connection
    * @return static
    */
   public static function fromWkb(string $wkb, ?ConnectionInterface $connection = null): static
   {
-    if ($connection instanceof PostgresConnection) {
-      // @TODO: Check when this fails and how to fix it
+    if ($connection instanceof PostgresConnection && ctype_xdigit($wkb)) {
       $geometry = Factory::parse($wkb);
     } else {
       $srid = substr($wkb, 0, 4);
@@ -222,14 +222,12 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   {
     $wkt = $this->toWkt();
 
-    $cast = $connection instanceof PostgresConnection ? '::geometry' : '';
-
     if (! (new AxisOrder)->supported($connection)) {
       // @codeCoverageIgnoreStart
-      return DB::raw("ST_GeomFromText('{$wkt}', {$this->srid})".$cast);
+      return DB::raw(SpatialFunctionNormalizer::normalizeGeometryExpression($connection, "ST_GeomFromText('{$wkt}', {$this->srid})"));
       // @codeCoverageIgnoreEnd
     }
 
-    return DB::raw("ST_GeomFromText('{$wkt}', {$this->srid}, 'axis-order=long-lat')".$cast);
+    return DB::raw(SpatialFunctionNormalizer::normalizeGeometryExpression($connection, "ST_GeomFromText('{$wkt}', {$this->srid}, 'axis-order=long-lat')"));
   }
 }

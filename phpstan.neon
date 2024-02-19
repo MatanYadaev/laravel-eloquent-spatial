@@ -7,11 +7,15 @@ parameters:
   excludePaths:
     - src/Factory.php
   ignoreErrors:
-    - '#Call to an undefined method Illuminate\\Database\\Schema\\ColumnDefinition\:\:isGeometry\(\)#'
+    -
+      message: '#Call to an undefined method Illuminate\\Database\\Schema\\ColumnDefinition\:\:isGeometry\(\)#'
+      path: tests/database/migrations/*.php
     -
       message: '#Undefined variable: \$this#'
-      path: tests/Pest.php
-    - '#Call to an undefined method Pest\\Expectation\<.+\>\:\:toBeOn(Postgres|Mysql)\(\)#'
+      path: tests/Expectations.php
+    -
+      message: '#Call to an undefined method Pest\\Expectation\<.+\>\:\:toBe(InstanceOf)?On(Postgres|Mysql)\(\)#'
+      path: tests/*.php
 
   level: max
   checkMissingIterableValueType: true
