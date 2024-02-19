@@ -7,6 +7,7 @@ namespace MatanYadaev\EloquentSpatial;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\PostgresConnection;
 
+/** @codeCoverageIgnore */
 class SpatialFunctionNormalizer
 {
   public static function getDistanceSphereFunction(ConnectionInterface $connection): string

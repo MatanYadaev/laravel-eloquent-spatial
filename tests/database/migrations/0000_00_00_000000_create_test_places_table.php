@@ -21,6 +21,7 @@ class CreateTestPlacesTable extends Migration
       $table->multiPolygon('multi_polygon')->projection(0)->nullable();
       $table->geometryCollection('geometry_collection')->projection(0)->nullable();
       $table->point('point_with_line_string_cast')->projection(0)->nullable();
+      $table->point('point_geometry')->isGeometry()->projection(0)->nullable();
       $table->decimal('longitude')->nullable();
       $table->decimal('latitude')->nullable();
     });

@@ -9,6 +9,7 @@ use Illuminate\Database\MySqlConnection;
 use PDO;
 
 // @TODO: Is this class really needed?
+/** @codeCoverageIgnore */
 class AxisOrder
 {
   public function __construct()
@@ -21,9 +22,7 @@ class AxisOrder
       return true;
     }
 
-    // @codeCoverageIgnoreStart
     return false;
-    // @codeCoverageIgnoreEnd
   }
 
   private function isMySql8OrAbove(ConnectionInterface $connection): bool

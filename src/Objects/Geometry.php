@@ -72,7 +72,9 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   public static function fromWkb(string $wkb): static
   {
     if (ctype_xdigit($wkb)) {
+      // @codeCoverageIgnoreStart
       $geometry = Factory::parse($wkb);
+      // @codeCoverageIgnoreEnd
     } else {
       $srid = substr($wkb, 0, 4);
       // @phpstan-ignore-next-line

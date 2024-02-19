@@ -4,6 +4,7 @@ use Doctrine\DBAL\Types\Type;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Doctrine\GeometryCollectionType;
 use MatanYadaev\EloquentSpatial\Doctrine\GeographyType;
+use MatanYadaev\EloquentSpatial\Doctrine\GeometryType;
 use MatanYadaev\EloquentSpatial\Doctrine\LineStringType;
 use MatanYadaev\EloquentSpatial\Doctrine\MultiLineStringType;
 use MatanYadaev\EloquentSpatial\Doctrine\MultiPointType;
@@ -16,6 +17,11 @@ $dataset = [
   [
     'column' => 'point',
     'postgresType' => GeographyType::class,
+    'mySqlType' => PointType::class,
+  ],
+  [
+    'column' => 'point_geometry',
+    'postgresType' => GeometryType::class,
     'mySqlType' => PointType::class,
   ],
   [

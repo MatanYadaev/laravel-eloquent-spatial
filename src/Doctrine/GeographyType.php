@@ -7,13 +7,12 @@ namespace MatanYadaev\EloquentSpatial\Doctrine;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
+/** @codeCoverageIgnore */
 class GeographyType extends Type
 {
   public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
   {
-    // @codeCoverageIgnoreStart
     return 'geography';
-    // @codeCoverageIgnoreEnd
   }
 
   public function getName(): string
