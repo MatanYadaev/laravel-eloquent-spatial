@@ -45,4 +45,5 @@ jobs:
       - name: Execute tests
         env:
           DB_PORT: ${{ job.services.db.ports['3306'] }}
+          DB_DRIVER: ${{ contains(matrix.db, 'postgis') && 'pgsql' || 'mysql' }}
         run: XDEBUG_MODE=coverage ./vendor/bin/pest --coverage --min=100
