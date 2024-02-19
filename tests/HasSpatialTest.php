@@ -459,14 +459,14 @@ it('toExpressionString can handle a Expression input', function (): void {
 });
 
 it('toExpressionString can handle a Geometry input', function (): void {
-  $spatialBuilder = new TestPlace();
-  $toExpressionStringMethod = (new ReflectionClass($spatialBuilder))->getMethod('toExpressionString');
+  $testPlace = new TestPlace();
+  $toExpressionStringMethod = (new ReflectionClass($testPlace))->getMethod('toExpressionString');
   $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}');
 
-  $result = $toExpressionStringMethod->invoke($spatialBuilder, $polygon);
+  $result = $toExpressionStringMethod->invoke($testPlace, $polygon);
 
-  $grammar = $spatialBuilder->getGrammar();
-  $connection = $spatialBuilder->getConnection();
+  $grammar = $testPlace->getGrammar();
+  $connection = $testPlace->getConnection();
   $sqlSerializedPolygon = $polygon->toSqlExpression($connection)->getValue($grammar);
   expect($result)->toBe($sqlSerializedPolygon);
 });

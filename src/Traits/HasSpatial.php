@@ -313,8 +313,7 @@ trait HasSpatial
     if ($geometryOrColumnOrExpression instanceof ExpressionContract) {
       $expression = $geometryOrColumnOrExpression;
     } elseif ($geometryOrColumnOrExpression instanceof Geometry) {
-      $expression = $geometryOrColumnOrExpression->toSqlExpression($this->getConnection());
-      $expression = DB::raw($expression->getValue($grammar).$cast);
+      $expression = DB::raw($geometryOrColumnOrExpression->toSqlExpression($this->getConnection())->getValue($grammar));
     } else {
       $expression = DB::raw($grammar->wrap($geometryOrColumnOrExpression).$cast);
     }

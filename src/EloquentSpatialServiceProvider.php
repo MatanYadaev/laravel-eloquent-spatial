@@ -9,6 +9,7 @@ use Illuminate\Database\DatabaseServiceProvider;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Doctrine\GeographyType;
 use MatanYadaev\EloquentSpatial\Doctrine\GeometryCollectionType;
+use MatanYadaev\EloquentSpatial\Doctrine\GeometryType;
 use MatanYadaev\EloquentSpatial\Doctrine\LineStringType;
 use MatanYadaev\EloquentSpatial\Doctrine\MultiLineStringType;
 use MatanYadaev\EloquentSpatial\Doctrine\MultiPointType;
@@ -40,6 +41,7 @@ class EloquentSpatialServiceProvider extends DatabaseServiceProvider
       'geometrycollection' => GeometryCollectionType::class,
       'geomcollection' => GeometryCollectionType::class,
       'geography' => GeographyType::class,
+      'geometry' => GeometryType::class,
     ];
 
     foreach ($geometries as $type => $class) {

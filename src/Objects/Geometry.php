@@ -222,12 +222,14 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   {
     $wkt = $this->toWkt();
 
+    $cast = $connection instanceof PostgresConnection ? '::geometry' : '';
+
     if (! (new AxisOrder)->supported($connection)) {
       // @codeCoverageIgnoreStart
-      return DB::raw("ST_GeomFromText('{$wkt}', {$this->srid})");
+      return DB::raw("ST_GeomFromText('{$wkt}', {$this->srid})".$cast);
       // @codeCoverageIgnoreEnd
     }
 
-    return DB::raw("ST_GeomFromText('{$wkt}', {$this->srid}, 'axis-order=long-lat')");
+    return DB::raw("ST_GeomFromText('{$wkt}', {$this->srid}, 'axis-order=long-lat')".$cast);
   }
 }
