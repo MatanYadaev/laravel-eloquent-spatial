@@ -27,6 +27,7 @@ jobs:
           MYSQL_DATABASE: laravel_eloquent_spatial_test
           POSTGRES_DB: laravel_eloquent_spatial_test
           POSTGRES_PORT: 3306
+          POSTGRES_USER: root
           POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 3306
