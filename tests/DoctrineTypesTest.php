@@ -3,7 +3,7 @@
 use Doctrine\DBAL\Types\Type;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Doctrine\GeometryCollectionType;
-use MatanYadaev\EloquentSpatial\Doctrine\GeometryType;
+use MatanYadaev\EloquentSpatial\Doctrine\GeographyType;
 use MatanYadaev\EloquentSpatial\Doctrine\LineStringType;
 use MatanYadaev\EloquentSpatial\Doctrine\MultiLineStringType;
 use MatanYadaev\EloquentSpatial\Doctrine\MultiPointType;
@@ -15,37 +15,37 @@ use MatanYadaev\EloquentSpatial\Doctrine\PolygonType;
 $dataset = [
   [
     'column' => 'point',
-    'postgresType' => GeometryType::class,
+    'postgresType' => GeographyType::class,
     'mySqlType' => PointType::class,
   ],
   [
     'column' => 'line_string',
-    'postgresType' => GeometryType::class,
+    'postgresType' => GeographyType::class,
     'mySqlType' => LineStringType::class,
   ],
   [
     'column' => 'multi_point',
-    'postgresType' => GeometryType::class,
+    'postgresType' => GeographyType::class,
     'mySqlType' => MultiPointType::class,
   ],
   [
     'column' => 'polygon',
-    'postgresType' => GeometryType::class,
+    'postgresType' => GeographyType::class,
     'mySqlType' => PolygonType::class,
   ],
   [
     'column' => 'multi_line_string',
-    'postgresType' => GeometryType::class,
+    'postgresType' => GeographyType::class,
     'mySqlType' => MultiLineStringType::class,
   ],
   [
     'column' => 'multi_polygon',
-    'postgresType' => GeometryType::class,
+    'postgresType' => GeographyType::class,
     'mySqlType' => MultiPolygonType::class,
   ],
   [
     'column' => 'geometry_collection',
-    'postgresType' => GeometryType::class,
+    'postgresType' => GeographyType::class,
     'mySqlType' => GeometryCollectionType::class,
   ],
 ];
