@@ -2,8 +2,8 @@
 
 use Doctrine\DBAL\Types\Type;
 use Illuminate\Support\Facades\DB;
-use MatanYadaev\EloquentSpatial\Doctrine\GeometryCollectionType;
 use MatanYadaev\EloquentSpatial\Doctrine\GeographyType;
+use MatanYadaev\EloquentSpatial\Doctrine\GeometryCollectionType;
 use MatanYadaev\EloquentSpatial\Doctrine\GeometryType;
 use MatanYadaev\EloquentSpatial\Doctrine\LineStringType;
 use MatanYadaev\EloquentSpatial\Doctrine\MultiLineStringType;
