@@ -17,7 +17,7 @@ jobs:
       matrix:
         php: [ 8.3, 8.2, 8.1 ]
         laravel: [ 10.* ]
-#        db: [ 'postgis/postgis:16-3.4', 'mysql:8.0', 'mysql:5.7', 'mariadb:10.9' ]
+#        db: [ 'mysql:8.0', 'mysql:5.7', 'mariadb:10.9', 'postgis/postgis:16-3.4' ]
         db: [ 'postgis/postgis:16-3.4' ]
         dependency-version: [ prefer-lowest, prefer-stable ]
         include:
@@ -31,10 +31,11 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: laravel_eloquent_spatial_test
           POSTGRES_DB: laravel_eloquent_spatial_test
+#          POSTGRES_PORT: 5432
           POSTGRES_USER: root
           POSTGRES_HOST_AUTH_METHOD: trust
         ports:
-          - ${{ contains(matrix.db, 'postgis') && '3306:5432' || '3306' }}
+          - 5432
         options: >-
           ${{ (contains(matrix.db, 'postgis') && '--health-cmd="pg_isready"') || '--health-cmd="mysqladmin ping"' }}
           --health-interval=10s --health-timeout=5s --health-retries=3
@@ -53,9 +54,9 @@ jobs:
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
-
       - name: Execute tests
         env:
-          DB_PORT: ${{ job.services.db.ports['3306'] }}
+          DB_PORT: ${{ job.services.db.ports['5432'] }}
+#          DB_HOST: ${{ contains(matrix.db, 'postgis') && 'localhost' || '127.0.0.1' }}
           DB_CONNECTION: ${{ contains(matrix.db, 'postgis') && 'pgsql' || 'mysql' }}
         run: vendor/bin/pest
