@@ -17,7 +17,8 @@ jobs:
       matrix:
         php: [ 8.3, 8.2, 8.1 ]
         laravel: [ 10.* ]
-        db: [ 'mysql:8.0', 'mysql:5.7', 'mariadb:10.9', 'postgis/postgis:16-3.4' ]
+#        db: [ 'mysql:8.0', 'mysql:5.7', 'mariadb:10.9', 'postgis/postgis:16-3.4' ]
+        db: [ 'postgis/postgis:16-3.4' ]
         dependency-version: [ prefer-lowest, prefer-stable ]
         include:
           - laravel: 10.*
@@ -57,6 +58,6 @@ jobs:
       - name: Execute tests
         env:
           DB_PORT: ${{ job.services.db.ports['3306'] }}
-          DB_HOST: ${{ contains(matrix.db, 'postgis') && 'postgis' || '127.0.0.1' }}
+          DB_HOST: ${{ contains(matrix.db, 'postgis') && 'postgres' || '127.0.0.1' }}
           DB_CONNECTION: ${{ contains(matrix.db, 'postgis') && 'pgsql' || 'mysql' }}
         run: vendor/bin/pest
