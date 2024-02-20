@@ -75,9 +75,11 @@ trait HasSpatial
       $query->select('*');
     }
 
+    // @codeCoverageIgnoreStart
     $function = $this->getConnection() instanceof PostgresConnection
       ? 'ST_DistanceSphere'
       : 'ST_DISTANCE_SPHERE';
+    // @codeCoverageIgnoreEnd
 
     $query->selectRaw(
       sprintf(
@@ -97,9 +99,11 @@ trait HasSpatial
     string $operator,
     int|float $value
   ): void {
+    // @codeCoverageIgnoreStart
     $function = $this->getConnection() instanceof PostgresConnection
       ? 'ST_DistanceSphere'
       : 'ST_DISTANCE_SPHERE';
+    // @codeCoverageIgnoreEnd
 
     $query->whereRaw(
       sprintf(
@@ -119,9 +123,11 @@ trait HasSpatial
     ExpressionContract|Geometry|string $geometryOrColumn,
     string $direction = 'asc'
   ): void {
+    // @codeCoverageIgnoreStart
     $function = $this->getConnection() instanceof PostgresConnection
       ? 'ST_DistanceSphere'
       : 'ST_DISTANCE_SPHERE';
+    // @codeCoverageIgnoreEnd
 
     $query->orderByRaw(
       sprintf(

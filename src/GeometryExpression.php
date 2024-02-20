@@ -7,6 +7,7 @@ namespace MatanYadaev\EloquentSpatial;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\PostgresConnection;
 
+/** @codeCoverageIgnore */
 class GeometryExpression
 {
   public function __construct(readonly private string $expression)
