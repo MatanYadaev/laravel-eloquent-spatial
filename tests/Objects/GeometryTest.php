@@ -5,10 +5,10 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\AxisOrder;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
+use MatanYadaev\EloquentSpatial\GeometryExpression;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
-use MatanYadaev\EloquentSpatial\SpatialFunctionNormalizer;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 it('throws exception when generating geometry from other geometry WKB', function (): void {
@@ -24,7 +24,7 @@ it('throws exception when generating geometry with invalid latitude', function (
     $point = (new Point(91, 0, Srid::WGS84->value));
     TestPlace::factory()->create(['point' => $point]);
   })->toThrow(QueryException::class);
-})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => ! AxisOrder::supported(DB::connection()));
 
 it('throws exception when generating geometry with invalid latitude - without axis-order', function (): void {
   expect(function (): void {
@@ -35,14 +35,14 @@ it('throws exception when generating geometry with invalid latitude - without ax
       ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value))
       ->firstOrFail();
   })->toThrow(QueryException::class);
-})->skip(fn () => (new AxisOrder)->supported(DB::connection()) || DB::connection() instanceof PostgresConnection);
+})->skip(fn () => AxisOrder::supported(DB::connection()) || DB::connection() instanceof PostgresConnection);
 
 it('throws exception when generating geometry with invalid longitude', function (): void {
   expect(function (): void {
     $point = (new Point(0, 181, Srid::WGS84->value));
     TestPlace::factory()->create(['point' => $point]);
   })->toThrow(QueryException::class);
-})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => ! AxisOrder::supported(DB::connection()));
 
 it('throws exception when generating geometry with invalid longitude - without axis-order', function (): void {
   expect(function (): void {
@@ -53,7 +53,7 @@ it('throws exception when generating geometry with invalid longitude - without a
       ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value))
       ->firstOrFail();
   })->toThrow(QueryException::class);
-})->skip(fn () => (new AxisOrder)->supported(DB::connection()) || DB::connection() instanceof PostgresConnection);
+})->skip(fn () => AxisOrder::supported(DB::connection()) || DB::connection() instanceof PostgresConnection);
 
 it('throws exception when generating geometry from other geometry WKT', function (): void {
   expect(function (): void {
@@ -91,7 +91,7 @@ it('creates an SQL expression from a geometry', function (): void {
   $grammar = DB::getQueryGrammar();
   $expressionValue = $expression->getValue($grammar);
   expect($expressionValue)->toEqual("ST_GeomFromText('POINT(180 0)', 4326, 'axis-order=long-lat')");
-})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => ! AxisOrder::supported(DB::connection()));
 
 it('creates an SQL expression from a geometry - without axis-order', function (): void {
   $point = new Point(0, 180, Srid::WGS84->value);
@@ -101,9 +101,9 @@ it('creates an SQL expression from a geometry - without axis-order', function ()
   $grammar = DB::getQueryGrammar();
   $expressionValue = $expression->getValue($grammar);
   expect($expressionValue)->toEqual(
-    SpatialFunctionNormalizer::normalizeGeometryExpression(DB::connection(), "ST_GeomFromText('POINT(180 0)', 4326)")
+    (new GeometryExpression("ST_GeomFromText('POINT(180 0)', 4326)"))->normalize(DB::connection())
   );
-})->skip(fn () => (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => AxisOrder::supported(DB::connection()));
 
 it('creates a geometry object from a geo json array', function (): void {
   $point = new Point(0, 180);

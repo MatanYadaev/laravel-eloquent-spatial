@@ -180,8 +180,8 @@ echo $londonEyePoint->getName(); // Point
 
 Here are some useful commands for development:
 
-* Run tests: `composer pest`
-* Run tests with coverage: `composer pest-coverage`
+* Run tests: `composer pest:mysql` or `composer pest:postgres
+* Run tests with coverage: `composer pest-coverage:mysql`
 * Perform type checking: `composer phpstan`
 * Format your code: `composer php-cs-fixer`
 

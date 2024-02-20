@@ -8,28 +8,23 @@ use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\MySqlConnection;
 use PDO;
 
-// @TODO: Is this class really needed?
 /** @codeCoverageIgnore */
 class AxisOrder
 {
-  public function __construct()
+  public static function supported(ConnectionInterface $connection): bool
   {
-  }
-
-  public function supported(ConnectionInterface $connection): bool
-  {
-    if ($this->isMariaDb($connection)) {
+    if (self::isMariaDb($connection)) {
       return false;
     }
 
-    if ($this->isMySql8OrAbove($connection)) {
+    if (self::isMySql8OrAbove($connection)) {
       return true;
     }
 
     return false;
   }
 
-  private function isMariaDb(ConnectionInterface $connection): bool
+  private static function isMariaDb(ConnectionInterface $connection): bool
   {
     if (! ($connection instanceof MySqlConnection)) {
       return false;
@@ -38,7 +33,7 @@ class AxisOrder
     return $connection->isMaria();
   }
 
-  private function isMySql8OrAbove(ConnectionInterface $connection): bool
+  private static function isMySql8OrAbove(ConnectionInterface $connection): bool
   {
     if (! ($connection instanceof MySqlConnection)) {
       return false;

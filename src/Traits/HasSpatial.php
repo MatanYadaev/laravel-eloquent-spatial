@@ -6,8 +6,8 @@ use Illuminate\Contracts\Database\Query\Expression as ExpressionContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\PostgresConnection;
 use Illuminate\Support\Facades\DB;
+use MatanYadaev\EloquentSpatial\GeometryExpression;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
-use MatanYadaev\EloquentSpatial\SpatialFunctionNormalizer;
 
 trait HasSpatial
 {
@@ -75,7 +75,9 @@ trait HasSpatial
       $query->select('*');
     }
 
-    $function = SpatialFunctionNormalizer::getDistanceSphereFunction($query->getConnection());
+    $function = $this->getConnection() instanceof PostgresConnection
+      ? 'ST_DistanceSphere'
+      : 'ST_DISTANCE_SPHERE';
 
     $query->selectRaw(
       sprintf(
@@ -95,7 +97,9 @@ trait HasSpatial
     string $operator,
     int|float $value
   ): void {
-    $function = SpatialFunctionNormalizer::getDistanceSphereFunction($query->getConnection());
+    $function = $this->getConnection() instanceof PostgresConnection
+      ? 'ST_DistanceSphere'
+      : 'ST_DISTANCE_SPHERE';
 
     $query->whereRaw(
       sprintf(
@@ -115,7 +119,9 @@ trait HasSpatial
     ExpressionContract|Geometry|string $geometryOrColumn,
     string $direction = 'asc'
   ): void {
-    $function = SpatialFunctionNormalizer::getDistanceSphereFunction($query->getConnection());
+    $function = $this->getConnection() instanceof PostgresConnection
+      ? 'ST_DistanceSphere'
+      : 'ST_DISTANCE_SPHERE';
 
     $query->orderByRaw(
       sprintf(
@@ -314,7 +320,7 @@ trait HasSpatial
       $expression = DB::raw($geometryOrColumnOrExpression->toSqlExpression($this->getConnection())->getValue($grammar));
     } else {
       $expression = DB::raw(
-        SpatialFunctionNormalizer::normalizeGeometryExpression($this->getConnection(), $grammar->wrap($geometryOrColumnOrExpression))
+        (new GeometryExpression($grammar->wrap($geometryOrColumnOrExpression)))->normalize($this->getConnection())
       );
     }
 

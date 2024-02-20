@@ -3,10 +3,10 @@
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\AxisOrder;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
+use MatanYadaev\EloquentSpatial\GeometryExpression;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
-use MatanYadaev\EloquentSpatial\SpatialFunctionNormalizer;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 it('calculates distance', function (): void {
@@ -18,7 +18,7 @@ it('calculates distance', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(156897.79947260793);
-})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => ! AxisOrder::supported(DB::connection()));
 
 it('calculates distance - without axis-order', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
@@ -29,7 +29,7 @@ it('calculates distance - without axis-order', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(1.4142135623730951);
-})->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () =>  AxisOrder::supported(DB::connection()));
 
 it('calculates distance with alias', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
@@ -40,7 +40,7 @@ it('calculates distance with alias', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance_in_meters)->toBe(156897.79947260793);
-})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => ! AxisOrder::supported(DB::connection()));
 
 it('calculates distance with alias - without axis-order', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
@@ -51,7 +51,7 @@ it('calculates distance with alias - without axis-order', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance_in_meters)->toBe(1.4142135623730951);
-})->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () =>  AxisOrder::supported(DB::connection()));
 
 it('filters by distance', function (): void {
   $pointWithinDistance = new Point(0, 0, Srid::WGS84->value);
@@ -66,7 +66,7 @@ it('filters by distance', function (): void {
 
   expect($testPlacesWithinDistance)->toHaveCount(1);
   expect($testPlacesWithinDistance[0]->point)->toEqual($pointWithinDistance);
-})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => ! AxisOrder::supported(DB::connection()));
 
 it('filters by distance - without axis-order', function (): void {
   $pointWithinDistance = new Point(0, 0, Srid::WGS84->value);
@@ -81,7 +81,7 @@ it('filters by distance - without axis-order', function (): void {
 
   expect($testPlacesWithinDistance)->toHaveCount(1);
   expect($testPlacesWithinDistance[0]->point)->toEqual($pointWithinDistance);
-})->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () =>  AxisOrder::supported(DB::connection()));
 
 it('orders by distance ASC', function (): void {
   $closerTestPlace = TestPlace::factory()->create(['point' => new Point(1, 1, Srid::WGS84->value)]);
@@ -118,7 +118,7 @@ it('calculates distance sphere', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance)->toBe(157249.59776850493);
-})->skip(fn () =>! (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () =>! AxisOrder::supported(DB::connection()));
 
 it('calculates distance sphere - without axis-order', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
@@ -130,7 +130,7 @@ it('calculates distance sphere - without axis-order', function (): void {
 
   expect($testPlaceWithDistance->distance)->toBeOnPostgres(157249.59776851);
   expect($testPlaceWithDistance->distance)->toBeOnMysql(157249.0357231545);
-})->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () =>  AxisOrder::supported(DB::connection()));
 
 it('calculates distance sphere with alias', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
@@ -141,7 +141,7 @@ it('calculates distance sphere with alias', function (): void {
     ->firstOrFail();
 
   expect($testPlaceWithDistance->distance_in_meters)->toBe(157249.59776850493);
-})->skip(fn () => ! (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () => ! AxisOrder::supported(DB::connection()));
 
 it('calculates distance sphere with alias - without axis-order', function (): void {
   TestPlace::factory()->create(['point' => new Point(0, 0, Srid::WGS84->value)]);
@@ -153,7 +153,7 @@ it('calculates distance sphere with alias - without axis-order', function (): vo
 
   expect($testPlaceWithDistance->distance_in_meters)->toBeOnPostgres(157249.59776851);
   expect($testPlaceWithDistance->distance_in_meters)->toBeOnMysql(157249.0357231545);
-})->skip(fn () =>  (new AxisOrder)->supported(DB::connection()));
+})->skip(fn () =>  AxisOrder::supported(DB::connection()));
 
 it('filters distance sphere', function (): void {
   $pointWithinDistance = new Point(0, 0, Srid::WGS84->value);
@@ -435,8 +435,8 @@ it('uses spatial function with expression', function (): void {
     'longitude' => 0,
     'latitude' => 0,
   ]);
-  $expression = DB::raw(SpatialFunctionNormalizer::normalizeGeometryExpression(DB::connection(), 'POINT(longitude, latitude)'));
-  $expression2 = DB::raw(SpatialFunctionNormalizer::normalizeGeometryExpression(DB::connection(), 'polygon'));
+  $expression = DB::raw((new GeometryExpression('POINT(longitude, latitude)'))->normalize(DB::connection()));
+  $expression2 = DB::raw((new GeometryExpression('polygon'))->normalize(DB::connection()));
 
   /** @var TestPlace $testPlaceWithDistance */
   $testPlaceWithDistance = TestPlace::query()
