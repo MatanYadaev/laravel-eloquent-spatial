@@ -31,11 +31,11 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: laravel_eloquent_spatial_test
           POSTGRES_DB: laravel_eloquent_spatial_test
-          POSTGRES_PORT: 3306
+          POSTGRES_PORT: 5432
           POSTGRES_USER: root
           POSTGRES_HOST_AUTH_METHOD: trust
         ports:
-          - 3306
+          - 5432
         options: >-
           ${{ (contains(matrix.db, 'postgis') && '--health-cmd="pg_isready"') || '--health-cmd="mysqladmin ping"' }}
           --health-interval=10s --health-timeout=5s --health-retries=3
@@ -57,7 +57,7 @@ jobs:
 
       - name: Execute tests
         env:
-          DB_PORT: ${{ job.services.db.ports['3306'] }}
+          DB_PORT: ${{ job.services.db.ports['5432'] }}
           DB_HOST: ${{ contains(matrix.db, 'postgis') && 'localhost' || '127.0.0.1' }}
           DB_CONNECTION: ${{ contains(matrix.db, 'postgis') && 'pgsql' || 'mysql' }}
         run: vendor/bin/pest
