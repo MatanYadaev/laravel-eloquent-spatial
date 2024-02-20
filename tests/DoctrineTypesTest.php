@@ -16,42 +16,42 @@ use MatanYadaev\EloquentSpatial\Doctrine\PolygonType;
 $dataset = [
   [
     'column' => 'point',
-    'postgresType' => GeographyType::class,
-    'mySqlType' => PointType::class,
-  ],
-  [
-    'column' => 'point_geometry',
     'postgresType' => GeometryType::class,
     'mySqlType' => PointType::class,
   ],
   [
-    'column' => 'line_string',
+    'column' => 'point_geography',
     'postgresType' => GeographyType::class,
+    'mySqlType' => PointType::class,
+  ],
+  [
+    'column' => 'line_string',
+    'postgresType' => GeometryType::class,
     'mySqlType' => LineStringType::class,
   ],
   [
     'column' => 'multi_point',
-    'postgresType' => GeographyType::class,
+    'postgresType' => GeometryType::class,
     'mySqlType' => MultiPointType::class,
   ],
   [
     'column' => 'polygon',
-    'postgresType' => GeographyType::class,
+    'postgresType' => GeometryType::class,
     'mySqlType' => PolygonType::class,
   ],
   [
     'column' => 'multi_line_string',
-    'postgresType' => GeographyType::class,
+    'postgresType' => GeometryType::class,
     'mySqlType' => MultiLineStringType::class,
   ],
   [
     'column' => 'multi_polygon',
-    'postgresType' => GeographyType::class,
+    'postgresType' => GeometryType::class,
     'mySqlType' => MultiPolygonType::class,
   ],
   [
     'column' => 'geometry_collection',
-    'postgresType' => GeographyType::class,
+    'postgresType' => GeometryType::class,
     'mySqlType' => GeometryCollectionType::class,
   ],
 ];
