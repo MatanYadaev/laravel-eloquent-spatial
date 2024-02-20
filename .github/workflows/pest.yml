@@ -57,6 +57,6 @@ jobs:
       - name: Execute tests
         env:
           DB_PORT: ${{ job.services.db.ports['3306'] }}
-          DB_HOST: ${{ contains(matrix.db, 'postgis') && 'postgres' || 'localhost' }}
+          DB_HOST: ${{ contains(matrix.db, 'postgis') && '127.0.0.1' || '127.0.0.1' }}
           DB_CONNECTION: ${{ contains(matrix.db, 'postgis') && 'pgsql' || 'mysql' }}
         run: vendor/bin/pest
