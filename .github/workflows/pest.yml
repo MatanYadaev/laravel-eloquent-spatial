@@ -17,8 +17,7 @@ jobs:
       matrix:
         php: [ 8.3, 8.2, 8.1 ]
         laravel: [ 10.* ]
-#        db: [ 'mysql:8.0', 'mysql:5.7', 'mariadb:10.9', 'postgis/postgis:16-3.4' ]
-        db: [ 'postgis/postgis:16-3.4' ]
+        db: [ 'mysql:8.0', 'mysql:5.7', 'mariadb:10.9', 'postgis/postgis:16-3.4' ]
         dependency-version: [ prefer-lowest, prefer-stable ]
         include:
           - laravel: 10.*
@@ -34,7 +33,7 @@ jobs:
           POSTGRES_USER: root
           POSTGRES_HOST_AUTH_METHOD: trust
         ports:
-          - ${{ contains(matrix.db, 'postgis') && '5432:3306' || '3306' }}
+          - ${{ contains(matrix.db, 'postgis') && '5432' || '3306' }}
         options: >-
           ${{ (contains(matrix.db, 'postgis') && '--health-cmd="pg_isready"') || '--health-cmd="mysqladmin ping"' }}
           --health-interval=10s --health-timeout=5s --health-retries=3
@@ -56,6 +55,6 @@ jobs:
 
       - name: Execute tests
         env:
-          DB_PORT: ${{ job.services.db.ports['3306'] }}
+          DB_PORT: ${{ job.services.db.ports[contains(matrix.db, 'postgis') && '5432' || '3306'] }}
           DB_CONNECTION: ${{ contains(matrix.db, 'postgis') && 'pgsql' || 'mysql' }}
         run: vendor/bin/pest
