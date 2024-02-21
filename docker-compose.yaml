@@ -14,7 +14,7 @@ services:
     restart: unless-stopped
   postgres:
     container_name: postgres-laravel-eloquent-spatial
-    image: postgis/postgis:16-3.4
+    image: postgis/postgis:16-2
     environment:
       POSTGRES_DB: laravel_eloquent_spatial_test
       POSTGRES_USER: root

@@ -9,9 +9,9 @@
 **This Laravel package allows you to easily work with spatial data types and functions.**
 
 Supported databases:
-- MySQL 5.7 & 8
-- MariaDB 10
-- Postgres 16
+- MySQL 5.7/8
+- MariaDB 10/11
+- Postgres 12/13/14/15/16
 
 ## Getting Started
 

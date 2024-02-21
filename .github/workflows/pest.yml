@@ -17,11 +17,17 @@ jobs:
       matrix:
         php: [ 8.3, 8.2, 8.1 ]
         laravel: [ 10.* ]
-        db: [ 'mysql:8.0', 'mysql:5.7', 'mariadb:10.9', 'postgis/postgis:16-3.4' ]
+        db: [ 'mysql:8.0', 'mysql:5.7', 'mariadb:11.3', 'mariadb:10.11', 'postgis/postgis:16-2', 'postgis/postgis:15.6', 'postgis/postgis:14.11', 'postgis/postgis:13.14', 'postgis/postgis:12.18' ]
         dependency-version: [ prefer-lowest, prefer-stable ]
         include:
           - laravel: 10.*
             testbench: ^8.0
+          - php: 8.2
+            db: 'mysql:8.0'
+            dependency-version: prefer-lowest
+          - php: 8.1
+            db: 'mysql:8.0'
+            dependency-version: prefer-lowest
 
     services:
       db:
