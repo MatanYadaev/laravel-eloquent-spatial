@@ -10,7 +10,7 @@
 
 Supported databases:
 - MySQL 5.7/8
-- MariaDB 10/11
+- MariaDB 10
 - Postgres 12/13/14/15/16 with PostGIS 3.4
 
 ## Getting Started
