@@ -15,19 +15,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 8.3 ]
+        php: [ 8.3, 8.2, 8.1 ]
         laravel: [ 10.* ]
-        db: [ 'mysql:8.0', 'mysql:5.7', 'mariadb:11.3', 'mariadb:10.11', 'postgis/postgis:16-3.4', 'postgis/postgis:15-3.4', 'postgis/postgis:14-3.41', 'postgis/postgis:13-3.44', 'postgis/postgis:12-3.48' ]
-        dependency-version: [ prefer-stable ]
+        db: [ 'mysql:8.0', 'mysql:5.7', 'mariadb:11.3', 'mariadb:10.11', 'postgis/postgis:16-3.4', 'postgis/postgis:15-3.4', 'postgis/postgis:14-3.4', 'postgis/postgis:13-3.4', 'postgis/postgis:12-3.4' ]
+        dependency-version: [ prefer-stable, prefer-lowest ]
         include:
           - laravel: 10.*
             testbench: ^8.0
-          - db: mysql:8.0
-            dependency-version: prefer-lowest
-          - db: mysql:8.0
-            php: 8.1
-          - db: mysql:8.0
-            php: 8.2
 
     services:
       db:
