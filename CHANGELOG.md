@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.1.0 - 2024-02-24
+
+### What's Changed
+
+* Postgres support by @MatanYadaev in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/109
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/4.0.0...4.1.0
+
 ## v4.0.0 - 2024-01-18
 
 ### What's Changed
