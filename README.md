@@ -57,6 +57,20 @@ composer require matanyadaev/laravel-eloquent-spatial
     }
     ```
 
+* On Postgres, Laravel create spatial columns as `geography` type by default. If you want to use `geometry` type, you can use the `->isGeometry()` method:
+
+    ```php
+    $table->point('location')->isGeometry()->nullable();
+    $table->polygon('area')->isGeometry()->nullable();
+    ```
+  
+    You can also use the `->projection()` method to set the SRID:
+
+    ```php
+    $table->point('location')->projection(Srid::WGS84->value)->nullable(); // 4326 is the default of `geography` type
+    $table->polygon('area')->isGeometry()->projection(0)->nullable(); // 0 is the default of `geometry` type
+    ```
+
 3. Run the migration:
 
     ```bash
