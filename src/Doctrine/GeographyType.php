@@ -8,15 +8,15 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
 /** @codeCoverageIgnore */
-class GeometryCollectionType extends Type
+class GeographyType extends Type
 {
   public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
   {
-    return 'geometrycollection';
+    return 'geography';
   }
 
   public function getName(): string
   {
-    return 'geometrycollection';
+    return 'geography';
   }
 }

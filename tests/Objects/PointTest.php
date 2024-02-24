@@ -1,12 +1,9 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
-
-uses(DatabaseMigrations::class);
 
 it('creates a model record with point', function (): void {
   $point = new Point(0, 180);

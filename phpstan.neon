@@ -6,6 +6,17 @@ parameters:
     - tests
   excludePaths:
     - src/Factory.php
+  ignoreErrors:
+    -
+      message: '#Call to an undefined method Illuminate\\Database\\Schema\\ColumnDefinition\:\:(isGeometry|projection)\(\)#'
+      path: tests/database/migrations/*.php
+    -
+      message: '#Undefined variable: \$this#'
+      path: tests/Expectations.php
+    -
+      message: '#Call to an undefined method Pest\\Expectation\<.+\>\:\:toBe(InstanceOf)?On(Postgres|Mysql)\(\)#'
+      path: tests/*.php
+
   level: max
   checkMissingIterableValueType: true
   checkGenericClassInNonGenericObjectType: false

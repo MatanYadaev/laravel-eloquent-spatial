@@ -8,40 +8,40 @@ use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\MySqlConnection;
 use PDO;
 
+/** @codeCoverageIgnore */
 class AxisOrder
 {
-  public function __construct()
+  public static function supported(ConnectionInterface $connection): bool
   {
-  }
-
-  public function supported(ConnectionInterface $connection): bool
-  {
-    /** @var MySqlConnection $connection */
-    if ($this->isMariaDb($connection)) {
-      // @codeCoverageIgnoreStart
+    if (self::isMariaDb($connection)) {
       return false;
-      // @codeCoverageIgnoreEnd
     }
 
-    if ($this->isMySql57($connection)) {
-      // @codeCoverageIgnoreStart
-      return false;
-      // @codeCoverageIgnoreEnd
+    if (self::isMySql8OrAbove($connection)) {
+      return true;
     }
 
-    return true;
+    return false;
   }
 
-  private function isMariaDb(MySqlConnection $connection): bool
+  private static function isMariaDb(ConnectionInterface $connection): bool
   {
+    if (! ($connection instanceof MySqlConnection)) {
+      return false;
+    }
+
     return $connection->isMaria();
   }
 
-  private function isMySql57(MySqlConnection $connection): bool
+  private static function isMySql8OrAbove(ConnectionInterface $connection): bool
   {
+    if (! ($connection instanceof MySqlConnection)) {
+      return false;
+    }
+
     /** @var string $version */
     $version = $connection->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION);
 
-    return version_compare($version, '5.8.0', '<');
+    return version_compare($version, '8.0.0', '>=');
   }
 }

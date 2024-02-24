@@ -53,6 +53,8 @@ class TestPlace extends Model
     'multi_polygon' => MultiPolygon::class,
     'geometry_collection' => GeometryCollection::class,
     'point_with_line_string_cast' => LineString::class,
+    'distance' => 'float',
+    'distance_in_meters' => 'float',
   ];
 
   protected static function newFactory(): TestPlaceFactory

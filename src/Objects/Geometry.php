@@ -20,6 +20,7 @@ use MatanYadaev\EloquentSpatial\AxisOrder;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\GeometryCast;
+use MatanYadaev\EloquentSpatial\GeometryExpression;
 use Stringable;
 use WKB as geoPHPWkb;
 
@@ -67,19 +68,23 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   /**
    * @param  string  $wkb
    * @return static
-   *
-   * @throws InvalidArgumentException
    */
   public static function fromWkb(string $wkb): static
   {
-    $srid = substr($wkb, 0, 4);
-    // @phpstan-ignore-next-line
-    $srid = unpack('L', $srid)[1];
+    if (ctype_xdigit($wkb)) {
+      // @codeCoverageIgnoreStart
+      $geometry = Factory::parse($wkb);
+      // @codeCoverageIgnoreEnd
+    } else {
+      $srid = substr($wkb, 0, 4);
+      // @phpstan-ignore-next-line
+      $srid = unpack('L', $srid)[1];
 
-    $wkb = substr($wkb, 4);
+      $wkb = substr($wkb, 4);
 
-    $geometry = Factory::parse($wkb);
-    $geometry->srid = $srid;
+      $geometry = Factory::parse($wkb);
+      $geometry->srid = $srid;
+    }
 
     if (! ($geometry instanceof static)) {
       throw new InvalidArgumentException(
@@ -217,12 +222,12 @@ abstract class Geometry implements Castable, Arrayable, Jsonable, JsonSerializab
   {
     $wkt = $this->toWkt();
 
-    if (! (new AxisOrder)->supported($connection)) {
+    if (! AxisOrder::supported($connection)) {
       // @codeCoverageIgnoreStart
-      return DB::raw("ST_GeomFromText('{$wkt}', {$this->srid})");
+      return DB::raw((new GeometryExpression("ST_GeomFromText('{$wkt}', {$this->srid})"))->normalize($connection));
       // @codeCoverageIgnoreEnd
     }
 
-    return DB::raw("ST_GeomFromText('{$wkt}', {$this->srid}, 'axis-order=long-lat')");
+    return DB::raw((new GeometryExpression("ST_GeomFromText('{$wkt}', {$this->srid}, 'axis-order=long-lat')"))->normalize($connection));
   }
 }

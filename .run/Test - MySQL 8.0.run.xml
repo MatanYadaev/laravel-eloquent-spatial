@@ -1,5 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Test" type="PestRunConfigurationType">
+  <configuration default="false" name="Test - MySQL 8.0" type="PestRunConfigurationType">
+    <CommandLine>
+      <envs>
+        <env name="DB_PORT" value="3307" />
+      </envs>
+    </CommandLine>
     <option name="pestRunnerSettings">
       <PestRunner method="" scope="ConfigurationFile" />
     </option>

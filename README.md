@@ -8,7 +8,10 @@
 
 **This Laravel package allows you to easily work with spatial data types and functions.**
 
-This package supports MySQL v8, MySQL v5.7, and MariaDB v10.
+Supported databases:
+- MySQL 5.7/8
+- MariaDB 10
+- Postgres 12/13/14/15/16 with PostGIS 3.4
 
 ## Getting Started
 
@@ -177,8 +180,8 @@ echo $londonEyePoint->getName(); // Point
 
 Here are some useful commands for development:
 
-* Run tests: `composer pest`
-* Run tests with coverage: `composer pest-coverage`
+* Run tests: `composer pest:mysql` or `composer pest:postgres`
+* Run tests with coverage: `composer pest-coverage:mysql`
 * Perform type checking: `composer phpstan`
 * Format your code: `composer php-cs-fixer`
 

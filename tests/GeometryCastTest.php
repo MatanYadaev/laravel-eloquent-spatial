@@ -1,13 +1,11 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
+use MatanYadaev\EloquentSpatial\GeometryExpression;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
-
-uses(DatabaseMigrations::class);
 
 it('creates a model record with null geometry', function (): void {
   /** @var TestPlace $testPlace */
@@ -107,7 +105,9 @@ it('throws exception when cast serializing non-geometry object', function (): vo
 
 it('throws exception when cast deserializing incorrect geometry object', function (): void {
   TestPlace::insert(array_merge(TestPlace::factory()->definition(), [
-    'point_with_line_string_cast' => DB::raw('POINT(0, 180)'),
+    'point_with_line_string_cast' => DB::raw(
+      (new GeometryExpression('POINT(0, 180)'))->normalize(DB::connection())
+    ),
   ]));
   /** @var TestPlace $testPlace */
   $testPlace = TestPlace::firstOrFail();

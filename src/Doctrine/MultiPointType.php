@@ -7,13 +7,12 @@ namespace MatanYadaev\EloquentSpatial\Doctrine;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
+/** @codeCoverageIgnore */
 class MultiPointType extends Type
 {
   public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
   {
-    // @codeCoverageIgnoreStart
     return 'multipoint';
-    // @codeCoverageIgnoreEnd
   }
 
   public function getName(): string

@@ -7,13 +7,12 @@ namespace MatanYadaev\EloquentSpatial\Doctrine;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
+/** @codeCoverageIgnore */
 class LineStringType extends Type
 {
   public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
   {
-    // @codeCoverageIgnoreStart
     return 'linestring';
-    // @codeCoverageIgnoreEnd
   }
 
   public function getName(): string
