@@ -8,7 +8,7 @@ on:
 
 jobs:
   php-cs-fixer:
-    name: PHP CS Fixer
+    name: Pint
 
     runs-on: ubuntu-latest
 
@@ -26,4 +26,4 @@ jobs:
         run: composer install --prefer-dist --no-interaction
 
       - name: Run PHP CS Fixer
-        run: PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --allow-risky=yes --diff --dry-run
+        run: ./vendor/bin/pint --test
