@@ -17,17 +17,16 @@ use MatanYadaev\EloquentSpatial\Enums\Srid;
  */
 abstract class PointCollection extends GeometryCollection
 {
-  protected string $collectionOf = Point::class;
+    protected string $collectionOf = Point::class;
 
-  /**
-   * @param  Collection<int, Point>|array<int, Point>  $geometries
-   * @param  int  $srid
-   *
-   * @throws InvalidArgumentException
-   */
-  public function __construct(Collection|array $geometries, int|Srid $srid = 0)
-  {
-    // @phpstan-ignore-next-line
-    parent::__construct($geometries, $this->srid = $srid instanceof Srid ? $srid->value : $srid);
-  }
+    /**
+     * @param  Collection<int, Point>|array<int, Point>  $geometries
+     *
+     * @throws InvalidArgumentException
+     */
+    public function __construct(Collection|array $geometries, int|Srid $srid = 0)
+    {
+        // @phpstan-ignore-next-line
+        parent::__construct($geometries, $this->srid = $srid instanceof Srid ? $srid->value : $srid);
+    }
 }

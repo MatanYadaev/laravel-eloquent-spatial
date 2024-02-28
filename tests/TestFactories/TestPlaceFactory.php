@@ -10,16 +10,16 @@ use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
  */
 class TestPlaceFactory extends Factory
 {
-  protected $model = TestPlace::class;
+    protected $model = TestPlace::class;
 
-  /**
-   * @return array<string, mixed>
-   */
-  public function definition(): array
-  {
-    return [
-      'name' => $this->faker->streetName(),
-      'address' => $this->faker->address(),
-    ];
-  }
+    /**
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->streetName(),
+            'address' => $this->faker->address(),
+        ];
+    }
 }

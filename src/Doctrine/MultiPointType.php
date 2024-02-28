@@ -10,13 +10,13 @@ use Doctrine\DBAL\Types\Type;
 /** @codeCoverageIgnore */
 class MultiPointType extends Type
 {
-  public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
-  {
-    return 'multipoint';
-  }
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    {
+        return 'multipoint';
+    }
 
-  public function getName(): string
-  {
-    return 'multipoint';
-  }
+    public function getName(): string
+    {
+        return 'multipoint';
+    }
 }

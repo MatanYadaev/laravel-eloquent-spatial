@@ -19,34 +19,34 @@ use MatanYadaev\EloquentSpatial\Doctrine\PolygonType;
 
 class EloquentSpatialServiceProvider extends DatabaseServiceProvider
 {
-  public function boot(): void
-  {
-    /** @var Connection $connection */
-    $connection = DB::connection();
+    public function boot(): void
+    {
+        /** @var Connection $connection */
+        $connection = DB::connection();
 
-    if ($connection->isDoctrineAvailable()) {
-      $this->registerDoctrineTypes($connection);
+        if ($connection->isDoctrineAvailable()) {
+            $this->registerDoctrineTypes($connection);
+        }
     }
-  }
 
-  protected function registerDoctrineTypes(Connection $connection): void
-  {
-    $geometries = [
-      'point' => PointType::class,
-      'linestring' => LineStringType::class,
-      'multipoint' => MultiPointType::class,
-      'polygon' => PolygonType::class,
-      'multilinestring' => MultiLineStringType::class,
-      'multipolygon' => MultiPolygonType::class,
-      'geometrycollection' => GeometryCollectionType::class,
-      'geomcollection' => GeometryCollectionType::class,
-      'geography' => GeographyType::class,
-      'geometry' => GeometryType::class,
-    ];
+    protected function registerDoctrineTypes(Connection $connection): void
+    {
+        $geometries = [
+            'point' => PointType::class,
+            'linestring' => LineStringType::class,
+            'multipoint' => MultiPointType::class,
+            'polygon' => PolygonType::class,
+            'multilinestring' => MultiLineStringType::class,
+            'multipolygon' => MultiPolygonType::class,
+            'geometrycollection' => GeometryCollectionType::class,
+            'geomcollection' => GeometryCollectionType::class,
+            'geography' => GeographyType::class,
+            'geometry' => GeometryType::class,
+        ];
 
-    foreach ($geometries as $type => $class) {
-      DB::registerDoctrineType($class, $type, $type);
-      $connection->registerDoctrineType($class, $type, $type);
+        foreach ($geometries as $type => $class) {
+            DB::registerDoctrineType($class, $type, $type);
+            $connection->registerDoctrineType($class, $type, $type);
+        }
     }
-  }
 }
