@@ -10,13 +10,13 @@ use Doctrine\DBAL\Types\Type;
 /** @codeCoverageIgnore */
 class GeometryType extends Type
 {
-  public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
-  {
-    return 'geometry';
-  }
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    {
+        return 'geometry';
+    }
 
-  public function getName(): string
-  {
-    return 'geometry';
-  }
+    public function getName(): string
+    {
+        return 'geometry';
+    }
 }

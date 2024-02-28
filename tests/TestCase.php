@@ -8,21 +8,20 @@ use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
-  protected function setUp(): void
-  {
-    parent::setUp();
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-    $this->loadMigrationsFrom(__DIR__.'/database/migrations');
-  }
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+    }
 
-  /**
-   * @param $app
-   * @return class-string<ServiceProvider>[]
-   */
-  protected function getPackageProviders($app): array
-  {
-    return [
-      EloquentSpatialServiceProvider::class,
-    ];
-  }
+    /**
+     * @return class-string<ServiceProvider>[]
+     */
+    protected function getPackageProviders($app): array
+    {
+        return [
+            EloquentSpatialServiceProvider::class,
+        ];
+    }
 }

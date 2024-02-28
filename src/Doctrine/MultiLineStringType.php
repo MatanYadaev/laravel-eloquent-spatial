@@ -10,13 +10,13 @@ use Doctrine\DBAL\Types\Type;
 /** @codeCoverageIgnore */
 class MultiLineStringType extends Type
 {
-  public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
-  {
-    return 'multilinestring';
-  }
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    {
+        return 'multilinestring';
+    }
 
-  public function getName(): string
-  {
-    return 'multilinestring';
-  }
+    public function getName(): string
+    {
+        return 'multilinestring';
+    }
 }

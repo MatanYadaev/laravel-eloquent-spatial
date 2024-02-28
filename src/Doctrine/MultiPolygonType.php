@@ -10,13 +10,13 @@ use Doctrine\DBAL\Types\Type;
 /** @codeCoverageIgnore */
 class MultiPolygonType extends Type
 {
-  public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
-  {
-    return 'multipolygon';
-  }
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    {
+        return 'multipolygon';
+    }
 
-  public function getName(): string
-  {
-    return 'multipolygon';
-  }
+    public function getName(): string
+    {
+        return 'multipolygon';
+    }
 }

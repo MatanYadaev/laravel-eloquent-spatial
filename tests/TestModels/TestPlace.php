@@ -26,39 +26,40 @@ use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
  * @property float|null $distance_in_meters
  * @property Point|null $centroid
  * @property Point|null $centroid_alias
+ *
  * @mixin Model
  */
 class TestPlace extends Model
 {
-  use HasFactory, HasSpatial;
+    use HasFactory, HasSpatial;
 
-  protected $fillable = [
-    'address',
-    'point',
-    'multi_point',
-    'line_string',
-    'multi_line_string',
-    'polygon',
-    'multi_polygon',
-    'geometry_collection',
-    'point_with_line_string_cast',
-  ];
+    protected $fillable = [
+        'address',
+        'point',
+        'multi_point',
+        'line_string',
+        'multi_line_string',
+        'polygon',
+        'multi_polygon',
+        'geometry_collection',
+        'point_with_line_string_cast',
+    ];
 
-  protected $casts = [
-    'point' => Point::class,
-    'multi_point' => MultiPoint::class,
-    'line_string' => LineString::class,
-    'multi_line_string' => MultiLineString::class,
-    'polygon' => Polygon::class,
-    'multi_polygon' => MultiPolygon::class,
-    'geometry_collection' => GeometryCollection::class,
-    'point_with_line_string_cast' => LineString::class,
-    'distance' => 'float',
-    'distance_in_meters' => 'float',
-  ];
+    protected $casts = [
+        'point' => Point::class,
+        'multi_point' => MultiPoint::class,
+        'line_string' => LineString::class,
+        'multi_line_string' => MultiLineString::class,
+        'polygon' => Polygon::class,
+        'multi_polygon' => MultiPolygon::class,
+        'geometry_collection' => GeometryCollection::class,
+        'point_with_line_string_cast' => LineString::class,
+        'distance' => 'float',
+        'distance_in_meters' => 'float',
+    ];
 
-  protected static function newFactory(): TestPlaceFactory
-  {
-    return new TestPlaceFactory;
-  }
+    protected static function newFactory(): TestPlaceFactory
+    {
+        return new TestPlaceFactory;
+    }
 }

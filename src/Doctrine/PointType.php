@@ -10,13 +10,13 @@ use Doctrine\DBAL\Types\Type;
 /** @codeCoverageIgnore */
 class PointType extends Type
 {
-  public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
-  {
-    return 'point';
-  }
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    {
+        return 'point';
+    }
 
-  public function getName(): string
-  {
-    return 'point';
-  }
+    public function getName(): string
+    {
+        return 'point';
+    }
 }

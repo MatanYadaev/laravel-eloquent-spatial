@@ -17,37 +17,36 @@ use MatanYadaev\EloquentSpatial\Enums\Srid;
  */
 class MultiPolygon extends GeometryCollection
 {
-  protected string $collectionOf = Polygon::class;
+    protected string $collectionOf = Polygon::class;
 
-  protected int $minimumGeometries = 1;
+    protected int $minimumGeometries = 1;
 
-  /**
-   * @param  Collection<int, Polygon>|array<int, Polygon>  $geometries
-   * @param  int  $srid
-   *
-   * @throws InvalidArgumentException
-   */
-  public function __construct(Collection|array $geometries, int|Srid $srid = 0)
-  {
-    // @phpstan-ignore-next-line
-    parent::__construct($geometries, $this->srid = $srid instanceof Srid ? $srid->value : $srid);
-  }
+    /**
+     * @param  Collection<int, Polygon>|array<int, Polygon>  $geometries
+     *
+     * @throws InvalidArgumentException
+     */
+    public function __construct(Collection|array $geometries, int|Srid $srid = 0)
+    {
+        // @phpstan-ignore-next-line
+        parent::__construct($geometries, $this->srid = $srid instanceof Srid ? $srid->value : $srid);
+    }
 
-  public function toWkt(): string
-  {
-    $wktData = $this->getWktData();
+    public function toWkt(): string
+    {
+        $wktData = $this->getWktData();
 
-    return "MULTIPOLYGON({$wktData})";
-  }
+        return "MULTIPOLYGON({$wktData})";
+    }
 
-  public function getWktData(): string
-  {
-    return $this->geometries
-      ->map(static function (Polygon $polygon): string {
-        $wktData = $polygon->getWktData();
+    public function getWktData(): string
+    {
+        return $this->geometries
+            ->map(static function (Polygon $polygon): string {
+                $wktData = $polygon->getWktData();
 
-        return "({$wktData})";
-      })
-      ->join(', ');
-  }
+                return "({$wktData})";
+            })
+            ->join(', ');
+    }
 }
