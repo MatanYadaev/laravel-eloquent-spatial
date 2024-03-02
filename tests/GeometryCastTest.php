@@ -126,3 +126,66 @@ it('creates a model record with geometry from geo json array', function (): void
 
     expect($testPlace->point)->toEqual($point);
 });
+
+it('checks a model record is not dirty after creation', function (): void {
+    $point = new Point(0, 180);
+
+    /** @var TestPlace $testPlace */
+    $testPlace = TestPlace::factory()->create(['point' => $point]);
+
+    expect($testPlace->isDirty())->toBeFalse();
+});
+
+it('checks a model record is not dirty after fetch', function (): void {
+    $point = new Point(0, 180);
+    TestPlace::factory()->create(['point' => $point]);
+
+    /** @var TestPlace $testPlace */
+    $testPlace = TestPlace::firstOrFail();
+
+    expect($testPlace->isDirty())->toBeFalse();
+});
+
+it('checks a model record is dirty after update from null before save', function (): void {
+    $point = new Point(0, 180);
+    /** @var TestPlace $testPlace */
+    $testPlace = TestPlace::factory()->create([]);
+
+    $testPlace->point = $point;
+
+    expect($testPlace->isDirty())->toBeTrue();
+});
+
+it('checks a model record is dirty after update before save', function (): void {
+    $point = new Point(0, 180);
+    $point2 = new Point(0, 0);
+    /** @var TestPlace $testPlace */
+    $testPlace = TestPlace::factory()->create(['point' => $point]);
+
+    $testPlace->point = $point2;
+
+    expect($testPlace->isDirty())->toBeTrue();
+});
+
+it('checks a model record is not dirty after update and save', function (): void {
+    $point = new Point(0, 180);
+    $point2 = new Point(0, 0);
+    /** @var TestPlace $testPlace */
+    $testPlace = TestPlace::factory()->create(['point' => $point]);
+
+    $testPlace->point = $point2;
+    $testPlace->save();
+
+    expect($testPlace->isDirty())->toBeFalse();
+});
+
+it('checks a model record is not dirty after update to same value before save', function (): void {
+    $point = new Point(0, 180);
+    $point2 = new Point(0, 180);
+    /** @var TestPlace $testPlace */
+    $testPlace = TestPlace::factory()->create(['point' => $point]);
+
+    $testPlace->point = $point2;
+
+    expect($testPlace->isDirty())->toBeFalse();
+});

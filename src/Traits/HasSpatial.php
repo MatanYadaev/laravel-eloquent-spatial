@@ -11,6 +11,26 @@ use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
 trait HasSpatial
 {
+    public function originalIsEquivalent($key)
+    {
+        if (! array_key_exists($key, $this->original)) {
+            return false;
+        }
+
+        $casts = $this->getCasts();
+
+        if (array_key_exists($key, $casts)) {
+            $original = $this->getOriginal($key);
+            $attribute = $this->getAttributeValue($key);
+
+            if ($original instanceof Geometry && $attribute instanceof Geometry) {
+                return $original->getWktData() === $attribute->getWktData();
+            }
+        }
+
+        return parent::originalIsEquivalent($key);
+    }
+
     public function scopeWithDistance(
         Builder $query,
         ExpressionContract|Geometry|string $column,
