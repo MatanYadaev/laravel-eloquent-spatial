@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.1.1 - 2024-03-05
+
+### What's Changed
+
+* Laravel Pint by @MatanYadaev in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/112
+* Bugfix: `isDirty` is always `true` after creation by @MatanYadaev in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/115
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/4.1.0...4.1.1
+
 ## v4.1.0 - 2024-02-24
 
 ### What's Changed
