@@ -58,6 +58,10 @@ jobs:
                     composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
                     composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
+            -   name: Set Mysql-specific environment variable
+                if: contains(matrix.db, 'mysql')
+                run: echo "DB_COLLATION=utf8mb4_unicode_ci" >> $GITHUB_ENV
+
             -   name: Execute tests
                 env:
                     DB_PORT: ${{ job.services.db.ports[contains(matrix.db, 'postgis') && '5432' || '3306'] }}
