@@ -45,7 +45,6 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": false,
             "pestphp/pest-plugin": true
         }
     },
