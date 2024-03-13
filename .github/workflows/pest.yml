@@ -58,15 +58,15 @@ jobs:
                     composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
                     composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
-            -   name: Set DB_CONNECTION env variable
+            -   name: Set DB_CONNECTION env variable (PostGIS)
                 if: contains(matrix.db, 'postgis')
                 run: echo "DB_CONNECTION=pgsql" >> "$GITHUB_ENV"
 
-            -   name: Set DB_CONNECTION env variable
+            -   name: Set DB_CONNECTION env variable (MariaDB & Laravel 11)
                 if: contains(matrix.laravel, '11') && contains(matrix.db, 'mariadb')
                 run: echo "DB_CONNECTION=maria" >> "$GITHUB_ENV"
 
-            -   name: Set DB_CONNECTION env variable
+            -   name: Set DB_CONNECTION env variable (Rest)
                 if: !contains(matrix.db, 'postgis') || (!contains(matrix.laravel, '11') && !contains(matrix.db, 'mariadb'))
                 run: echo "DB_CONNECTION=mysql" >> "$GITHUB_ENV"
 
