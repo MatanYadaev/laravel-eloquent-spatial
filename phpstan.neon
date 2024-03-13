@@ -8,8 +8,8 @@ parameters:
     - src/Factory.php
   ignoreErrors:
     -
-      message: '#Call to an undefined method Illuminate\\Database\\Schema\\ColumnDefinition\:\:isGeometry\(\)#'
-      path: tests/database/migrations/*.php
+      message: '#Call to an undefined method Illuminate\\Database\\Schema\\Blueprint\:\:.+\(\)#'
+      path: 'tests/database/migrations-laravel-<=10/*.php'
     -
       message: '#Undefined variable: \$this#'
       path: tests/Expectations.php
