@@ -21,7 +21,6 @@ class CreateTestPlacesTable extends Migration
             $table->geometry('multi_polygon', subtype: 'multipolygon')->nullable();
             $table->geometry('geometry_collection', subtype: 'geometrycollection')->nullable();
             $table->geometry('point_with_line_string_cast', subtype: 'point')->nullable();
-            $table->geography('point_geography', subtype: 'point')->nullable();
             $table->decimal('longitude')->nullable();
             $table->decimal('latitude')->nullable();
         });
