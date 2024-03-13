@@ -58,8 +58,19 @@ jobs:
                     composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
                     composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
+            -   name: Set DB_CONNECTION env variable
+                if: contains(matrix.db, 'postgis')
+                run: echo "DB_CONNECTION=pgsql" >> "$GITHUB_ENV"
+
+            -   name: Set DB_CONNECTION env variable
+                if: contains(matrix.laravel, '11') && contains(matrix.db, 'mariadb')
+                run: echo "DB_CONNECTION=maria" >> "$GITHUB_ENV"
+
+            -   name: Set DB_CONNECTION env variable
+                if: !contains(matrix.db, 'postgis') || (!contains(matrix.laravel, '11') && !contains(matrix.db, 'mariadb'))
+                run: echo "DB_CONNECTION=mysql" >> "$GITHUB_ENV"
+
             -   name: Execute tests
                 env:
                     DB_PORT: ${{ job.services.db.ports[contains(matrix.db, 'postgis') && '5432' || '3306'] }}
-                    DB_CONNECTION: ${{ contains(matrix.db, 'postgis') && 'pgsql' || ((contains(matrix.laravel, '11') && contains(matrix.db, 'mariadb')) && 'mariadb' || 'mysql') }}
                 run: vendor/bin/pest
