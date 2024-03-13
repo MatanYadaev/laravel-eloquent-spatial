@@ -61,5 +61,5 @@ jobs:
             -   name: Execute tests
                 env:
                     DB_PORT: ${{ job.services.db.ports[contains(matrix.db, 'postgis') && '5432' || '3306'] }}
-                    DB_CONNECTION: ${{ contains(matrix.db, 'postgis') && 'pgsql' || (contains(matrix.laravel, '11') && contains(matrix.db, 'mariadb') && 'mariadb' || 'mysql' ) }}
+                    DB_CONNECTION: ${{ contains(matrix.db, 'postgis') && 'pgsql' || ((contains(matrix.laravel, '11') && contains(matrix.db, 'mariadb')) && 'mariadb' || 'mysql') }}
                 run: vendor/bin/pest
