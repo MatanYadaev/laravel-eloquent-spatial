@@ -12,6 +12,17 @@ services:
     ports:
       - 3307:3306
     restart: unless-stopped
+  mariadb:
+    container_name: mariadb-laravel-eloquent-spatial
+    image: mariadb:10.11
+    environment:
+      MYSQL_DATABASE: laravel_eloquent_spatial_test
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - 3308:3306
+    restart: unless-stopped
   postgres:
     container_name: postgres-laravel-eloquent-spatial
     image: postgis/postgis:16-3.4
@@ -27,4 +38,5 @@ services:
 
 volumes:
   mysql_data:
+  mariadb_data:
   postgres_data:
