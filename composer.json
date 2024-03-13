@@ -1,60 +1,60 @@
 {
-  "name": "matanyadaev/laravel-eloquent-spatial",
-  "description": "Spatial library for Laravel",
-  "homepage": "https://github.com/matanyadaev/laravel-eloquent-spatial",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Matan Yadaev",
-      "email": "matan.yed@gmail.com"
+    "name": "matanyadaev/laravel-eloquent-spatial",
+    "description": "Spatial library for Laravel",
+    "homepage": "https://github.com/matanyadaev/laravel-eloquent-spatial",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matan Yadaev",
+            "email": "matan.yed@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "ext-json": "*",
+        "ext-pdo": "*",
+        "laravel/framework": "^10.0|^11.0",
+        "phayes/geophp": "^1.2"
+    },
+    "require-dev": {
+        "doctrine/dbal": "^3.5.3",
+        "larastan/larastan": "^1.0|^2.4",
+        "laravel/pint": "^1.14",
+        "orchestra/testbench": "^8.0|^9.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MatanYadaev\\EloquentSpatial\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MatanYadaev\\EloquentSpatial\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "pint": "./vendor/bin/pint",
+        "phpstan": "./vendor/bin/phpstan analyse --memory-limit=2G",
+        "pest:mysql": "DB_COLLATION=utf8mb4_unicode_ci DB_CONNECTION=mysql DB_PORT=3307 ./vendor/bin/pest",
+        "pest:mariadb": "DB_CONNECTION=mariadb DB_PORT=3308 ./vendor/bin/pest",
+        "pest:postgres": "DB_CONNECTION=pgsql DB_PORT=5433 ./vendor/bin/pest",
+        "pest-coverage:mysql": "XDEBUG_MODE=coverage DB_CONNECTION=mysql DB_PORT=3307 ./vendor/bin/pest --coverage --min=100"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MatanYadaev\\EloquentSpatial\\EloquentSpatialServiceProvider"
+            ]
+        }
     }
-  ],
-  "require": {
-    "php": "^8.1",
-    "ext-json": "*",
-    "ext-pdo": "*",
-    "laravel/framework": "^10.0",
-    "phayes/geophp": "^1.2"
-  },
-  "require-dev": {
-    "doctrine/dbal": "^3.5.3",
-    "larastan/larastan": "^1.0|^2.4",
-    "laravel/pint": "^1.14",
-    "orchestra/testbench": "^8.0",
-    "pestphp/pest": "^2.0",
-    "pestphp/pest-plugin-laravel": "^2.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "MatanYadaev\\EloquentSpatial\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "MatanYadaev\\EloquentSpatial\\Tests\\": "tests"
-    }
-  },
-  "scripts": {
-    "pint": "./vendor/bin/pint",
-    "phpstan": "./vendor/bin/phpstan analyse --memory-limit=2G",
-    "pest:mysql": "DB_PORT=3307 ./vendor/bin/pest",
-    "pest:postgres": "DB_CONNECTION=pgsql DB_PORT=5433 ./vendor/bin/pest",
-    "pest-coverage:mysql": "XDEBUG_MODE=coverage DB_PORT=3307 ./vendor/bin/pest --coverage --min=100"
-  },
-  "config": {
-    "sort-packages": true,
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": false,
-      "pestphp/pest-plugin": true
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "extra": {
-    "laravel": {
-      "providers": [
-        "MatanYadaev\\EloquentSpatial\\EloquentSpatialServiceProvider"
-      ]
-    }
-  }
 }

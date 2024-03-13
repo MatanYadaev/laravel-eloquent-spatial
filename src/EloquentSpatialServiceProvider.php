@@ -6,6 +6,7 @@ namespace MatanYadaev\EloquentSpatial;
 
 use Illuminate\Database\Connection;
 use Illuminate\Database\DatabaseServiceProvider;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Doctrine\GeographyType;
 use MatanYadaev\EloquentSpatial\Doctrine\GeometryCollectionType;
@@ -19,8 +20,13 @@ use MatanYadaev\EloquentSpatial\Doctrine\PolygonType;
 
 class EloquentSpatialServiceProvider extends DatabaseServiceProvider
 {
+    // @codeCoverageIgnoreStart
     public function boot(): void
     {
+        if (version_compare(Application::VERSION, '11.0.0', '>=')) {
+            return;
+        }
+
         /** @var Connection $connection */
         $connection = DB::connection();
 
@@ -49,4 +55,5 @@ class EloquentSpatialServiceProvider extends DatabaseServiceProvider
             $connection->registerDoctrineType($class, $type, $type);
         }
     }
+    // @codeCoverageIgnoreEnd
 }

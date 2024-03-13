@@ -9,6 +9,7 @@
 **This Laravel package allows you to easily work with spatial data types and functions.**
 
 Supported databases:
+
 - MySQL 5.7/8
 - MariaDB 10
 - Postgres 12/13/14/15/16 with PostGIS 3.4
@@ -44,8 +45,8 @@ composer require matanyadaev/laravel-eloquent-spatial
             Schema::create('places', static function (Blueprint $table) {
                 $table->id();
                 $table->string('name')->unique();
-                $table->point('location')->nullable();
-                $table->polygon('area')->nullable();
+                $table->geometry('location', subtype: 'point')->nullable();
+                $table->geometry('area', subtype: 'polygon')->nullable();
                 $table->timestamps();
             });
         }
@@ -55,20 +56,6 @@ composer require matanyadaev/laravel-eloquent-spatial
             Schema::dropIfExists('places');
         }
     }
-    ```
-
-* On Postgres, Laravel create spatial columns as `geography` type by default. If you want to use `geometry` type, you can use the `->isGeometry()` method:
-
-    ```php
-    $table->point('location')->isGeometry()->nullable();
-    $table->polygon('area')->isGeometry()->nullable();
-    ```
-  
-    You can also use the `->projection()` method to set the SRID:
-
-    ```php
-    $table->point('location')->projection(Srid::WGS84->value)->nullable(); // 4326 is the default of `geography` type
-    $table->polygon('area')->isGeometry()->projection(0)->nullable(); // 0 is the default of `geometry` type
     ```
 
 3. Run the migration:
@@ -194,10 +181,10 @@ echo $londonEyePoint->getName(); // Point
 
 Here are some useful commands for development:
 
-* Run tests: `composer pest:mysql` or `composer pest:postgres`
+* Run tests: `composer pest:mysql`, `composer pest:mariadb`, `composer pest:postgres`
 * Run tests with coverage: `composer pest-coverage:mysql`
 * Perform type checking: `composer phpstan`
-* Format your code: `composer php-cs-fixer`
+* Perform code formatting: `composer pint`
 
 Before running tests, make sure to run `docker-compose up` to start the database container.
 

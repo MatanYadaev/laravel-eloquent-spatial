@@ -1,17 +1,17 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Test - Postgres" type="PestRunConfigurationType">
-    <CommandLine>
-      <envs>
-        <env name="DB_CONNECTION" value="pgsql" />
-        <env name="DB_PORT" value="5433" />
-      </envs>
-    </CommandLine>
-    <option name="pestRunnerSettings">
-      <PestRunner method="" scope="ConfigurationFile" />
-    </option>
-    <option name="runnerSettings">
-      <PhpTestRunnerSettings method="" scope="ConfigurationFile" />
-    </option>
-    <method v="2" />
-  </configuration>
+    <configuration default="false" name="Test - Postgres" type="PestRunConfigurationType">
+        <CommandLine>
+            <envs>
+                <env name="DB_CONNECTION" value="pgsql"/>
+                <env name="DB_PORT" value="5433"/>
+            </envs>
+        </CommandLine>
+        <option name="pestRunnerSettings">
+            <PestRunner method="" scope="ConfigurationFile"/>
+        </option>
+        <option name="runnerSettings">
+            <PhpTestRunnerSettings method="" scope="ConfigurationFile"/>
+        </option>
+        <method v="2"/>
+    </configuration>
 </component>

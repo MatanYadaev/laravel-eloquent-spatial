@@ -1,6 +1,7 @@
 <?php
 
 use Doctrine\DBAL\Types\Type;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Doctrine\GeographyType;
 use MatanYadaev\EloquentSpatial\Doctrine\GeometryCollectionType;
@@ -62,4 +63,4 @@ it('uses custom Doctrine types for spatial columns', function ($column, $postgre
     $columns = $doctrineSchemaManager->listTableColumns('test_places');
 
     expect($columns[$column]->getType())->toBeInstanceOfOnPostgres($postgresType)->toBeInstanceOfOnMysql($mySqlType);
-})->with($dataset);
+})->with($dataset)->skip(version_compare(Application::VERSION, '11.0.0', '>='));

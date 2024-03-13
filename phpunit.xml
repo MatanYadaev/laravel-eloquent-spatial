@@ -9,28 +9,28 @@
          cacheDirectory=".phpunit.cache"
          backupStaticProperties="false"
 >
-  <testsuites>
-    <testsuite name="Test Suite">
-      <directory>tests</directory>
-    </testsuite>
-  </testsuites>
-  <coverage>
-    <report>
-      <html outputDirectory="build/coverage"/>
-      <text outputFile="build/coverage.txt"/>
-      <clover outputFile="build/logs/clover.xml"/>
-    </report>
-  </coverage>
-  <logging>
-    <junit outputFile="build/report.junit.xml"/>
-  </logging>
-  <php>
-    <env name="DB_DATABASE" value="laravel_eloquent_spatial_test"/>
-    <env name="DB_USERNAME" value="root"/>
-  </php>
-  <source>
-    <include>
-      <directory suffix=".php">./src</directory>
-    </include>
-  </source>
+    <testsuites>
+        <testsuite name="Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <coverage>
+        <report>
+            <html outputDirectory="build/coverage"/>
+            <text outputFile="build/coverage.txt"/>
+            <clover outputFile="build/logs/clover.xml"/>
+        </report>
+    </coverage>
+    <logging>
+        <junit outputFile="build/report.junit.xml"/>
+    </logging>
+    <php>
+        <env name="DB_DATABASE" value="laravel_eloquent_spatial_test"/>
+        <env name="DB_USERNAME" value="root"/>
+    </php>
+    <source>
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+    </source>
 </phpunit>
