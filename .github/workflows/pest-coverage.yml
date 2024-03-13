@@ -38,4 +38,5 @@ jobs:
             -   name: Execute tests
                 env:
                     DB_PORT: ${{ job.services.db.ports['3306'] }}
+                    DB_CONNECTION: mysql
                 run: XDEBUG_MODE=coverage ./vendor/bin/pest --coverage --min=100

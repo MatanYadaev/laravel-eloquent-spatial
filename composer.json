@@ -40,7 +40,7 @@
         "pest:mysql": "DB_CONNECTION=mysql DB_PORT=3307 ./vendor/bin/pest",
         "pest:mariadb": "DB_CONNECTION=mariadb DB_PORT=3308 ./vendor/bin/pest",
         "pest:postgres": "DB_CONNECTION=pgsql DB_PORT=5433 ./vendor/bin/pest",
-        "pest-coverage:mysql": "XDEBUG_MODE=coverage DB_PORT=3307 ./vendor/bin/pest --coverage --min=100"
+        "pest-coverage:mysql": "XDEBUG_MODE=coverage DB_CONNECTION=mysql DB_PORT=3307 ./vendor/bin/pest --coverage --min=100"
     },
     "config": {
         "sort-packages": true,
