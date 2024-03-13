@@ -60,17 +60,16 @@ jobs:
 
             -   name: Set DB_CONNECTION env variable (PostGIS)
                 if: contains(matrix.db, 'postgis')
-                run: echo "DB_CONNECTION=pgsql" >> "$GITHUB_ENV"
+                run: |
+                    echo "DB_CONNECTION=pgsql" >> "$GITHUB_ENV"
 
             -   name: Set DB_CONNECTION env variable (MariaDB & Laravel 11)
                 if: contains(matrix.laravel, '11') && contains(matrix.db, 'mariadb')
-                run: echo "DB_CONNECTION=maria" >> "$GITHUB_ENV"
-
-            -   name: Set DB_CONNECTION env variable (Rest)
-                if: !contains(matrix.db, 'postgis') || (!contains(matrix.laravel, '11') && !contains(matrix.db, 'mariadb'))
-                run: echo "DB_CONNECTION=mysql" >> "$GITHUB_ENV"
+                run: |
+                    echo "DB_CONNECTION=maria" >> "$GITHUB_ENV"
 
             -   name: Execute tests
                 env:
                     DB_PORT: ${{ job.services.db.ports[contains(matrix.db, 'postgis') && '5432' || '3306'] }}
+                    DB_CONNECTION: ${{ env.DB_CONNECTION || 'mysql' }}
                 run: vendor/bin/pest
