@@ -1,29 +1,29 @@
 name: Lint
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
+    push:
+        branches:
+            - master
+    pull_request:
 
 jobs:
-  php-cs-fixer:
-    name: Pint
+    php-cs-fixer:
+        name: Pint
 
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v2
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.3
-          coverage: none
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 8.3
+                    coverage: none
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-interaction
+            -   name: Install dependencies
+                run: composer install --prefer-dist --no-interaction
 
-      - name: Run PHP CS Fixer
-        run: ./vendor/bin/pint --test
+            -   name: Run PHP CS Fixer
+                run: ./vendor/bin/pint --test
