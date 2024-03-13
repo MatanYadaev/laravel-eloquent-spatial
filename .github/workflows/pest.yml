@@ -22,6 +22,11 @@ jobs:
         include:
           - laravel: 10.*
             testbench: ^8.0
+          - laravel: 11.*
+            testbench: ^9.0
+        exclude:
+          - laravel: 11.*
+            php: 8.1
 
     services:
       db:
@@ -56,5 +61,5 @@ jobs:
       - name: Execute tests
         env:
           DB_PORT: ${{ job.services.db.ports[contains(matrix.db, 'postgis') && '5432' || '3306'] }}
-          DB_CONNECTION: ${{ contains(matrix.db, 'postgis') && 'pgsql' || 'mysql' }}
+          DB_CONNECTION: ${{ contains(matrix.db, 'postgis') && 'pgsql' || (matrix.laravel == '11.*' && 'mariadb' || 'mysql') }}
         run: vendor/bin/pest
