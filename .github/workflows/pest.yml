@@ -66,7 +66,7 @@ jobs:
             -   name: Set DB_CONNECTION env variable (MariaDB & Laravel 11)
                 if: contains(matrix.laravel, '11') && contains(matrix.db, 'mariadb')
                 run: |
-                    echo "DB_CONNECTION=maria" >> "$GITHUB_ENV"
+                    echo "DB_CONNECTION=mariadb" >> "$GITHUB_ENV"
 
             -   name: Execute tests
                 env:
