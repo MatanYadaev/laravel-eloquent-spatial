@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.2.0 - 2024-03-13
+
+### What's Changed
+
+* Support Laravel 11 by @MatanYadaev in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/113
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/4.1.1...4.2.0
+
 ## v4.1.1 - 2024-03-05
 
 ### What's Changed
