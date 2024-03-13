@@ -68,8 +68,14 @@ jobs:
                 run: |
                     echo "DB_CONNECTION=mariadb" >> "$GITHUB_ENV"
 
+            -   name: Set DB_COLLATION env variable (Mysql 5.7 & Laravel 11)
+                if: contains(matrix.laravel, '11') && contains(matrix.db, 'mysql:5.7')
+                run: |
+                    echo "DB_COLLATION=utf8mb4_unicode_ci" >> "$GITHUB_ENV"
+
             -   name: Execute tests
                 env:
                     DB_PORT: ${{ job.services.db.ports[contains(matrix.db, 'postgis') && '5432' || '3306'] }}
                     DB_CONNECTION: ${{ env.DB_CONNECTION || 'mysql' }}
+                    DB_COLLATION: ${{ env.DB_COLLATION }}
                 run: vendor/bin/pest
