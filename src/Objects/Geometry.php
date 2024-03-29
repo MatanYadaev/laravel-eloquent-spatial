@@ -153,6 +153,10 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
     }
 
     /**
+     * @param array<array<string, mixed>> $properties
+     * 
+     * @return string
+     *
      * @throws JsonException
      */
     public function toFeatureCollectionJson(array $properties = []): string

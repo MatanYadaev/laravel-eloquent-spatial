@@ -159,10 +159,14 @@ it('generates geometry collection feature collection JSON', function (): void {
         ]),
         new Point(0, 180),
     ]);
+    $properties = [
+        ['name' => 'Polygon property', 'description' => 'Polygon description'],
+        ['name' => 'Point property', 'description' => 'Point description'],
+    ];
 
-    $featureCollectionJson = $geometryCollection->toFeatureCollectionJson();
+    $featureCollectionJson = $geometryCollection->toFeatureCollectionJson($properties);
 
-    $expectedFeatureCollectionJson = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}},{"type":"Feature","properties":[],"geometry":{"type":"Point","coordinates":[180,0]}}]}';
+    $expectedFeatureCollectionJson = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"name":"Polygon property","description":"Polygon description"},"geometry":{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}},{"type":"Feature","properties":{"name":"Point property","description":"Point description"},"geometry":{"type":"Point","coordinates":[180,0]}}]}';
     expect($featureCollectionJson)->toBe($expectedFeatureCollectionJson);
 });
 

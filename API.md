@@ -21,7 +21,7 @@ Geometry classes can be also created by these static methods:
 
 * `toArray()` - Serializes the geometry object into a GeoJSON associative array.
 * `toJson()` - Serializes the geometry object into an GeoJSON string.
-* `toFeatureCollectionJson()` - Serializes the geometry object into an GeoJSON's FeatureCollection string.
+* `toFeatureCollectionJson(array $properties = [])` - Serializes the geometry object into an GeoJSON's FeatureCollection string, with optional `properties` to be added to each feature.
 * `toWkt()` - Serializes the geometry object into a WKT.
 * `toWkb()` - Serializes the geometry object into a WKB.
 * `getCoordinates()` - Returns the coordinates of the geometry object.
