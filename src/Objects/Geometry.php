@@ -155,7 +155,7 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
     /**
      * @throws JsonException
      */
-    public function toFeatureCollectionJson(): string
+    public function toFeatureCollectionJson(array $properties = []): string
     {
         if (static::class === GeometryCollection::class) {
             /** @var GeometryCollection $this */
@@ -164,10 +164,10 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
             $geometries = collect([$this]);
         }
 
-        $features = $geometries->map(static function (self $geometry): array {
+        $features = $geometries->map(static function (self $geometry, $index) use ($properties) {
             return [
                 'type' => 'Feature',
-                'properties' => [],
+                'properties' => $properties[$index] ?? [],
                 'geometry' => $geometry->toArray(),
             ];
         });
