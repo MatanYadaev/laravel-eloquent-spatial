@@ -121,7 +121,7 @@ it('creates geometry collection from Array', function (): void {
         new Point(0, 180),
     ]);
 
-    $geometryCollectionFromJson = GeometryCollection::fromArray(json_decode('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}',true));
+    $geometryCollectionFromJson = GeometryCollection::fromArray(json_decode('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}', true));
 
     expect($geometryCollectionFromJson)->toEqual($geometryCollection);
 });
@@ -140,7 +140,7 @@ it('creates geometry collection with SRID from Array', function (): void {
         new Point(0, 180),
     ], Srid::WGS84->value);
 
-    $geometryCollectionFromJson = GeometryCollection::fromArray(json_decode('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}',true), Srid::WGS84->value);
+    $geometryCollectionFromJson = GeometryCollection::fromArray(json_decode('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}', true), Srid::WGS84->value);
 
     expect($geometryCollectionFromJson)->toEqual($geometryCollection);
 });
@@ -197,7 +197,7 @@ it('creates geometry collection from feature collection from Array', function ()
         new Point(0, 180),
     ]);
 
-    $geometryCollectionFromFeatureCollectionJson = GeometryCollection::fromArray(json_decode('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}},{"type":"Feature","properties":[],"geometry":{"type":"Point","coordinates":[180,0]}}]}',true));
+    $geometryCollectionFromFeatureCollectionJson = GeometryCollection::fromArray(json_decode('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}},{"type":"Feature","properties":[],"geometry":{"type":"Point","coordinates":[180,0]}}]}', true));
 
     expect($geometryCollectionFromFeatureCollectionJson)->toEqual($geometryCollection);
 });
@@ -216,7 +216,7 @@ it('creates geometry collection from feature collection with SRID from Array', f
         new Point(0, 180),
     ], Srid::WGS84);
 
-    $geometryCollectionFromFeatureCollectionJson = GeometryCollection::fromArray(json_decode('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}},{"type":"Feature","properties":[],"geometry":{"type":"Point","coordinates":[180,0]}}]}',true), Srid::WGS84);
+    $geometryCollectionFromFeatureCollectionJson = GeometryCollection::fromArray(json_decode('{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}},{"type":"Feature","properties":[],"geometry":{"type":"Point","coordinates":[180,0]}}]}', true), Srid::WGS84);
 
     expect($geometryCollectionFromFeatureCollectionJson)->toEqual($geometryCollection);
 });

@@ -52,7 +52,7 @@ it('creates point with SRID from JSON', function (): void {
 it('creates point from Array', function (): void {
     $point = new Point(0, 180);
 
-    $pointFromJson = Point::fromArray(["type"=>"Point","coordinates"=>[180,0]]);
+    $pointFromJson = Point::fromArray(['type' => 'Point', 'coordinates' => [180, 0]]);
 
     expect($pointFromJson)->toEqual($point);
 });
@@ -60,7 +60,7 @@ it('creates point from Array', function (): void {
 it('creates point with SRID from Array', function (): void {
     $point = new Point(0, 180, Srid::WGS84->value);
 
-    $pointFromJson = Point::fromArray(["type"=>"Point","coordinates"=>[180,0]], Srid::WGS84->value);
+    $pointFromJson = Point::fromArray(['type' => 'Point', 'coordinates' => [180, 0]], Srid::WGS84->value);
 
     expect($pointFromJson)->toEqual($point);
 });

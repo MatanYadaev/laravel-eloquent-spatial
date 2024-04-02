@@ -102,7 +102,7 @@ it('creates polygon from Array', function (): void {
         ]),
     ]);
 
-    $polygonFromJson = Polygon::fromArray(["type"=>"Polygon","coordinates"=>[[[180,0],[179,1],[178,2],[177,3],[180,0]]]]);
+    $polygonFromJson = Polygon::fromArray(['type' => 'Polygon', 'coordinates' => [[[180, 0], [179, 1], [178, 2], [177, 3], [180, 0]]]]);
 
     expect($polygonFromJson)->toEqual($polygon);
 });
@@ -118,7 +118,7 @@ it('creates polygon with SRID from Array', function (): void {
         ]),
     ], Srid::WGS84->value);
 
-    $polygonFromJson = Polygon::fromArray(["type"=>"Polygon","coordinates"=>[[[180,0],[179,1],[178,2],[177,3],[180,0]]]], Srid::WGS84->value);
+    $polygonFromJson = Polygon::fromArray(['type' => 'Polygon', 'coordinates' => [[[180, 0], [179, 1], [178, 2], [177, 3], [180, 0]]]], Srid::WGS84->value);
 
     expect($polygonFromJson)->toEqual($polygon);
 });

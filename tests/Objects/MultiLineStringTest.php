@@ -84,7 +84,7 @@ it('creates multi line string from Array', function (): void {
         ]),
     ]);
 
-    $multiLineStringFromJson = MultiLineString::fromArray(["type"=>"MultiLineString","coordinates"=>[[[180,0],[179,1]]]]);
+    $multiLineStringFromJson = MultiLineString::fromArray(['type' => 'MultiLineString', 'coordinates' => [[[180, 0], [179, 1]]]]);
 
     expect($multiLineStringFromJson)->toEqual($multiLineString);
 });
@@ -97,7 +97,7 @@ it('creates multi line string with SRID from Array', function (): void {
         ]),
     ], Srid::WGS84->value);
 
-    $multiLineStringFromJson = MultiLineString::fromArray(["type"=>"MultiLineString","coordinates"=>[[[180,0],[179,1]]]], Srid::WGS84->value);
+    $multiLineStringFromJson = MultiLineString::fromArray(['type' => 'MultiLineString', 'coordinates' => [[[180, 0], [179, 1]]]], Srid::WGS84->value);
 
     expect($multiLineStringFromJson)->toEqual($multiLineString);
 });
