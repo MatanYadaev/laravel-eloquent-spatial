@@ -76,7 +76,7 @@ it('creates multi line string with SRID from JSON', function (): void {
     expect($multiLineStringFromJson)->toEqual($multiLineString);
 });
 
-it('creates multi line string from Array', function (): void {
+it('creates multi line string from array', function (): void {
     $multiLineString = new MultiLineString([
         new LineString([
             new Point(0, 180),
@@ -89,7 +89,7 @@ it('creates multi line string from Array', function (): void {
     expect($multiLineStringFromJson)->toEqual($multiLineString);
 });
 
-it('creates multi line string with SRID from Array', function (): void {
+it('creates multi line string with SRID from array', function (): void {
     $multiLineString = new MultiLineString([
         new LineString([
             new Point(0, 180),

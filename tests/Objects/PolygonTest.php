@@ -91,7 +91,7 @@ it('creates polygon with SRID from JSON', function (): void {
     expect($polygonFromJson)->toEqual($polygon);
 });
 
-it('creates polygon from Array', function (): void {
+it('creates polygon from array', function (): void {
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -107,7 +107,7 @@ it('creates polygon from Array', function (): void {
     expect($polygonFromJson)->toEqual($polygon);
 });
 
-it('creates polygon with SRID from Array', function (): void {
+it('creates polygon with SRID from array', function (): void {
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),

@@ -107,7 +107,7 @@ it('creates geometry collection with SRID from JSON', function (): void {
     expect($geometryCollectionFromJson)->toEqual($geometryCollection);
 });
 
-it('creates geometry collection from Array', function (): void {
+it('creates geometry collection from array', function (): void {
     $geometryCollection = new GeometryCollection([
         new Polygon([
             new LineString([
@@ -126,7 +126,7 @@ it('creates geometry collection from Array', function (): void {
     expect($geometryCollectionFromJson)->toEqual($geometryCollection);
 });
 
-it('creates geometry collection with SRID from Array', function (): void {
+it('creates geometry collection with SRID from array', function (): void {
     $geometryCollection = new GeometryCollection([
         new Polygon([
             new LineString([
@@ -183,7 +183,7 @@ it('creates geometry collection from feature collection with SRID from JSON', fu
     expect($geometryCollectionFromFeatureCollectionJson)->toEqual($geometryCollection);
 });
 
-it('creates geometry collection from feature collection from Array', function (): void {
+it('creates geometry collection from feature collection from array', function (): void {
     $geometryCollection = new GeometryCollection([
         new Polygon([
             new LineString([
@@ -202,7 +202,7 @@ it('creates geometry collection from feature collection from Array', function ()
     expect($geometryCollectionFromFeatureCollectionJson)->toEqual($geometryCollection);
 });
 
-it('creates geometry collection from feature collection with SRID from Array', function (): void {
+it('creates geometry collection from feature collection with SRID from array', function (): void {
     $geometryCollection = new GeometryCollection([
         new Polygon([
             new LineString([

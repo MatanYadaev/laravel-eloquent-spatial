@@ -66,7 +66,7 @@ it('creates line string with SRID from JSON', function (): void {
     expect($lineStringFromJson)->toEqual($lineString);
 });
 
-it('creates line string from Array', function (): void {
+it('creates line string from array', function (): void {
     $lineString = new LineString([
         new Point(0, 180),
         new Point(1, 179),
@@ -77,7 +77,7 @@ it('creates line string from Array', function (): void {
     expect($lineStringFromJson)->toEqual($lineString);
 });
 
-it('creates line string with SRID from Array', function (): void {
+it('creates line string with SRID from array', function (): void {
     $lineString = new LineString([
         new Point(0, 180),
         new Point(1, 179),

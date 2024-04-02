@@ -61,7 +61,7 @@ it('creates multi point with SRID from JSON', function (): void {
     expect($multiPointFromJson)->toEqual($multiPoint);
 });
 
-it('creates multi point from Array', function (): void {
+it('creates multi point from array', function (): void {
     $multiPoint = new MultiPoint([
         new Point(0, 180),
     ]);
@@ -71,7 +71,7 @@ it('creates multi point from Array', function (): void {
     expect($multiPointFromJson)->toEqual($multiPoint);
 });
 
-it('creates multi point with SRID from Array', function (): void {
+it('creates multi point with SRID from array', function (): void {
     $multiPoint = new MultiPoint([
         new Point(0, 180),
     ], Srid::WGS84->value);

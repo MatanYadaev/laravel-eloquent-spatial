@@ -102,7 +102,7 @@ it('creates multi polygon with SRID from JSON', function (): void {
     expect($multiPolygonFromJson)->toEqual($multiPolygon);
 });
 
-it('creates multi polygon from Array', function (): void {
+it('creates multi polygon from array', function (): void {
     $multiPolygon = new MultiPolygon([
         new Polygon([
             new LineString([
@@ -120,7 +120,7 @@ it('creates multi polygon from Array', function (): void {
     expect($multiPolygonFromJson)->toEqual($multiPolygon);
 });
 
-it('creates multi polygon with SRID from Array', function (): void {
+it('creates multi polygon with SRID from array', function (): void {
     $multiPolygon = new MultiPolygon([
         new Polygon([
             new LineString([
