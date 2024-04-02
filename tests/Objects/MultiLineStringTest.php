@@ -76,6 +76,32 @@ it('creates multi line string with SRID from JSON', function (): void {
     expect($multiLineStringFromJson)->toEqual($multiLineString);
 });
 
+it('creates multi line string from Array', function (): void {
+    $multiLineString = new MultiLineString([
+        new LineString([
+            new Point(0, 180),
+            new Point(1, 179),
+        ]),
+    ]);
+
+    $multiLineStringFromJson = MultiLineString::fromArray(["type"=>"MultiLineString","coordinates"=>[[[180,0],[179,1]]]]);
+
+    expect($multiLineStringFromJson)->toEqual($multiLineString);
+});
+
+it('creates multi line string with SRID from Array', function (): void {
+    $multiLineString = new MultiLineString([
+        new LineString([
+            new Point(0, 180),
+            new Point(1, 179),
+        ]),
+    ], Srid::WGS84->value);
+
+    $multiLineStringFromJson = MultiLineString::fromArray(["type"=>"MultiLineString","coordinates"=>[[[180,0],[179,1]]]], Srid::WGS84->value);
+
+    expect($multiLineStringFromJson)->toEqual($multiLineString);
+});
+
 it('generates multi line string JSON', function (): void {
     $multiLineString = new MultiLineString([
         new LineString([

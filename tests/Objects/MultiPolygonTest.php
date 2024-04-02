@@ -102,6 +102,42 @@ it('creates multi polygon with SRID from JSON', function (): void {
     expect($multiPolygonFromJson)->toEqual($multiPolygon);
 });
 
+it('creates multi polygon from Array', function (): void {
+    $multiPolygon = new MultiPolygon([
+        new Polygon([
+            new LineString([
+                new Point(0, 180),
+                new Point(1, 179),
+                new Point(2, 178),
+                new Point(3, 177),
+                new Point(0, 180),
+            ]),
+        ]),
+    ]);
+
+    $multiPolygonFromJson = MultiPolygon::fromArray(["type"=>"MultiPolygon","coordinates"=>[[[[180,0],[179,1],[178,2],[177,3],[180,0]]]]]);
+
+    expect($multiPolygonFromJson)->toEqual($multiPolygon);
+});
+
+it('creates multi polygon with SRID from Array', function (): void {
+    $multiPolygon = new MultiPolygon([
+        new Polygon([
+            new LineString([
+                new Point(0, 180),
+                new Point(1, 179),
+                new Point(2, 178),
+                new Point(3, 177),
+                new Point(0, 180),
+            ]),
+        ]),
+    ], Srid::WGS84->value);
+
+    $multiPolygonFromJson = MultiPolygon::fromArray(["type"=>"MultiPolygon","coordinates"=>[[[[180,0],[179,1],[178,2],[177,3],[180,0]]]]], Srid::WGS84->value);
+
+    expect($multiPolygonFromJson)->toEqual($multiPolygon);
+});
+
 it('generates multi polygon JSON', function (): void {
     $multiPolygon = new MultiPolygon([
         new Polygon([

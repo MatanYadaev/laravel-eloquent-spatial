@@ -91,6 +91,38 @@ it('creates polygon with SRID from JSON', function (): void {
     expect($polygonFromJson)->toEqual($polygon);
 });
 
+it('creates polygon from Array', function (): void {
+    $polygon = new Polygon([
+        new LineString([
+            new Point(0, 180),
+            new Point(1, 179),
+            new Point(2, 178),
+            new Point(3, 177),
+            new Point(0, 180),
+        ]),
+    ]);
+
+    $polygonFromJson = Polygon::fromArray(["type"=>"Polygon","coordinates"=>[[[180,0],[179,1],[178,2],[177,3],[180,0]]]]);
+
+    expect($polygonFromJson)->toEqual($polygon);
+});
+
+it('creates polygon with SRID from Array', function (): void {
+    $polygon = new Polygon([
+        new LineString([
+            new Point(0, 180),
+            new Point(1, 179),
+            new Point(2, 178),
+            new Point(3, 177),
+            new Point(0, 180),
+        ]),
+    ], Srid::WGS84->value);
+
+    $polygonFromJson = Polygon::fromArray(["type"=>"Polygon","coordinates"=>[[[180,0],[179,1],[178,2],[177,3],[180,0]]]], Srid::WGS84->value);
+
+    expect($polygonFromJson)->toEqual($polygon);
+});
+
 it('generates polygon JSON', function (): void {
     $polygon = new Polygon([
         new LineString([
