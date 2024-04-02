@@ -12,7 +12,7 @@
 
 Geometry classes can be also created by these static methods:
 
-* `fromArray(array $geometry)` - Creates a geometry object from a [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) array.
+* `fromArray(array $geometry, int|Srid $srid = 0)` - Creates a geometry object from a [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) array.
 * `fromJson(string $geoJson, int|Srid $srid = 0)` - Creates a geometry object from a [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) string.
 * `fromWkt(string $wkt, int|Srid $srid = 0)` - Creates a geometry object from a [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry).
 * `fromWkb(string $wkb)` - Creates a geometry object from a [WKB](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary).

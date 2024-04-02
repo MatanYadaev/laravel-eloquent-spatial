@@ -66,6 +66,28 @@ it('creates line string with SRID from JSON', function (): void {
     expect($lineStringFromJson)->toEqual($lineString);
 });
 
+it('creates line string from Array', function (): void {
+    $lineString = new LineString([
+        new Point(0, 180),
+        new Point(1, 179),
+    ]);
+
+    $lineStringFromJson = LineString::fromArray(["type"=>"LineString","coordinates"=>[[180,0],[179,1]]]);
+
+    expect($lineStringFromJson)->toEqual($lineString);
+});
+
+it('creates line string with SRID from Array', function (): void {
+    $lineString = new LineString([
+        new Point(0, 180),
+        new Point(1, 179),
+    ], Srid::WGS84->value);
+
+    $lineStringFromJson = LineString::fromArray(["type"=>"LineString","coordinates"=>[[180,0],[179,1]]], Srid::WGS84->value);
+
+    expect($lineStringFromJson)->toEqual($lineString);
+});
+
 it('generates line string JSON', function (): void {
     $lineString = new LineString([
         new Point(0, 180),
