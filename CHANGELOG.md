@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.3.0 - 2024-07-24
+
+### What's Changed
+
+* Support Geometry class extension by @jobverplanke in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/125
+
+### New Contributors
+
+* @jobverplanke made their first contribution in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/125
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/4.2.1...4.3.0
+
 ## v4.2.0 - 2024-03-13
 
 ### What's Changed
