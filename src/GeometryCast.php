@@ -66,7 +66,7 @@ class GeometryCast implements CastsAttributes
             return $value;
         }
 
-        if (! ($value instanceof $this->className)) {
+        if (! ($value instanceof $this->className) || get_class($value) !== $this->className) {
             $geometryType = is_object($value) ? $value::class : gettype($value);
             throw new InvalidArgumentException(
                 sprintf('Expected %s, %s given.', $this->className, $geometryType)

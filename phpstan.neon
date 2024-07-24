@@ -18,7 +18,8 @@ parameters:
     -
       message: '#Call to an undefined method Pest\\Expectation\<.+\>\:\:toBe(InstanceOf)?On(Postgres|Mysql)\(\)#'
       path: tests/*.php
+    -
+      identifier: missingType.generics
 
   level: max
   checkMissingIterableValueType: true
-  checkGenericClassInNonGenericObjectType: false

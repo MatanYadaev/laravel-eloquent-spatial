@@ -1,11 +1,14 @@
 <?php
 
+use MatanYadaev\EloquentSpatial\EloquentSpatial;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use MatanYadaev\EloquentSpatial\Tests\TestModels\TestExtendedPlace;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
+use MatanYadaev\EloquentSpatial\Tests\TestObjects\ExtendedLineString;
 
 it('creates a model record with line string', function (): void {
     $lineString = new LineString([
@@ -197,7 +200,6 @@ it('casts a LineString to a string', function (): void {
 it('adds a macro toLineString', function (): void {
     Geometry::macro('getName', function (): string {
         /** @var Geometry $this */
-        // @phpstan-ignore-next-line
         return class_basename($this);
     });
 
@@ -208,4 +210,49 @@ it('adds a macro toLineString', function (): void {
 
     // @phpstan-ignore-next-line
     expect($lineString->getName())->toBe('LineString');
+});
+
+it('uses an extended LineString class', function (): void {
+    // Arrange
+    EloquentSpatial::useLineString(ExtendedLineString::class);
+    $lineString = new ExtendedLineString([
+        new Point(0, 180),
+        new Point(1, 179),
+    ], 4326);
+
+    // Act
+    /** @var TestExtendedPlace $testPlace */
+    $testPlace = TestExtendedPlace::factory()->create(['line_string' => $lineString])->fresh();
+
+    // Assert
+    expect($testPlace->line_string)->toBeInstanceOf(ExtendedLineString::class);
+    expect($testPlace->line_string)->toEqual($lineString);
+});
+
+it('throws exception when storing a record with regular LineString instead of the extended one', function (): void {
+    // Arrange
+    EloquentSpatial::useLineString(ExtendedLineString::class);
+    $lineString = new LineString([
+        new Point(0, 180),
+        new Point(1, 179),
+    ], 4326);
+
+    // Act & Assert
+    expect(function () use ($lineString): void {
+        TestExtendedPlace::factory()->create(['line_string' => $lineString]);
+    })->toThrow(InvalidArgumentException::class);
+});
+
+it('throws exception when storing a record with extended LineString instead of the regular one', function (): void {
+    // Arrange
+    EloquentSpatial::useLineString(LineString::class);
+    $lineString = new ExtendedLineString([
+        new Point(0, 180),
+        new Point(1, 179),
+    ], 4326);
+
+    // Act & Assert
+    expect(function () use ($lineString): void {
+        TestPlace::factory()->create(['line_string' => $lineString]);
+    })->toThrow(InvalidArgumentException::class);
 });

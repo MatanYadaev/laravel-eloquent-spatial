@@ -152,6 +152,8 @@ For more comprehensive documentation on the API, please refer to the [API](API.m
 
 ## Extension
 
+### Extend Geometry class with macros
+
 You can add new methods to the `Geometry` class through macros.
 
 Here's an example of how to register a macro in your service provider's `boot` method:
@@ -175,6 +177,83 @@ Use the method in your code:
 $londonEyePoint = new Point(51.5032973, -0.1217424);
 
 echo $londonEyePoint->getName(); // Point
+```
+
+### Extend with custom geometry classes
+
+You can extend the geometry classes by creating custom geometry classes and add functionality. You can also override existing methods, although it is not recommended, as it may lead to unexpected behavior.
+
+1. Create a custom geometry class that extends the base geometry class. 
+
+```php
+use MatanYadaev\EloquentSpatial\Objects\Point;
+
+class ExtendedPoint extends Point
+{
+    public function toCustomArray(): array
+    {
+        return 'coordinates' => [
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude
+        ]
+    }
+}
+```
+
+2. Update the geometry class mapping in a service provider file.
+
+```php
+use App\ValueObjects\ExtendedPoint;
+use Illuminate\Support\ServiceProvider;
+use MatanYadaev\EloquentSpatial\EloquentSpatial;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot(): void
+    {
+        EloquentSpatial::usePoint(ExtendedPoint::class);
+    }
+}
+```
+
+3. Update your model to use the custom geometry class in the `$casts` property or `casts()` method.
+
+```php
+use App\ValueObjects\ExtendedPoint;
+use Illuminate\Database\Eloquent\Model;
+use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
+
+class Place extends Model
+{
+    use HasSpatial;
+    
+    protected $casts = [
+        'coordinates' => ExtendedPoint::class,
+    ];
+    
+    // Or:
+
+    protected function casts(): array
+    {
+        return [
+            'coordinates' => ExtendedPoint::class,
+        ];
+    }
+}
+```
+
+4. Use the custom geometry class in your code.
+
+```php
+use App\Models\Location;
+use App\ValueObjects\ExtendedPoint;
+
+$place = Place::create([
+    'name' => 'London Eye',
+    'coordinates' => new ExtendedPoint(51.5032973, -0.1217424),
+]);
+
+echo $place->coordinates->toCustomArray(); // ['longitude' => -0.1217424, 'latitude' => 51.5032973]
 ```
 
 ## Development
