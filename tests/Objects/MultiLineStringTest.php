@@ -228,6 +228,7 @@ it('casts a MultiLineString to a string', function (): void {
 it('adds a macro toMultiLineString', function (): void {
     Geometry::macro('getName', function (): string {
         /** @var Geometry $this */
+        // @phpstan-ignore-next-line
         return class_basename($this);
     });
 
@@ -243,8 +244,8 @@ it('adds a macro toMultiLineString', function (): void {
 });
 
 it('uses an extended MultiLineString class', function (): void {
+    // Arrange
     EloquentSpatial::useMultiLineString(ExtendedMultiLineString::class);
-
     $multiLineString = new ExtendedMultiLineString([
         new LineString([
             new Point(0, 180),
@@ -252,16 +253,18 @@ it('uses an extended MultiLineString class', function (): void {
         ]),
     ], 4326);
 
+    // Act
     /** @var TestExtendedPlace $testPlace */
     $testPlace = TestExtendedPlace::factory()->create(['multi_line_string' => $multiLineString])->fresh();
 
+    // Assert
     expect($testPlace->multi_line_string)->toBeInstanceOf(ExtendedMultiLineString::class);
     expect($testPlace->multi_line_string)->toEqual($multiLineString);
 });
 
 it('throws exception when storing a record with regular MultiLineString instead of the extended one', function (): void {
+    // Arrange
     EloquentSpatial::useMultiLineString(ExtendedMultiLineString::class);
-
     $multiLineString = new MultiLineString([
         new LineString([
             new Point(0, 180),
@@ -269,7 +272,24 @@ it('throws exception when storing a record with regular MultiLineString instead 
         ]),
     ], 4326);
 
+    // Act & Assert
     expect(function () use ($multiLineString): void {
         TestExtendedPlace::factory()->create(['multi_line_string' => $multiLineString]);
+    })->toThrow(InvalidArgumentException::class);
+});
+
+it('throws exception when storing a record with extended MultiLineString instead of the regular one', function (): void {
+    // Arrange
+    EloquentSpatial::useMultiLineString(MultiLineString::class);
+    $multiLineString = new ExtendedMultiLineString([
+        new LineString([
+            new Point(0, 180),
+            new Point(1, 179),
+        ]),
+    ], 4326);
+
+    // Act & Assert
+    expect(function () use ($multiLineString): void {
+        TestPlace::factory()->create(['multi_line_string' => $multiLineString]);
     })->toThrow(InvalidArgumentException::class);
 });

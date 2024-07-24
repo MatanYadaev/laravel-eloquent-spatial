@@ -183,6 +183,7 @@ it('casts a MultiPoint to a string', function (): void {
 it('adds a macro toMultiPoint', function (): void {
     Geometry::macro('getName', function (): string {
         /** @var Geometry $this */
+        // @phpstan-ignore-next-line
         return class_basename($this);
     });
 
@@ -195,27 +196,43 @@ it('adds a macro toMultiPoint', function (): void {
 });
 
 it('uses an extended MultiPoint class', function (): void {
+    // Arrange
     EloquentSpatial::useMultiPoint(ExtendedMultiPoint::class);
-
     $multiPoint = new ExtendedMultiPoint([
         new Point(0, 180),
     ], 4326);
 
+    // Act
     /** @var TestExtendedPlace $testPlace */
     $testPlace = TestExtendedPlace::factory()->create(['multi_point' => $multiPoint])->fresh();
 
+    // Assert
     expect($testPlace->multi_point)->toBeInstanceOf(ExtendedMultiPoint::class);
     expect($testPlace->multi_point)->toEqual($multiPoint);
 });
 
 it('throws exception when storing a record with regular MultiPoint instead of the extended one', function (): void {
+    // Arrange
     EloquentSpatial::useMultiPoint(ExtendedMultiPoint::class);
-
     $multiPoint = new MultiPoint([
         new Point(0, 180),
     ], 4326);
 
+    // Act & Assert
     expect(function () use ($multiPoint): void {
         TestExtendedPlace::factory()->create(['multi_point' => $multiPoint]);
+    })->toThrow(InvalidArgumentException::class);
+});
+
+it('throws exception when storing a record with extended MultiPoint instead of the regular one', function (): void {
+    // Arrange
+    EloquentSpatial::useMultiPoint(MultiPoint::class);
+    $multiPoint = new ExtendedMultiPoint([
+        new Point(0, 180),
+    ], 4326);
+
+    // Act & Assert
+    expect(function () use ($multiPoint): void {
+        TestPlace::factory()->create(['multi_point' => $multiPoint]);
     })->toThrow(InvalidArgumentException::class);
 });

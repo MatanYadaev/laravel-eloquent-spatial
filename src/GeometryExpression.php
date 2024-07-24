@@ -10,7 +10,9 @@ use Illuminate\Database\PostgresConnection;
 /** @codeCoverageIgnore */
 class GeometryExpression
 {
-    public function __construct(readonly private string $expression) {}
+    public function __construct(readonly private string $expression)
+    {
+    }
 
     public function normalize(ConnectionInterface $connection): string
     {

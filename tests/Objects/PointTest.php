@@ -133,6 +133,7 @@ it('casts a Point to a string', function (): void {
 it('adds a macro toPoint', function (): void {
     Geometry::macro('getName', function (): string {
         /** @var Geometry $this */
+        // @phpstan-ignore-next-line
         return class_basename($this);
     });
 
@@ -143,23 +144,37 @@ it('adds a macro toPoint', function (): void {
 });
 
 it('uses an extended Point class', function (): void {
+    // Arrange
     EloquentSpatial::usePoint(ExtendedPoint::class);
-
     $point = new ExtendedPoint(0, 180, 4326);
 
+    // Act
     /** @var TestExtendedPlace $testPlace */
     $testPlace = TestExtendedPlace::factory()->create(['point' => $point])->fresh();
 
+    // Assert
     expect($testPlace->point)->toBeInstanceOf(ExtendedPoint::class);
     expect($testPlace->point)->toEqual($point);
 });
 
 it('throws exception when storing a record with regular Point instead of the extended one', function (): void {
+    // Arrange
     EloquentSpatial::usePoint(ExtendedPoint::class);
-
     $point = new Point(0, 180, 4326);
 
+    // Act & Assert
     expect(function () use ($point): void {
         TestExtendedPlace::factory()->create(['point' => $point]);
+    })->toThrow(InvalidArgumentException::class);
+});
+
+it('throws exception when storing a record with extended Point instead of the regular one', function (): void {
+    // Arrange
+    EloquentSpatial::usePoint(Point::class);
+    $point = new ExtendedPoint(0, 180, 4326);
+
+    // Act & Assert
+    expect(function () use ($point): void {
+        TestPlace::factory()->create(['point' => $point]);
     })->toThrow(InvalidArgumentException::class);
 });

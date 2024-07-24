@@ -14,29 +14,29 @@ use MatanYadaev\EloquentSpatial\Objects\Polygon;
 
 class EloquentSpatial
 {
-    /** @var class-string<\MatanYadaev\EloquentSpatial\Objects\GeometryCollection> */
+    /** @var class-string<GeometryCollection> */
     public static string $geometryCollection = GeometryCollection::class;
 
-    /** @var class-string<\MatanYadaev\EloquentSpatial\Objects\LineString> */
+    /** @var class-string<LineString> */
     public static string $lineString = LineString::class;
 
-    /** @var class-string<\MatanYadaev\EloquentSpatial\Objects\MultiLineString> */
+    /** @var class-string<MultiLineString> */
     public static string $multiLineString = MultiLineString::class;
 
-    /** @var class-string<\MatanYadaev\EloquentSpatial\Objects\MultiPoint> */
+    /** @var class-string<MultiPoint> */
     public static string $multiPoint = MultiPoint::class;
 
-    /** @var class-string<\MatanYadaev\EloquentSpatial\Objects\MultiPolygon> */
+    /** @var class-string<MultiPolygon> */
     public static string $multiPolygon = MultiPolygon::class;
 
-    /** @var class-string<\MatanYadaev\EloquentSpatial\Objects\Point> */
+    /** @var class-string<Point> */
     public static string $point = Point::class;
 
-    /** @var class-string<\MatanYadaev\EloquentSpatial\Objects\Polygon> */
+    /** @var class-string<Polygon> */
     public static string $polygon = Polygon::class;
 
     /**
-     * @param  class-string<\MatanYadaev\EloquentSpatial\Objects\GeometryCollection>  $class
+     * @param  class-string<GeometryCollection>  $class
      */
     public static function useGeometryCollection(string $class): string
     {
@@ -46,7 +46,7 @@ class EloquentSpatial
     }
 
     /**
-     * @param  class-string<\MatanYadaev\EloquentSpatial\Objects\LineString>  $class
+     * @param  class-string<LineString>  $class
      */
     public static function useLineString(string $class): string
     {
@@ -56,7 +56,7 @@ class EloquentSpatial
     }
 
     /**
-     * @param  class-string<\MatanYadaev\EloquentSpatial\Objects\MultiLineString>  $class
+     * @param  class-string<MultiLineString>  $class
      */
     public static function useMultiLineString(string $class): string
     {
@@ -66,7 +66,7 @@ class EloquentSpatial
     }
 
     /**
-     * @param  class-string<\MatanYadaev\EloquentSpatial\Objects\MultiPoint>  $class
+     * @param  class-string<MultiPoint>  $class
      */
     public static function useMultiPoint(string $class): string
     {
@@ -76,7 +76,7 @@ class EloquentSpatial
     }
 
     /**
-     * @param  class-string<\MatanYadaev\EloquentSpatial\Objects\MultiPolygon>  $class
+     * @param  class-string<MultiPolygon>  $class
      */
     public static function useMultiPolygon(string $class): string
     {
@@ -86,7 +86,7 @@ class EloquentSpatial
     }
 
     /**
-     * @param  class-string<\MatanYadaev\EloquentSpatial\Objects\Point>  $class
+     * @param  class-string<Point>  $class
      */
     public static function usePoint(string $class): string
     {
@@ -96,7 +96,7 @@ class EloquentSpatial
     }
 
     /**
-     * @param  class-string<\MatanYadaev\EloquentSpatial\Objects\Polygon>  $class
+     * @param  class-string<Polygon>  $class
      */
     public static function usePolygon(string $class): string
     {

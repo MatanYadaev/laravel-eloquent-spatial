@@ -1,7 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="Test - MySQL 8.0" type="PestRunConfigurationType">
+    <configuration default="false" name="Test - MySQL" type="PestRunConfigurationType">
         <CommandLine>
             <envs>
+                <env name="DB_COLLATION" value="utf8mb4_unicode_ci"/>
+                <env name="DB_CONNECTION" value="mysql"/>
                 <env name="DB_PORT" value="3307"/>
             </envs>
         </CommandLine>

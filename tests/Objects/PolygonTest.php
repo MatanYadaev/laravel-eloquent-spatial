@@ -273,6 +273,7 @@ it('casts a Polygon to a string', function (): void {
 it('adds a macro toPolygon', function (): void {
     Geometry::macro('getName', function (): string {
         /** @var Geometry $this */
+        // @phpstan-ignore-next-line
         return class_basename($this);
     });
 
@@ -291,8 +292,8 @@ it('adds a macro toPolygon', function (): void {
 });
 
 it('uses an extended Polygon class', function (): void {
+    // Arrange
     EloquentSpatial::usePolygon(ExtendedPolygon::class);
-
     $polygon = new ExtendedPolygon([
         new LineString([
             new Point(0, 180),
@@ -303,16 +304,18 @@ it('uses an extended Polygon class', function (): void {
         ]),
     ], 4326);
 
+    // Act
     /** @var TestExtendedPlace $testPlace */
     $testPlace = TestExtendedPlace::factory()->create(['polygon' => $polygon])->fresh();
 
+    // Assert
     expect($testPlace->polygon)->toBeInstanceOf(ExtendedPolygon::class);
     expect($testPlace->polygon)->toEqual($polygon);
 });
 
 it('throws exception when storing a record with regular Polygon instead of the extended one', function (): void {
+    // Arrange
     EloquentSpatial::usePolygon(ExtendedPolygon::class);
-
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -323,7 +326,27 @@ it('throws exception when storing a record with regular Polygon instead of the e
         ]),
     ], 4326);
 
+    // Act & Assert
     expect(function () use ($polygon): void {
         TestExtendedPlace::factory()->create(['polygon' => $polygon]);
+    })->toThrow(InvalidArgumentException::class);
+});
+
+it('throws exception when storing a record with extended Polygon instead of the regular one', function (): void {
+    // Arrange
+    EloquentSpatial::usePolygon(Polygon::class);
+    $polygon = new ExtendedPolygon([
+        new LineString([
+            new Point(0, 180),
+            new Point(1, 179),
+            new Point(2, 178),
+            new Point(3, 177),
+            new Point(0, 180),
+        ]),
+    ], 4326);
+
+    // Act & Assert
+    expect(function () use ($polygon): void {
+        TestPlace::factory()->create(['polygon' => $polygon]);
     })->toThrow(InvalidArgumentException::class);
 });

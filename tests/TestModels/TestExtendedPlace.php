@@ -4,8 +4,6 @@ namespace MatanYadaev\EloquentSpatial\Tests\TestModels;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use MatanYadaev\EloquentSpatial\Objects\Point;
-use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\Tests\TestFactories\TestExtendedPlaceFactory;
 use MatanYadaev\EloquentSpatial\Tests\TestObjects\ExtendedGeometryCollection;
 use MatanYadaev\EloquentSpatial\Tests\TestObjects\ExtendedLineString;
