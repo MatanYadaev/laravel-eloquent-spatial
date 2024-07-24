@@ -1,12 +1,15 @@
 <?php
 
+use MatanYadaev\EloquentSpatial\EloquentSpatial;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\GeometryCollection;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use MatanYadaev\EloquentSpatial\Tests\TestModels\TestExtendedPlace;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
+use MatanYadaev\EloquentSpatial\Tests\TestObjects\ExtendedGeometryCollection;
 
 it('creates a model record with geometry collection', function (): void {
     $geometryCollection = new GeometryCollection([
@@ -502,4 +505,50 @@ it('adds a macro toGeometryCollection', function (): void {
 
     // @phpstan-ignore-next-line
     expect($geometryCollection->getName())->toBe('GeometryCollection');
+});
+
+it('uses an extended GeometryCollection class', function (): void {
+    EloquentSpatial::useGeometryCollection(ExtendedGeometryCollection::class);
+
+    $geometryCollection = new ExtendedGeometryCollection([
+        new Polygon([
+            new LineString([
+                new Point(0, 180),
+                new Point(1, 179),
+                new Point(2, 178),
+                new Point(3, 177),
+                new Point(0, 180),
+            ]),
+        ]),
+        new Point(0, 180),
+    ], 4326);
+
+    /** @var TestExtendedPlace $testPlace */
+    $testPlace = TestExtendedPlace::factory()->create(['geometry_collection' => $geometryCollection])->fresh();
+
+    expect($testPlace->geometry_collection)
+        ->toBeInstanceOf(ExtendedGeometryCollection::class)
+        ->and($testPlace->geometry_collection)
+        ->toEqual($geometryCollection);
+});
+
+it('throws exception when storing a record with regular GeometryCollection instead of the extended one', function (): void {
+    EloquentSpatial::useGeometryCollection(ExtendedGeometryCollection::class);
+
+    $geometryCollection = new GeometryCollection([
+        new Polygon([
+            new LineString([
+                new Point(0, 180),
+                new Point(1, 179),
+                new Point(2, 178),
+                new Point(3, 177),
+                new Point(0, 180),
+            ]),
+        ]),
+        new Point(0, 180),
+    ], 4326);
+
+    expect(function () use ($geometryCollection): void {
+        TestExtendedPlace::factory()->create(['geometry_collection' => $geometryCollection]);
+    })->toThrow(InvalidArgumentException::class);
 });

@@ -1,12 +1,15 @@
 <?php
 
+use MatanYadaev\EloquentSpatial\EloquentSpatial;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiPolygon;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
+use MatanYadaev\EloquentSpatial\Tests\TestModels\TestExtendedPlace;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
+use MatanYadaev\EloquentSpatial\Tests\TestObjects\ExtendedMultiPolygon;
 
 it('creates a model record with multi polygon', function (): void {
     $multiPolygon = new MultiPolygon([
@@ -319,4 +322,46 @@ it('adds a macro toMultiPolygon', function (): void {
 
     // @phpstan-ignore-next-line
     expect($multiPolygon->getName())->toBe('MultiPolygon');
+});
+
+it('uses an extended MultiPolygon class', function (): void {
+    EloquentSpatial::useMultiPolygon(ExtendedMultiPolygon::class);
+
+    $multiPolygon = new ExtendedMultiPolygon([
+        new Polygon([
+            new LineString([
+                new Point(0, 180),
+                new Point(1, 179),
+                new Point(2, 178),
+                new Point(3, 177),
+                new Point(0, 180),
+            ]),
+        ]),
+    ], 4326);
+
+    /** @var TestExtendedPlace $testPlace */
+    $testPlace = TestExtendedPlace::factory()->create(['multi_polygon' => $multiPolygon])->fresh();
+
+    expect($testPlace->multi_polygon)->toBeInstanceOf(ExtendedMultiPolygon::class);
+    expect($testPlace->multi_polygon)->toEqual($multiPolygon);
+});
+
+it('throws exception when storing a record with regular MultiPolygon instead of the extended one', function (): void {
+    EloquentSpatial::useMultiPolygon(ExtendedMultiPolygon::class);
+
+    $multiPolygon = new MultiPolygon([
+        new Polygon([
+            new LineString([
+                new Point(0, 180),
+                new Point(1, 179),
+                new Point(2, 178),
+                new Point(3, 177),
+                new Point(0, 180),
+            ]),
+        ]),
+    ], 4326);
+
+    expect(function () use ($multiPolygon): void {
+        TestExtendedPlace::factory()->create(['multi_polygon' => $multiPolygon]);
+    })->toThrow(InvalidArgumentException::class);
 });

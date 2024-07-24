@@ -1,11 +1,14 @@
 <?php
 
+use MatanYadaev\EloquentSpatial\EloquentSpatial;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\Tests\TestModels\TestExtendedPlace;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
+use MatanYadaev\EloquentSpatial\Tests\TestObjects\ExtendedMultiLineString;
 
 it('creates a model record with multi line string', function (): void {
     $multiLineString = new MultiLineString([
@@ -238,4 +241,36 @@ it('adds a macro toMultiLineString', function (): void {
 
     // @phpstan-ignore-next-line
     expect($multiLineString->getName())->toBe('MultiLineString');
+});
+
+it('uses an extended MultiLineString class', function (): void {
+    EloquentSpatial::useMultiLineString(ExtendedMultiLineString::class);
+
+    $multiLineString = new ExtendedMultiLineString([
+        new LineString([
+            new Point(0, 180),
+            new Point(1, 179),
+        ]),
+    ], 4326);
+
+    /** @var TestExtendedPlace $testPlace */
+    $testPlace = TestExtendedPlace::factory()->create(['multi_line_string' => $multiLineString])->fresh();
+
+    expect($testPlace->multi_line_string)->toBeInstanceOf(ExtendedMultiLineString::class);
+    expect($testPlace->multi_line_string)->toEqual($multiLineString);
+});
+
+it('throws exception when storing a record with regular MultiLineString instead of the extended one', function (): void {
+    EloquentSpatial::useMultiLineString(ExtendedMultiLineString::class);
+
+    $multiLineString = new MultiLineString([
+        new LineString([
+            new Point(0, 180),
+            new Point(1, 179),
+        ]),
+    ], 4326);
+
+    expect(function () use ($multiLineString): void {
+        TestExtendedPlace::factory()->create(['multi_line_string' => $multiLineString]);
+    })->toThrow(InvalidArgumentException::class);
 });
