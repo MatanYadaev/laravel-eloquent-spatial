@@ -24,6 +24,7 @@ use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
  * @property ExtendedMultiLineString $multi_line_string
  * @property ExtendedPolygon $polygon
  * @property ExtendedMultiPolygon $multi_polygon
+ *
  * @mixin Model
  */
 class TestExtendedPlace extends Model
