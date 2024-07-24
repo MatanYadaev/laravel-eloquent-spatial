@@ -152,6 +152,48 @@ For more comprehensive documentation on the API, please refer to the [API](API.m
 
 ## Extension
 
+### Extend with custom geometry classes
+
+You can extend the geometry classes by creating custom geometry classes and add or overwrite certain functionality.
+
+Here's an example how to overwrite the `toArray()` method by adding array keys to the `coordinates` array and removing the `type` key. 
+
+```php
+use MatanYadaev\EloquentSpatial\Objects\Point as EloquentSpatialPoint;
+
+class Point extends EloquentSpatialPoint
+{
+    public function toArray(): array
+    {
+        return [
+            'coordinates' => [
+                'longitude' => $this->longitude,
+                'latitude' => $this->latitude,
+            ],
+        ];
+    }
+}
+```
+
+All we have to do is tell the package that we want to use are our custom Point class, we can do this in the AppServiceProvider under the `boot()` method.
+
+```php
+use App\ValueObjects\Point;
+use Illuminate\Support\ServiceProvider;
+use MatanYadaev\EloquentSpatial\EloquentSpatial;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot(): void
+    {
+        EloquentSpatial::usePoint(Point::class);
+    }
+}
+```
+
+
+### Extend Geometry class with macros
+
 You can add new methods to the `Geometry` class through macros.
 
 Here's an example of how to register a macro in your service provider's `boot` method:
