@@ -191,6 +191,25 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
+Update your model to use the custom geometry class in the `casts()` method
+
+```php
+use App\ValueObjects\Point;
+use Illuminate\Database\Eloquent\Model;
+use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
+
+class Location extends Model
+{
+    use HasSpatial;
+
+    protected function casts(): array
+    {
+        return [
+            'coordinates' => Point::class,
+        ];
+    }
+}
+```
 
 ### Extend Geometry class with macros
 
