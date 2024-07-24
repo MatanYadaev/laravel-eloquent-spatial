@@ -273,7 +273,6 @@ it('casts a Polygon to a string', function (): void {
 it('adds a macro toPolygon', function (): void {
     Geometry::macro('getName', function (): string {
         /** @var Geometry $this */
-        // @phpstan-ignore-next-line
         return class_basename($this);
     });
 

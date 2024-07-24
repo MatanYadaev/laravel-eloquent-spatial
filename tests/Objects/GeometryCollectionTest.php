@@ -486,7 +486,6 @@ it('casts a GeometryCollection to a string', function (): void {
 it('adds a macro toGeometryCollection', function (): void {
     Geometry::macro('getName', function (): string {
         /** @var Geometry $this */
-        // @phpstan-ignore-next-line
         return class_basename($this);
     });
 
