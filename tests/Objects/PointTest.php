@@ -133,7 +133,6 @@ it('casts a Point to a string', function (): void {
 it('adds a macro toPoint', function (): void {
     Geometry::macro('getName', function (): string {
         /** @var Geometry $this */
-        // @phpstan-ignore-next-line
         return class_basename($this);
     });
 
