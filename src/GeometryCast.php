@@ -66,7 +66,7 @@ class GeometryCast implements CastsAttributes
             return $value;
         }
 
-        if (! ($value instanceof $this->className) || get_class($value) !== $this->className) {
+        if (! $this->isCorrectGeometryType($value)) {
             $geometryType = is_object($value) ? $value::class : gettype($value);
             throw new InvalidArgumentException(
                 sprintf('Expected %s, %s given.', $this->className, $geometryType)
@@ -74,6 +74,15 @@ class GeometryCast implements CastsAttributes
         }
 
         return $value->toSqlExpression($model->getConnection());
+    }
+
+    private function isCorrectGeometryType(mixed $value): bool
+    {
+        if ($this->className === Geometry::class && $value instanceof Geometry) {
+            return true;
+        }
+
+        return $value instanceof $this->className && get_class($value) === $this->className;
     }
 
     private function extractWktFromExpression(ExpressionContract $expression, Connection $connection): string

@@ -4,6 +4,7 @@ namespace MatanYadaev\EloquentSpatial\Tests\TestModels;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\GeometryCollection;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
@@ -15,6 +16,7 @@ use MatanYadaev\EloquentSpatial\Tests\TestFactories\TestPlaceFactory;
 use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
 
 /**
+ * @property Geometry $geometry
  * @property Point $point
  * @property MultiPoint $multi_point
  * @property LineString $line_string
@@ -35,6 +37,7 @@ class TestPlace extends Model
 
     protected $fillable = [
         'address',
+        'geometry',
         'point',
         'multi_point',
         'line_string',
@@ -46,6 +49,7 @@ class TestPlace extends Model
     ];
 
     protected $casts = [
+        'geometry' => Geometry::class,
         'point' => Point::class,
         'multi_point' => MultiPoint::class,
         'line_string' => LineString::class,
