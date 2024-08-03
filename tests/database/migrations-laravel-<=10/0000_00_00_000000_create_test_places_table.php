@@ -13,7 +13,7 @@ class CreateTestPlacesTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->string('address');
-            $table->geometry('geometry')->isGeometry()->nullable();
+            $table->geometry('geometry')->nullable();
             $table->point('point')->isGeometry()->nullable();
             $table->multiPoint('multi_point')->isGeometry()->nullable();
             $table->lineString('line_string')->isGeometry()->nullable();

@@ -73,6 +73,8 @@ class GeometryCast implements CastsAttributes
             );
         }
 
+        /** @var Geometry $value */
+
         return $value->toSqlExpression($model->getConnection());
     }
 
