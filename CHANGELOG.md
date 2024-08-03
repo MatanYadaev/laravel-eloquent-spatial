@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.3.1 - 2024-08-03
+
+### What's Changed
+
+* Fix columns that their cast is `Geometry` by @MatanYadaev in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/127
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/4.3.0...4.3.1
+
 ## v4.3.0 - 2024-07-24
 
 ### What's Changed
