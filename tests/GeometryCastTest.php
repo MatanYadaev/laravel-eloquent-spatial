@@ -217,4 +217,3 @@ it('handles ST_GeomFromText option for mysql on a raw expression', function (): 
     // Will trigger 'point' attribute to cast raw expression to a Point object
     expect($testPlace->isDirty())->toBeTrue();
 })->skip(fn () => ! AxisOrder::supported(DB::connection()));
-
