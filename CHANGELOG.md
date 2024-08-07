@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.3.2 - 2024-08-07
+
+### What's Changed
+
+* Fix SRID not being optional for expression in GeometryCast by @nickknissen in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/124
+
+### New Contributors
+
+* @nickknissen made their first contribution in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/124
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/4.3.1...4.3.2
+
 ## v4.3.1 - 2024-08-03
 
 ### What's Changed
