@@ -36,9 +36,9 @@ class GeometryCast implements CastsAttributes
         }
 
         if ($value instanceof ExpressionContract) {
-            $expressionValues = $this->extractFromExpression($value, $model->getConnection());
+            ['wkt' => $wkt, 'srid' => $srid] = $this->extractValuesFromExpression($value, $model->getConnection());
 
-            return $this->className::fromWkt($expressionValues['wkt'], $expressionValues['srid']);
+            return $this->className::fromWkt($wkt, $srid);
         }
 
         return $this->className::fromWkb($value);
@@ -89,13 +89,16 @@ class GeometryCast implements CastsAttributes
     /**
      * @return array{wkt: string, srid: int}
      */
-    private function extractFromExpression(ExpressionContract $expression, Connection $connection): array
+    private function extractValuesFromExpression(ExpressionContract $expression, Connection $connection): array
     {
         $grammar = $connection->getQueryGrammar();
         $expressionValue = $expression->getValue($grammar);
 
         preg_match("/ST_GeomFromText\(\s*'([^']+)'\s*(?:,\s*(\d+))?\s*(?:,\s*'([^']+)')?\s*\)/", (string) $expressionValue, $matches);
 
-        return ['wkt' => $matches[1], 'srid' => (int) ($matches[2] ?? 0)];
+        return [
+            'wkt' => $matches[1],
+            'srid' => (int) ($matches[2] ?? 0),
+        ];
     }
 }

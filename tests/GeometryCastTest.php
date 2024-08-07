@@ -191,29 +191,29 @@ it('checks a model record is not dirty after update to same value before save', 
     expect($testPlace->isDirty())->toBeFalse();
 });
 
-it('handles ST_GeomFromText optional values on a raw expression', function (string $expression): void {
+it('handles casting geometry columns with raw expressions', function (string $expression): void {
     // Arrange
+    /** @var TestPlace $testPlace */
     $testPlace = TestPlace::factory()->create(['point' => DB::raw($expression)]);
 
-    // Act
-    $testPlace->point = null;
-
-    // Assert
-    // Will trigger 'point' attribute to cast raw expression to a Point object
-    expect($testPlace->isDirty())->toBeTrue();
+    // Act & Assert
+    expect(function () use ($testPlace): void {
+        // Trigger 'point' attribute to cast raw expression to a `Point` object
+        $testPlace->originalIsEquivalent('point');
+    })->not->toThrow(Exception::class);
 })->with([
-    'without SRID' => "ST_GeomFromText('POINT(12.38057 55.73406)')",
-    'with SRID' => "ST_GeomFromText('POINT(12.38057 55.73406)', 4326)",
+    'without SRID' => "ST_GeomFromText('POINT(0 0)')",
+    'with SRID' => "ST_GeomFromText('POINT(0 0)', 4326)",
 ]);
 
-it('handles ST_GeomFromText option for mysql on a raw expression', function (): void {
+it('handles casting geometry columns with raw expressions with axis order', function (): void {
     // Arrange
-    $testPlace = TestPlace::factory()->create(['point' => DB::raw("ST_GeomFromText('POINT(12.38057 55.73406)', 4326, 'axis-order=long-lat')")]);
+    /** @var TestPlace $testPlace */
+    $testPlace = TestPlace::factory()->create(['point' => DB::raw("ST_GeomFromText('POINT(0 0)', 4326, 'axis-order=long-lat')")]);
 
-    // Act
-    $testPlace->point = null;
-
-    // Assert
-    // Will trigger 'point' attribute to cast raw expression to a Point object
-    expect($testPlace->isDirty())->toBeTrue();
+    // Act & Assert
+    expect(function () use ($testPlace): void {
+        // Trigger 'point' attribute to cast raw expression to a `Point` object
+        $testPlace->originalIsEquivalent('point');
+    })->not->toThrow(Exception::class);
 })->skip(fn () => ! AxisOrder::supported(DB::connection()));
