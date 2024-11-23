@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.4.0 - 2024-11-23
+
+### What's Changed
+
+* Allow setting default SRID by @MatanYadaev  in https://github.com/MatanYadaev/laravel-eloquent-spatial/commit/43edde698892659c9ef28b83a774f62a91ff7559
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/4.3.2...4.4.0
+
 ## v4.3.2 - 2024-08-07
 
 ### What's Changed
