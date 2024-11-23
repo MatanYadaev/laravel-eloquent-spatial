@@ -24,9 +24,9 @@ abstract class PointCollection extends GeometryCollection
      *
      * @throws InvalidArgumentException
      */
-    public function __construct(Collection|array $geometries, int|Srid $srid = 0)
+    public function __construct(Collection|array $geometries, int|Srid|null $srid = null)
     {
         // @phpstan-ignore-next-line
-        parent::__construct($geometries, $this->srid = $srid instanceof Srid ? $srid->value : $srid);
+        parent::__construct($geometries, $srid);
     }
 }

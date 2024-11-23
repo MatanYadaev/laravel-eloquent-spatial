@@ -256,6 +256,25 @@ $place = Place::create([
 echo $place->coordinates->toCustomArray(); // ['longitude' => -0.1217424, 'latitude' => 51.5032973]
 ```
 
+## Set default SRID
+
+By default, the SRID is set to 0 (EPSG:0).
+You can set the default SRID for your application by setting the `SRID` constant in a service provider's `boot` method:
+
+```php
+use MatanYadaev\EloquentSpatial\Enums\Srid;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot(): void
+    {
+        // Set the default SRID to WGS84 (EPSG:4326)
+        EloquentSpatial::setDefaultSrid(Srid::WGS84);
+    }
+}
+```
+
 ## Development
 
 Here are some useful commands for development:

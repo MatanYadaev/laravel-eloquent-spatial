@@ -21,6 +21,7 @@ use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\GeometryCast;
 use MatanYadaev\EloquentSpatial\GeometryExpression;
+use MatanYadaev\EloquentSpatial\Helper;
 use Stringable;
 use WKB as geoPHPWkb;
 
@@ -28,7 +29,7 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
 {
     use Macroable;
 
-    public int $srid = 0;
+    public int $srid;
 
     abstract public function toWkt(): string;
 
@@ -90,10 +91,10 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
     /**
      * @throws InvalidArgumentException
      */
-    public static function fromWkt(string $wkt, int|Srid $srid = 0): static
+    public static function fromWkt(string $wkt, int|Srid|null $srid = null): static
     {
         $geometry = Factory::parse($wkt);
-        $geometry->srid = $srid instanceof Srid ? $srid->value : $srid;
+        $geometry->srid = Helper::getSrid($srid);
 
         if (! ($geometry instanceof static)) {
             throw new InvalidArgumentException(
@@ -107,10 +108,10 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
     /**
      * @throws InvalidArgumentException
      */
-    public static function fromJson(string $geoJson, int|Srid $srid = 0): static
+    public static function fromJson(string $geoJson, int|Srid|null $srid = null): static
     {
         $geometry = Factory::parse($geoJson);
-        $geometry->srid = $srid instanceof Srid ? $srid->value : $srid;
+        $geometry->srid = Helper::getSrid($srid);
 
         if (! ($geometry instanceof static)) {
             throw new InvalidArgumentException(
@@ -126,7 +127,7 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
      *
      * @throws JsonException
      */
-    public static function fromArray(array $geometry, int|Srid $srid = 0): static
+    public static function fromArray(array $geometry, int|Srid|null $srid = null): static
     {
         $geoJson = json_encode($geometry, JSON_THROW_ON_ERROR);
 

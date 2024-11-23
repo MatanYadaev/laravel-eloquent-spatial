@@ -36,12 +36,33 @@ it('creates a model record with point with SRID enum', function (): void {
     expect($testPlace->point->srid)->toBe(Srid::WGS84->value);
 });
 
-it('creates point from JSON', function (): void {
+it('creates point with default 0 SRID from JSON', function (): void {
+    // Arrange
+    EloquentSpatial::setDefaultSrid(0);
     $point = new Point(0, 180);
 
+    // Act
     $pointFromJson = Point::fromJson('{"type":"Point","coordinates":[180,0]}');
 
+    // Assert
     expect($pointFromJson)->toEqual($point);
+    expect($pointFromJson->srid)->toBe(0);
+});
+
+it('creates point with default 4326 SRID from JSON', function (): void {
+    // Arrange
+    EloquentSpatial::setDefaultSrid(Srid::WGS84);
+    $point = new Point(0, 180);
+
+    // Act
+    $pointFromJson = Point::fromJson('{"type":"Point","coordinates":[180,0]}');
+
+    // Assert
+    expect($pointFromJson)->toEqual($point);
+    expect($pointFromJson->srid)->toBe(Srid::WGS84->value);
+
+    // Cleanup
+    EloquentSpatial::setDefaultSrid(0);
 });
 
 it('creates point with SRID from JSON', function (): void {
@@ -52,12 +73,33 @@ it('creates point with SRID from JSON', function (): void {
     expect($pointFromJson)->toEqual($point);
 });
 
-it('creates point from array', function (): void {
+it('creates point with default 0 SRID from array', function (): void {
+    // Arrange
+    EloquentSpatial::setDefaultSrid(0);
     $point = new Point(0, 180);
 
+    // Act
     $pointFromJson = Point::fromArray(['type' => 'Point', 'coordinates' => [180, 0]]);
 
+    // Assert
     expect($pointFromJson)->toEqual($point);
+    expect($pointFromJson->srid)->toBe(0);
+});
+
+it('creates point with default 4326 SRID from array', function (): void {
+    // Arrange
+    EloquentSpatial::setDefaultSrid(Srid::WGS84);
+    $point = new Point(0, 180);
+
+    // Act
+    $pointFromJson = Point::fromArray(['type' => 'Point', 'coordinates' => [180, 0]]);
+
+    // Assert
+    expect($pointFromJson)->toEqual($point);
+    expect($pointFromJson->srid)->toBe(Srid::WGS84->value);
+
+    // Cleanup
+    EloquentSpatial::setDefaultSrid(0);
 });
 
 it('creates point with SRID from array', function (): void {
@@ -83,12 +125,31 @@ it('throws exception when creating point from invalid JSON', function (): void {
     })->toThrow(InvalidArgumentException::class);
 });
 
-it('creates point from WKT', function (): void {
+it('creates point with default 0 SRID from WKT', function (): void {
+    // Arrange
+    EloquentSpatial::setDefaultSrid(0);
     $point = new Point(0, 180);
 
     $pointFromWkt = Point::fromWkt('POINT(180 0)');
 
     expect($pointFromWkt)->toEqual($point);
+    expect($pointFromWkt->srid)->toBe(0);
+});
+
+it('creates point with default 4326 SRID from WKT', function (): void {
+    // Arrange
+    EloquentSpatial::setDefaultSrid(Srid::WGS84);
+    $point = new Point(0, 180);
+
+    // Act
+    $pointFromWkt = Point::fromWkt('POINT(180 0)');
+
+    // Assert
+    expect($pointFromWkt)->toEqual($point);
+    expect($pointFromWkt->srid)->toBe(Srid::WGS84->value);
+
+    // Cleanup
+    EloquentSpatial::setDefaultSrid(0);
 });
 
 it('creates point with SRID from WKT', function (): void {

@@ -72,7 +72,9 @@ it('creates a model record with geometry collection with SRID enum', function ()
     expect($testPlace->geometry_collection->srid)->toBe(Srid::WGS84->value);
 });
 
-it('creates geometry collection from JSON', function (): void {
+it('creates geometry collection with default 0 SRID from JSON', function (): void {
+    // Arrange
+    EloquentSpatial::setDefaultSrid(0);
     $geometryCollection = new GeometryCollection([
         new Polygon([
             new LineString([
@@ -86,9 +88,39 @@ it('creates geometry collection from JSON', function (): void {
         new Point(0, 180),
     ]);
 
+    // Act
     $geometryCollectionFromJson = GeometryCollection::fromJson('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}');
 
+    // Assert
     expect($geometryCollectionFromJson)->toEqual($geometryCollection);
+    expect($geometryCollectionFromJson->srid)->toBe(0);
+});
+
+it('creates geometry collection with default 4326 SRID from JSON', function (): void {
+    // Arrange
+    EloquentSpatial::setDefaultSrid(Srid::WGS84);
+    $geometryCollection = new GeometryCollection([
+        new Polygon([
+            new LineString([
+                new Point(0, 180),
+                new Point(1, 179),
+                new Point(2, 178),
+                new Point(3, 177),
+                new Point(0, 180),
+            ]),
+        ]),
+        new Point(0, 180),
+    ]);
+
+    // Act
+    $geometryCollectionFromJson = GeometryCollection::fromJson('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}');
+
+    // Assert
+    expect($geometryCollectionFromJson->toWkt())->toBe($geometryCollection->toWkt());
+    expect($geometryCollectionFromJson->srid)->toBe(Srid::WGS84->value);
+
+    // Cleanup
+    EloquentSpatial::setDefaultSrid(0);
 });
 
 it('creates geometry collection with SRID from JSON', function (): void {
@@ -110,7 +142,9 @@ it('creates geometry collection with SRID from JSON', function (): void {
     expect($geometryCollectionFromJson)->toEqual($geometryCollection);
 });
 
-it('creates geometry collection from array', function (): void {
+it('creates geometry collection with default 0 SRID from array', function (): void {
+    // Arrange
+    EloquentSpatial::setDefaultSrid(0);
     $geometryCollection = new GeometryCollection([
         new Polygon([
             new LineString([
@@ -124,9 +158,39 @@ it('creates geometry collection from array', function (): void {
         new Point(0, 180),
     ]);
 
+    // Act
     $geometryCollectionFromJson = GeometryCollection::fromArray(json_decode('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}', true));
 
+    // Assert
     expect($geometryCollectionFromJson)->toEqual($geometryCollection);
+    expect($geometryCollectionFromJson->srid)->toBe(0);
+});
+
+it('creates geometry collection with default 4326 SRID from array', function (): void {
+    // Arrange
+    EloquentSpatial::setDefaultSrid(Srid::WGS84);
+    $geometryCollection = new GeometryCollection([
+        new Polygon([
+            new LineString([
+                new Point(0, 180),
+                new Point(1, 179),
+                new Point(2, 178),
+                new Point(3, 177),
+                new Point(0, 180),
+            ]),
+        ]),
+        new Point(0, 180),
+    ]);
+
+    // Act
+    $geometryCollectionFromJson = GeometryCollection::fromArray(json_decode('{"type":"GeometryCollection","geometries":[{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]},{"type":"Point","coordinates":[180,0]}]}', true));
+
+    // Assert
+    expect($geometryCollectionFromJson->toWkt())->toBe($geometryCollection->toWkt());
+    expect($geometryCollectionFromJson->srid)->toBe(Srid::WGS84->value);
+
+    // Cleanup
+    EloquentSpatial::setDefaultSrid(0);
 });
 
 it('creates geometry collection with SRID from array', function (): void {
@@ -264,7 +328,9 @@ it('generates geometry collection feature collection JSON', function (): void {
     expect($featureCollectionJson)->toBe($expectedFeatureCollectionJson);
 });
 
-it('creates geometry collection from WKT', function (): void {
+it('creates geometry collection with default 0 SRID from WKT', function (): void {
+    // Arrange
+    EloquentSpatial::setDefaultSrid(0);
     $geometryCollection = new GeometryCollection([
         new Polygon([
             new LineString([
@@ -278,9 +344,38 @@ it('creates geometry collection from WKT', function (): void {
         new Point(0, 180),
     ]);
 
+    // Act
     $geometryCollectionFromWkt = GeometryCollection::fromWkt('GEOMETRYCOLLECTION(POLYGON((180 0, 179 1, 178 2, 177 3, 180 0)), POINT(180 0))');
 
+    // Assert
     expect($geometryCollectionFromWkt)->toEqual($geometryCollection);
+});
+
+it('creates geometry collection with default 4326 SRID from WKT', function (): void {
+    // Arrange
+    EloquentSpatial::setDefaultSrid(Srid::WGS84);
+    $geometryCollection = new GeometryCollection([
+        new Polygon([
+            new LineString([
+                new Point(0, 180),
+                new Point(1, 179),
+                new Point(2, 178),
+                new Point(3, 177),
+                new Point(0, 180),
+            ]),
+        ]),
+        new Point(0, 180),
+    ]);
+
+    // Act
+    $geometryCollectionFromWkt = GeometryCollection::fromWkt('GEOMETRYCOLLECTION(POLYGON((180 0, 179 1, 178 2, 177 3, 180 0)), POINT(180 0))');
+
+    // Assert
+    expect($geometryCollectionFromWkt->toWkt())->toBe($geometryCollection->toWkt());
+    expect($geometryCollectionFromWkt->srid)->toBe(Srid::WGS84->value);
+
+    // Cleanup
+    EloquentSpatial::setDefaultSrid(0);
 });
 
 it('creates geometry collection with SRID from WKT', function (): void {

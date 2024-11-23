@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial;
 
+use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\GeometryCollection;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\MultiLineString;
@@ -34,6 +35,8 @@ class EloquentSpatial
 
     /** @var class-string<Polygon> */
     public static string $polygon = Polygon::class;
+
+    public static int $defaultSrid = 0;
 
     /**
      * @param  class-string<GeometryCollection>  $class
@@ -103,5 +106,10 @@ class EloquentSpatial
         static::$polygon = $class;
 
         return static::$polygon;
+    }
+
+    public static function setDefaultSrid(Srid|int $srid): void
+    {
+        static::$defaultSrid = $srid instanceof Srid ? $srid->value : $srid;
     }
 }

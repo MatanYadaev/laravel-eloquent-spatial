@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MatanYadaev\EloquentSpatial\Objects;
 
 use MatanYadaev\EloquentSpatial\Enums\Srid;
+use MatanYadaev\EloquentSpatial\Helper;
 
 class Point extends Geometry
 {
@@ -12,11 +13,11 @@ class Point extends Geometry
 
     public float $longitude;
 
-    public function __construct(float $latitude, float $longitude, int|Srid $srid = 0)
+    public function __construct(float $latitude, float $longitude, int|Srid|null $srid = null)
     {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
-        $this->srid = $srid instanceof Srid ? $srid->value : $srid;
+        $this->srid = Helper::getSrid($srid);
     }
 
     public function toWkt(): string
