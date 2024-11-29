@@ -42,6 +42,10 @@ class GeometryCollection extends Geometry implements ArrayAccess
     {
         $wktData = $this->getWktData();
 
+        if ($wktData === '') {
+            return 'GEOMETRYCOLLECTION EMPTY';
+        }
+
         return "GEOMETRYCOLLECTION({$wktData})";
     }
 
