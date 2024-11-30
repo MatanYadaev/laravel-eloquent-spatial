@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.4.1 - 2024-11-30
+
+### What's Changed
+
+* Fix WKT for empty geometry collections by @LachlanArthur in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/132
+
+### New Contributors
+
+* @LachlanArthur made their first contribution in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/132
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/4.4.0...4.4.1
+
 ## v4.4.0 - 2024-11-23
 
 ### What's Changed
