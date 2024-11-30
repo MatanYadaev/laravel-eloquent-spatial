@@ -669,3 +669,9 @@ it('throws exception when storing a record with extended GeometryCollection inst
         TestPlace::factory()->create(['geometry_collection' => $geometryCollection]);
     })->toThrow(InvalidArgumentException::class);
 });
+
+it('generates empty geometry collection WKT', function (): void {
+    $geometryCollection = new GeometryCollection([]);
+
+    expect($geometryCollection->toWkt())->toBe('GEOMETRYCOLLECTION EMPTY');
+});
