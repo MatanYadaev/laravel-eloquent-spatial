@@ -397,6 +397,17 @@ it('creates geometry collection with SRID from WKT', function (): void {
     expect($geometryCollectionFromWkt)->toEqual($geometryCollection);
 });
 
+it('creates empty geometry collection from WKT', function (): void {
+    // Arrange
+    $geometryCollection = new GeometryCollection([]);
+
+    // Act
+    $geometryCollectionFromWkt = GeometryCollection::fromWkt('GEOMETRYCOLLECTION EMPTY');
+
+    // Assert
+    expect($geometryCollectionFromWkt)->toEqual($geometryCollection);
+});
+
 it('generates geometry collection WKT', function (): void {
     $geometryCollection = new GeometryCollection([
         new Polygon([
@@ -415,6 +426,17 @@ it('generates geometry collection WKT', function (): void {
 
     $expectedWkt = 'GEOMETRYCOLLECTION(POLYGON((180 0, 179 1, 178 2, 177 3, 180 0)), POINT(180 0))';
     expect($wkt)->toBe($expectedWkt);
+});
+
+it('generates empty geometry collection WKT', function (): void {
+    // Arrange
+    $geometryCollection = new GeometryCollection([]);
+
+    // Act
+    $wkt = $geometryCollection->toWkt();
+
+    // Assert
+    expect($wkt)->toBe('GEOMETRYCOLLECTION EMPTY');
 });
 
 it('creates geometry collection from WKB', function (): void {
@@ -670,8 +692,3 @@ it('throws exception when storing a record with extended GeometryCollection inst
     })->toThrow(InvalidArgumentException::class);
 });
 
-it('generates empty geometry collection WKT', function (): void {
-    $geometryCollection = new GeometryCollection([]);
-
-    expect($geometryCollection->toWkt())->toBe('GEOMETRYCOLLECTION EMPTY');
-});
