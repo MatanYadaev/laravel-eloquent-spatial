@@ -691,4 +691,3 @@ it('throws exception when storing a record with extended GeometryCollection inst
         TestPlace::factory()->create(['geometry_collection' => $geometryCollection]);
     })->toThrow(InvalidArgumentException::class);
 });
-
