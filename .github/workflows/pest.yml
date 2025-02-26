@@ -29,6 +29,8 @@ jobs:
                 exclude:
                     -   laravel: 11.*
                         php: 8.1
+                    -   laravel: 12.*
+                        php: 8.1
 
         services:
             db:
