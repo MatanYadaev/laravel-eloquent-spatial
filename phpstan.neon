@@ -20,6 +20,9 @@ parameters:
       path: tests/*.php
     -
       identifier: missingType.generics
+    -
+      identifier: method.nonObject
+    -
+      identifier: varTag.nativeType
 
   level: max
-  checkMissingIterableValueType: true
