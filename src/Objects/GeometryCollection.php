@@ -155,7 +155,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
     protected function validateGeometriesType(): void
     {
         $this->geometries->each(function (mixed $geometry): void {
-            /** @var mixed $geometry */
+            // @phpstan-ignore-next-line function.alreadyNarrowedType
             if (! is_object($geometry) || ! ($geometry instanceof $this->collectionOf)) {
                 throw new InvalidArgumentException(
                     sprintf('%s must be a collection of %s', static::class, $this->collectionOf)
@@ -169,6 +169,7 @@ class GeometryCollection extends Geometry implements ArrayAccess
      */
     private function isExtended(): bool
     {
+        // @phpstan-ignore-next-line function.alreadyNarrowedType
         return is_subclass_of(static::class, self::class);
     }
 }

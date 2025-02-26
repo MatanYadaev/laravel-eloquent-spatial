@@ -59,6 +59,7 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
         // @phpstan-ignore-next-line
         $wkbWithoutSrid = (new geoPHPWkb)->write($geoPHPGeometry);
 
+        // @phpstan-ignore-next-line binaryOp.invalid
         return $sridInBinary.$wkbWithoutSrid;
     }
 
@@ -76,6 +77,7 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
             $wkb = substr($wkb, 4);
 
             $geometry = Factory::parse($wkb);
+            // @phpstan-ignore-next-line assign.propertyType
             $geometry->srid = $srid;
         }
 
