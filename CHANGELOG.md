@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.5.0 - 2025-02-26
+
+### What's Changed
+
+* Laravel 12 upgrade by @MatanYadaev in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/136
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/4.4.1...4.5.0
+
 ## v4.4.1 - 2024-11-30
 
 ### What's Changed
