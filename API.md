@@ -69,6 +69,7 @@ An enum is provided with the following values:
 * [withDistanceSphere](#withDistanceSphere)
 * [whereDistanceSphere](#whereDistanceSphere)
 * [orderByDistanceSphere](#orderByDistanceSphere)
+* [whereBuffer](#whereBuffer)
 * [whereWithin](#whereWithin)
 * [whereNotWithin](#whereNotWithin)
 * [whereContains](#whereContains)
@@ -250,6 +251,29 @@ $places = Place::query()
 
 echo $places[0]->name; // second
 echo $places[1]->name; // first
+```
+</details>
+
+###  whereBuffer
+
+Filters records within a buffer. Uses [ST_Buffer](https://dev.mysql.com/doc/refman/8.0/en/spatial-operator-functions.html#function_st-buffer).
+
+| parameter name      | type                |
+|---------------------|---------------------|
+| `$column`           | `Geometry \ string` |
+| `$geometryOrColumn` | `Geometry \ string` |
+| `$value`            | `int \ float`       |
+
+<details><summary>Example</summary>
+
+```php
+Place::create(['location' => new Point(1, 1.5)]);
+
+$placesCountWithinBuffer = Place::query()
+    ->whereBuffer('location', Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}'), 3)
+    ->count();
+
+echo $placesCountWithinBuffer; // 1
 ```
 </details>
 

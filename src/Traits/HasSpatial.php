@@ -160,6 +160,22 @@ trait HasSpatial
         );
     }
 
+    public function scopeWhereBuffer(
+        Builder $query,
+        ExpressionContract|Geometry|string $column,
+        ExpressionContract|Geometry|string $geometryOrColumn,
+        int|float $value
+    ): void {
+        $query->whereRaw(
+            sprintf(
+                'ST_WITHIN(%s, ST_BUFFER(%s, ?))',
+                $this->toExpressionString($column),
+                $this->toExpressionString($geometryOrColumn),
+            ),
+            [$value],
+        );
+    }
+
     public function scopeWhereWithin(
         Builder $query,
         ExpressionContract|Geometry|string $column,

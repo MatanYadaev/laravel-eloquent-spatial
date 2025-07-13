@@ -196,6 +196,22 @@ it('orders by distance sphere DESC', function (): void {
     expect($testPlacesOrderedByDistance[0]->id)->toBe($fartherTestPlace->id);
 });
 
+it('filters by buffer', function (): void {
+    $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', Srid::WGS84->value);
+    $pointWithinBuffer = new Point(1, 1.5, Srid::WGS84->value);
+    $pointOutsideBuffer = new Point(10, 10, Srid::WGS84->value);
+    TestPlace::factory()->create(['point' => $pointWithinBuffer]);
+    TestPlace::factory()->create(['point' => $pointOutsideBuffer]);
+
+    /** @var TestPlace[] $placesWithinBuffer */
+    $placesWithinBuffer = TestPlace::query()
+        ->whereBuffer('point', $polygon, 3)
+        ->get();
+
+    expect($placesWithinBuffer)->toHaveCount(1);
+    expect($placesWithinBuffer[0]->point)->toEqual($pointWithinBuffer);
+});
+
 it('filters by within', function (): void {
     $polygon = Polygon::fromJson('{"type":"Polygon","coordinates":[[[-1,-1],[1,-1],[1,1],[-1,1],[-1,-1]]]}', Srid::WGS84->value);
     $pointWithinPolygon = new Point(0, 0, Srid::WGS84->value);
