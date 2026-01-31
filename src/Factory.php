@@ -4,71 +4,162 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial;
 
-use Geometry as geoPHPGeometry;
-use GeometryCollection as geoPHPGeometryCollection;
-use geoPHP;
+use Brick\Geo\Geometry as BrickGeometry;
+use Brick\Geo\GeometryCollection as BrickGeometryCollection;
+use Brick\Geo\IO\EwkbReader;
+use Brick\Geo\IO\GeoJSON\Feature;
+use Brick\Geo\IO\GeoJSON\FeatureCollection;
+use Brick\Geo\IO\GeoJSONReader;
+use Brick\Geo\LineString as BrickLineString;
+use Brick\Geo\MultiLineString as BrickMultiLineString;
+use Brick\Geo\MultiPoint as BrickMultiPoint;
+use Brick\Geo\MultiPolygon as BrickMultiPolygon;
+use Brick\Geo\Point as BrickPoint;
+use Brick\Geo\Polygon as BrickPolygon;
 use InvalidArgumentException;
-use LineString as geoPHPLineString;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
-use MultiLineString as geoPHPMultiLineString;
-use MultiPoint as geoPHPMultiPoint;
-use MultiPolygon as geoPHPMultiPolygon;
-use Point as geoPHPPoint;
-use Polygon as geoPHPPolygon;
 
 class Factory
 {
+    private const HEX_BYTE_ORDER_BIG_ENDIAN = '00';
+
+    private const HEX_BYTE_ORDER_LITTLE_ENDIAN = '01';
+
+    public static function parseWkb(string $wkb): Geometry
+    {
+        return self::createFromGeometry(
+            (new EwkbReader)->read($wkb)
+        );
+    }
+
+    public static function parseWkt(string $wkt): Geometry
+    {
+        return self::createFromGeometry(
+            BrickGeometry::fromText($wkt)
+        );
+    }
+
+    public static function parseJson(string $json): Geometry
+    {
+        $json = self::normalizeGeoJson($json);
+        $result = (new GeoJSONReader)->read($json);
+
+        if ($result instanceof FeatureCollection) {
+            $geometries = collect($result->getFeatures())
+                ->map(static fn (Feature $feature): Geometry => self::createFromGeometry($feature->getGeometry(), false));
+
+            return new EloquentSpatial::$geometryCollection($geometries, 0);
+        }
+
+        if ($result instanceof Feature) {
+            return self::createFromGeometry($result->getGeometry());
+        }
+
+        return self::createFromGeometry($result);
+    }
+
+    /**
+     * @deprecated Use parseWkb(), parseWkt(), or parseJson() instead
+     */
     public static function parse(string $value): Geometry
     {
         try {
-            /** @var geoPHPGeometry|false $geoPHPGeometry */
-            $geoPHPGeometry = geoPHP::load($value);
-        } finally {
-            if (! isset($geoPHPGeometry) || ! $geoPHPGeometry) {
-                throw new InvalidArgumentException('Invalid spatial value');
+            if (self::isWkb($value)) {
+                return self::parseWkb($value);
             }
-        }
 
-        return self::createFromGeometry($geoPHPGeometry);
+            if (self::isHexWkb($value)) {
+                return self::parseWkb(hex2bin($value));
+            }
+
+            if (self::isJson($value)) {
+                return self::parseJson($value);
+            }
+
+            return self::parseWkt($value);
+        } catch (\Exception $e) {
+            throw new InvalidArgumentException('Invalid spatial value');
+        }
     }
 
-    protected static function createFromGeometry(geoPHPGeometry $geometry): Geometry
+    private static function isWkb(string $value): bool
     {
-        $srid = is_int($geometry->getSRID()) ? $geometry->getSRID() : 0;
+        return ! ctype_print($value) && $value !== '';
+    }
 
-        if ($geometry instanceof geoPHPPoint) {
-            if ($geometry->coords[0] === null || $geometry->coords[1] === null) {
+    private static function isHexWkb(string $value): bool
+    {
+        if (! ctype_xdigit($value)) {
+            return false;
+        }
+
+        return str_starts_with($value, self::HEX_BYTE_ORDER_BIG_ENDIAN)
+            || str_starts_with($value, self::HEX_BYTE_ORDER_LITTLE_ENDIAN);
+    }
+
+    private static function isJson(string $value): bool
+    {
+        return str_starts_with(ltrim($value), '{');
+    }
+
+    /**
+     * @TODO: Remove this once toFeatureCollectionJson() is fixed to output "properties": {} instead of "properties": []
+     */
+    private static function normalizeGeoJson(string $json): string
+    {
+        return preg_replace('/"properties"\s*:\s*\[\s*\]/', '"properties":{}', $json);
+    }
+
+    protected static function createFromGeometry(BrickGeometry $geometry, bool $isRoot = true): Geometry
+    {
+        $srid = $isRoot ? ($geometry->SRID() ?? 0) : 0;
+
+        if ($geometry instanceof BrickPoint) {
+            if ($geometry->isEmpty()) {
                 throw new InvalidArgumentException('Invalid spatial value');
             }
 
-            return new EloquentSpatial::$point($geometry->coords[1], $geometry->coords[0], $srid);
+            return new EloquentSpatial::$point($geometry->y(), $geometry->x(), $srid);
         }
 
-        /** @var geoPHPGeometryCollection $geometry */
-        $components = collect($geometry->components)
-            ->map(static function (geoPHPGeometry $geometryComponent): Geometry {
-                return self::createFromGeometry($geometryComponent);
-            });
+        if ($geometry instanceof BrickMultiPoint) {
+            $components = collect($geometry->geometries())
+                ->map(static fn (BrickGeometry $g): Geometry => self::createFromGeometry($g, false));
 
-        if ($geometry::class === geoPHPMultiPoint::class) {
             return new EloquentSpatial::$multiPoint($components, $srid);
         }
 
-        if ($geometry::class === geoPHPLineString::class) {
+        if ($geometry instanceof BrickLineString) {
+            $components = collect($geometry->points())
+                ->map(static fn (BrickGeometry $g): Geometry => self::createFromGeometry($g, false));
+
             return new EloquentSpatial::$lineString($components, $srid);
         }
 
-        if ($geometry::class === geoPHPPolygon::class) {
+        if ($geometry instanceof BrickPolygon) {
+            $components = collect($geometry->rings())
+                ->map(static fn (BrickGeometry $g): Geometry => self::createFromGeometry($g, false));
+
             return new EloquentSpatial::$polygon($components, $srid);
         }
 
-        if ($geometry::class === geoPHPMultiLineString::class) {
+        if ($geometry instanceof BrickMultiLineString) {
+            $components = collect($geometry->geometries())
+                ->map(static fn (BrickGeometry $g): Geometry => self::createFromGeometry($g, false));
+
             return new EloquentSpatial::$multiLineString($components, $srid);
         }
 
-        if ($geometry::class === geoPHPMultiPolygon::class) {
+        if ($geometry instanceof BrickMultiPolygon) {
+            $components = collect($geometry->geometries())
+                ->map(static fn (BrickGeometry $g): Geometry => self::createFromGeometry($g, false));
+
             return new EloquentSpatial::$multiPolygon($components, $srid);
         }
+
+        /** @var BrickGeometryCollection $geometry */
+        $components = collect($geometry->geometries())
+            ->map(static fn (BrickGeometry $g): Geometry => self::createFromGeometry($g, false));
 
         return new EloquentSpatial::$geometryCollection($components, $srid);
     }
