@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MatanYadaev\EloquentSpatial\Objects;
 
 use Brick\Geo\Geometry as BrickGeometry;
-use Brick\Geo\IO\WKBWriter;
+use Brick\Geo\IO\WkbWriter;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Database\Query\Expression as ExpressionContract;
@@ -54,7 +54,7 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
     public function toWkb(): string
     {
         $brickGeometry = BrickGeometry::fromText($this->toWkt());
-        $wkb = (new WKBWriter)->write($brickGeometry);
+        $wkb = (new WkbWriter)->write($brickGeometry);
 
         // @TODO: Fix the bug here, it returns MySQL-format instead of standard WKB
         return Wkb::toMysqlFormat($wkb, $this->srid);

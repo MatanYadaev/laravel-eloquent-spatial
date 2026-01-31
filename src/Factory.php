@@ -6,10 +6,10 @@ namespace MatanYadaev\EloquentSpatial;
 
 use Brick\Geo\Geometry as BrickGeometry;
 use Brick\Geo\GeometryCollection as BrickGeometryCollection;
-use Brick\Geo\IO\EWKBReader;
+use Brick\Geo\IO\EwkbReader;
 use Brick\Geo\IO\GeoJSON\Feature;
 use Brick\Geo\IO\GeoJSON\FeatureCollection;
-use Brick\Geo\IO\GeoJSONReader;
+use Brick\Geo\IO\GeoJsonReader;
 use Brick\Geo\LineString as BrickLineString;
 use Brick\Geo\MultiLineString as BrickMultiLineString;
 use Brick\Geo\MultiPoint as BrickMultiPoint;
@@ -28,7 +28,7 @@ class Factory
     public static function parseWkb(string $wkb): Geometry
     {
         return self::createFromGeometry(
-            (new EWKBReader)->read($wkb)
+            (new EwkbReader)->read($wkb)
         );
     }
 
@@ -42,7 +42,7 @@ class Factory
     public static function parseJson(string $json): Geometry
     {
         $json = self::normalizeGeoJson($json);
-        $result = (new GeoJSONReader)->read($json);
+        $result = (new GeoJsonReader)->read($json);
 
         if ($result instanceof FeatureCollection) {
             $geometries = collect($result->getFeatures())
