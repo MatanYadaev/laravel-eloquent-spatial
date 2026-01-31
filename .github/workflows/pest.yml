@@ -85,4 +85,4 @@ jobs:
                 env:
                     DB_PORT: ${{ job.services.db.ports[contains(matrix.db, 'postgis') && '5432' || '3306'] }}
                     DB_CONNECTION: ${{ env.DB_CONNECTION || 'mysql' }}
-                run: vendor/bin/pest
+                run: vendor/bin/pest --no-coverage
