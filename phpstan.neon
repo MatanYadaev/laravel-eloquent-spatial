@@ -13,9 +13,6 @@ parameters:
       message: '#Call to an undefined method Illuminate\\Database\\Schema\\Blueprint\:\:.+\(\)#'
       path: 'tests/database/migrations-laravel-<=10/*.php'
     -
-      message: '#Undefined variable: \$this#'
-      path: tests/Expectations.php
-    -
       message: '#Call to an undefined method Pest\\Expectation\<.+\>\:\:toBe(InstanceOf)?On(Postgres|Mysql)\(\)#'
       path: tests/*.php
     -

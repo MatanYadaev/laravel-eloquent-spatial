@@ -6,10 +6,10 @@ namespace MatanYadaev\EloquentSpatial;
 
 use Brick\Geo\Geometry as BrickGeometry;
 use Brick\Geo\GeometryCollection as BrickGeometryCollection;
-use Brick\Geo\IO\EwkbReader;
-use Brick\Geo\IO\GeoJSON\Feature;
-use Brick\Geo\IO\GeoJSON\FeatureCollection;
-use Brick\Geo\IO\GeoJsonReader;
+use Brick\Geo\Io\EwkbReader;
+use Brick\Geo\Io\GeoJSON\Feature;
+use Brick\Geo\Io\GeoJSON\FeatureCollection;
+use Brick\Geo\Io\GeoJsonReader;
 use Brick\Geo\LineString as BrickLineString;
 use Brick\Geo\MultiLineString as BrickMultiLineString;
 use Brick\Geo\MultiPoint as BrickMultiPoint;

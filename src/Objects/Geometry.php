@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MatanYadaev\EloquentSpatial\Objects;
 
 use Brick\Geo\Geometry as BrickGeometry;
-use Brick\Geo\IO\WkbWriter;
+use Brick\Geo\Io\WkbWriter;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Database\Query\Expression as ExpressionContract;
