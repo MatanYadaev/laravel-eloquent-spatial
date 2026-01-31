@@ -6,7 +6,7 @@ namespace MatanYadaev\EloquentSpatial;
 
 use Brick\Geo\Geometry as BrickGeometry;
 use Brick\Geo\GeometryCollection as BrickGeometryCollection;
-use Brick\Geo\IO\EwkbReader;
+use Brick\Geo\IO\EWKBReader;
 use Brick\Geo\IO\GeoJSON\Feature;
 use Brick\Geo\IO\GeoJSON\FeatureCollection;
 use Brick\Geo\IO\GeoJSONReader;
@@ -28,7 +28,7 @@ class Factory
     public static function parseWkb(string $wkb): Geometry
     {
         return self::createFromGeometry(
-            (new EwkbReader)->read($wkb)
+            (new EWKBReader)->read($wkb)
         );
     }
 
