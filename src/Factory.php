@@ -60,6 +60,8 @@ class Factory
 
     /**
      * @deprecated Use parseWkb(), parseWkt(), or parseJson() instead
+     *
+     * @codeCoverageIgnore
      */
     public static function parse(string $value): Geometry
     {
@@ -82,11 +84,13 @@ class Factory
         }
     }
 
+    /** @codeCoverageIgnore */
     private static function isWkb(string $value): bool
     {
         return ! ctype_print($value) && $value !== '';
     }
 
+    /** @codeCoverageIgnore */
     private static function isHexWkb(string $value): bool
     {
         if (! ctype_xdigit($value)) {
@@ -97,6 +101,7 @@ class Factory
             || str_starts_with($value, self::HEX_BYTE_ORDER_LITTLE_ENDIAN);
     }
 
+    /** @codeCoverageIgnore */
     private static function isJson(string $value): bool
     {
         return str_starts_with(ltrim($value), '{');

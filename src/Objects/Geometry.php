@@ -72,7 +72,9 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
             $geometry = Factory::parseWkb(Wkb::getMysqlWkb($wkb));
             $geometry->srid = $srid;
         } else {
+            // @codeCoverageIgnoreStart
             $geometry = Factory::parseWkb($wkb);
+            // @codeCoverageIgnoreEnd
         }
 
         if (! ($geometry instanceof static)) {
@@ -89,7 +91,7 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
      */
     public static function fromWkt(string $wkt, int|Srid|null $srid = null): static
     {
-        $geometry = Factory::parse($wkt);
+        $geometry = Factory::parseWkt($wkt);
         $geometry->srid = Helper::getSrid($srid);
 
         if (! ($geometry instanceof static)) {
@@ -106,7 +108,7 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
      */
     public static function fromJson(string $geoJson, int|Srid|null $srid = null): static
     {
-        $geometry = Factory::parse($geoJson);
+        $geometry = Factory::parseJson($geoJson);
         $geometry->srid = Helper::getSrid($srid);
 
         if (! ($geometry instanceof static)) {

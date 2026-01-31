@@ -185,6 +185,14 @@ it('creates point with SRID from WKB', function (): void {
     expect($pointFromWkb)->toEqual($point);
 });
 
+it('creates point from hex WKB', function (): void {
+    $point = new Point(0, 180);
+
+    $pointFromWkb = Point::fromWkb(bin2hex($point->toWkb()));
+
+    expect($pointFromWkb)->toEqual($point);
+});
+
 it('casts a Point to a string', function (): void {
     $point = new Point(0, 180, Srid::WGS84->value);
 
@@ -237,4 +245,12 @@ it('throws exception when storing a record with extended Point instead of the re
     expect(function () use ($point): void {
         TestPlace::factory()->create(['point' => $point]);
     })->toThrow(InvalidArgumentException::class);
+});
+
+it('creates point from GeoJSON Feature', function (): void {
+    $point = new Point(0, 180);
+
+    $pointFromFeature = Point::fromJson('{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[180,0]}}');
+
+    expect($pointFromFeature)->toEqual($point);
 });

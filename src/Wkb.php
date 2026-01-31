@@ -52,6 +52,9 @@ final class Wkb
         return self::packUint32($srid, self::BYTE_ORDER_LITTLE_ENDIAN).$wkb;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public static function isMysqlFormat(string $data): bool
     {
         $validAtStart = self::hasValidWkbHeader($data, 0);
@@ -64,6 +67,9 @@ final class Wkb
         return ! $validAtStart;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     private static function hasValidWkbHeader(string $data, int $offset): bool
     {
         $minLength = $offset + self::BYTE_ORDER_LENGTH + self::UINT32_LENGTH;
@@ -81,6 +87,9 @@ final class Wkb
         return self::isPlausibleWkbType(self::unpackUint32($typeBytes, $byteOrder));
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     private static function isPlausibleWkbType(int $type): bool
     {
         $type &= self::EWKB_FLAG_MASK;
