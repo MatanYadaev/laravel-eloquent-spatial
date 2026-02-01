@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace MatanYadaev\EloquentSpatial\Objects;
 
-use geoPHP;
+use Brick\Geo\Geometry as BrickGeometry;
+use Brick\Geo\Io\WkbWriter;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Database\Query\Expression as ExpressionContract;
@@ -22,8 +23,8 @@ use MatanYadaev\EloquentSpatial\Factory;
 use MatanYadaev\EloquentSpatial\GeometryCast;
 use MatanYadaev\EloquentSpatial\GeometryExpression;
 use MatanYadaev\EloquentSpatial\Helper;
+use MatanYadaev\EloquentSpatial\Wkb;
 use Stringable;
-use WKB as geoPHPWkb;
 
 abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializable, Stringable
 {
@@ -52,33 +53,28 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
 
     public function toWkb(): string
     {
-        $geoPHPGeometry = geoPHP::load($this->toJson());
+        $brickGeometry = BrickGeometry::fromText($this->toWkt());
+        $wkb = (new WkbWriter)->write($brickGeometry);
 
-        $sridInBinary = pack('L', $this->srid);
-
-        // @phpstan-ignore-next-line
-        $wkbWithoutSrid = (new geoPHPWkb)->write($geoPHPGeometry);
-
-        // @phpstan-ignore-next-line binaryOp.invalid
-        return $sridInBinary.$wkbWithoutSrid;
+        // @TODO: Fix the bug here, it returns MySQL-format instead of standard WKB
+        return Wkb::toMysqlFormat($wkb, $this->srid);
     }
 
     public static function fromWkb(string $wkb): static
     {
         if (ctype_xdigit($wkb)) {
-            // @codeCoverageIgnoreStart
-            $geometry = Factory::parse($wkb);
-            // @codeCoverageIgnoreEnd
-        } else {
-            $srid = substr($wkb, 0, 4);
-            // @phpstan-ignore-next-line
-            $srid = unpack('L', $srid)[1];
+            /** @var string $wkb */
+            $wkb = hex2bin($wkb);
+        }
 
-            $wkb = substr($wkb, 4);
-
-            $geometry = Factory::parse($wkb);
-            // @phpstan-ignore-next-line assign.propertyType
+        if (Wkb::isMysqlFormat($wkb)) {
+            $srid = Wkb::getMysqlSrid($wkb);
+            $geometry = Factory::parseWkb(Wkb::getMysqlWkb($wkb));
             $geometry->srid = $srid;
+        } else {
+            // @codeCoverageIgnoreStart
+            $geometry = Factory::parseWkb($wkb);
+            // @codeCoverageIgnoreEnd
         }
 
         if (! ($geometry instanceof static)) {
@@ -95,7 +91,7 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
      */
     public static function fromWkt(string $wkt, int|Srid|null $srid = null): static
     {
-        $geometry = Factory::parse($wkt);
+        $geometry = Factory::parseWkt($wkt);
         $geometry->srid = Helper::getSrid($srid);
 
         if (! ($geometry instanceof static)) {
@@ -112,7 +108,7 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
      */
     public static function fromJson(string $geoJson, int|Srid|null $srid = null): static
     {
-        $geometry = Factory::parse($geoJson);
+        $geometry = Factory::parseJson($geoJson);
         $geometry->srid = Helper::getSrid($srid);
 
         if (! ($geometry instanceof static)) {

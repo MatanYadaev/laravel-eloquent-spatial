@@ -1,5 +1,6 @@
 <?php
 
+use Brick\Geo\Exception\GeometryIoException;
 use Illuminate\Database\PostgresConnection;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -71,13 +72,13 @@ it('throws exception when generating geometry from other geometry WKT', function
 it('throws exception when generating geometry from non-JSON', function (): void {
     expect(function (): void {
         Point::fromJson('invalid-value');
-    })->toThrow(InvalidArgumentException::class);
+    })->toThrow(GeometryIoException::class);
 });
 
 it('throws exception when generating geometry from empty JSON', function (): void {
     expect(function (): void {
         Point::fromJson('{}');
-    })->toThrow(InvalidArgumentException::class);
+    })->toThrow(GeometryIoException::class);
 });
 
 it('throws exception when generating geometry from other geometry JSON', function (): void {
@@ -127,7 +128,7 @@ it('throws exception when creating a geometry object from an invalid geo json ar
 
     expect(function () use ($invalidPointGeoJsonArray): void {
         Geometry::fromArray($invalidPointGeoJsonArray);
-    })->toThrow(InvalidArgumentException::class);
+    })->toThrow(GeometryIoException::class);
 });
 
 it('throws exception when creating a geometry object from another geometry geo json array', function (): void {
