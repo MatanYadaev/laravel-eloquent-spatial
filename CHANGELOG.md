@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.6.0 - 2026-02-01
+
+### What's Changed
+
+* Replace phayes/geophp with brick/geo by @MatanYadaev in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/142
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/4.5.0...4.6.0
+
 ## v4.5.0 - 2025-02-26
 
 ### What's Changed
