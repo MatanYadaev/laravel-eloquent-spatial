@@ -159,6 +159,23 @@ it('creates multi line string with SRID from WKT', function (): void {
     expect($multiLineStringFromWkt)->toEqual($multiLineString);
 });
 
+it('creates multi line string from EWKT', function (): void {
+    // Arrange
+    $multiLineString = new MultiLineString([
+        new LineString([
+            new Point(0, 180),
+            new Point(1, 179),
+        ]),
+    ], Srid::WGS84->value);
+
+    // Act
+    $multiLineStringFromEwkt = MultiLineString::fromWkt('SRID=4326;MULTILINESTRING((180 0, 179 1))');
+
+    // Assert
+    expect($multiLineStringFromEwkt)->toEqual($multiLineString);
+    expect($multiLineStringFromEwkt->srid)->toBe(Srid::WGS84->value);
+});
+
 it('generates multi line string WKT', function (): void {
     $multiLineString = new MultiLineString([
         new LineString([

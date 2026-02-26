@@ -137,6 +137,21 @@ it('creates line string with SRID from WKT', function (): void {
     expect($lineStringFromWkt)->toEqual($lineString);
 });
 
+it('creates line string from EWKT', function (): void {
+    // Arrange
+    $lineString = new LineString([
+        new Point(0, 180),
+        new Point(1, 179),
+    ], Srid::WGS84->value);
+
+    // Act
+    $lineStringFromEwkt = LineString::fromWkt('SRID=4326;LINESTRING(180 0, 179 1)');
+
+    // Assert
+    expect($lineStringFromEwkt)->toEqual($lineString);
+    expect($lineStringFromEwkt->srid)->toBe(Srid::WGS84->value);
+});
+
 it('generates line string WKT', function (): void {
     $lineString = new LineString([
         new Point(0, 180),
