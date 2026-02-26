@@ -126,6 +126,20 @@ it('creates multi point with SRID from WKT', function (): void {
     expect($multiPointFromWkt)->toEqual($multiPoint);
 });
 
+it('creates multi point from EWKT', function (): void {
+    // Arrange
+    $multiPoint = new MultiPoint([
+        new Point(0, 180),
+    ], Srid::WGS84->value);
+
+    // Act
+    $multiPointFromEwkt = MultiPoint::fromWkt('SRID=4326;MULTIPOINT(180 0)');
+
+    // Assert
+    expect($multiPointFromEwkt)->toEqual($multiPoint);
+    expect($multiPointFromEwkt->srid)->toBe(Srid::WGS84->value);
+});
+
 it('generates multi point WKT', function (): void {
     $multiPoint = new MultiPoint([
         new Point(0, 180),

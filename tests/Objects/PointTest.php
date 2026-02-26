@@ -160,6 +160,42 @@ it('creates point with SRID from WKT', function (): void {
     expect($pointFromWkt)->toEqual($point);
 });
 
+it('creates point from EWKT', function (): void {
+    // Arrange
+    $point = new Point(0, 180, Srid::WGS84->value);
+
+    // Act
+    $pointFromEwkt = Point::fromWkt('SRID=4326;POINT(180 0)');
+
+    // Assert
+    expect($pointFromEwkt)->toEqual($point);
+    expect($pointFromEwkt->srid)->toBe(Srid::WGS84->value);
+});
+
+it('creates point from EWKT with explicit SRID argument override', function (): void {
+    // Act
+    $point = Point::fromWkt('SRID=4326;POINT(180 0)', 3857);
+
+    // Assert
+    expect($point->srid)->toBe(3857);
+});
+
+it('creates point from EWKT with explicit zero SRID argument override', function (): void {
+    // Act
+    $point = Point::fromWkt('SRID=4326;POINT(180 0)', 0);
+
+    // Assert
+    expect($point->srid)->toBe(0);
+});
+
+it('creates point from plain WKT without SRID argument', function (): void {
+    // Act
+    $point = Point::fromWkt('POINT(180 0)');
+
+    // Assert
+    expect($point->srid)->toBe(0);
+});
+
 it('generates point WKT', function (): void {
     $point = new Point(0, 180);
 

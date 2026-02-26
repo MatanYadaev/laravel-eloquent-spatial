@@ -92,7 +92,12 @@ abstract class Geometry implements Arrayable, Castable, Jsonable, JsonSerializab
     public static function fromWkt(string $wkt, int|Srid|null $srid = null): static
     {
         $geometry = Factory::parseWkt($wkt);
-        $geometry->srid = Helper::getSrid($srid);
+
+        if ($srid !== null) {
+            $geometry->srid = Helper::getSrid($srid);
+        } elseif ($geometry->srid === 0) {
+            $geometry->srid = Helper::getSrid(null);
+        }
 
         if (! ($geometry instanceof static)) {
             throw new InvalidArgumentException(
