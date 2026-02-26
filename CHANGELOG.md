@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.6.1 - 2026-02-26
+
+### What's Changed
+
+* Add EWKT parsing support to fromWkt by @MatanYadaev in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/145
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/4.6.0...4.6.1
+
 ## v4.6.0 - 2026-02-01
 
 ### What's Changed
