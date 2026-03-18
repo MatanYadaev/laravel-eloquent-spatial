@@ -21,5 +21,12 @@ parameters:
       identifier: method.nonObject
     -
       identifier: varTag.nativeType
+    -
+      message: '#expects .*literal-string#'
+      paths:
+        - src/Traits/HasSpatial.php
+        - src/Objects/Geometry.php
+        - tests/GeometryCastTest.php
+        - tests/HasSpatialTest.php
 
   level: max
