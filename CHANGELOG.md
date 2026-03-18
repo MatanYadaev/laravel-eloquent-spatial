@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.7.0 - 2026-03-18
+
+### What's Changed
+
+* Add Laravel 13 support by @MatanYadaev in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/147
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/4.6.1...4.7.0
+
 ## v4.6.1 - 2026-02-26
 
 ### What's Changed
