@@ -169,7 +169,6 @@ class GeometryCollection extends Geometry implements ArrayAccess
      */
     private function isExtended(): bool
     {
-        // @phpstan-ignore-next-line function.alreadyNarrowedType
         return is_subclass_of(static::class, self::class);
     }
 }
