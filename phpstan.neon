@@ -8,6 +8,7 @@ parameters:
     - src/Factory.php
     - src/EloquentSpatialServiceProvider.php
     - tests/DoctrineTypesTest.php
+    - tests/ArchTest.php
   ignoreErrors:
     -
       message: '#Call to an undefined method Illuminate\\Database\\Schema\\Blueprint\:\:.+\(\)#'
