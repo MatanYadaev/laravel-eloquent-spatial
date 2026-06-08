@@ -10,9 +10,9 @@
 
 Supported databases:
 
-- MySQL 5.7/8
-- MariaDB 10
-- Postgres 12/13/14/15/16 with PostGIS 3.4
+- MySQL 8.4
+- MariaDB 10.11
+- Postgres 14/15/16/17/18 with PostGIS 3.4/3.5/3.6
 
 ## Getting Started
 
@@ -148,28 +148,21 @@ echo $vacationCity->area->toJson(); // {"type":"Polygon","coordinates":[[[41.907
 
 ### Standalone Eloquent Usage (without Laravel)
 
-This package can also be used in standalone PHP projects utilizing only Eloquent (`illuminate/database` and `illuminate/support`).
+This package also works in projects that use Eloquent on its own, without the full Laravel framework.
 
-1. **Bootstrap Setup**:
-   Ensure you initialize your database connection (e.g., via `Illuminate\Database\Capsule\Manager`):
-   ```php
-   use Illuminate\Database\Capsule\Manager as Capsule;
+Just boot Eloquent — for example, with `Illuminate\Database\Capsule\Manager` — and the spatial casts, scopes, and objects are ready to use:
 
-   $capsule = new Capsule;
-   $capsule->addConnection([
-       // your database configuration
-   ]);
-   $capsule->bootEloquent();
-   ```
+```php
+use Illuminate\Database\Capsule\Manager as Capsule;
 
-2. **Set Default SRID (Optional)**:
-   By default, the SRID is set to 0. If you need a custom default SRID (e.g., WGS84), you can set it during your application bootstrap:
-   ```php
-   use MatanYadaev\EloquentSpatial\EloquentSpatial;
-   use MatanYadaev\EloquentSpatial\Enums\Srid;
+$capsule = new Capsule;
+$capsule->addConnection([
+    // your database configuration
+]);
+$capsule->bootEloquent();
+```
 
-   EloquentSpatial::setDefaultSrid(Srid::WGS84);
-   ```
+From there, models, casts, and query scopes behave exactly as in the examples above.
 
 ## Further Reading
 
