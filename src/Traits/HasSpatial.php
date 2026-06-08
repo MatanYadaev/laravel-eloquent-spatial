@@ -5,7 +5,6 @@ namespace MatanYadaev\EloquentSpatial\Traits;
 use Illuminate\Contracts\Database\Query\Expression as ExpressionContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\PostgresConnection;
-use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\GeometryExpression;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 
@@ -339,14 +338,15 @@ trait HasSpatial
     protected function toExpressionString(ExpressionContract|Geometry|string $geometryOrColumnOrExpression): string
     {
         $grammar = $this->getGrammar();
+        $connection = $this->getConnection();
 
         if ($geometryOrColumnOrExpression instanceof ExpressionContract) {
             $expression = $geometryOrColumnOrExpression;
         } elseif ($geometryOrColumnOrExpression instanceof Geometry) {
-            $expression = DB::raw($geometryOrColumnOrExpression->toSqlExpression($this->getConnection())->getValue($grammar));
+            $expression = $connection->raw($geometryOrColumnOrExpression->toSqlExpression($connection)->getValue($grammar));
         } else {
-            $expression = DB::raw(
-                (new GeometryExpression($grammar->wrap($geometryOrColumnOrExpression)))->normalize($this->getConnection())
+            $expression = $connection->raw(
+                (new GeometryExpression($grammar->wrap($geometryOrColumnOrExpression)))->normalize($connection)
             );
         }
 
