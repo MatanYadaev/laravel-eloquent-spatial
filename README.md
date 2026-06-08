@@ -6,7 +6,7 @@
 ![Lint](https://github.com/matanyadaev/laravel-eloquent-spatial/actions/workflows/pint.yml/badge.svg)
 [![Total Downloads](https://img.shields.io/packagist/dt/matanyadaev/laravel-eloquent-spatial.svg?style=flat-square)](https://packagist.org/packages/matanyadaev/laravel-eloquent-spatial)
 
-**This Laravel package allows you to easily work with spatial data types and functions.**
+**This package allows you to easily work with spatial data types and functions in Laravel and standalone Eloquent projects.**
 
 Supported databases:
 
@@ -145,6 +145,31 @@ echo $whiteHouse->location->srid; // 4326
 
 echo $vacationCity->area->toJson(); // {"type":"Polygon","coordinates":[[[41.90746728266806,12.455363273620605],[41.906636872349075,12.450309991836548],[41.90197359839437,12.445632219314575],[41.90027269624499,12.447413206100464],[41.90000118654431,12.457906007766724],[41.90281205461268,12.458517551422117],[41.903107507989986,12.457584142684937],[41.905918239316286,12.457734346389769],[41.90637337450963,12.45572805404663],[41.90746728266806,12.455363273620605]]]}
 ```
+
+### Standalone Eloquent Usage (without Laravel)
+
+This package can also be used in standalone PHP projects utilizing only Eloquent (`illuminate/database` and `illuminate/support`).
+
+1. **Bootstrap Setup**:
+   Ensure you initialize your database connection (e.g., via `Illuminate\Database\Capsule\Manager`):
+   ```php
+   use Illuminate\Database\Capsule\Manager as Capsule;
+
+   $capsule = new Capsule;
+   $capsule->addConnection([
+       // your database configuration
+   ]);
+   $capsule->bootEloquent();
+   ```
+
+2. **Set Default SRID (Optional)**:
+   By default, the SRID is set to 0. If you need a custom default SRID (e.g., WGS84), you can set it during your application bootstrap:
+   ```php
+   use MatanYadaev\EloquentSpatial\EloquentSpatial;
+   use MatanYadaev\EloquentSpatial\Enums\Srid;
+
+   EloquentSpatial::setDefaultSrid(Srid::WGS84);
+   ```
 
 ## Further Reading
 
