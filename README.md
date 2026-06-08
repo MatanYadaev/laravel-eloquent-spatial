@@ -6,13 +6,13 @@
 ![Lint](https://github.com/matanyadaev/laravel-eloquent-spatial/actions/workflows/pint.yml/badge.svg)
 [![Total Downloads](https://img.shields.io/packagist/dt/matanyadaev/laravel-eloquent-spatial.svg?style=flat-square)](https://packagist.org/packages/matanyadaev/laravel-eloquent-spatial)
 
-**This Laravel package allows you to easily work with spatial data types and functions.**
+**This package allows you to easily work with spatial data types and functions in Laravel and standalone Eloquent projects.**
 
 Supported databases:
 
-- MySQL 5.7/8
-- MariaDB 10
-- Postgres 12/13/14/15/16 with PostGIS 3.4
+- MySQL 8.4
+- MariaDB 10.11
+- Postgres 14/15/16/17/18 with PostGIS 3.4/3.5/3.6
 
 ## Getting Started
 
@@ -145,6 +145,24 @@ echo $whiteHouse->location->srid; // 4326
 
 echo $vacationCity->area->toJson(); // {"type":"Polygon","coordinates":[[[41.90746728266806,12.455363273620605],[41.906636872349075,12.450309991836548],[41.90197359839437,12.445632219314575],[41.90027269624499,12.447413206100464],[41.90000118654431,12.457906007766724],[41.90281205461268,12.458517551422117],[41.903107507989986,12.457584142684937],[41.905918239316286,12.457734346389769],[41.90637337450963,12.45572805404663],[41.90746728266806,12.455363273620605]]]}
 ```
+
+### Standalone Eloquent Usage (without Laravel)
+
+This package also works in projects that use Eloquent on its own, without the full Laravel framework.
+
+Just boot Eloquent — for example, with `Illuminate\Database\Capsule\Manager` — and the spatial casts, scopes, and objects are ready to use:
+
+```php
+use Illuminate\Database\Capsule\Manager as Capsule;
+
+$capsule = new Capsule;
+$capsule->addConnection([
+    // your database configuration
+]);
+$capsule->bootEloquent();
+```
+
+From there, models, casts, and query scopes behave exactly as in the examples above.
 
 ## Further Reading
 

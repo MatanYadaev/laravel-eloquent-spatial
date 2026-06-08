@@ -23,7 +23,7 @@ class EloquentSpatialServiceProvider extends DatabaseServiceProvider
     // @codeCoverageIgnoreStart
     public function boot(): void
     {
-        if (version_compare(Application::VERSION, '11.0.0', '>=')) {
+        if (! class_exists(Application::class) || version_compare(Application::VERSION, '11.0.0', '>=')) {
             return;
         }
 

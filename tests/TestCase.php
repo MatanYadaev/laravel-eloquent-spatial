@@ -25,9 +25,9 @@ class TestCase extends Orchestra
 
         // @phpstan-ignore-next-line
         if (version_compare(Application::VERSION, '11.0.0', '>=')) {
-            $this->loadMigrationsFrom(__DIR__.'/database/migrations-laravel->=11');
+            $this->loadMigrationsFrom(__DIR__.'/database/migrations-laravel-gte-11');
         } else {
-            $this->loadMigrationsFrom(__DIR__.'/database/migrations-laravel-<=10');
+            $this->loadMigrationsFrom(__DIR__.'/database/migrations-laravel-lte-10');
         }
     }
 
