@@ -2,6 +2,20 @@
 
 All notable changes to `laravel-eloquent-spatial` will be documented in this file.
 
+## v4.8.0 - 2026-06-08
+
+### What's Changed
+
+* Make `laravel/framework` optional to support standalone Eloquent projects by @Smip in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/148
+* Harden standalone support and fix MariaDB ST_CROSSES CI regression by @MatanYadaev in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/150
+* Add Arrange-Act-Assert comments inside tests by @MatanYadaev in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/149
+
+### New Contributors
+
+* @Smip made their first contribution in https://github.com/MatanYadaev/laravel-eloquent-spatial/pull/148
+
+**Full Changelog**: https://github.com/MatanYadaev/laravel-eloquent-spatial/compare/4.7.0...4.8.0
+
 ## v4.7.0 - 2026-03-18
 
 ### What's Changed
