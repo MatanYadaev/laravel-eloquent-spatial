@@ -9,30 +9,39 @@ use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 use MatanYadaev\EloquentSpatial\Tests\TestObjects\ExtendedPoint;
 
 it('creates a model record with point', function (): void {
+    // Arrange
     $point = new Point(0, 180);
 
+    // Act
     /** @var TestPlace $testPlace */
     $testPlace = TestPlace::factory()->create(['point' => $point]);
 
+    // Assert
     expect($testPlace->point)->toBeInstanceOf(Point::class);
     expect($testPlace->point)->toEqual($point);
 });
 
 it('creates a model record with point with SRID integer', function (): void {
+    // Arrange
     $point = new Point(0, 180, Srid::WGS84->value);
 
+    // Act
     /** @var TestPlace $testPlace */
     $testPlace = TestPlace::factory()->create(['point' => $point]);
 
+    // Assert
     expect($testPlace->point->srid)->toBe(Srid::WGS84->value);
 });
 
 it('creates a model record with point with SRID enum', function (): void {
+    // Arrange
     $point = new Point(0, 180, Srid::WGS84);
 
+    // Act
     /** @var TestPlace $testPlace */
     $testPlace = TestPlace::factory()->create(['point' => $point]);
 
+    // Assert
     expect($testPlace->point->srid)->toBe(Srid::WGS84->value);
 });
 
@@ -66,10 +75,13 @@ it('creates point with default 4326 SRID from JSON', function (): void {
 });
 
 it('creates point with SRID from JSON', function (): void {
+    // Arrange
     $point = new Point(0, 180, Srid::WGS84->value);
 
+    // Act
     $pointFromJson = Point::fromJson('{"type":"Point","coordinates":[180,0]}', Srid::WGS84->value);
 
+    // Assert
     expect($pointFromJson)->toEqual($point);
 });
 
@@ -103,26 +115,34 @@ it('creates point with default 4326 SRID from array', function (): void {
 });
 
 it('creates point with SRID from array', function (): void {
+    // Arrange
     $point = new Point(0, 180, Srid::WGS84->value);
 
+    // Act
     $pointFromJson = Point::fromArray(['type' => 'Point', 'coordinates' => [180, 0]], Srid::WGS84->value);
 
+    // Assert
     expect($pointFromJson)->toEqual($point);
 });
 
 it('generates point JSON', function (): void {
+    // Arrange
     $point = new Point(0, 180);
 
+    // Act
     $json = $point->toJson();
 
+    // Assert
     $expectedJson = '{"type":"Point","coordinates":[180,0]}';
     expect($json)->toBe($expectedJson);
 });
 
 it('throws exception when creating point from invalid JSON', function (): void {
-    expect(function (): void {
-        Point::fromJson('{"type":"Point","coordinates":[]}');
-    })->toThrow(InvalidArgumentException::class);
+    // Act
+    $act = static fn () => Point::fromJson('{"type":"Point","coordinates":[]}');
+
+    // Assert
+    expect($act)->toThrow(InvalidArgumentException::class);
 });
 
 it('creates point with default 0 SRID from WKT', function (): void {
@@ -130,8 +150,10 @@ it('creates point with default 0 SRID from WKT', function (): void {
     EloquentSpatial::setDefaultSrid(0);
     $point = new Point(0, 180);
 
+    // Act
     $pointFromWkt = Point::fromWkt('POINT(180 0)');
 
+    // Assert
     expect($pointFromWkt)->toEqual($point);
     expect($pointFromWkt->srid)->toBe(0);
 });
@@ -153,10 +175,13 @@ it('creates point with default 4326 SRID from WKT', function (): void {
 });
 
 it('creates point with SRID from WKT', function (): void {
+    // Arrange
     $point = new Point(0, 180, Srid::WGS84->value);
 
+    // Act
     $pointFromWkt = Point::fromWkt('POINT(180 0)', Srid::WGS84->value);
 
+    // Assert
     expect($pointFromWkt)->toEqual($point);
 });
 
@@ -197,45 +222,63 @@ it('creates point from plain WKT without SRID argument', function (): void {
 });
 
 it('generates point WKT', function (): void {
+    // Arrange
     $point = new Point(0, 180);
 
+    // Act
     $wkt = $point->toWkt();
 
+    // Assert
     $expectedWkt = 'POINT(180 0)';
     expect($wkt)->toBe($expectedWkt);
 });
 
 it('creates point from WKB', function (): void {
+    // Arrange
     $point = new Point(0, 180);
 
+    // Act
     $pointFromWkb = Point::fromWkb($point->toWkb());
 
+    // Assert
     expect($pointFromWkb)->toEqual($point);
 });
 
 it('creates point with SRID from WKB', function (): void {
+    // Arrange
     $point = new Point(0, 180, Srid::WGS84->value);
 
+    // Act
     $pointFromWkb = Point::fromWkb($point->toWkb());
 
+    // Assert
     expect($pointFromWkb)->toEqual($point);
 });
 
 it('creates point from hex WKB', function (): void {
+    // Arrange
     $point = new Point(0, 180);
 
+    // Act
     $pointFromWkb = Point::fromWkb(bin2hex($point->toWkb()));
 
+    // Assert
     expect($pointFromWkb)->toEqual($point);
 });
 
 it('casts a Point to a string', function (): void {
+    // Arrange
     $point = new Point(0, 180, Srid::WGS84->value);
 
-    expect($point->__toString())->toEqual('POINT(180 0)');
+    // Act
+    $string = $point->__toString();
+
+    // Assert
+    expect($string)->toEqual('POINT(180 0)');
 });
 
 it('adds a macro toPoint', function (): void {
+    // Arrange
     Geometry::macro('getName', function (): string {
         /** @var Geometry $this */
         return class_basename($this);
@@ -243,8 +286,13 @@ it('adds a macro toPoint', function (): void {
 
     $point = new Point(0, 180, Srid::WGS84->value);
 
+    // Act
     // @phpstan-ignore-next-line
-    expect($point->getName())->toBe('Point');
+    $name = $point->getName();
+
+    // Assert
+    // @phpstan-ignore-next-line
+    expect($name)->toBe('Point');
 });
 
 it('uses an extended Point class', function (): void {
@@ -266,10 +314,11 @@ it('throws exception when storing a record with regular Point instead of the ext
     EloquentSpatial::usePoint(ExtendedPoint::class);
     $point = new Point(0, 180, 4326);
 
-    // Act & Assert
-    expect(function () use ($point): void {
-        TestExtendedPlace::factory()->create(['point' => $point]);
-    })->toThrow(InvalidArgumentException::class);
+    // Act
+    $act = static fn () => TestExtendedPlace::factory()->create(['point' => $point]);
+
+    // Assert
+    expect($act)->toThrow(InvalidArgumentException::class);
 });
 
 it('throws exception when storing a record with extended Point instead of the regular one', function (): void {
@@ -277,16 +326,20 @@ it('throws exception when storing a record with extended Point instead of the re
     EloquentSpatial::usePoint(Point::class);
     $point = new ExtendedPoint(0, 180, 4326);
 
-    // Act & Assert
-    expect(function () use ($point): void {
-        TestPlace::factory()->create(['point' => $point]);
-    })->toThrow(InvalidArgumentException::class);
+    // Act
+    $act = static fn () => TestPlace::factory()->create(['point' => $point]);
+
+    // Assert
+    expect($act)->toThrow(InvalidArgumentException::class);
 });
 
 it('creates point from GeoJSON Feature', function (): void {
+    // Arrange
     $point = new Point(0, 180);
 
+    // Act
     $pointFromFeature = Point::fromJson('{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[180,0]}}');
 
+    // Assert
     expect($pointFromFeature)->toEqual($point);
 });

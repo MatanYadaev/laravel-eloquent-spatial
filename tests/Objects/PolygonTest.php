@@ -11,6 +11,7 @@ use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 use MatanYadaev\EloquentSpatial\Tests\TestObjects\ExtendedPolygon;
 
 it('creates a model record with polygon', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -21,14 +22,17 @@ it('creates a model record with polygon', function (): void {
         ]),
     ]);
 
+    // Act
     /** @var TestPlace $testPlace */
     $testPlace = TestPlace::factory()->create(['polygon' => $polygon]);
 
+    // Assert
     expect($testPlace->polygon)->toBeInstanceOf(Polygon::class);
     expect($testPlace->polygon)->toEqual($polygon);
 });
 
 it('creates a model record with polygon with SRID integer', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -39,13 +43,16 @@ it('creates a model record with polygon with SRID integer', function (): void {
         ]),
     ], Srid::WGS84->value);
 
+    // Act
     /** @var TestPlace $testPlace */
     $testPlace = TestPlace::factory()->create(['polygon' => $polygon]);
 
+    // Assert
     expect($testPlace->polygon->srid)->toBe(Srid::WGS84->value);
 });
 
 it('creates a model record with polygon with SRID enum', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -56,13 +63,16 @@ it('creates a model record with polygon with SRID enum', function (): void {
         ]),
     ], Srid::WGS84);
 
+    // Act
     /** @var TestPlace $testPlace */
     $testPlace = TestPlace::factory()->create(['polygon' => $polygon]);
 
+    // Assert
     expect($testPlace->polygon->srid)->toBe(Srid::WGS84->value);
 });
 
 it('creates polygon from JSON', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -73,12 +83,15 @@ it('creates polygon from JSON', function (): void {
         ]),
     ]);
 
+    // Act
     $polygonFromJson = Polygon::fromJson('{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}');
 
+    // Assert
     expect($polygonFromJson)->toEqual($polygon);
 });
 
 it('creates polygon with SRID from JSON', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -89,12 +102,15 @@ it('creates polygon with SRID from JSON', function (): void {
         ]),
     ], Srid::WGS84->value);
 
+    // Act
     $polygonFromJson = Polygon::fromJson('{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}', Srid::WGS84->value);
 
+    // Assert
     expect($polygonFromJson)->toEqual($polygon);
 });
 
 it('creates polygon from array', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -105,12 +121,15 @@ it('creates polygon from array', function (): void {
         ]),
     ]);
 
+    // Act
     $polygonFromJson = Polygon::fromArray(['type' => 'Polygon', 'coordinates' => [[[180, 0], [179, 1], [178, 2], [177, 3], [180, 0]]]]);
 
+    // Assert
     expect($polygonFromJson)->toEqual($polygon);
 });
 
 it('creates polygon with SRID from array', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -121,12 +140,15 @@ it('creates polygon with SRID from array', function (): void {
         ]),
     ], Srid::WGS84->value);
 
+    // Act
     $polygonFromJson = Polygon::fromArray(['type' => 'Polygon', 'coordinates' => [[[180, 0], [179, 1], [178, 2], [177, 3], [180, 0]]]], Srid::WGS84->value);
 
+    // Assert
     expect($polygonFromJson)->toEqual($polygon);
 });
 
 it('generates polygon JSON', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -137,13 +159,16 @@ it('generates polygon JSON', function (): void {
         ]),
     ]);
 
+    // Act
     $json = $polygon->toJson();
 
+    // Assert
     $expectedJson = '{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}';
     expect($json)->toBe($expectedJson);
 });
 
 it('generates polygon feature collection JSON', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -154,13 +179,16 @@ it('generates polygon feature collection JSON', function (): void {
         ]),
     ]);
 
+    // Act
     $featureCollectionJson = $polygon->toFeatureCollectionJson();
 
+    // Assert
     $expectedFeatureCollectionJson = '{"type":"FeatureCollection","features":[{"type":"Feature","properties":[],"geometry":{"type":"Polygon","coordinates":[[[180,0],[179,1],[178,2],[177,3],[180,0]]]}}]}';
     expect($featureCollectionJson)->toBe($expectedFeatureCollectionJson);
 });
 
 it('creates polygon from WKT', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -171,12 +199,15 @@ it('creates polygon from WKT', function (): void {
         ]),
     ]);
 
+    // Act
     $polygonFromWkt = Polygon::fromWkt('POLYGON((180 0, 179 1, 178 2, 177 3, 180 0))');
 
+    // Assert
     expect($polygonFromWkt)->toEqual($polygon);
 });
 
 it('creates polygon with SRID from WKT', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -187,8 +218,10 @@ it('creates polygon with SRID from WKT', function (): void {
         ]),
     ], Srid::WGS84->value);
 
+    // Act
     $polygonFromWkt = Polygon::fromWkt('POLYGON((180 0, 179 1, 178 2, 177 3, 180 0))', Srid::WGS84->value);
 
+    // Assert
     expect($polygonFromWkt)->toEqual($polygon);
 });
 
@@ -213,6 +246,7 @@ it('creates polygon from EWKT', function (): void {
 });
 
 it('generates polygon WKT', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -223,13 +257,16 @@ it('generates polygon WKT', function (): void {
         ]),
     ]);
 
+    // Act
     $wkt = $polygon->toWkt();
 
+    // Assert
     $expectedWkt = 'POLYGON((180 0, 179 1, 178 2, 177 3, 180 0))';
     expect($wkt)->toBe($expectedWkt);
 });
 
 it('creates polygon from WKB', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -240,12 +277,15 @@ it('creates polygon from WKB', function (): void {
         ]),
     ]);
 
+    // Act
     $polygonFromWkb = Polygon::fromWkb($polygon->toWkb());
 
+    // Assert
     expect($polygonFromWkb)->toEqual($polygon);
 });
 
 it('creates polygon with SRID from WKB', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -256,27 +296,34 @@ it('creates polygon with SRID from WKB', function (): void {
         ]),
     ], Srid::WGS84->value);
 
+    // Act
     $polygonFromWkb = Polygon::fromWkb($polygon->toWkb());
 
+    // Assert
     expect($polygonFromWkb)->toEqual($polygon);
 });
 
 it('throws exception when polygon has no line strings', function (): void {
-    expect(function (): void {
-        new Polygon([]);
-    })->toThrow(InvalidArgumentException::class);
+    // Act
+    $act = static fn () => new Polygon([]);
+
+    // Assert
+    expect($act)->toThrow(InvalidArgumentException::class);
 });
 
 it('throws exception when creating polygon from incorrect geometry', function (): void {
-    expect(function (): void {
-        // @phpstan-ignore-next-line
-        new Polygon([
-            new Point(0, 0),
-        ]);
-    })->toThrow(InvalidArgumentException::class);
+    // Act
+    // @phpstan-ignore-next-line
+    $act = static fn () => new Polygon([
+        new Point(0, 0),
+    ]);
+
+    // Assert
+    expect($act)->toThrow(InvalidArgumentException::class);
 });
 
 it('casts a Polygon to a string', function (): void {
+    // Arrange
     $polygon = new Polygon([
         new LineString([
             new Point(0, 180),
@@ -287,10 +334,15 @@ it('casts a Polygon to a string', function (): void {
         ]),
     ]);
 
-    expect($polygon->__toString())->toEqual('POLYGON((180 0, 179 1, 178 2, 177 3, 180 0))');
+    // Act
+    $string = $polygon->__toString();
+
+    // Assert
+    expect($string)->toEqual('POLYGON((180 0, 179 1, 178 2, 177 3, 180 0))');
 });
 
 it('adds a macro toPolygon', function (): void {
+    // Arrange
     Geometry::macro('getName', function (): string {
         /** @var Geometry $this */
         return class_basename($this);
@@ -306,8 +358,13 @@ it('adds a macro toPolygon', function (): void {
         ]),
     ]);
 
+    // Act
     // @phpstan-ignore-next-line
-    expect($polygon->getName())->toBe('Polygon');
+    $name = $polygon->getName();
+
+    // Assert
+    // @phpstan-ignore-next-line
+    expect($name)->toBe('Polygon');
 });
 
 it('uses an extended Polygon class', function (): void {
@@ -345,10 +402,11 @@ it('throws exception when storing a record with regular Polygon instead of the e
         ]),
     ], 4326);
 
-    // Act & Assert
-    expect(function () use ($polygon): void {
-        TestExtendedPlace::factory()->create(['polygon' => $polygon]);
-    })->toThrow(InvalidArgumentException::class);
+    // Act
+    $act = static fn () => TestExtendedPlace::factory()->create(['polygon' => $polygon]);
+
+    // Assert
+    expect($act)->toThrow(InvalidArgumentException::class);
 });
 
 it('throws exception when storing a record with extended Polygon instead of the regular one', function (): void {
@@ -364,8 +422,9 @@ it('throws exception when storing a record with extended Polygon instead of the 
         ]),
     ], 4326);
 
-    // Act & Assert
-    expect(function () use ($polygon): void {
-        TestPlace::factory()->create(['polygon' => $polygon]);
-    })->toThrow(InvalidArgumentException::class);
+    // Act
+    $act = static fn () => TestPlace::factory()->create(['polygon' => $polygon]);
+
+    // Assert
+    expect($act)->toThrow(InvalidArgumentException::class);
 });

@@ -58,9 +58,13 @@ $dataset = [
 ];
 
 it('uses custom Doctrine types for spatial columns', function ($column, $postgresType, $mySqlType): void {
+    // Arrange
     $doctrineSchemaManager = DB::connection()->getDoctrineSchemaManager();
-
     $columns = $doctrineSchemaManager->listTableColumns('test_places');
 
-    expect($columns[$column]->getType())->toBeInstanceOfOnPostgres($postgresType)->toBeInstanceOfOnMysql($mySqlType);
+    // Act
+    $type = $columns[$column]->getType();
+
+    // Assert
+    expect($type)->toBeInstanceOfOnPostgres($postgresType)->toBeInstanceOfOnMysql($mySqlType);
 })->with($dataset)->skip(version_compare(Application::VERSION, '11.0.0', '>='));

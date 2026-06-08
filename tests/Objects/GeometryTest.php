@@ -18,92 +18,131 @@ use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\Tests\TestModels\TestPlace;
 
 it('throws exception when generating geometry from other geometry WKB', function (): void {
-    expect(function (): void {
-        $pointWkb = (new Point(0, 180))->toWkb();
+    // Arrange
+    $pointWkb = (new Point(0, 180))->toWkb();
 
-        LineString::fromWkb($pointWkb);
-    })->toThrow(InvalidArgumentException::class);
+    // Act
+    $act = static fn () => LineString::fromWkb($pointWkb);
+
+    // Assert
+    expect($act)->toThrow(InvalidArgumentException::class);
 });
 
 it('throws exception when generating geometry with invalid latitude', function (): void {
-    expect(function (): void {
-        $point = (new Point(91, 0, Srid::WGS84->value));
-        TestPlace::factory()->create(['point' => $point]);
-    })->toThrow(QueryException::class);
+    // Arrange
+    $point = new Point(91, 0, Srid::WGS84->value);
+
+    // Act
+    $act = static fn () => TestPlace::factory()->create(['point' => $point]);
+
+    // Assert
+    expect($act)->toThrow(QueryException::class);
 })->skip(fn () => ! AxisOrder::supported(DB::connection()));
 
 it('throws exception when generating geometry with invalid latitude - without axis-order', function (): void {
-    expect(function (): void {
-        $point = (new Point(91, 0, Srid::WGS84->value));
+    // Arrange
+    $point = new Point(91, 0, Srid::WGS84->value);
+
+    // Act
+    $act = static function () use ($point): void {
         TestPlace::factory()->create(['point' => $point]);
 
         TestPlace::query()
             ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value))
             ->firstOrFail();
-    })->toThrow(QueryException::class);
+    };
+
+    // Assert
+    expect($act)->toThrow(QueryException::class);
 })->skip(fn () => AxisOrder::supported(DB::connection()) || DB::connection() instanceof PostgresConnection);
 
 it('throws exception when generating geometry with invalid longitude', function (): void {
-    expect(function (): void {
-        $point = (new Point(0, 181, Srid::WGS84->value));
-        TestPlace::factory()->create(['point' => $point]);
-    })->toThrow(QueryException::class);
+    // Arrange
+    $point = new Point(0, 181, Srid::WGS84->value);
+
+    // Act
+    $act = static fn () => TestPlace::factory()->create(['point' => $point]);
+
+    // Assert
+    expect($act)->toThrow(QueryException::class);
 })->skip(fn () => ! AxisOrder::supported(DB::connection()));
 
 it('throws exception when generating geometry with invalid longitude - without axis-order', function (): void {
-    expect(function (): void {
-        $point = (new Point(0, 181, Srid::WGS84->value));
+    // Arrange
+    $point = new Point(0, 181, Srid::WGS84->value);
+
+    // Act
+    $act = static function () use ($point): void {
         TestPlace::factory()->create(['point' => $point]);
 
         TestPlace::query()
             ->withDistanceSphere('point', new Point(1, 1, Srid::WGS84->value))
             ->firstOrFail();
-    })->toThrow(QueryException::class);
+    };
+
+    // Assert
+    expect($act)->toThrow(QueryException::class);
 })->skip(fn () => AxisOrder::supported(DB::connection()) || DB::connection() instanceof PostgresConnection);
 
 it('throws exception when generating geometry from other geometry WKT', function (): void {
-    expect(function (): void {
-        $pointWkt = 'POINT(180 0)';
+    // Arrange
+    $pointWkt = 'POINT(180 0)';
 
-        LineString::fromWkt($pointWkt);
-    })->toThrow(InvalidArgumentException::class);
+    // Act
+    $act = static fn () => LineString::fromWkt($pointWkt);
+
+    // Assert
+    expect($act)->toThrow(InvalidArgumentException::class);
 });
 
 it('throws exception when generating geometry from non-JSON', function (): void {
-    expect(function (): void {
-        Point::fromJson('invalid-value');
-    })->toThrow(GeometryIoException::class);
+    // Act
+    $act = static fn () => Point::fromJson('invalid-value');
+
+    // Assert
+    expect($act)->toThrow(GeometryIoException::class);
 });
 
 it('throws exception when generating geometry from empty JSON', function (): void {
-    expect(function (): void {
-        Point::fromJson('{}');
-    })->toThrow(GeometryIoException::class);
+    // Act
+    $act = static fn () => Point::fromJson('{}');
+
+    // Assert
+    expect($act)->toThrow(GeometryIoException::class);
 });
 
 it('throws exception when generating geometry from other geometry JSON', function (): void {
-    expect(function (): void {
-        $pointJson = '{"type":"Point","coordinates":[0,180]}';
+    // Arrange
+    $pointJson = '{"type":"Point","coordinates":[0,180]}';
 
-        LineString::fromJson($pointJson);
-    })->toThrow(InvalidArgumentException::class);
+    // Act
+    $act = static fn () => LineString::fromJson($pointJson);
+
+    // Assert
+    expect($act)->toThrow(InvalidArgumentException::class);
 });
 
 it('creates an SQL expression from a geometry', function (): void {
+    // Arrange
     $point = new Point(0, 180, Srid::WGS84->value);
 
+    // Act
     $expression = $point->toSqlExpression(DB::connection());
 
+    // Assert
     $grammar = DB::getQueryGrammar();
     $expressionValue = $expression->getValue($grammar);
     expect($expressionValue)->toEqual("ST_GeomFromText('POINT(180 0)', 4326, 'axis-order=long-lat')");
 })->skip(fn () => ! AxisOrder::supported(DB::connection()));
 
 it('creates an SQL expression from a geometry - without axis-order', function (): void {
+    // Arrange
     $point = new Point(0, 180, Srid::WGS84->value);
 
+    // Act
     $expression = $point->toSqlExpression(DB::connection());
 
+    // Assert
     $grammar = DB::getQueryGrammar();
     $expressionValue = $expression->getValue($grammar);
     expect($expressionValue)->toEqual(
@@ -112,34 +151,43 @@ it('creates an SQL expression from a geometry - without axis-order', function ()
 })->skip(fn () => AxisOrder::supported(DB::connection()));
 
 it('creates a geometry object from a geo json array', function (): void {
+    // Arrange
     $point = new Point(0, 180);
     $pointGeoJsonArray = $point->toArray();
 
+    // Act
     $geometryCollectionFromArray = Point::fromArray($pointGeoJsonArray);
 
+    // Assert
     expect($geometryCollectionFromArray)->toEqual($point);
 });
 
 it('throws exception when creating a geometry object from an invalid geo json array', function (): void {
+    // Arrange
     $invalidPointGeoJsonArray = [
         'type' => 'InvalidGeometryType',
         'coordinates' => [0, 180],
     ];
 
-    expect(function () use ($invalidPointGeoJsonArray): void {
-        Geometry::fromArray($invalidPointGeoJsonArray);
-    })->toThrow(GeometryIoException::class);
+    // Act
+    $act = static fn () => Geometry::fromArray($invalidPointGeoJsonArray);
+
+    // Assert
+    expect($act)->toThrow(GeometryIoException::class);
 });
 
 it('throws exception when creating a geometry object from another geometry geo json array', function (): void {
+    // Arrange
     $pointGeoJsonArray = [
         'type' => 'Point',
         'coordinates' => [0, 180],
     ];
 
-    expect(function () use ($pointGeoJsonArray): void {
-        LineString::fromArray($pointGeoJsonArray);
-    })->toThrow(InvalidArgumentException::class);
+    // Act
+    $act = static fn () => LineString::fromArray($pointGeoJsonArray);
+
+    // Assert
+    expect($act)->toThrow(InvalidArgumentException::class);
 });
 
 it('creates a model record with geometry (point)', function (): void {
