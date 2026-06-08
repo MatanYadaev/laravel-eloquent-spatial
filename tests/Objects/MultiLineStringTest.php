@@ -312,6 +312,7 @@ it('adds a macro toMultiLineString', function (): void {
     $name = $multiLineString->getName();
 
     // Assert
+    // @phpstan-ignore-next-line
     expect($name)->toBe('MultiLineString');
 });
 

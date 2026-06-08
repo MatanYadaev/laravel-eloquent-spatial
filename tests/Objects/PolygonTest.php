@@ -363,6 +363,7 @@ it('adds a macro toPolygon', function (): void {
     $name = $polygon->getName();
 
     // Assert
+    // @phpstan-ignore-next-line
     expect($name)->toBe('Polygon');
 });
 

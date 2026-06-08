@@ -282,6 +282,7 @@ it('adds a macro toLineString', function (): void {
     $name = $lineString->getName();
 
     // Assert
+    // @phpstan-ignore-next-line
     expect($name)->toBe('LineString');
 });
 

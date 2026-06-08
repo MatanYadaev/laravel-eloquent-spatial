@@ -722,6 +722,7 @@ it('adds a macro toGeometryCollection', function (): void {
     $name = $geometryCollection->getName();
 
     // Assert
+    // @phpstan-ignore-next-line
     expect($name)->toBe('GeometryCollection');
 });
 

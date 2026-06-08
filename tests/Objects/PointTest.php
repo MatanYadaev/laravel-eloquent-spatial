@@ -291,6 +291,7 @@ it('adds a macro toPoint', function (): void {
     $name = $point->getName();
 
     // Assert
+    // @phpstan-ignore-next-line
     expect($name)->toBe('Point');
 });
 

@@ -344,8 +344,8 @@ it('throws exception when multi polygon has no polygons', function (): void {
 
 it('throws exception when creating multi polygon from incorrect geometry', function (): void {
     // Act
+    // @phpstan-ignore-next-line
     $act = static fn () => new MultiPolygon([
-        // @phpstan-ignore-next-line
         new Point(0, 0),
     ]);
 
@@ -398,6 +398,7 @@ it('adds a macro toMultiPolygon', function (): void {
     $name = $multiPolygon->getName();
 
     // Assert
+    // @phpstan-ignore-next-line
     expect($name)->toBe('MultiPolygon');
 });
 

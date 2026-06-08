@@ -263,6 +263,7 @@ it('adds a macro toMultiPoint', function (): void {
     $name = $multiPoint->getName();
 
     // Assert
+    // @phpstan-ignore-next-line
     expect($name)->toBe('MultiPoint');
 });
 
