@@ -8,10 +8,11 @@ parameters:
     - src/Factory.php
     - src/EloquentSpatialServiceProvider.php
     - tests/DoctrineTypesTest.php
+    - tests/ArchTest.php
   ignoreErrors:
     -
       message: '#Call to an undefined method Illuminate\\Database\\Schema\\Blueprint\:\:.+\(\)#'
-      path: 'tests/database/migrations-laravel-<=10/*.php'
+      path: 'tests/database/migrations-laravel-lte-10/*.php'
     -
       message: '#Call to an undefined method Pest\\Expectation\<.+\>\:\:toBe(InstanceOf)?On(Postgres|Mysql)\(\)#'
       path: tests/*.php
