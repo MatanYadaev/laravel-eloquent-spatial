@@ -14,7 +14,6 @@ services:
         restart: unless-stopped
     mariadb:
         container_name: mariadb-laravel-eloquent-spatial
-        # Pinned: 10.11.17 regressed ST_CROSSES(LineString, Polygon) via MDEV-36058
         image: mariadb:10.11.16
         environment:
             MYSQL_DATABASE: laravel_eloquent_spatial_test
